@@ -1,0 +1,18 @@
+Package: myTAI
+Type: Package
+Title: A package combining common gene orthology detection methods and dN/dS models for pipeline processing.
+Version: 1.0.0
+Date: 2014-06-08
+Author: Hajk-Georg Drost,Sarah Scharfenberg, Kristian Karsten Ullrich, Norman Urban (alphabetical order)
+Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
+Description: The present collection of functions can be used to perform
+    orthology detection and dN/dS computations for biological research.
+License: GPL-2
+Depends: R (>= 3.0.2)
+Imports: Rcpp (>= 0.11.1),
+         nortest (>= 1.0-2),
+         MASS (>= 7.3-33),  
+         doParallel (>= 1.0.8),
+         parallel (>= 3.0.2),
+         foreach (>= 1.4.2)  
+LinkingTo: Rcpp
