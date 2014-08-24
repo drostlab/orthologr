@@ -13,7 +13,7 @@ This package aims to provide a toolbox and functionality to perform gene ortholo
 Package: \tab orthologr\cr
 Type: \tab Package\cr
 Version: \tab 1.0.0\cr
-Date: \tab 2014-06-26\cr
+Date: \tab 2014-08-23\cr
 License: \tab MIT\cr
 }
 
