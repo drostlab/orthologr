@@ -27,7 +27,6 @@ Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de> and Kris
 \references{
 
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation directory ~~
 \keyword{ package }
 
 \examples{
