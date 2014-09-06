@@ -13,8 +13,11 @@
 #' 
 #' @examples \dontrun{
 #' # reading a genome stored in a fasta file
-#' Aly.genome <- read.genome("ortho_lyra_dna.fasta", format = "fasta")
+#' Aly.genome <- read.genome("ortho_lyra_cds.fasta", format = "fasta")
 #' }
+#' 
+#' @return A data.table storing the gene id in the first column and the corresponding
+#' sequence as string in the second column.
 #' @export 
 read.genome <- function(file, format, ...){
         
@@ -51,6 +54,9 @@ read.genome <- function(file, format, ...){
 #' # reading a proteome stored in a fasta file
 #' Aly.proteome <- read.proteome("ortho_lyra_aa.fasta", format = "fasta")
 #' }
+#' 
+#' @return A data.table storing the gene id in the first column and the corresponding
+#' sequence as string in the second column.
 #' @export 
 
 read.proteome <- function(file, format, ...){
@@ -89,6 +95,9 @@ read.proteome <- function(file, format, ...){
 #' # reading a cds file stored in fasta format
 #' Aly.cds <- read.cds("ortho_lyra_cds.fasta", format = "fasta")
 #' }
+#' 
+#' @return A data.table storing the gene id in the first column and the corresponding
+#' sequence as string in the second column.
 #' @export 
 read.cds <- function(file, format, ...){
         
@@ -103,7 +112,7 @@ read.cds <- function(file, format, ...){
                                                       seqs = lapply(cds, c2s))
         }
                
-        return(cds)
+        return(cds.dt)
 }
 
 
