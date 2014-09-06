@@ -14,7 +14,7 @@ Package: \tab orthologr\cr
 Type: \tab Package\cr
 Version: \tab 1.0.0\cr
 Date: \tab 2014-08-23\cr
-License: \tab MIT\cr
+License: \tab GPL-2\cr
 }
 
 

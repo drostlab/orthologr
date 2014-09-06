@@ -1,50 +1,22 @@
 
-#' @title Function to check whether a given vector, data.frame, data.table, or list only stores DNA sequences
-#' @description This function takes a vector, data.frame, data.table, or list
-#' @param file a character string specifying the path to the file storing the genome.
-#' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
-#' @param ... additional arguments that are used by the seqinr::read.fasta() function.
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
-#' @export 
-check_DNA <- function(DNA_container){
-        
-        is.vector(DNA_container){
-                
-                
-        }
-        
-        is.list(DNA_container){
-                
-                
-                
-        }
-        
-        
-        is.data.frame(DNA_container){
-                
-                
-                
-        }
-        
-        
-        is.data.table(DNA_container){
-                
-                
-                
-                
-        }
-        
-}
-
-
 #' @title Function to read a genome of a given organism
 #' @description This function reads an organism specific genome stored in a defined file format.
 #' @param file a character string specifying the path to the file storing the genome.
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @details The \code{read.genome} function takes a string specifying the path to the genome file
+#' of interest as first argument.
+#' 
+#' It is possible to read in different genome file standards such as \emph{fasta} or \emph{genebank}.
+#' Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/info/genomes.
+#' 
+#' @examples \dontrun{
+#' # reading a genome stored in a fasta file
+#' Aly.genome <- read.genome("ortho_lyra_dna.fasta", format = "fasta")
+#' }
 #' @export 
-read.genome <- function(file, format = "fasta", ...){
+read.genome <- function(file, format, ...){
         
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -52,11 +24,12 @@ read.genome <- function(file, format = "fasta", ...){
         
         if(format == "fasta"){
                 genome <- vector(mode = "list")
-                genome <- read.fasta(file, seqtype = "DNA", ...)
+                genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
+                genome.dt <- data.table::data.table(geneids = names(genome), 
+                                                      seqs = lapply(genome, c2s))
         }
-        
-        
-        return(genome)
+
+        return(genome.dt)
 }
 
 
@@ -67,9 +40,20 @@ read.genome <- function(file, format = "fasta", ...){
 #' @param format a character string specifying the file format used to store the proteome, e.g. "fasta", "gbk".
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @details The \code{read.proteome} function takes a string specifying the path to the proteome file
+#' of interest as first argument.
+#' 
+#' It is possible to read in different proteome file standards such as \emph{fasta} or \emph{genebank}.
+#' 
+#' Proteomes stored in fasta files can be downloaded from http://www.ebi.ac.uk/reference_proteomes.
+#' 
+#' @examples \dontrun{
+#' # reading a proteome stored in a fasta file
+#' Aly.proteome <- read.proteome("ortho_lyra_aa.fasta", format = "fasta")
+#' }
 #' @export 
 
-read.proteome <- function(file, format = "fasta", ...){
+read.proteome <- function(file, format, ...){
         
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -77,11 +61,13 @@ read.proteome <- function(file, format = "fasta", ...){
         
         if(format == "fasta"){
                 proteome <- vector(mode = "list")
-                proteome <- read.fasta(file, seqtype = "AA", ...)
+                proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
+                proteome.dt <- data.table::data.table(geneids = names(proteome), 
+                                       seqs = lapply(proteome, c2s))
+                #setkey(proteome.dt,geneids)
         }
-        
-        
-        return(proteome)
+            
+        return(proteome.dt)
 }
 
 
@@ -92,8 +78,19 @@ read.proteome <- function(file, format = "fasta", ...){
 #' @param format a character string specifying the file format used to store the CDS, e.g. "fasta", "gbk".
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @details The \code{read.cds} function takes a string specifying the path to the cds file
+#' of interest as first argument.
+#' 
+#' It is possible to read in different proteome file standards such as \emph{fasta} or \emph{genebank}.
+#' 
+#' CDS stored in fasta files can be downloaded from http://www.ensembl.org/info/data/ftp/index.html.
+#' 
+#' @examples \dontrun{
+#' # reading a cds file stored in fasta format
+#' Aly.cds <- read.cds("ortho_lyra_cds.fasta", format = "fasta")
+#' }
 #' @export 
-read.cds <- function(file, format = "fasta", ...){
+read.cds <- function(file, format, ...){
         
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -101,10 +98,11 @@ read.cds <- function(file, format = "fasta", ...){
         
         if(format == "fasta"){
                 cds <- vector(mode = "list")
-                cds <- read.fasta(file, seqtype = "DNA", ...)
+                cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
+                cds.dt <- data.table::data.table(geneids = names(cds), 
+                                                      seqs = lapply(cds, c2s))
         }
-        
-        
+               
         return(cds)
 }
 

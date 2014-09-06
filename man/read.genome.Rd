@@ -3,17 +3,30 @@
 \alias{read.genome}
 \title{Function to read a genome of a given organism}
 \usage{
-read.genome(file, format = "fasta", ...)
+read.genome(file, format, ...)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the genome.}
 
-\item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "gb".}
+\item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".}
 
 \item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
 }
 \description{
 This function reads an organism specific genome stored in a defined file format.
+}
+\details{
+The \code{read.genome} function takes a string specifying the path to the genome file
+of interest as first argument.
+
+It is possible to read in different genome file standards such as \emph{fasta} or \emph{genebank}.
+Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/info/genomes.
+}
+\examples{
+\dontrun{
+# reading a genome stored in a fasta file
+Aly.genome <- read.genome("ortho_lyra_dna.fasta", format = "fasta")
+}
 }
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg
