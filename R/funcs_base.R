@@ -118,38 +118,73 @@ read.cds <- function(file, format, ...){
 }
 
 
-#######################
-#
-# IN data.frame with query ids and aminoacidsequence
-# query[[1]]   related[[2]]
-# OUT data.frame with query ID and hit ID
-#
-#######################
-blast <- function(queries, database, eval="1E-5",
-                  blast_name = paste("_blast/_blastinput.fasta",sep=""),
-                  blast_out = paste("_blast/_blastresult.csv",sep=""),
+#' @title Interface function to BLAST+
+#' @description This function performs a blast+ search of a given set of protein sequences against a given database.
+#' @param queries 
+#' @param database 
+#' @param eval 
+#' @param blast_name
+#' @param blast_out
+#' @param path
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @examples \dontrun{
+#' # performing a best hit BLAST search
+#' blast( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
+#' }
+#' 
+#' @return A data.table storing the geneids of orthologous genes (best hit) 
+#' in the first column and the amino acid sequences in the second column.
+#' @export 
+blast <- function(queries, database, eval = "1E-5",
+                  blast_name = paste0("_blast/_blastinput.fasta"),
+                  blast_out = paste0("_blast/_blastresult.csv"),
                   path=NA){
         
-        l <- length(queries[,1])
+        nrows <- nrow(queries)
         iold<-1
         res <-NULL
-        if(!file.exists("_blast/")){   system("mkdir _blast")  }
+        if(!file.exists("_blast/")){ 
+                
+                dir.create("_blast")
+        
+        }
         
         for(i in c(seq(from = 500, to=l-1, by=500),l)){
-                testAA <- as.list(queries[iold:i,3])
-                name <-sapply(queries[iold:i,1], FUN=toString)
-                iold<-i+1
-                seqinr::write.fasta(testAA, names=name ,nbchar=80, open="w", file.out=blast_name )
-                if(is.na(path)) 
-                        system( paste("blastp -db ",database," -query ",blast_name," -evalue ",eval," -out ",
-                                      blast_out ," -outfmt 6" ,sep=""))
-                else
-                        system( paste("export PATH=$PATH:",path,";
-                                      blastp -db ",database," -query ",blast_name," -evalue ",eval," -out ",
-                                      blast_out ," -outfmt 6" ,sep=""))
                 
-                table <- read.csv(file=blast_out, sep="\t", header=FALSE)
-                uniques <- unique(table[,1])
+                testAA <- as.list(queries[iold:i,3])
+                
+                name <-sapply(queries[iold:i,1], FUN=toString)
+                
+                iold<-i+1
+                
+                seqinr::write.fasta(testAA, names = name,
+                                    nbchar = 80,open = "w", 
+                                    file.out = blast_name)
+                
+                if(is.na(path)){
+                        
+                        system( 
+                                paste0("blastp -db ",database," -query ",blast_name,
+                                       " -evalue ",eval," -out ", blast_out ," -outfmt 6")
+                        )
+                
+                } else {
+                        
+                        system( 
+                                paste0("export PATH=$PATH:",path,"; blastp -db ",
+                                       database," -query ",blast_name," -evalue ",
+                                       eval," -out ", blast_out ," -outfmt 6")              
+                        )
+                
+                }
+                
+                hit_table <- data.table::fread(file = blast_out, sep = "\t", header = FALSE)
+                #setnames(hit_table, new = c())
+                #setkey()
+                
+                uniques <- vector(mode = "character") 
+                uniques <- unique(hit_table[ , 1])
+                
                 for( entry in uniques ){
                         res <-rbind(res, table[table[,1]==entry,][1,1:2] )
                 }
@@ -157,11 +192,47 @@ blast <- function(queries, database, eval="1E-5",
         return(res)
 }
 
-
+#' @title Function to perform a BLAST best hit search
+#' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
+#' @param A an object returned by the set() function.
+#' @param B an object returned by the set() function having the makedb parameter set to TRUE.
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
+#' @examples \dontrun{
+#' # performing gene orthology inference using the best hit (BH) method 
+#' blast_best( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
+#' }
+#' 
+#' @return A data.table as returned by the blast() function, storing the geneids 
+#' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
+#' @export 
 blast_best <- function(A,B){
-        return(blast(queries=A[[1]], database=B[[2]]))
+        
+        return(blast(queries = A[[1]], database = B[[2]]))
+        
 }
 
+
+#' @title Function to perform a BLAST reciprocal best hit (RBH) search
+#' @description This function performs a blast+ search (reciprocal best hit) of a given set of protein sequences against a second
+#' set of protein sequences and vice versa.
+#' @param A an object returned by the set() function.
+#' @param B an object returned by the set() function having the makedb parameter set to TRUE.
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @details Given a set of protein sequences A and a different set of protein sequences B,
+#'  first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
+#'  a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences 
+#'  that were found to be best hits in both directions are retained and returned.
+#'  
+#'  
+#' @examples \dontrun{
+#' # performing gene orthology inference using the best hit (BH) method 
+#' blast_rec( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
+#' }
+#' 
+#' @return A data.table as returned by the blast() function, storing the geneids 
+#' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
+#' @export 
 blast_rec <- function(A, B){
         orthoA <- blast_best(A,B)
         orthoB <- blast_best(B,A)

@@ -12,6 +12,10 @@ read.genome(file, format, ...)
 
 \item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
 }
+\value{
+A data.table storing the gene id in the first column and the corresponding
+sequence as string in the second column.
+}
 \description{
 This function reads an organism specific genome stored in a defined file format.
 }
@@ -25,7 +29,7 @@ Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/i
 \examples{
 \dontrun{
 # reading a genome stored in a fasta file
-Aly.genome <- read.genome("ortho_lyra_dna.fasta", format = "fasta")
+Aly.genome <- read.genome("ortho_lyra_cds.fasta", format = "fasta")
 }
 }
 \author{

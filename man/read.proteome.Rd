@@ -12,6 +12,10 @@ read.proteome(file, format, ...)
 
 \item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
 }
+\value{
+A data.table storing the gene id in the first column and the corresponding
+sequence as string in the second column.
+}
 \description{
 This function reads an organism specific proteome stored in a defined file format.
 }
