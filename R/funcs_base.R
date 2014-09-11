@@ -149,7 +149,7 @@ blast <- function(queries, database, eval = "1E-5",
         
         }
         
-        for(i in c(seq(from = 500, to=l-1, by=500),l)){
+        for(i in c(seq(from = 500, to=nrows-1, by=500),nrows)){
                 
                 testAA <- as.list(queries[iold:i,3])
                 
@@ -206,9 +206,9 @@ blast <- function(queries, database, eval = "1E-5",
 #' @return A data.table as returned by the blast() function, storing the geneids 
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 #' @export 
-blast_best <- function(A,B){
+blast_best <- function(A,B, path=NULL){
         
-        return(blast(queries = A[[1]], database = B[[2]]))
+        return(blast(queries = A[[1]], database = B[[2]], path=path))
         
 }
 
@@ -233,9 +233,9 @@ blast_best <- function(A,B){
 #' @return A data.table as returned by the blast() function, storing the geneids 
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
 #' @export 
-blast_rec <- function(A, B){
-        orthoA <- blast_best(A,B)
-        orthoB <- blast_best(B,A)
+blast_rec <- function(A, B, path=NULL){
+        orthoA <- blast_best(A,B, path=path)
+        orthoB <- blast_best(B,A, path=path)
         return ( merge(orthoA, orthoB, by.x = c(1,2), by.y = c(2,1)))
 }
 
