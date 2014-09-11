@@ -29,7 +29,8 @@ read.genome <- function(file, format, ...){
                 genome <- vector(mode = "list")
                 genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
                 genome.dt <- data.table::data.table(geneids = names(genome), 
-                                                      seqs = lapply(genome, c2s))
+                                                      seqs = lapply(genome, seqinr::c2s))
+                data.table::setkey(genome.dt,geneids)
         }
 
         return(genome.dt)
@@ -69,8 +70,8 @@ read.proteome <- function(file, format, ...){
                 proteome <- vector(mode = "list")
                 proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
                 proteome.dt <- data.table::data.table(geneids = names(proteome), 
-                                       seqs = lapply(proteome, c2s))
-                #setkey(proteome.dt,geneids)
+                                       seqs = unlist(lapply(proteome, seqinr::c2s)))
+                data.table::setkey(proteome.dt,geneids)
         }
             
         return(proteome.dt)
@@ -109,7 +110,8 @@ read.cds <- function(file, format, ...){
                 cds <- vector(mode = "list")
                 cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
                 cds.dt <- data.table::data.table(geneids = names(cds), 
-                                                      seqs = lapply(cds, c2s))
+                                                      seqs = unlist(lapply(cds, seqinr::c2s)))
+                data.table::setkey(cds.dt,geneids)
         }
                
         return(cds.dt)
