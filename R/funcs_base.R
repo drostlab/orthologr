@@ -138,7 +138,7 @@ read.cds <- function(file, format, ...){
 blast <- function(queries, database, eval = "1E-5",
                   blast_name = paste0("_blast/_blastinput.fasta"),
                   blast_out = paste0("_blast/_blastresult.csv"),
-                  path=NA){
+                  path=NULL){
         
         nrows <- nrow(queries)
         iold<-1
@@ -161,7 +161,7 @@ blast <- function(queries, database, eval = "1E-5",
                                     nbchar = 80,open = "w", 
                                     file.out = blast_name)
                 
-                if(is.na(path)){
+                if(is.null(path)){
                         
                         system( 
                                 paste0("blastp -db ",database," -query ",blast_name,
