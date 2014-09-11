@@ -118,6 +118,55 @@ read.cds <- function(file, format, ...){
 }
 
 
+#######################
+#
+# IN data.frame with query ids and aminoacidsequence
+# query[[1]]   related[[2]]
+# OUT data.frame with query ID and hit ID
+#
+#######################
+blast <- function(queries, database, eval="1E-5",
+                  blast_name = paste("_blast/_blastinput.fasta",sep=""),
+                  blast_out = paste("_blast/_blastresult.csv",sep=""),
+                  path=NA){
+        
+        l <- length(queries[,1])
+        iold<-1
+        res <-NULL
+        if(!file.exists("_blast/")){   system("mkdir _blast")  }
+        
+        for(i in c(seq(from = 500, to=l-1, by=500),l)){
+                testAA <- as.list(queries[iold:i,3])
+                name <-sapply(queries[iold:i,1], FUN=toString)
+                iold<-i+1
+                seqinr::write.fasta(testAA, names=name ,nbchar=80, open="w", file.out=blast_name )
+                if(is.na(path)) 
+                        system( paste("blastp -db ",database," -query ",blast_name," -evalue ",eval," -out ",
+                                      blast_out ," -outfmt 6" ,sep=""))
+                else
+                        system( paste("export PATH=$PATH:",path,";
+                                      blastp -db ",database," -query ",blast_name," -evalue ",eval," -out ",
+                                      blast_out ," -outfmt 6" ,sep=""))
+                
+                table <- read.csv(file=blast_out, sep="\t", header=FALSE)
+                uniques <- unique(table[,1])
+                for( entry in uniques ){
+                        res <-rbind(res, table[table[,1]==entry,][1,1:2] )
+                }
+        }
+        return(res)
+}
+
+
+blast_best <- function(A,B){
+        return(blast(queries=A[[1]], database=B[[2]]))
+}
+
+blast_rec <- function(A, B){
+        orthoA <- blast_best(A,B)
+        orthoB <- blast_best(B,A)
+        return ( merge(orthoA, orthoB, by.x = c(1,2), by.y = c(2,1)))
+}
 
 
 
