@@ -5,7 +5,7 @@
 \usage{
 blast(queries, database, eval = "1E-5",
   blast_name = "_blast/_blastinput.fasta",
-  blast_out = "_blast/_blastresult.csv", path = NA)
+  blast_out = "_blast/_blastresult.csv", path = NULL)
 }
 \arguments{
 \item{queries}{}
