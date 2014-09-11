@@ -118,74 +118,6 @@ read.cds <- function(file, format, ...){
 }
 
 
-#' @title Interface function to BLAST+
-#' @description This function performs a blast+ search of a given set of protein sequences against a given database.
-#' @param queries 
-#' @param database 
-#' @param eval 
-#' @param blast_name
-#' @param blast_out
-#' @param path
-#' @author Sarah Scharfenberg and Hajk-Georg Drost
-#' @examples \dontrun{
-#' # performing a best hit BLAST search
-#' blast( set("ortho_lyra_cds.fasta") , set("ortho_thal_cds.fasta", makedb = TRUE))
-#' }
-#' 
-#' @return A data.table storing the geneids of orthologous genes (best hit) 
-#' in the first column and the amino acid sequences in the second column.
-#' @export 
-blast <- function(queries, database, eval = "1E-5",
-                  blast_name = "_blast/_blastinput.fasta",
-                  blast_out = "_blast/_blastresult.csv",
-                  path = NULL){
-        
-        nrows <- nrow(queries)
-        
-        res <-NULL
-        if(!file.exists("_blast/")){ 
-                
-                dir.create("_blast")
-        
-        }
-        
-        # here to come: a parallelized version of the BLAST process
-        testAA <- as.list(queries[ , 3])
-        name <- sapply(queries[ , 1], FUN = toString)
-        seqinr::write.fasta(testAA, names = name,
-                            nbchar = 80,open = "w", 
-                             file.out = blast_name)
-                        if(is.null(path)){
-                                
-                                system( 
-                                        paste0("blastp -db ",database," -query ",blast_name,
-                                               " -evalue ",eval," -out ", blast_out ," -outfmt 6")
-                                )
-                        
-                        } else {
-                                
-                                system( 
-                                        paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                               database," -query ",blast_name," -evalue ",
-                                               eval," -out ", blast_out ," -outfmt 6")              
-                                )
-                        
-                        }
-        
-
-                hit_table <- data.table::fread(input = blast_out, sep = "\t", header = FALSE)
-                #setnames(hit_table, new = c())
-                #setkey(hit_table, geneids)
-                
-                uniques <- vector(mode = "character") 
-                uniques <- unique(hit_table[ , 1])
-                
-                for( entry in uniques ){
-                        res <-rbind(res, hit_table[hit_table[,1]==entry,][1,1:2] )
-                }
-
-        return(res)
-}
 
 #' @title Function to perform a BLAST best hit search
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
@@ -234,5 +166,61 @@ blast_rec <- function(A, B){
         return ( merge(orthoA, orthoB, by.x = c(1,2), by.y = c(2,1)))
 }
 
+
+
+#' @title Function to set up a ...
+#' @description This function reads a cds fasta file using read.cds, translates each 
+#' sequence into the corresponding aminoacid sequence and is able to create a blast 
+#' database from that.
+#' @param file a character string specifying the path to the file storing the cd.
+#' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
+#' @param makedb TRUE or FALSE whether a database should be created or not.
+# #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @return A list with [[1]] a data.table storing the gene id in the first column and 
+#' the corresponding dna and aminoacid sequence as string in the second and third column 
+#' respectively and [[2]] the name of the database created.
+set <- function(file="", format="fasta", makedb=FALSE, path=NULL, ...){
+        # read cds file
+        dt <- read.cds(file=file, format="fasta", ...)  
+        
+        # translate dna to aa sequences (not working yet)
+        dt <- dt[,aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(seqs))), by=geneids] 
+        
+        # makedb 
+        dbname<-""
+        
+        filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+        filename <- filename[length(filename)]
+        
+        if(makedb){
+                
+                if(!file.exists("_database/")){   system("mkdir _database")  }
+                dbname <- paste("_database/out_",filename,"_translate.fasta", sep="")
+                
+                seqinr::write.fasta(as.list(dt[,aa]), 
+                                    names=dt[,geneids], 
+                                    nbchar = 80, open = "w",
+                                    file.out=dbname )
+                
+                if(is.null(path)){
+                        
+                        system( 
+                                paste0("makeblastdb -in ", dbname,
+                                       " -input_type fasta -dbtype prot")              
+                        )
+                        
+                } else {
+                        
+                        system( 
+                                paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
+                                       dbname," -input_type fasta -dbtype prot")              
+                        )
+                        
+                }
+        }
+        
+        return(list(dt, dbname))
+}
 
 
