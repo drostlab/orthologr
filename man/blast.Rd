@@ -4,8 +4,8 @@
 \title{Interface function to BLAST+}
 \usage{
 blast(queries, database, eval = "1E-5",
-  blast_name = paste0("_blast/_blastinput.fasta"),
-  blast_out = paste0("_blast/_blastresult.csv"), path = NA)
+  blast_name = "_blast/_blastinput.fasta",
+  blast_out = "_blast/_blastresult.csv", path = NA)
 }
 \arguments{
 \item{queries}{}
@@ -30,7 +30,7 @@ This function performs a blast+ search of a given set of protein sequences again
 \examples{
 \dontrun{
 # performing a best hit BLAST search
-blast( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
+blast( set("ortho_lyra_cds.fasta") , set("ortho_thal_cds.fasta", makedb = TRUE))
 }
 }
 \author{
