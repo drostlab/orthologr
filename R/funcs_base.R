@@ -129,64 +129,68 @@ read.cds <- function(file, format, ...){
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' # performing a best hit BLAST search
-#' blast( set("ortho_lyra_cds.fasta") , set("ortho_thal_cds.fasta", makedb = TRUE))
+#' blast( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
 #' }
 #' 
 #' @return A data.table storing the geneids of orthologous genes (best hit) 
 #' in the first column and the amino acid sequences in the second column.
 #' @export 
 blast <- function(queries, database, eval = "1E-5",
-                  blast_name = "_blast/_blastinput.fasta",
-                  blast_out = "_blast/_blastresult.csv",
-                  path = NULL){
+                  blast_name = paste0("_blast/_blastinput.fasta"),
+                  blast_out = paste0("_blast/_blastresult.csv"),
+                  path=NULL){
         
-                nrows <- nrow(queries)
+        nrows <- nrow(queries)
+        iold<-1
+        res <-NULL
+        if(!file.exists("_blast/")){ 
                 
-                res <-NULL
-                if(!file.exists("_blast/")){ 
-                        
-                        dir.create("_blast")
-                        
-                }
+                dir.create("_blast")
                 
-               
-                # here to come: a parallelized version of the BLAST process
-                testAA <- as.list(queries[ , 3])
-                name <- sapply(queries[ , 1], FUN = toString)
+        }
+        
+        for(i in c(seq(from = 500, to=nrows-1, by=500),nrows)){
+                
+                testAA <- as.list(queries[iold:i,3])
+                
+                name <-sapply(queries[iold:i,1], FUN=toString)
+                
+                iold<-i+1
+                
                 seqinr::write.fasta(testAA, names = name,
                                     nbchar = 80,open = "w", 
                                     file.out = blast_name)
+                
                 if(is.null(path)){
                         
                         system( 
                                 paste0("blastp -db ",database," -query ",blast_name,
                                        " -evalue ",eval," -out ", blast_out ," -outfmt 6")
                         )
-                               
+                        
                 } else {
-                                                
-                          system( 
-                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                 database," -query ",blast_name," -evalue ",
-                                  eval," -out ", blast_out ," -outfmt 6")              
-                                 )
-                                                
-                                        }
-                                        
-                                        
-                                        hit_table <- data.table::fread(input = blast_out, sep = "\t", header = FALSE)
-                                        #setnames(hit_table, new = c())
-                                        #setkey(hit_table, geneids)
-                                        
-                                        uniques <- vector(mode = "character") 
-                                        uniques <- unique(hit_table[ , 1])
-                                        
-                                        for( entry in uniques ){
-                                                res <-rbind(res, hit_table[hit_table[,1]==entry,][1,1:2] )
-                                        }
-                                        
-                                        return(res)
-                                }
+                        
+                        system( 
+                                paste0("export PATH=$PATH:",path,"; blastp -db ",
+                                       database," -query ",blast_name," -evalue ",
+                                       eval," -out ", blast_out ," -outfmt 6")              
+                        )
+                        
+                }
+                
+                hit_table <- data.table::fread(file = blast_out, sep = "\t", header = FALSE)
+                #setnames(hit_table, new = c())
+                #setkey()
+                
+                uniques <- vector(mode = "character") 
+                uniques <- unique(hit_table[ , 1])
+                
+                for( entry in uniques ){
+                        res <-rbind(res, table[table[,1]==entry,][1,1:2] )
+                }
+        }
+        return(res)
+}
 
 
 #' @title Function to perform a BLAST best hit search
