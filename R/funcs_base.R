@@ -241,3 +241,59 @@ blast_rec <- function(A, B){
 
 
 
+#' @title Function to set up a ...
+#' @description This function reads a cds fasta file using read.cds, translates each 
+#' sequence into the corresponding aminoacid sequence and is able to create a blast 
+#' database from that.
+#' @param file a character string specifying the path to the file storing the cd.
+#' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
+#' @param makedb TRUE or FALSE whether a database should be created or not.
+# #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @return A list with [[1]] a data.table storing the gene id in the first column and 
+#' the corresponding dna and aminoacid sequence as string in the second and third column 
+#' respectively and [[2]] the name of the database created.
+set <- function(file="", format="fasta", makedb=FALSE, path=NULL, ...){
+        # read cds file
+        dt <- read.cds(file=file, format="fasta", ...)  
+        
+        # translate dna to aa sequences (not working yet)
+        dt <- dt[,aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(seqs))), by=geneids] 
+        
+        # makedb 
+        dbname<-""
+        
+        filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+        filename <- filename[length(filename)]
+        
+        if(makedb){
+                
+                if(!file.exists("_database/")){   system("mkdir _database")  }
+                dbname <- paste("_database/out_",filename,"_translate.fasta", sep="")
+                
+                seqinr::write.fasta(as.list(dt[,aa]), 
+                                    names=dt[,geneids], 
+                                    nbchar = 80, open = "w",
+                                    file.out=dbname )
+                
+                if(is.null(path)){
+                        
+                        system( 
+                                paste0("makeblastdb -in ", dbname,
+                                       " -input_type fasta -dbtype prot")              
+                        )
+                        
+                } else {
+                        
+                        system( 
+                                paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
+                                       dbname," -input_type fasta -dbtype prot")              
+                        )
+                        
+                }
+        }
+        
+        return(list(dt, dbname))
+}
+
+
