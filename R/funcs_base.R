@@ -140,21 +140,25 @@ blast <- function(queries, database, eval = "1E-5",
                   blast_out = paste0("_blast/_blastresult.csv"),
                   path=NULL){
         
-        nrows <- nrow(queries)
-        iold<-1
-        res <-NULL
+        
+        
         if(!file.exists("_blast/")){ 
                 
                 dir.create("_blast")
-        
+                
         }
         
-        for(i in c(seq(from = 500, to=nrows-1, by=500),nrows)){
+        
+        
+        nrows <- nrow(queries)
+        iold<-1
+        res <-NULL
+        
+        for(i in c(seq(from = min(nrows-1,500), to=nrows-1, by=500),nrows)){
                 
-                testAA <- as.list(queries[iold:i,3])
+                testAA <- as.list(queries[iold:i,aa])
                 
-                name <-sapply(queries[iold:i,1], FUN=toString)
-                
+                name <-queries[iold:i,geneids]                
                 iold<-i+1
                 
                 seqinr::write.fasta(testAA, names = name,
@@ -167,30 +171,31 @@ blast <- function(queries, database, eval = "1E-5",
                                 paste0("blastp -db ",database," -query ",blast_name,
                                        " -evalue ",eval," -out ", blast_out ," -outfmt 6")
                         )
-                
+                        
                 } else {
                         
-                        system( 
-                                paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                       database," -query ",blast_name," -evalue ",
-                                       eval," -out ", blast_out ," -outfmt 6")              
+                        system(                
+                                paste0("export PATH=$PATH:",path,"; blastp -db ", database,
+                                       " -query ", blast_name, " -evalue ", eval, " -out ",
+                                       blast_out, " -outfmt 6")              
                         )
-                
+                        
+                        
                 }
                 
-                hit_table <- data.table::fread(file = blast_out, sep = "\t", header = FALSE)
-                #setnames(hit_table, new = c())
-                #setkey()
+                hit_table <- data.table::fread(input = blast_out, sep = "\t", header = FALSE)
+                setnames(hit_table, old=c("V1","V2"), new = c("query_id","related_id"))
+                setkey(hit_table, query_id)
                 
-                uniques <- vector(mode = "character") 
-                uniques <- unique(hit_table[ , 1])
+                uniques <- unique(hit_table[ , query_id])
                 
                 for( entry in uniques ){
-                        res <-rbind(res, table[table[,1]==entry,][1,1:2] )
+                        res <-rbind(res, hit_table[entry][1,c(query_id, related_id)])
                 }
         }
         return(res)
 }
+
 
 #' @title Function to perform a BLAST best hit search
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
