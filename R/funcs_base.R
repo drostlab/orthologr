@@ -101,8 +101,8 @@ read.cds <- function(file, format, ...){
 #' @param queries
 #' @param database
 #' @param eval
-#' @param blast_name
-#' @param blast_out
+#' @param input
+#' @param output
 #' @param path
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
@@ -114,11 +114,12 @@ read.cds <- function(file, format, ...){
 #' in the first column and the amino acid sequences in the second column.
 #' @export
 blast <- function(queries, database, eval = "1E-5",
-                  blast_name = "_blast/_blastinput.fasta",
-                  blast_out = "_blast/_blastresult.csv",
-                  path = NULL){
+                  input = "_blast/_blastinput.fasta",
+                  output = "_blast/_blastresult.csv",
+                  path = NULL, parallel.blast = FALSE){
         
         if(!file.exists("_blast/")){
+                
                 dir.create("_blast")
         }
         
@@ -126,27 +127,34 @@ blast <- function(queries, database, eval = "1E-5",
         res <-NULL
         
         # here to come: a parallelized version of the BLAST process
-        # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
-        testAA <- as.list(queries[,aa])
-        name <-queries[,geneids]      
         
-        seqinr::write.fasta(testAA, names = name,
+        if(parallel.blast == FALSE){
+              # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
+              testAA <- as.list(queries[ ,aa])
+              name <- queries[ ,geneids]      
+        
+              seqinr::write.fasta(testAA, names = name,
                             nbchar = 80,open = "w",
-                            file.out = blast_name)
-        if(is.null(path)){
-                system(
-                        paste0("blastp -db ",database," -query ",blast_name,
-                               " -evalue ",eval," -out ", blast_out ," -outfmt 6")
-                )
-        } else {
-                system(
-                        paste0("export PATH=$PATH:",path,"; blastp -db ",
-                               database," -query ",blast_name," -evalue ",
-                               eval," -out ", blast_out ," -outfmt 6")
-                )
+                            file.out = input)
+              
+              if(is.null(path)){
+                      system(
+                             paste0("blastp -db ",database," -query ",input,
+                               " -evalue ",eval," -out ", output ," -outfmt 6")
+                      )
+                } else {
+                      system(
+                             paste0("export PATH=$PATH:",path,"; blastp -db ",
+                               database," -query ",input," -evalue ",
+                               eval," -out ", output ," -outfmt 6")
+                      )
+                }
         }
-        hit_table <- data.table::fread(input = blast_out, sep = "\t", header = FALSE)
-        setnames(hit_table, old=c("V1","V2"), new = c("query_id","related_id"))
+        
+        # additional blast parameters can be found here:
+        # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+        hit_table <- data.table::fread(input = output, sep = "\t", header = FALSE)
+        setnames(hit_table, old = c("V1","V2"), new = c("query_id","related_id"))
         setkey(hit_table, query_id)
         
         uniques <- unique(hit_table[ , query_id])
@@ -156,6 +164,8 @@ blast <- function(queries, database, eval = "1E-5",
         }
         return(res)
 }
+
+
 #' @title Function to perform a BLAST best hit search
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
 #' @param A an object returned by the set() function.
@@ -170,9 +180,11 @@ blast <- function(queries, database, eval = "1E-5",
 #' @return A data.table as returned by the blast() function, storing the geneids
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 #' @export
-blast_best <- function(A,B, path=NULL){
-        return(blast(queries = A[[1]], database = B[[2]], path=path))
+blast_best <- function(A,B, path = NULL){
+        return(blast(queries = A[[1]], database = B[[2]], path = path))
 }
+
+
 #' @title Function to perform a BLAST reciprocal best hit (RBH) search
 #' @description This function performs a blast+ search (reciprocal best hit) of a given set of protein sequences against a second
 #' set of protein sequences and vice versa.
