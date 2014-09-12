@@ -117,14 +117,19 @@ blast <- function(queries, database, eval = "1E-5",
                   blast_name = "_blast/_blastinput.fasta",
                   blast_out = "_blast/_blastresult.csv",
                   path = NULL){
-        nrows <- nrow(queries)
-        res <-NULL
+        
         if(!file.exists("_blast/")){
                 dir.create("_blast")
         }
+        
+        nrows <- nrow(queries)
+        res <-NULL
+        
         # here to come: a parallelized version of the BLAST process
-        testAA <- as.list(queries[ , 3])
-        name <- sapply(queries[ , 1], FUN = toString)
+        # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
+        testAA <- as.list(queries[,aa])
+        name <-queries[,geneids]      
+        
         seqinr::write.fasta(testAA, names = name,
                             nbchar = 80,open = "w",
                             file.out = blast_name)
@@ -141,12 +146,13 @@ blast <- function(queries, database, eval = "1E-5",
                 )
         }
         hit_table <- data.table::fread(input = blast_out, sep = "\t", header = FALSE)
-        #setnames(hit_table, new = c())
-        #setkey(hit_table, geneids)
-        uniques <- vector(mode = "character")
-        uniques <- unique(hit_table[ , 1])
+        setnames(hit_table, old=c("V1","V2"), new = c("query_id","related_id"))
+        setkey(hit_table, query_id)
+        
+        uniques <- unique(hit_table[ , query_id])
+        
         for( entry in uniques ){
-                res <-rbind(res, hit_table[hit_table[,1]==entry,][1,1:2] )
+                res <-rbind(res, hit_table[entry][1,c(query_id, related_id)])
         }
         return(res)
 }
