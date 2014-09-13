@@ -186,7 +186,7 @@ set <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         # translate dna to aa sequences (not working yet)
         dt <- dt[ , aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(seqs))), by = geneids]
         # makedb
-        dbname<-""
+        dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
         filename <- filename[length(filename)]
         if(makedb){

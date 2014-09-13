@@ -14,11 +14,11 @@ as second list element of the set() function.}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
-\item{input}{}
+\item{input}{a character string specifying the path to the input file.}
 
-\item{output}{}
+\item{output}{a character string specifying the path to the output file.}
 
-\item{path}{}
+\item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be
 used to run BLAST searches}
@@ -33,6 +33,12 @@ This function performs a blast+ search of a given set of protein sequences again
 \dontrun{
 # performing a best hit BLAST search
 blast( set("data/ortho_thal_cds.fasta")[[1]] , set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]])
+
+# in case you are working with a multicore machine, you can also run parallel
+# BLAST computations using the comp_cores parameter: here with 2 cores
+blast( set("data/ortho_thal_cds.fasta")[[1]] ,
+       set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]],
+       comp_cores = 2)
 }
 }
 \author{
