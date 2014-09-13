@@ -3,26 +3,28 @@
 \alias{blast}
 \title{Interface function to BLAST+}
 \usage{
-blast(queries, database, eval = "1E-5",
-  blast_name = "_blast/_blastinput.fasta",
-  blast_out = "_blast/_blastresult.csv", path = NULL)
+blast(query.dt, database, eval = "1E-5", input = "_blast/_blastinput.fasta",
+  output = "_blast/_blastresult.csv", path = NULL, comp_cores = 1)
 }
 \arguments{
-\item{queries}{}
+\item{query.dt}{a data.table returned as first list element of the set() function.}
 
-\item{database}{}
+\item{database}{a string specifying the path to the BLAST database, as returned
+as second list element of the set() function.}
 
-\item{eval}{}
+\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
-\item{blast_name}{}
+\item{input}{}
 
-\item{blast_out}{}
+\item{output}{}
 
 \item{path}{}
+
+\item{comp_cores}{a numeric value specifying the number of cores that shall be
+used to run BLAST searches}
 }
 \value{
-A data.table storing the geneids of orthologous genes (best hit)
-in the first column and the amino acid sequences in the second column.
+A data.table storing the BLAST hit table returned by the BLAST program.
 }
 \description{
 This function performs a blast+ search of a given set of protein sequences against a given database.
@@ -30,7 +32,7 @@ This function performs a blast+ search of a given set of protein sequences again
 \examples{
 \dontrun{
 # performing a best hit BLAST search
-blast( set("ortho_lyra_cds.fasta") , set("ortho_thal_cds.fasta", makedb = TRUE))
+blast( set("data/ortho_thal_cds.fasta")[[1]] , set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]])
 }
 }
 \author{

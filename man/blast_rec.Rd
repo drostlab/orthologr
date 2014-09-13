@@ -3,12 +3,16 @@
 \alias{blast_rec}
 \title{Function to perform a BLAST reciprocal best hit (RBH) search}
 \usage{
-blast_rec(A, B)
+blast_rec(query_file, subject_file, path = NULL, comp_cores = 1)
 }
 \arguments{
-\item{A}{an object returned by the set() function.}
+\item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
-\item{B}{an object returned by the set() function having the makedb parameter set to TRUE.}
+\item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
+
+\item{comp_cores}{a numeric value specifying the number of cores to be used for multicore BLAST computations.}
 }
 \value{
 A data.table as returned by the blast() function, storing the geneids
@@ -20,14 +24,14 @@ set of protein sequences and vice versa.
 }
 \details{
 Given a set of protein sequences A and a different set of protein sequences B,
- first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
- a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
- that were found to be best hits in both directions are retained and returned.
+first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
+a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
+that were found to be best hits in both directions are retained and returned.
 }
 \examples{
 \dontrun{
 # performing gene orthology inference using the best hit (BH) method
-blast_rec( set("ortho_lyra_aa.fasta") , set("ortho_thal_aa.fasta", makedb = TRUE))
+blast_rec(query_file = "data/ortho_lyra_cds.fasta", subject_file = "data/ortho_thal_cds.fasta")
 }
 }
 \author{
