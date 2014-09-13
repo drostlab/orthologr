@@ -4,15 +4,21 @@
 #' @param database a string specifying the path to the BLAST database, as returned
 #' as second list element of the set() function.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
-#' @param input
-#' @param output
-#' @param path
+#' @param input a character string specifying the path to the input file.
+#' @param output a character string specifying the path to the output file.
+#' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run BLAST searches
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' # performing a best hit BLAST search
 #' blast( set("data/ortho_thal_cds.fasta")[[1]] , set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]])
+#' 
+#' # in case you are working with a multicore machine, you can also run parallel
+#' # BLAST computations using the comp_cores parameter: here with 2 cores
+#' blast( set("data/ortho_thal_cds.fasta")[[1]] , 
+#'        set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]],
+#'        comp_cores = 2)
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by the BLAST program.
@@ -27,20 +33,21 @@ blast <- function(query.dt, database, eval = "1E-5",
                 dir.create("_blast")
         }
         
-        nrows <- nrow(query.dt)
-        res <-NULL
-        
         # here to come: a parallelized version of the BLAST process
         
         # determine the number of cores on a multicore machine
-        # cores <- parallel::makeForkCluster(parallel::detectCores(all.tests = FALSE, logical = FALSE))
+        cores <- parallel::makeForkCluster(parallel::detectCores(all.tests = FALSE, logical = FALSE))
+        
+        # in case one tries to use more cores than are available
+        if(comp_cores > cores)
+                stop("You chose more cores than are available on your machine.")
         
         
         # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
-        testAA <- as.list(query.dt[ ,aa])
+        write_AA <- as.list(query.dt[ ,aa])
         name <- query.dt[ ,geneids]      
                 
-        seqinr::write.fasta(testAA, names = name,
+        seqinr::write.fasta(write_AA, names = name,
                             nbchar = 80,open = "w",
                             file.out = input)
                 
@@ -87,6 +94,11 @@ blast <- function(query.dt, database, eval = "1E-5",
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
 #' blast_best(query_file = "data/ortho_thal_cds.fasta", subject_file = "data/ortho_lyra_cds.fasta")
+#' 
+#' # use multicore processing
+#' blast_best(query_file = "data/ortho_thal_cds.fasta", 
+#'            subject_file = "data/ortho_lyra_cds.fasta",
+#'            comp_cores = 2)
 #' }
 #'
 #' @return A data.table as returned by the blast() function, storing the geneids
@@ -127,7 +139,12 @@ blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #'
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_rec(query_file = "data/ortho_lyra_cds.fasta", subject_file = "data/ortho_thal_cds.fasta")
+#' blast_rec(query_file = "data/ortho_lyra_cds.fasta", subject_file = "data/ortho_lyra_cds.fasta")
+#' 
+#' # use multicore processing
+#' blast_rec(query_file = "data/ortho_thal_cds.fasta", 
+#'            subject_file = "data/ortho_lyra_cds.fasta",
+#'            comp_cores = 2)
 #' }
 #'
 #' @return A data.table as returned by the blast() function, storing the geneids
@@ -141,14 +158,14 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 }
 
 
-#' @title Function preparing the parameters and databases for subsequent blast searches
-#' @description This function reads a cds fasta file using read.cds, translates each
+#' @title Function preparing the parameters and databases for subsequent BLAST searches
+#' @description This function reads a cds fasta file using read.cds(), translates each
 #' sequence into the corresponding aminoacid sequence and is able to create a blast
 #' database from that.
 #' @param file a character string specifying the path to the file storing the cd.
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
 #' @param makedb TRUE or FALSE whether a database should be created or not.
-# #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
+#' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @return A list with [[1]] a data.table storing the gene id in the first column and
 #' the corresponding dna and aminoacid sequence as string in the second and third column
@@ -164,7 +181,7 @@ set <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
         # WE COULD ALSO INSERT A IF-STATEMENT CHECKING THAT
         # IN CASE THE USER INSERTS AN AA-FASTA FILE,
-        # THE TRANSLATION PROCESS IN BEING OMITTED
+        # THE TRANSLATION PROCESS IS BEING OMITTED
         
         # translate dna to aa sequences (not working yet)
         dt <- dt[ , aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(seqs))), by = geneids]
