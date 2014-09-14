@@ -39,15 +39,14 @@ blast <- function(query_file, subject_file,
                 dir.create("_blast")
         }
         
-        # here to come: a parallelized version of the BLAST process
         
         # determine the number of cores on a multicore machine
-        cores <- parallel::makeForkCluster(parallel::detectCores(all.tests = FALSE, logical = FALSE))
-        
-        # in case one tries to use more cores than are available
-        if(comp_cores > cores)
-                stop("You chose more cores than are available on your machine.")
-        
+#         cores <- parallel::makeForkCluster(parallel::detectCores(all.tests = FALSE, logical = FALSE))
+#         
+#         # in case one tries to use more cores than are available
+#         if(comp_cores > cores)
+#                 stop("You chose more cores than are available on your machine.")
+#         
         
         # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
         write_AA <- as.list(query.dt[ ,aa])
@@ -146,11 +145,11 @@ blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #'
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_rec(query_file = "data/ortho_lyra_cds.fasta", subject_file = "data/ortho_lyra_cds.fasta")
+#' blast_rec(query_file = "data/ortho_thal_cds.fasta", subject_file = "data/ortho_thal_cds.fasta")
 #' 
 #' # use multicore processing
 #' blast_rec(query_file = "data/ortho_thal_cds.fasta", 
-#'            subject_file = "data/ortho_lyra_cds.fasta",
+#'            subject_file = "data/ortho_thal_cds.fasta",
 #'            comp_cores = 2)
 #' }
 #'
@@ -178,6 +177,11 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #' @return A list with [[1]] a data.table storing the gene id in the first column and
 #' the corresponding dna and aminoacid sequence as string in the second and third column
 #' respectively and [[2]] the name of the database created.
+#' @examples \dontrun{
+#'  # running the set function to see an example output
+#'  head(set_blast(file = "data/ortho_thal_cds.fasta")[[1]] , 2)
+#' }
+#' @import data.table
 #' @export
 set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
@@ -197,21 +201,15 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         # IN CASE THE USER INSERTS AN AA-FASTA FILE,
         # THE TRANSLATION PROCESS IS BEING OMITTED
         
-        transl <- function(sequence){
-                return(seqinr::c2s(seqinr::translate(seqinr::s2c(sequence))))
-        }
         
-        
-        # THERE IS STILL A PROBLEM IN ASSIGNING A data.table
-        # A NEW COLUMN SUING THE := OPERATOR WITHIN A PACKAGE:
-        # http://lists.r-forge.r-project.org/pipermail/datatable-help/2014-March/002445.html
-        # http://stackoverflow.com/questions/10225098/understanding-exactly-when-a-data-table-is-a-reference-to-vs-a-copy-of-another
-        # http://stackoverflow.com/questions/10790204/how-to-delete-a-row-by-reference-in-r-data-table
+        # When using data.tables within packaes, always make sure
+        # 'data.table' is included in the DESCRIPTION file as 'Imports' AND
+        # in the NAMESPACE file with 'imports(data.table)' -> @import when using roxygen2
+        # http://stackoverflow.com/questions/10527072/using-data-table-package-inside-my-own-package
+        # https://github.com/hadley/dplyr/issues/548
         
         # translate dna to aa sequences
-        dt[ , data.table::`:=`(aa = sapply(seqs,transl)), by = geneids] # this line works as standalone script, but not within a package environment
-        #dt[ , aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(.SD[ , seqs]))), by = geneids]
-        #dt[ , aa := sapply(seqs,transl), by = geneids]
+        dt[ , aa := as.vector(sapply(seqs,transl)), by = geneids]
         # makedb
         dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))

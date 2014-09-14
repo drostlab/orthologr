@@ -26,6 +26,12 @@ This function reads a cds fasta file using read.cds(), translates each
 sequence into the corresponding aminoacid sequence and is able to create a blast
 database from that.
 }
+\examples{
+\dontrun{
+ # running the set function to see an example output
+ head(set_blast(file = "data/ortho_thal_cds.fasta")[[1]] , 2)
+}
+}
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
 }
