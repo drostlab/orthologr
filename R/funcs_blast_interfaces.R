@@ -19,6 +19,7 @@
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by the BLAST program.
+#' @import seqinr
 #' @export
 blast <- function(query_file, subject_file, 
                   eval = "1E-5", path = NULL,
