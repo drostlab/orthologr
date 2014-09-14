@@ -41,12 +41,12 @@ blast <- function(query_file, subject_file,
         
         
         # determine the number of cores on a multicore machine
-#         cores <- parallel::makeForkCluster(parallel::detectCores(all.tests = FALSE, logical = FALSE))
-#         
-#         # in case one tries to use more cores than are available
-#         if(comp_cores > cores)
-#                 stop("You chose more cores than are available on your machine.")
-#         
+        cores <- parallel::detectCores()
+        
+        # in case one tries to use more cores than are available
+        if(comp_cores > cores)
+                stop("You chose more cores than are available on your machine.")
+        
         
         # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
         write_AA <- as.list(query.dt[ ,aa])
