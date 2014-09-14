@@ -3,20 +3,15 @@
 \alias{blast}
 \title{Interface function to BLAST+}
 \usage{
-blast(query.dt, database, eval = "1E-5", input = "_blast/_blastinput.fasta",
-  output = "_blast/_blastresult.csv", path = NULL, comp_cores = 1)
+blast(query_file, subject_file, eval = "1E-5", path = NULL,
+  comp_cores = 1)
 }
 \arguments{
-\item{query.dt}{a data.table returned as first list element of the set() function.}
+\item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
-\item{database}{a string specifying the path to the BLAST database, as returned
-as second list element of the set() function.}
+\item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
-
-\item{input}{a character string specifying the path to the input file.}
-
-\item{output}{a character string specifying the path to the output file.}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
@@ -32,13 +27,13 @@ This function performs a blast+ search of a given set of protein sequences again
 \examples{
 \dontrun{
 # performing a best hit BLAST search
-blast( set("data/ortho_thal_cds.fasta")[[1]] , set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]])
+blast(query_file = "data/ortho_thal_cds.fasta" ,subject_file = "data/ortho_lyra_cds.fasta")
 
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
-blast( set("data/ortho_thal_cds.fasta")[[1]] ,
-       set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]],
-       comp_cores = 2)
+blast(query_file = "data/ortho_thal_cds.fasta" ,
+      subject_file = "data/ortho_lyra_cds.fasta",
+      comp_cores = 2)
 }
 }
 \author{

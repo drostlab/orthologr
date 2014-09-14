@@ -36,6 +36,6 @@ blast_best(query_file = "data/ortho_thal_cds.fasta",
 }
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 

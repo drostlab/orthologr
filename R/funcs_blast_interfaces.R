@@ -1,32 +1,38 @@
 #' @title Interface function to BLAST+
 #' @description This function performs a blast+ search of a given set of protein sequences against a given database.
-#' @param query.dt a data.table returned as first list element of the set() function.
-#' @param database a string specifying the path to the BLAST database, as returned
-#' as second list element of the set() function.
+#' @param query_file a character string specifying the path to the CDS file of interest (query organism).
+#' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
-#' @param input a character string specifying the path to the input file.
-#' @param output a character string specifying the path to the output file.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run BLAST searches
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' # performing a best hit BLAST search
-#' blast( set("data/ortho_thal_cds.fasta")[[1]] , set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]])
+#' blast(query_file = "data/ortho_thal_cds.fasta" ,subject_file = "data/ortho_lyra_cds.fasta")
 #' 
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
-#' blast( set("data/ortho_thal_cds.fasta")[[1]] , 
-#'        set("data/ortho_lyra_cds.fasta", makedb = TRUE)[[2]],
-#'        comp_cores = 2)
+#' blast(query_file = "data/ortho_thal_cds.fasta" , 
+#'       subject_file = "data/ortho_lyra_cds.fasta",
+#'       comp_cores = 2)
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by the BLAST program.
 #' @export
-blast <- function(query.dt, database, eval = "1E-5",
-                  input = "_blast/_blastinput.fasta", 
-                  output = "_blast/_blastresult.csv",
-                  path = NULL, comp_cores = 1){
+blast <- function(query_file, subject_file, 
+                  eval = "1E-5", path = NULL,
+                  comp_cores = 1){
+        
+        # initialize the BLAST search
+        
+        query.dt <- set_blast(file = query_file)[[1]]
+        # make a BLASTable databse of the subject
+        database <- set_blast(file = subject_file, makedb = TRUE)[[2]]
+        # create an internal folder structure for the BLAST process 
+        input = "_blast/_blastinput.fasta" 
+        output = "_blast/_blastresult.csv"
+        
         
         if(!file.exists("_blast/")){
                 
@@ -89,7 +95,7 @@ blast <- function(query.dt, database, eval = "1E-5",
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
-#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
@@ -106,18 +112,19 @@ blast <- function(query.dt, database, eval = "1E-5",
 #' @export
 blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
         
-        hit_tbl.dt <- blast(query.dt = set(query_file)[[1]], 
-                          database = set(subject_file, makedb = TRUE)[[2]], 
-                          path = path, comp_cores = comp_cores)
-        
-        #uniq_geneids <- unique(hit_tbl.dt[ , query_id])
-        
+        # performing a BLAST search from query against subject: blast(query,subject)
+        hit_tbl.dt <- blast(query_file = query_file, 
+                            subject_file = subject_file, 
+                            path = path, comp_cores = comp_cores)
+        # select only the best hit (E-value) 
         besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id],lapply(.SD[ , evalue],min)),
                    by = key(hit_tbl.dt)]
+        
         data.table::setkey(besthit_tbl, query_id)
         data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
         
-        # here we select the best hit from the data.table
+        # return a data.table storing only the best hits from the resulting 
+        # BLAST search
         return( besthit_tbl )
               
 }
@@ -165,26 +172,46 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #' @param file a character string specifying the path to the file storing the cd.
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
 #' @param makedb TRUE or FALSE whether a database should be created or not.
+#' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @return A list with [[1]] a data.table storing the gene id in the first column and
 #' the corresponding dna and aminoacid sequence as string in the second and third column
 #' respectively and [[2]] the name of the database created.
-set <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
+#' @export
+set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
         # CONCERNING THE CASE THAT A POTENTIAL USER
         # COULD INSERT SOME NON-CDS SEQUENCES
         
         # read cds file
-        dt <- read.cds(file=file, format="fasta", ...)
+        # copy the data.table due to this discussion:
+        # http://stackoverflow.com/questions/8030452/pass-by-reference-the-operator-in-the-data-table-package
+        dt <- data.table::copy(read.cds(file = file, format = "fasta", ...))
+        
+        if(!is.data.table(dt))
+                stop("Your CDS file was not corretly transformed into a data.table object.")
         
         # WE COULD ALSO INSERT A IF-STATEMENT CHECKING THAT
         # IN CASE THE USER INSERTS AN AA-FASTA FILE,
         # THE TRANSLATION PROCESS IS BEING OMITTED
         
-        # translate dna to aa sequences (not working yet)
-        dt <- dt[ , aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(seqs))), by = geneids]
+        transl <- function(sequence){
+                return(seqinr::c2s(seqinr::translate(seqinr::s2c(sequence))))
+        }
+        
+        
+        # THERE IS STILL A PROBLEM IN ASSIGNING A data.table
+        # A NEW COLUMN SUING THE := OPERATOR WITHIN A PACKAGE:
+        # http://lists.r-forge.r-project.org/pipermail/datatable-help/2014-March/002445.html
+        # http://stackoverflow.com/questions/10225098/understanding-exactly-when-a-data-table-is-a-reference-to-vs-a-copy-of-another
+        # http://stackoverflow.com/questions/10790204/how-to-delete-a-row-by-reference-in-r-data-table
+        
+        # translate dna to aa sequences
+        dt[ , data.table::`:=`(aa = sapply(seqs,transl)), by = geneids] # this line works as standalone script, but not within a package environment
+        #dt[ , aa:=seqinr::c2s(seqinr::translate(seqinr::s2c(.SD[ , seqs]))), by = geneids]
+        #dt[ , aa := sapply(seqs,transl), by = geneids]
         # makedb
         dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))

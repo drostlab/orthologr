@@ -21,6 +21,7 @@
 read.genome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
+        
         if(format == "fasta"){
                 genome <- vector(mode = "list")
                 genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
@@ -56,6 +57,7 @@ read.genome <- function(file, format, ...){
 read.proteome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
+        
         if(format == "fasta"){
                 proteome <- vector(mode = "list")
                 proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
@@ -91,6 +93,7 @@ read.proteome <- function(file, format, ...){
 read.cds <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
+        
         if(format == "fasta"){
                 cds <- vector(mode = "list")
                 cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
