@@ -26,7 +26,7 @@ read.genome <- function(file, format, ...){
                 genome <- vector(mode = "list")
                 genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
                 genome.dt <- data.table::data.table(geneids = names(genome),
-                                                    seqs = lapply(genome, seqinr::c2s))
+                                                    seqs = unlist(lapply(genome, seqinr::c2s)))
                 data.table::setkey(genome.dt,geneids)
         }
         return(genome.dt)
