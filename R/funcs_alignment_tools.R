@@ -6,7 +6,8 @@
 #' @param mode a character string specifying the program that should be used e.g. "clustalw". 
 #' @param get.aln a logical value indicating whether the produced alignment should be returned.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details 
+#' @details This function provides an interface between R and common multiple alignment programs
+#' such as "clustalw", "tcoffee", "muscle", and "clustalo".
 #' @return if get.aln is TRUE an object of class alignment of the seqinr package.
 #' @export
 multi_aln<-function(file, file.out, mode, get.aln="FALSE"){

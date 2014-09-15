@@ -10,7 +10,7 @@
 #' @param get.aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifiying the absolute path where pal2nal.pl can be found.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details 
+#' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
 #' @return if get.aln is TRUE an object of class alignment of the seqinr package.
 #' @export
 codon_aln<-function(file.aln, file.nuc, file.out, format="clustal", mode, get.aln=FALSE, path){

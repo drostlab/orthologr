@@ -48,8 +48,6 @@ blast <- function(query_file, subject_file,
         if(comp_cores > cores)
                 stop("You chose more cores than are available on your machine.")
         
-        
-        # DO NOT RUN THIS with big data, as it tries to blast all sequences at a time
         write_AA <- as.list(query.dt[ ,aa])
         name <- query.dt[ ,geneids]      
                 
@@ -161,6 +159,8 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
         
         orthoA <- blast_best(query_file,subject_file, path = path, comp_cores = comp_cores)
         orthoB <- blast_best(subject_file,query_file, path = path, comp_cores = comp_cores)
+        data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
+        
         return ( dplyr::semi_join(orthoA, orthoB, by = c("query_id","subject_id")) )
 }
 
@@ -210,7 +210,8 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         # https://github.com/hadley/dplyr/issues/548
         
         # translate dna to aa sequences
-        dt[ , aa := as.vector(sapply(seqs,transl)), by = geneids]
+        #dt[ , aa := as.vector(sapply(seqs,transl)), by = geneids]
+        dt[ , aa := transl(seqs), by = geneids]
         # makedb
         dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
