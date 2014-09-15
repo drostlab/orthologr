@@ -4,13 +4,13 @@
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
 #' @param file.out a character string specifying the path where the alignment should be stored.
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
-#' @param get.aln a logical value indicating whether the produced alignment should be returned.
+#' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common multiple alignment programs
 #' such as "clustalw", "tcoffee", "muscle", and "clustalo".
-#' @return if get.aln is TRUE an object of class alignment of the seqinr package.
+#' @return if get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-multi_aln<-function(file, tool, get.aln="FALSE"){
+multi_aln<-function(file, tool, get_aln="FALSE"){
         
         if(!is.element(tool,c("clustalw", "tcoffee", "muscle", "clustalo")))
                 stop("Please choose a tool that is supported by this function.")
@@ -26,7 +26,7 @@ multi_aln<-function(file, tool, get.aln="FALSE"){
                 
                 system(paste0("clustalw ",file," -outfile=",file.out," -quiet"))
 
-                if(get.aln){
+                if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format="clustal")
                         return(aln)
                 }
@@ -40,7 +40,7 @@ multi_aln<-function(file, tool, get.aln="FALSE"){
                 
                 system(paste0("t_coffee ",file," >",file.out))
                 
-                if(get.aln){
+                if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format="clustal")
                         return(aln)
                 }
@@ -54,7 +54,7 @@ multi_aln<-function(file, tool, get.aln="FALSE"){
                  
                  system(paste0("muscle -in ",file," -out ",file.out))
                  
-                 if(get.aln){
+                 if(get_aln){
                          aln <- seqinr::read.alignment(file.out, format="fasta")
                          return(aln)
                  }
@@ -68,7 +68,7 @@ multi_aln<-function(file, tool, get.aln="FALSE"){
                  
                  system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clustal"))
                  
-                 if(get.aln){
+                 if(get_aln){
                          aln <- seqinr::read.alignment(file.out, format="clustal")
                          return(aln)
                  }

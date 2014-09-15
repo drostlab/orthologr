@@ -64,7 +64,7 @@ dNdS <- function(query_file, subject_file, blast_mode="best hit", multialn_tool=
         data.table::setnames(query_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
         data.table::setnames(subject_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))             
         
-        hit.table <- dplyr::inner_join( hit.table, query_cds, by = "query_id", )
+        hit.table <- dplyr::inner_join(hit.table, query_cds, by = "query_id", )
         hit.table <- dplyr::inner_join(hit.table, query_aa, by = "query_id")
         hit.table <- dplyr::inner_join(hit.table, subject_cds, by = "subject_id")
         hit.table <- dplyr::inner_join(hit.table, subject_aa, by = "subject_id")
