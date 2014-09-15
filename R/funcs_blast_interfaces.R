@@ -31,8 +31,8 @@ blast <- function(query_file, subject_file,
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
-        input = "_blast/_blastinput.fasta" 
-        output = "_blast/_blastresult.csv"
+        input = "_blast/blastinput.fasta" 
+        output = "_blast/blastresult.csv"
         
         
         if(!file.exists("_blast/")){
