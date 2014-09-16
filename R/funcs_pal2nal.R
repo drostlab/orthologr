@@ -7,7 +7,7 @@
 #' @param format a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".
 #' @param tool a character string specifying the program that should be used e.g. "pal2nal". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
-#' @param path a character string specifying the path to the Pal2Nal program
+#' @param path a character string specifying the path to the codon alignment program (in case you don't use the default path).
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
 #' @return if get_aln is TRUE an object of class alignment of the seqinr package.

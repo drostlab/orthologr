@@ -1,5 +1,20 @@
-dNdS <- function(query_file, subject_file, blast_mode="best hit", multialn_tool="clustalw", 
-                 codonaln_tool="pal2nal", dnds_tool="gestimator", path = NULL, comp_cores = 1){
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate.
+#' @description This function takes 
+#' @param query_file a character string specifying the path to the CDS file of interest (query organism).
+#' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
+#' @param codonaln_path a character string specifying the path to the codon alignment program (in case you don't use the default path).
+#' @param comp_cores a numeric value specifying the number of cores that shall be
+#' @param tool a character string specifying the program that should be used e.g. "clustalw". 
+#' @author Sarah Scharfenberg and Hajk-Georg Drost 
+#' @details 
+#' @return 
+dNdS <- function(query_file, subject_file, 
+                 blast_mode="best hit", blast_path = NULL, 
+                 multialn_tool="clustalw", multialn_path = NULL,
+                 codonaln_tool="pal2nal", codonaln_path = NULL,
+                 dnds_tool="gestimator", dnds_path = NULL, comp_cores = 1){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
@@ -25,7 +40,7 @@ dNdS <- function(query_file, subject_file, blast_mode="best hit", multialn_tool=
                 
                 hit.table <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_file, 
-                                   path = path, comp_cores = comp_cores))
+                                   path = blast_path, comp_cores = comp_cores))
                 
                 query_cds <- read.cds(file = query_file, format = "fasta")
                 subject_cds <- read.cds(file = subject_file, format = "fasta")
@@ -42,7 +57,7 @@ dNdS <- function(query_file, subject_file, blast_mode="best hit", multialn_tool=
                                
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
-                                   path = path, comp_cores = comp_cores))
+                                   path = blast_path, comp_cores = comp_cores))
                 
                 query_cds <- read.cds(file = query_file, format = "fasta")
                 subject_cds <- read.cds(file = subject_file, format = "fasta")
@@ -78,8 +93,31 @@ dNdS <- function(query_file, subject_file, blast_mode="best hit", multialn_tool=
         # - do codon_aln on aa.aln and cds.fasta -> codon.aln
         # - do compute_dnds on codon.aln -> fill in hittable
         
-      #hit.table[, dnds:= compute_dnds(codon_aln(multi_aln(aa.fasta), cds.fasta)), by=c("query_id", "subject_id")]
+      #hit.table[, dnds:= compute_dnds( <Rest der Spalte ?? >), by=c("query_id", "subject_id")]
         
         
 
+}
+
+substitutionrate <- function(file, tool, path = NULL){
+        
+        if(!is.element(tool,c("gestimator")))
+                stop("Please choose a tool that is supported by this function.")
+        
+        if(!file.exists("_calculation/")){
+                
+                dir.create("_calculation")
+        }
+        
+        # produce gestimin
+        # gestimator
+        # read gestimout
+}
+
+compute_dnds <- function(){
+        
+        # hilfsfunktion
+        # IN ein Orhtopaar des data.table - > 2 Ids, 2 cds, 2 aa
+        # substitutionrate(codon_aln(multi_aln(aa.fasta), cds.fasta))
+        # OUT ein KaKs Wert zum speichern im Data.table
 }
