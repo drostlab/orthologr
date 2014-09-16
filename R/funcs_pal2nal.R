@@ -33,14 +33,14 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
                 dir.create("_alignment")
         }
         
+        file.out <- "_alignment/",tool,".aln"
+        
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
         # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
         # AND RENAME THE NEW ONES
         
         if(tool == "pal2nal"){
-        
-                file.out <- "_alignment/pal2nal.aln"
                 
                 # test whether the connection to pal2nal works
                 tryCatch(

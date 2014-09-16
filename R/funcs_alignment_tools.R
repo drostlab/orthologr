@@ -20,15 +20,15 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 dir.create("_alignment")
         }
         
+        file.out <- paste0("_alignment/",tool,".aln")
+        
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
         # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
         # AND RENAME THE NEW ONES
         
         if(tool == "clustalw"){
-        
-                file.out <- "_alignment/clustalw.aln"
-                
+
                 # test whether the connection to clustalw works
                 tryCatch(
                 
@@ -54,8 +54,6 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
         }
  
         if(tool == "tcoffee"){
-                
-                file.out <- "_alignment/tcoffee.aln"
                 
                 # test whether the connection to t_coffee works
                 tryCatch(
@@ -84,8 +82,6 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
  
          if(tool == "muscle"){
                  
-                 file.out <- "_alignment/muscle.aln"
-                 
                  # test whether the connection to muscle works
                  tryCatch(
                          
@@ -112,9 +108,6 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
          }
  
          if(tool == "clustalo"){
-                
-                 file.out <- "_alignment/clustalo.aln"
-                 
                  
                  # test whether the connection to clustalo works
                  tryCatch(

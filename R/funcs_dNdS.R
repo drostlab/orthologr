@@ -1,4 +1,4 @@
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate.
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for two organisms.
 #' @description This function takes 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
@@ -10,6 +10,7 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details 
 #' @return 
+#' @export
 dNdS <- function(query_file, subject_file, 
                  blast_mode="best hit", blast_path = NULL, 
                  multialn_tool="clustalw", multialn_path = NULL,
@@ -99,6 +100,13 @@ dNdS <- function(query_file, subject_file,
 
 }
 
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
+#' @description This function takes 
+#' @param file a character string specifying the path to a codon alignment file 
+#' @author Sarah Scharfenberg and Hajk-Georg Drost 
+#' @details 
+#' @return 
+#' @export
 substitutionrate <- function(file, tool, path = NULL){
         
         if(!is.element(tool,c("gestimator")))
@@ -109,13 +117,49 @@ substitutionrate <- function(file, tool, path = NULL){
                 dir.create("_calculation")
         }
         
-        # produce gestimin
-        # gestimator
-        # read gestimout
+        if(tool == "gestimator"){
+                
+                # file in fasta required
+                
+                system(paste0("gestimator -i ",file," -o _calculation/gestimout"))
+                hit.table <-data.table::fread("_calculation/gestimout")
+                data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
+                                     new = c("query_id","subject_id","dN","dS","dNdS"))
+                data.table::setkey(hit.table, query_id)
+                return(hit.table)
+        }
+        
 }
 
-compute_dnds <- function(){
+compute_dnds <- function(names, seqs, aa, 
+                         multialn_tool="clustalw", multialn_path = NULL,
+                         codonaln_tool="pal2nal", codonaln_path = NULL,
+                         dnds_tool="gestimator", dnds_path = NULL){
         
+        
+        
+        # create cds fasta
+        seqinr::write.fasta(sequences = seqs, names = names, file.out = "_alignment/cds.fasta")
+        
+        # create aa fasta
+        seqinr::write.fasta(sequences = aa, names = names, file.out = "_alignment/aa.fasta")
+        
+        # align aa -> <multialn_tool>.aln
+        multi_aln(file = "_alignment/aa.fasta", 
+                  tool = multialn_tool, 
+                  get_aln = FALSE, path = multialn_path)
+
+        # align codon -> cds.aln
+        codon_aln(file_aln = paste0("_alignment/",multialn_tool,".aln"),
+                  file_nuc = "_alignment/cds.fasta",
+                  tool = codonaln_tool,
+                  format = "fasta",
+                  get_aln = FALSE, path = codonaln_path)
+        
+        # compute kaks
+        hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
+                                      tool = "gestimator", path = dnds_path)
+        return(hit.table[,dNdS])
         # hilfsfunktion
         # IN ein Orhtopaar des data.table - > 2 Ids, 2 cds, 2 aa
         # substitutionrate(codon_aln(multi_aln(aa.fasta), cds.fasta))
