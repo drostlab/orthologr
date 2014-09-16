@@ -3,7 +3,8 @@
 \alias{codon_aln}
 \title{Function to get a codon alignment.}
 \usage{
-codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE)
+codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
+  path)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
@@ -15,6 +16,8 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE)
 \item{tool}{a character string specifying the program that should be used e.g. "pal2nal".}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
+
+\item{path}{a character string specifying the path to the Pal2Nal program}
 }
 \value{
 if get_aln is TRUE an object of class alignment of the seqinr package.
