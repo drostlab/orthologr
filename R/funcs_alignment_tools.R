@@ -29,16 +29,23 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
         
                 file.out <- "_alignment/clustalw.aln"
                 
-                if(is.null(path)){
+                # test whether the connection to clustalw works
+                tryCatch(
+                
+                       if(is.null(path)){
                         
-                        system(paste0("clustalw ",file," -outfile=",file.out," -quiet"))
+                                system(paste0("clustalw ",file," -outfile=",file.out," -quiet"))
                         
-                } else {
-                        system(
-                                paste0("export PATH=$PATH:",path,"; ","clustalw ",
-                                       file," -outfile=",file.out," -quiet")
-                        )
-                }
+                        } else {
+                                system(
+                                        paste0("export PATH=$PATH:",path,"; ","clustalw ",
+                                               file," -outfile=",file.out," -quiet")
+                                )
+                        }
+                , stop( paste0("Please check the correct path to ",tool,
+                              "... the interface call did not work properly.") )
+                       
+                       )
                 
                 if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format = "clustal")
@@ -50,16 +57,24 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 
                 file.out <- "_alignment/tcoffee.aln"
                 
-                if(is.null(path)){
+                # test whether the connection to t_coffee works
+                tryCatch(
+                
+                        if(is.null(path)){
                         
-                        system(paste0("t_coffee ",file," >",file.out))
+                                system(paste0("t_coffee ",file," >",file.out))
                         
-                } else {
+                        } else {
                         
-                        system(paste0("export PATH=$PATH:",path,"; ","t_coffee ",
-                                      file," >",file.out))
+                                system(paste0("export PATH=$PATH:",path,"; ","t_coffee ",
+                                              file," >",file.out))
                         
-                }
+                        }
+                
+                , stop( paste0("Please check the correct path to ",tool,
+                               "... the interface call did not work properly.") )
+                
+                )
                 
                 if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format = "clustal")
@@ -71,16 +86,24 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                  
                  file.out <- "_alignment/muscle.aln"
                  
-                 if(is.null(path)){
+                 # test whether the connection to muscle works
+                 tryCatch(
                          
-                          system(paste0("muscle -in ",file," -out ",file.out))
+                          if(is.null(path)){
+                         
+                                   system(paste0("muscle -in ",file," -out ",file.out))
                  
-                 } else {
+                           } else {
                          
-                         system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
+                                   system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
                                        file," -out ",file.out))
                          
-                 }
+                           }
+                 
+                 , stop( paste0("Please check the correct path to ",tool,
+                                "... the interface call did not work properly.") )
+                 
+                 )
                  
                  if(get_aln){
                          aln <- seqinr::read.alignment(file.out, format = "fasta")
@@ -92,16 +115,25 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 
                  file.out <- "_alignment/clustalo.aln"
                  
-                 if(is.null(path)){
-                         
-                         system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clustal"))
                  
-                 } else {
+                 # test whether the connection to clustalo works
+                 tryCatch(
                          
-                         system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                       file," -o ",file.out," --outfmt clustal"))
+                         if(is.null(path)){
                          
-                 }
+                                 system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clustal"))
+                 
+                         } else {
+                         
+                                 system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
+                                               file," -o ",file.out," --outfmt clustal"))
+                         
+                        }
+                 
+                 , stop( paste0("Please check the correct path to ",tool,
+                                "... the interface call did not work properly.") )
+                 
+                 )
                  
                  if(get_aln){
                          aln <- seqinr::read.alignment(file.out, format = "clustal")

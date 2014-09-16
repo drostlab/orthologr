@@ -42,7 +42,15 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
         
                 file.out <- "_alignment/pal2nal.aln"
                 
-                system(paste0(path,"pal2nal.pl ",file_aln," ",file_nuc," >",file.out))
+                # test whether the connection to pal2nal works
+                tryCatch(
+                        
+                        system(paste0(path,"pal2nal.pl ",file_aln," ",file_nuc," >",file.out))
+                
+                , stop( paste0("Please check the correct path to ",tool,
+                               "... the interface call did not work properly.") )
+                        
+                )
                 
                 if(get_aln){
                         dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")

@@ -54,22 +54,28 @@ blast <- function(query_file, subject_file,
         seqinr::write.fasta(write_AA, names = name,
                             nbchar = 80,open = "w",
                             file.out = input)
-                
-        if(is.null(path)){
-                system(
-                        paste0("blastp -db ",database," -query ",input,
-                               " -evalue ",eval," -out ", output ," -outfmt 6", 
-                               " -num_threads ", comp_cores)
-                )
-        } else {
-                system(
-                        paste0("export PATH=$PATH:",path,"; blastp -db ",
-                               database," -query ",input," -evalue ",
-                               eval," -out ", output ," -outfmt 6", 
-                               " -num_threads ", comp_cores)
-                        )
-        }
         
+        # test whether the connection to BLAST+ works
+        tryCatch(
+                
+                if(is.null(path)){
+                        system(
+                                paste0("blastp -db ",database," -query ",input,
+                                       " -evalue ",eval," -out ", output ," -outfmt 6", 
+                                       " -num_threads ", comp_cores)
+                                )
+                } else {
+                        system(
+                                paste0("export PATH=$PATH:",path,"; blastp -db ",
+                                       database," -query ",input," -evalue ",
+                                       eval," -out ", output ," -outfmt 6", 
+                                       " -num_threads ", comp_cores)
+                               )
+                }
+        
+        , stop( paste0("Please check the correct path to blastp... the interface call did not work properly.") )
+        
+        )
         
         # additional blast parameters can be found here:
         # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
