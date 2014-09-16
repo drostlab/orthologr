@@ -4,17 +4,22 @@
 #' alignment.
 #' @param file_aln a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.
 #' @param file_nuc a character string specifying the path to the file storing the coding sequences in multiple FASTA format.
-#' @param file.out a character string specifying the path where the alignment should be stored.
 #' @param format a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".
 #' @param tool a character string specifying the program that should be used e.g. "pal2nal". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
-#' @param path a character string specifiying the absolute path where pal2nal.pl can be found.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
 #' @return if get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-codon_aln<-function(file_aln, file_nuc, format="clustal", tool, get_aln=FALSE, path){
-                
+codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE){
+        
+        # the Pal2Nal program is stored as executable within
+        # the R package environment: 'exec' folder
+        # this is not an elegant version, only motivated by this discussion:
+        # http://stackoverflow.com/questions/13463103/inst-and-extdata-folders-in-r-packaging
+        # is there a better choice?
+        path <- paste0(system.file(package = "orthologr"),"/exec/pal2nal.v14/")
+        
         if(!is.element(tool,c("pal2nal")))
                 stop("Please choose a tool that is supported by this function.")
         
@@ -26,15 +31,19 @@ codon_aln<-function(file_aln, file_nuc, format="clustal", tool, get_aln=FALSE, p
                 dir.create("_alignment")
         }
         
+        # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
+        # THE EXISTING *.aln FILE
+        # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
+        # AND RENAME THE NEW ONES
         
-        if(tool=="pal2nal"){
+        if(tool == "pal2nal"){
         
                 file.out <- "_alignment/pal2nal.aln"
                 
                 system(paste0(path,"pal2nal.pl ",file_aln," ",file_nuc," >",file.out))
                 
                 if(get_aln){
-                        dna_aln <- seqinr::read.alignment(file=file.out, format="clustal")
+                        dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
                         return(dna_aln)
                 }
         }

@@ -3,23 +3,23 @@
 \alias{multi_aln}
 \title{Function to get a multiple alignment.}
 \usage{
-multi_aln(file, file.out, mode, get.aln = "FALSE")
+multi_aln(file, tool, get_aln = "FALSE", path = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
 
-\item{file.out}{a character string specifying the path where the alignment should be stored.}
+\item{tool}{a character string specifying the program that should be used e.g. "clustalw".}
 
-\item{mode}{a character string specifying the program that should be used e.g. "clustalw".}
+\item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
-\item{get.aln}{a logical value indicating whether the produced alignment should be returned.}
+\item{path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 }
 \value{
-if get.aln is TRUE an object of class alignment of the seqinr package.
+If get_aln is TRUE an object of class alignment of the seqinr package.
 }
 \description{
 This function takes a multiple FASTA file containing DNA or aminoacid sequences
-to be aligned and proceeds the method defined by mode to align them.
+to be aligned and proceeds the method defined by tool to align them.
 }
 \details{
 This function provides an interface between R and common multiple alignment programs

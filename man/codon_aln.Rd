@@ -3,30 +3,25 @@
 \alias{codon_aln}
 \title{Function to get a codon alignment.}
 \usage{
-codon_aln(file.aln, file.nuc, file.out, format = "clustal", mode,
-  get.aln = FALSE, path)
+codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE)
 }
 \arguments{
-\item{file.aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
+\item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
 
-\item{file.nuc}{a character string specifying the path to the file storing the coding sequences in multiple FASTA format.}
-
-\item{file.out}{a character string specifying the path where the alignment should be stored.}
+\item{file_nuc}{a character string specifying the path to the file storing the coding sequences in multiple FASTA format.}
 
 \item{format}{a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".}
 
-\item{mode}{a character string specifying the program that should be used e.g. "pal2nal".}
+\item{tool}{a character string specifying the program that should be used e.g. "pal2nal".}
 
-\item{get.aln}{a logical value indicating whether the produced alignment should be returned.}
-
-\item{path}{a character string specifiying the absolute path where pal2nal.pl can be found.}
+\item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 }
 \value{
-if get.aln is TRUE an object of class alignment of the seqinr package.
+if get_aln is TRUE an object of class alignment of the seqinr package.
 }
 \description{
 This function takes a protein alignment and the corresponding coding sequences
-both given as files and uses the method specified by mode to create the corresponding codon
+both given as files and uses the method specified by tool to create the corresponding codon
 alignment.
 }
 \details{
