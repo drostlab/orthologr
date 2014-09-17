@@ -85,7 +85,6 @@ dNdS <- function(query_file, subject_file,
         hit.table <- dplyr::inner_join(hit.table, subject_cds, by = "subject_id")
         hit.table <- dplyr::inner_join(hit.table, subject_aa, by = "subject_id")
       
-      return(hit.table)  
         
         # foreach hit-pair do
         # - create a fasta file containing the aminoacid sequences -> aa.fasta
@@ -96,8 +95,23 @@ dNdS <- function(query_file, subject_file,
         
       #hit.table[, dnds:= compute_dnds( <Rest der Spalte ?? >), by=c("query_id", "subject_id")]
         
-        
+      # obacht hit.table enthalt noch den evalue
+      hit.table <- data.table(hit.table)
+      data.table::setkey(hit.table, query_id)
+      hit.table[, dnds:=as.vector(apply(.SD,1, FUN=function(x){ compute_dnds(x,
+                               multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
+                               dnds_tool = "gestimator",
+                               codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )})),]
+      return(hit.table)  
+  
+      
+   #   compute_dnds(res[1,], 
+   #                multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
+   #                dnds_tool = "gestimator",
+   #                codonaln_path = "/home/sarah/Programs/pal2nal.v14/")
 
+    #  res[,apply(.SD,1,function(x) View(x) ), by=query_id]
+    # by query id results in a frame with id and lists of 6
 }
 
 #' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
@@ -121,23 +135,31 @@ substitutionrate <- function(file, tool, path = NULL){
                 
                 # file in fasta required
                 
+            tryCatch(
+            {    
                 system(paste0("gestimator -i ",file," -o _calculation/gestimout"))
                 hit.table <-data.table::fread("_calculation/gestimout")
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
                 return(hit.table)
+            },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                               "... the interface call did not work properly.") ) }
+            
+            )
         }
         
 }
 
-compute_dnds <- function(names, seqs, aa, 
+compute_dnds <- function(x, 
                          multialn_tool="clustalw", multialn_path = NULL,
                          codonaln_tool="pal2nal", codonaln_path = NULL,
                          dnds_tool="gestimator", dnds_path = NULL){
-        
-        
-        
+ 
+        names <- list(x[[1]],x[[2]])
+        seqs <- list(x[[4]],x[[6]])
+        aa <- list(x[[5]],x[[7]])
+
         # create cds fasta
         seqinr::write.fasta(sequences = seqs, names = names, file.out = "_alignment/cds.fasta")
         
@@ -160,8 +182,5 @@ compute_dnds <- function(names, seqs, aa,
         hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
                                       tool = "gestimator", path = dnds_path)
         return(hit.table[,dNdS])
-        # hilfsfunktion
-        # IN ein Orhtopaar des data.table - > 2 Ids, 2 cds, 2 aa
-        # substitutionrate(codon_aln(multi_aln(aa.fasta), cds.fasta))
-        # OUT ein KaKs Wert zum speichern im Data.table
+
 }
