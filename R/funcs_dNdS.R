@@ -38,11 +38,14 @@ dNdS <- function(query_file, subject_file,
         subject_aa <- NULL
         
         if(blast_mode == "best hit"){
-                
-                hit.table <- data.table::copy(
-                        blast_best(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores))
-                
+#                 
+#                 hit.table <- data.table::copy(
+#                         blast_best(query_file = query_file, subject_file = subject_file, 
+#                                    path = blast_path, comp_cores = comp_cores))
+#                 
+                hit.table <- blast_best(query_file = query_file, subject_file = subject_file, 
+                                                   path = blast_path, comp_cores = comp_cores)
+                                
                 query_cds <- read.cds(file = query_file, format = "fasta")
                 subject_cds <- read.cds(file = subject_file, format = "fasta")
                 
