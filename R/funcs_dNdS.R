@@ -33,11 +33,7 @@ dNdS <- function(query_file, subject_file,
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
-        query_cds <- NULL
-        query_aa <- NULL
-        subject_cds <- NULL
-        subject_aa <- NULL
-        
+  
         if(blast_mode == "best hit"){
 #                 
 #                 hit.table <- data.table::copy(
@@ -105,7 +101,7 @@ dNdS <- function(query_file, subject_file,
       hit.table[, dnds:=as.vector(apply(.SD,1, FUN=function(x){ compute_dnds(x,
                                multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
                                dnds_tool = "gestimator",
-                               codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )})),]
+                               codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )}))]
       return(hit.table)  
   
       
