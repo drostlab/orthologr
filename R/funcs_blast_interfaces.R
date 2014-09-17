@@ -87,7 +87,9 @@ blast <- function(query_file, subject_file,
                 
         hit_table <- data.table::fread(input = output, sep = "\t", header = FALSE, colClasses = c_Classes)
         data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)), new = blast_table_names)
-        data.table::setkey(hit_table, query_id)
+        
+        #data.table::setkey(hit_table, query_id)
+        data.table::setkeyv(hit_table, c("query_id","subject_id"))
         
         return(hit_table)
 }
@@ -120,12 +122,19 @@ blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
         hit_tbl.dt <- blast(query_file = query_file, 
                             subject_file = subject_file, 
                             path = path, comp_cores = comp_cores)
-        # select only the best hit (E-value) 
-        besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id],lapply(.SD[ , evalue],min)),
-                   by = key(hit_tbl.dt)]
+     
+        #select only the best hit (E-value) 
+        #besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id], lapply(.SD[ , evalue],min)),
+        #                         by = key(hit_tbl.dt)]        
+         besthit_tbl <- hit_tbl.dt[ , lapply(.SD[ , evalue],min),
+                    by = key(hit_tbl.dt)]
         
-        data.table::setkey(besthit_tbl, query_id)
-        data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
+        #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
+        data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
+       
+
+        #data.table::setkey(besthit_tbl, query_id)
+        data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
         
         # return a data.table storing only the best hits from the resulting 
         # BLAST search
@@ -167,7 +176,7 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
         orthoB <- blast_best(subject_file,query_file, path = path, comp_cores = comp_cores)
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
-        return ( dplyr::semi_join(orthoA, orthoB, by = c("query_id","subject_id")) )
+        return ( dplyr::semi_join(tbl_dt(orthoA), tbl_dt(orthoB), by = c("query_id","subject_id")) )
 }
 
 

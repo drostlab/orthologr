@@ -35,14 +35,14 @@ dNdS <- function(query_file, subject_file,
         
   
         if(blast_mode == "best hit"){
-#                 
-#                 hit.table <- data.table::copy(
-#                         blast_best(query_file = query_file, subject_file = subject_file, 
-#                                    path = blast_path, comp_cores = comp_cores))
-#                 
-                hit.table <- blast_best(query_file = query_file, subject_file = subject_file, 
-                                                   path = blast_path, comp_cores = comp_cores)
-                                
+                
+                hit.table <- data.table::copy(
+                        blast_best(query_file = query_file, subject_file = subject_file, 
+                                   path = blast_path, comp_cores = comp_cores))
+                
+#                 hit.table <- blast_best(query_file = query_file, subject_file = subject_file, 
+#                                                    path = blast_path, comp_cores = comp_cores)
+#                                 
                 query_cds <- read.cds(file = query_file, format = "fasta")
                 subject_cds <- read.cds(file = subject_file, format = "fasta")
                 
@@ -74,19 +74,26 @@ dNdS <- function(query_file, subject_file,
                 
                 
         }
-     
-        data.table::setnames(query_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
-        data.table::setnames(subject_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
-        data.table::setnames(query_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
-        data.table::setnames(subject_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))             
-        
-        hit.table <- dplyr::inner_join(hit.table, query_cds, by = "query_id")
-        hit.table <- dplyr::inner_join(hit.table, query_aa, by = "query_id")
-        hit.table <- dplyr::inner_join(hit.table, subject_cds, by = "subject_id")
-        hit.table <- dplyr::inner_join(hit.table, subject_aa, by = "subject_id")
-      
-        
-        # foreach hit-pair do
+
+       data.table::setnames(query_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
+       data.table::setnames(subject_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
+       data.table::setnames(query_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
+       data.table::setnames(subject_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))             
+
+       hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(subject_cds), by = "subject_id")
+       hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(subject_aa), by = "subject_id")
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(query_cds), by = "query_id")
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(query_aa), by = "query_id") 
+       
+        # AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN
+        # DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
+        # HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
+        # ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
+        # AUẞERDEM IST DER KEY NUR NOCH SUBJECT_ID
+
+        #data.table::setkeyv(hit.table,c("query_id", "subject_id"))
+
+# foreach hit-pair do
         # - create a fasta file containing the aminoacid sequences -> aa.fasta
         # - create a fatsa file containing the cds -> cds.fasta
         # - do multi_aln on aa.fasta -> aa.aln
@@ -96,15 +103,14 @@ dNdS <- function(query_file, subject_file,
       #hit.table[, dnds:= compute_dnds( <Rest der Spalte ?? >), by=c("query_id", "subject_id")]
         
       # obacht hit.table enthalt noch den evalue
-      hit.table <- data.table(hit.table)
-      data.table::setkey(hit.table, query_id)
-      hit.table[, dnds:=as.vector(apply(.SD,1, FUN=function(x){ compute_dnds(x,
+
+
+      hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
                                multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
                                dnds_tool = "gestimator",
                                codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )}))]
-      return(hit.table)  
-  
-      
+
+        return(hit.table) 
    #   compute_dnds(res[1,], 
    #                multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
    #                dnds_tool = "gestimator",
@@ -156,10 +162,10 @@ compute_dnds <- function(x,
                          multialn_tool="clustalw", multialn_path = NULL,
                          codonaln_tool="pal2nal", codonaln_path = NULL,
                          dnds_tool="gestimator", dnds_path = NULL){
- 
-        names <- list(x[[1]],x[[2]])
-        seqs <- list(x[[4]],x[[6]])
-        aa <- list(x[[5]],x[[7]])
+        #return(x["query_id"])
+        names <- list(x["query_id"],x["subject_id"])
+        seqs <- list(x["query_cds"],x["subject_cds"])
+        aa <- list(x["query_aa"],x["subject_aa"])
 
         # create cds fasta
         seqinr::write.fasta(sequences = seqs, names = names, file.out = "_alignment/cds.fasta")
@@ -185,3 +191,19 @@ compute_dnds <- function(x,
         return(hit.table[,dNdS])
 
 }
+# 
+# When running
+# table <- dNdS("data/ortho_thal_cds.fasta", "data/ortho_lyra_cds.fasta")
+# I still get this warning and dont know how to fix.
+# 
+# Warning message:
+# In `[.data.table`(hit.table, , `:=`(dnds, as.vector(apply(.SD, 1,  :
+# Invalid .internal.selfref detected and fixed by taking a copy of the whole 
+# table so that := can add this new column by reference. At an earlier point, 
+# this data.table has been copied by R (or been created manually using structure() 
+# or similar). Avoid key<-, names<- and attr<- which in R currently (and oddly) 
+# may copy the whole data.table. Use set* syntax instead to avoid copying: ?set, 
+# ?setnames and ?setattr. Also, in R<=v3.0.2, list(DT1,DT2) copied the entire DT1 
+# and DT2 (R's list() used to copy named objects); please upgrade to R>v3.0.2 
+#  if that is biting. If this message doesn't help, please report to 
+#  datatable-help so the root cause can be fixed.
