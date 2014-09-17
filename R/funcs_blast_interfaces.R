@@ -57,7 +57,7 @@ blast <- function(query_file, subject_file,
         
         # test whether the connection to BLAST+ works
         tryCatch(
-                
+        {      
                 if(is.null(path)){
                         system(
                                 paste0("blastp -db ",database," -query ",input,
@@ -73,8 +73,8 @@ blast <- function(query_file, subject_file,
                                )
                 }
         
-        , stop( paste0("Please check the correct path to blastp... the interface call did not work properly.") )
-        
+        },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                           "... the interface call did not work properly.") ) }
         )
         
         # additional blast parameters can be found here:

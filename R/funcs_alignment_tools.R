@@ -31,7 +31,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
 
                 # test whether the connection to clustalw works
                 tryCatch(
-                
+                {
                        if(is.null(path)){
                         
                                 system(paste0("clustalw ",file," -outfile=",file.out," -quiet"))
@@ -42,10 +42,10 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                                                file," -outfile=",file.out," -quiet")
                                 )
                         }
-                , stop( paste0("Please check the correct path to ",tool,
-                              "... the interface call did not work properly.") )
+                },error = function(){ print(paste0("Please check the correct path to ",tool,
+                              "... the interface call did not work properly.") ) }
                        
-                       )
+               )
                 
                 if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format = "clustal")
@@ -57,7 +57,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 
                 # test whether the connection to t_coffee works
                 tryCatch(
-                
+                {
                         if(is.null(path)){
                         
                                 system(paste0("t_coffee ",file," >",file.out))
@@ -69,8 +69,8 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                         
                         }
                 
-                , stop( paste0("Please check the correct path to ",tool,
-                               "... the interface call did not work properly.") )
+                },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                           "... the interface call did not work properly.") ) }
                 
                 )
                 
@@ -84,7 +84,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                  
                  # test whether the connection to muscle works
                  tryCatch(
-                         
+                 {        
                           if(is.null(path)){
                          
                                    system(paste0("muscle -in ",file," -out ",file.out))
@@ -96,8 +96,8 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                          
                            }
                  
-                 , stop( paste0("Please check the correct path to ",tool,
-                                "... the interface call did not work properly.") )
+                 },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                                   "... the interface call did not work properly.") ) }
                  
                  )
                  
@@ -111,7 +111,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                  
                  # test whether the connection to clustalo works
                  tryCatch(
-                         
+                 {       
                          if(is.null(path)){
                          
                                  system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clustal"))
@@ -123,8 +123,8 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                          
                         }
                  
-                 , stop( paste0("Please check the correct path to ",tool,
-                                "... the interface call did not work properly.") )
+                 },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                                    "... the interface call did not work properly.") ) }
                  
                  )
                  
