@@ -17,7 +17,7 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
-\item{path}{a character string specifying the path to the Pal2Nal program}
+\item{path}{a character string specifying the path to the codon alignment program (in case you don't use the default path).}
 }
 \value{
 if get_aln is TRUE an object of class alignment of the seqinr package.

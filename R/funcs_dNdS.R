@@ -8,8 +8,8 @@
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details 
-#' @return 
+#' @details This function...
+#' @return A data.table storing the dNdS values of the correspnding genes.
 #' @export
 dNdS <- function(query_file, subject_file, 
                  blast_mode="best hit", blast_path = NULL, 
@@ -118,8 +118,8 @@ dNdS <- function(query_file, subject_file,
 #' @description This function takes 
 #' @param file a character string specifying the path to a codon alignment file 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details 
-#' @return 
+#' @details This function ...
+#' @return some value
 #' @export
 substitutionrate <- function(file, tool, path = NULL){
         
