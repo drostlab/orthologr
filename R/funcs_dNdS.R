@@ -10,6 +10,7 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function...
 #' @return A data.table storing the dNdS values of the correspnding genes.
+#' @import data.table
 #' @export
 dNdS <- function(query_file, subject_file, 
                  blast_mode="best hit", blast_path = NULL, 
@@ -123,6 +124,7 @@ dNdS <- function(query_file, subject_file,
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function ...
 #' @return some value
+#' @import data.table
 #' @export
 substitutionrate <- function(file, tool, path = NULL){
         
