@@ -27,7 +27,7 @@ dNdS <- function(query_file, subject_file,
         if(!is.element(codonaln_tool, c("pal2nal")))
                 stop("Please choose a codon alignment tool that is supported by this function.")
         
-        if(!is.element(dnds_tool, c("gestimator")))
+        if(!is.element(dnds_tool, c("gestimator","li")))
                 stop("Please choose a dnds tool that is supported by this function.")
         
         # blast each translated aminoacid sequence against the related database to get a 
@@ -43,14 +43,14 @@ dNdS <- function(query_file, subject_file,
 #                 hit.table <- blast_best(query_file = query_file, subject_file = subject_file, 
 #                                                    path = blast_path, comp_cores = comp_cores)
 #                                 
-                query_cds <- read.cds(file = query_file, format = "fasta")
-                subject_cds <- read.cds(file = subject_file, format = "fasta")
+                q_cds <- read.cds(file = query_file, format = "fasta")
+                s_cds <- read.cds(file = subject_file, format = "fasta")
                 
-                query_aa <- read.proteome(file = "_blast/blastinput.fasta", format = "fasta")
+                q_aa <- read.proteome(file = "_blast/blastinput.fasta", format = "fasta")
                 
                 filename <- unlist(strsplit(subject_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                subject_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
     
         }
         
@@ -60,36 +60,47 @@ dNdS <- function(query_file, subject_file,
                         blast_rec(query_file = query_file, subject_file = subject_file, 
                                    path = blast_path, comp_cores = comp_cores))
                 
-                query_cds <- read.cds(file = query_file, format = "fasta")
-                subject_cds <- read.cds(file = subject_file, format = "fasta")
+                q_cds <- read.cds(file = query_file, format = "fasta")
+                s_cds <- read.cds(file = subject_file, format = "fasta")
                 
                 
                 filename <- unlist(strsplit(query_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                query_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                q_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
                 
                 filename <- unlist(strsplit(subject_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                subject_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
                 
                 
         }
+    
 
-       data.table::setnames(query_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
-       data.table::setnames(subject_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
-       data.table::setnames(query_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
-       data.table::setnames(subject_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))             
+        data.table::setnames(q_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
+        data.table::setnames(s_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
+        data.table::setnames(q_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
+        data.table::setnames(s_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))
+        
+#### A #####
 
-       hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(subject_cds), by = "subject_id")
-       hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(subject_aa), by = "subject_id")
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(query_cds), by = "query_id")
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(query_aa), by = "query_id") 
-       
-        # AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN
-        # DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
-        # HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
-        # ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
-        # AUẞERDEM IST DER KEY NUR NOCH SUBJECT_ID
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_cds), by = "subject_id")
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_aa), by = "subject_id")
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_cds), by = "query_id")
+        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_aa), by = "query_id")  
+
+# AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN
+# DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
+# HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
+# ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
+# AUẞERDEM IST DER KEY NUR NOCH SUBJECT_ID
+
+
+
+### B ###
+
+# Variante B mit hit.table[q_cds] läuft am Ende auch auf das Problem hinaus, dass setkey
+# für 2 Aufrufe umbesetzt werden muss.
+# Auch muss dabei ebenfalls hit.table überschrieben werden    
 
         #data.table::setkeyv(hit.table,c("query_id", "subject_id"))
 
@@ -106,8 +117,8 @@ dNdS <- function(query_file, subject_file,
 
 
       hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
-                               multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
-                               dnds_tool = "gestimator",
+                               multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
+                               dnds_tool = dnds_tool,
                                codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )}))]
 
         return(hit.table) 
@@ -122,16 +133,20 @@ dNdS <- function(query_file, subject_file,
 
 #' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
 #' @description This function takes 
-#' @param file a character string specifying the path to a codon alignment file 
+#' @param file a character string specifying the path to a codon alignment file
+#' @param format a character string specifying the format a used in read.alignment (for Li) 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function ...
 #' @return some value
 #' @import data.table
 #' @export
-substitutionrate <- function(file, tool, path = NULL){
+substitutionrate <- function(file, tool, format="fasta", path = NULL){
         
-        if(!is.element(tool,c("gestimator")))
+        if(!is.element(tool,c("gestimator","li")))
                 stop("Please choose a tool that is supported by this function.")
+        
+        if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
+                stop("Please choose a format that is supported by seqinr::read.alignment.")
         
         if(!file.exists("_calculation/")){
                 
@@ -141,6 +156,8 @@ substitutionrate <- function(file, tool, path = NULL){
         if(tool == "gestimator"){
                 
                 # file in fasta required
+                if(format != "fasta")
+                        stop("To use gestimator fasta format is required.")
                 
             tryCatch(
             {    
@@ -149,11 +166,31 @@ substitutionrate <- function(file, tool, path = NULL){
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
+                
+                print("Substitutionrate successfully calculated by gestimator")
+                
                 return(hit.table)
             },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                "... the interface call did not work properly.") ) }
             
             )
+        }
+        
+        if(tool == "li" ){
+                
+                        aln <- seqinr::read.alignment(file = file, format = format)
+                
+                        res_list <- seqinr::kaks(aln)
+                        
+                        res <- data.table(t(c(unlist(aln$nam),  res_list$ka[1], res_list$ks[1], (res_list$ka[1]/res_list$ks[1]))))
+                        data.table::setnames(res, old = paste0("V",1:5), 
+                                             new = c("query_id","subject_id", "dN", "dS","dNdS"))
+                 
+                        print("Substitutionrate successfully calculated by Li")
+                        
+                        return(res)
+                        
+        
         }
         
 }
@@ -187,7 +224,7 @@ compute_dnds <- function(x,
         
         # compute kaks
         hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
-                                      tool = "gestimator", path = dnds_path)
+                                      tool = dnds_tool, path = dnds_path)
         return(hit.table[,dNdS])
 
 }
