@@ -87,8 +87,14 @@ dNdS <- function(query_file, subject_file,
         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_aa), by = "subject_id")
         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_cds), by = "query_id")
         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_aa), by = "query_id")  
+        
+#           tbl_cds <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(s_cds), by = c("query_id","subject_id"))
+#           tbl_aa <- dplyr::inner_join(dplyr::tbl_dt(q_aa), dplyr::tbl_dt(s_aa), by = c("query_id","subject_id"))
+#           tbl_cds_aa <- dplyr::inner_join(dplyr::tbl_dt(tbl_cds), dplyr::tbl_dt(tbl_aa), by = "query_id"))
+#           final_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(tbl_cds_aa), by = "query_id"))
+#           hit.table <- data.table::copy(final_tbl)
 
-# AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN
+# AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN     
 # DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
 # HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
 # ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
@@ -119,7 +125,7 @@ dNdS <- function(query_file, subject_file,
       hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
                                multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
                                dnds_tool = dnds_tool,
-                               codonaln_path = "/home/sarah/Programs/pal2nal.v14/" )}))]
+                               codonaln_path = codonaln_path )}))]
 
         return(hit.table) 
    #   compute_dnds(res[1,], 
@@ -142,7 +148,7 @@ dNdS <- function(query_file, subject_file,
 #' @export
 substitutionrate <- function(file, tool, format="fasta", path = NULL){
         
-        if(!is.element(tool,c("gestimator","li")))
+        if(!is.element(tool,c("gestimator","Li")))
                 stop("Please choose a tool that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
@@ -176,7 +182,7 @@ substitutionrate <- function(file, tool, format="fasta", path = NULL){
             )
         }
         
-        if(tool == "li" ){
+        if(tool == "Li" ){
                 
                         aln <- seqinr::read.alignment(file = file, format = format)
                 
@@ -186,7 +192,7 @@ substitutionrate <- function(file, tool, format="fasta", path = NULL){
                         data.table::setnames(res, old = paste0("V",1:5), 
                                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
                  
-                        print("Substitutionrate successfully calculated by Li")
+                        print("Substitutionrate successfully calculated using Li's method.")
                         
                         return(res)
                         

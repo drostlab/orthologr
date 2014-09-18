@@ -3,10 +3,12 @@
 \alias{substitutionrate}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.}
 \usage{
-substitutionrate(file, tool, path = NULL)
+substitutionrate(file, tool, format = "fasta", path = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}
+
+\item{format}{a character string specifying the format a used in read.alignment (for Li)}
 }
 \value{
 some value
