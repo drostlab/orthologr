@@ -3,12 +3,17 @@
 \alias{substitutionrate}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.}
 \usage{
-substitutionrate(file, tool, format = "fasta", path = NULL)
+substitutionrate(file, est.method, format = "fasta")
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}
 
-\item{format}{a character string specifying the format a used in read.alignment (for Li)}
+\item{est.method}{a character string specifying the dNdS estimation method, e.g. "Cameron","Li" "mase", "clustal", "phylip", "fasta" , "msf".
+Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the
+corresponding dNdS values from a given alignment. The program 'gestimator' can only read "fasta" files,
+hence it is important to use format = "fasta" when choosing est.method = "Cameron".}
+
+\item{format}{a character string specifying the file format in which the alignment is stored:}
 }
 \value{
 some value

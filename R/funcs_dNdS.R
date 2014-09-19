@@ -140,15 +140,19 @@ dNdS <- function(query_file, subject_file,
 #' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
 #' @description This function takes 
 #' @param file a character string specifying the path to a codon alignment file
-#' @param format a character string specifying the format a used in read.alignment (for Li) 
+#' @param est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" "mase", "clustal", "phylip", "fasta" , "msf".
+#' Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the
+#' corresponding dNdS values from a given alignment. The program 'gestimator' can only read "fasta" files,
+#' hence it is important to use format = "fasta" when choosing est.method = "Cameron".
+#' @param format a character string specifying the file format in which the alignment is stored:  
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function ...
 #' @return some value
 #' @import data.table
 #' @export
-substitutionrate <- function(file, tool, format="fasta", path = NULL){
+substitutionrate <- function(file, est.method, format = "fasta"){
         
-        if(!is.element(tool,c("gestimator","Li")))
+        if(!is.element(tool,c("Cameron","Li")))
                 stop("Please choose a tool that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
@@ -159,14 +163,15 @@ substitutionrate <- function(file, tool, format="fasta", path = NULL){
                 dir.create("_calculation")
         }
         
-        if(tool == "gestimator"){
-                
-                # file in fasta required
-                if(format != "fasta")
-                        stop("To use gestimator fasta format is required.")
-                
+        if(est.method == "Cameron"){
+               
+           # file in fasta required     
+           if(format != "fasta")
+                   stop("To use gestimator an alignment file in fasta format is required.")
+           
             tryCatch(
             {    
+                # To use gestimator a file in fasta format is required    
                 system(paste0("gestimator -i ",file," -o _calculation/gestimout"))
                 hit.table <-data.table::fread("_calculation/gestimout")
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
@@ -176,13 +181,13 @@ substitutionrate <- function(file, tool, format="fasta", path = NULL){
                 print("Substitutionrate successfully calculated by gestimator")
                 
                 return(hit.table)
-            },error = function(){ print(paste0("Please check the correct path to ",tool,
+            },error = function(){ print(paste0("Please check the correct path to ",est.method,
                                                "... the interface call did not work properly.") ) }
             
             )
         }
         
-        if(tool == "Li" ){
+        if(est.method == "Li" ){
                 
                         aln <- seqinr::read.alignment(file = file, format = format)
                 
