@@ -27,12 +27,13 @@ This function performs a blast+ search of a given set of protein sequences again
 \examples{
 \dontrun{
 # performing a best hit BLAST search
-blast(query_file = "data/ortho_thal_cds.fasta" ,subject_file = "data/ortho_lyra_cds.fasta")
+blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
 
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
-blast(query_file = "data/ortho_thal_cds.fasta" ,
-      subject_file = "data/ortho_lyra_cds.fasta",
+blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
       comp_cores = 2)
 }
 }

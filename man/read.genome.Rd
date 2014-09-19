@@ -29,7 +29,8 @@ Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/i
 \examples{
 \dontrun{
 # reading a genome stored in a fasta file
-Aly.genome <- read.genome("ortho_lyra_cds.fasta", format = "fasta")
+Ath.genome <- read.genome(system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+                           format = "fasta")
 }
 }
 \author{

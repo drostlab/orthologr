@@ -27,11 +27,12 @@ Given a set of protein sequences A, a best hit blast search is being performed f
 \examples{
 \dontrun{
 # performing gene orthology inference using the best hit (BH) method
-blast_best(query_file = "data/ortho_thal_cds.fasta", subject_file = "data/ortho_lyra_cds.fasta")
+blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
 
 # use multicore processing
-blast_best(query_file = "data/ortho_thal_cds.fasta",
-           subject_file = "data/ortho_lyra_cds.fasta",
+blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
            comp_cores = 2)
 }
 }

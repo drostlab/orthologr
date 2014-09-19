@@ -12,7 +12,8 @@
 #'
 #' @examples \dontrun{
 #' # reading a genome stored in a fasta file
-#' Aly.genome <- read.genome("ortho_lyra_cds.fasta", format = "fasta")
+#' Ath.genome <- read.genome(system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#'                            format = "fasta")
 #' }
 #'
 #' @return A data.table storing the gene id in the first column and the corresponding
@@ -48,7 +49,8 @@ read.genome <- function(file, format, ...){
 #'
 #' @examples \dontrun{
 #' # reading a proteome stored in a fasta file
-#' Aly.proteome <- read.proteome("ortho_lyra_aa.fasta", format = "fasta")
+#' Ath.proteome <- read.proteome(system.file('ortho_thal_aa.fasta', package = 'orthologr'),
+#'                                format = "fasta")
 #' }
 #'
 #' @return A data.table storing the gene id in the first column and the corresponding
@@ -84,7 +86,8 @@ read.proteome <- function(file, format, ...){
 #'
 #' @examples \dontrun{
 #' # reading a cds file stored in fasta format
-#' Aly.cds <- read.cds("ortho_lyra_cds.fasta", format = "fasta")
+#' Ath.cds <- read.cds(system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#'                     format = "fasta")
 #' }
 #'
 #' @return A data.table storing the gene id in the first column and the corresponding

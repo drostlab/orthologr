@@ -9,12 +9,13 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' # performing a best hit BLAST search
-#' blast(query_file = "data/ortho_thal_cds.fasta" ,subject_file = "data/ortho_lyra_cds.fasta")
+#' blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
-#' blast(query_file = "data/ortho_thal_cds.fasta" , 
-#'       subject_file = "data/ortho_lyra_cds.fasta",
+#' blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
+#'       subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       comp_cores = 2)
 #' }
 #'
@@ -79,14 +80,20 @@ blast <- function(query_file, subject_file,
         
         # additional blast parameters can be found here:
         # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
-        blast_table_names <- c("query_id","subject_id","perc_identity","alig_length","mismatches",
-                               "gap_openings","q_start","q_end","s_start","s_end","evalue","bit_score")
+        blast_table_names <- c("query_id","subject_id","perc_identity",
+                               "alig_length","mismatches",
+                               "gap_openings","q_start",
+                               "q_end","s_start","s_end",
+                               "evalue","bit_score")
         
         # define the colClasses for faster file streaming
         c_Classes <- c(rep("character",2), rep("numeric",10))
                 
-        hit_table <- data.table::fread(input = output, sep = "\t", header = FALSE, colClasses = c_Classes)
-        data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)), new = blast_table_names)
+        hit_table <- data.table::fread(input = output, sep = "\t", 
+                                       header = FALSE, colClasses = c_Classes)
+        
+        data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
+                             new = blast_table_names)
         
         #data.table::setkey(hit_table, query_id)
         data.table::setkeyv(hit_table, c("query_id","subject_id"))
@@ -105,11 +112,12 @@ blast <- function(query_file, subject_file,
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_best(query_file = "data/ortho_thal_cds.fasta", subject_file = "data/ortho_lyra_cds.fasta")
+#' blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # use multicore processing
-#' blast_best(query_file = "data/ortho_thal_cds.fasta", 
-#'            subject_file = "data/ortho_lyra_cds.fasta",
+#' blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
+#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
 #' }
 #'
@@ -159,11 +167,12 @@ blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #'
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_rec(query_file = "data/ortho_thal_cds.fasta", subject_file = "data/ortho_thal_cds.fasta")
+#' blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#'           subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # use multicore processing
-#' blast_rec(query_file = "data/ortho_thal_cds.fasta", 
-#'            subject_file = "data/ortho_thal_cds.fasta",
+#' blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
+#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
 #' }
 #'
@@ -195,7 +204,7 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #' respectively and [[2]] the name of the database created.
 #' @examples \dontrun{
 #'  # running the set function to see an example output
-#'  head(set_blast(file = "data/ortho_thal_cds.fasta")[[1]] , 2)
+#'  head(set_blast(file = system.file('ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
 #' @import data.table
 #' @export
