@@ -185,7 +185,8 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
         orthoB <- blast_best(subject_file,query_file, path = path, comp_cores = comp_cores)
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
-        return ( dplyr::semi_join(tbl_dt(orthoA), tbl_dt(orthoB), by = c("query_id","subject_id")) )
+        return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
+                                  by = c("query_id","subject_id")) )
 }
 
 
