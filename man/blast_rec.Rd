@@ -31,12 +31,12 @@ that were found to be best hits in both directions are retained and returned.
 \examples{
 \dontrun{
 # performing gene orthology inference using the best hit (BH) method
-blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
-          subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
+blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
 # use multicore processing
-blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
-           subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
+blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            comp_cores = 2)
 }
 }

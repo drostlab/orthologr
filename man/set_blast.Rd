@@ -29,7 +29,7 @@ database from that.
 \examples{
 \dontrun{
  # running the set function to see an example output
- head(set_blast(file = system.file('ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
+ head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 }
 }
 \author{

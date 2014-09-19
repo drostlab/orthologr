@@ -12,7 +12,7 @@
 #'
 #' @examples \dontrun{
 #' # reading a genome stored in a fasta file
-#' Ath.genome <- read.genome(system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#' Ath.genome <- read.genome(system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'                            format = "fasta")
 #' }
 #'
@@ -49,7 +49,7 @@ read.genome <- function(file, format, ...){
 #'
 #' @examples \dontrun{
 #' # reading a proteome stored in a fasta file
-#' Ath.proteome <- read.proteome(system.file('ortho_thal_aa.fasta', package = 'orthologr'),
+#' Ath.proteome <- read.proteome(system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'                                format = "fasta")
 #' }
 #'
@@ -86,7 +86,7 @@ read.proteome <- function(file, format, ...){
 #'
 #' @examples \dontrun{
 #' # reading a cds file stored in fasta format
-#' Ath.cds <- read.cds(system.file('ortho_thal_cds.fasta', package = 'orthologr'),
+#' Ath.cds <- read.cds(system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'                     format = "fasta")
 #' }
 #'

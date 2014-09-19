@@ -9,13 +9,13 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' # performing a best hit BLAST search
-#' blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
+#' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
-#' blast(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
-#'       subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
+#' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       comp_cores = 2)
 #' }
 #'
@@ -112,12 +112,12 @@ blast <- function(query_file, subject_file,
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
-#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
+#' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # use multicore processing
-#' blast_best(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
-#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
+#' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
 #' }
 #'
@@ -167,12 +167,12 @@ blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #'
 #' @examples \dontrun{
 #' # performing gene orthology inference using the best hit (BH) method
-#' blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'),
-#'           subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'))
+#' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # use multicore processing
-#' blast_rec(query_file = system.file('ortho_thal_cds.fasta', package = 'orthologr'), 
-#'            subject_file = system.file('ortho_lyra_cds.fasta', package = 'orthologr'),
+#' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
 #' }
 #'
@@ -204,7 +204,7 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #' respectively and [[2]] the name of the database created.
 #' @examples \dontrun{
 #'  # running the set function to see an example output
-#'  head(set_blast(file = system.file('ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
+#'  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
 #' @import data.table
 #' @export
