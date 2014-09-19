@@ -5,6 +5,7 @@
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param codonaln_path a character string specifying the path to the codon alignment program (in case you don't use the default path).
+#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
@@ -16,7 +17,7 @@ dNdS <- function(query_file, subject_file,
                  blast_mode = "best hit", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
                  codonaln_tool = "pal2nal", codonaln_path = NULL,
-                 dnds_est.method = "Cameron", dnds_path = NULL, comp_cores = 1){
+                 dnds_est.method = "Cameron", comp_cores = 1){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
@@ -137,9 +138,10 @@ dNdS <- function(query_file, subject_file,
     # by query id results in a frame with id and lists of 6
 }
 
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment (helper function).
 #' @description This function takes a pairwise alignment as input file and estimates the
-#' dNdS ratio of the corresponding alignment. 
+#' dNdS ratio of the corresponding alignment. Nevertheless, this function is a helper function for
+#' \code{\link{dNdS}}. For dNdS computations you should use the function: \code{\link{dNdS}}.
 #' @param file a character string specifying the path to a codon alignment file
 #' @param est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
 #' Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the

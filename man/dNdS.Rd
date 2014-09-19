@@ -6,7 +6,7 @@
 dNdS(query_file, subject_file, blast_mode = "best hit", blast_path = NULL,
   multialn_tool = "clustalw", multialn_path = NULL,
   codonaln_tool = "pal2nal", codonaln_path = NULL,
-  dnds_est.method = "Cameron", dnds_path = NULL, comp_cores = 1)
+  dnds_est.method = "Cameron", comp_cores = 1)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -18,6 +18,8 @@ dNdS(query_file, subject_file, blast_mode = "best hit", blast_path = NULL,
 \item{multialn_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
 \item{codonaln_path}{a character string specifying the path to the codon alignment program (in case you don't use the default path).}
+
+\item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be}
 
