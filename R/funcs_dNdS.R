@@ -13,10 +13,10 @@
 #' @import data.table
 #' @export
 dNdS <- function(query_file, subject_file, 
-                 blast_mode="best hit", blast_path = NULL, 
-                 multialn_tool="clustalw", multialn_path = NULL,
-                 codonaln_tool="pal2nal", codonaln_path = NULL,
-                 dnds_tool="gestimator", dnds_path = NULL, comp_cores = 1){
+                 blast_mode = "best hit", blast_path = NULL, 
+                 multialn_tool = "clustalw", multialn_path = NULL,
+                 codonaln_tool = "pal2nal", codonaln_path = NULL,
+                 dnds_est.method = "Cameron", dnds_path = NULL, comp_cores = 1){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
@@ -27,7 +27,7 @@ dNdS <- function(query_file, subject_file,
         if(!is.element(codonaln_tool, c("pal2nal")))
                 stop("Please choose a codon alignment tool that is supported by this function.")
         
-        if(!is.element(dnds_tool, c("gestimator","li")))
+        if(!is.element(dnds_est.method, c("Cameron","Li")))
                 stop("Please choose a dnds tool that is supported by this function.")
         
         # blast each translated aminoacid sequence against the related database to get a 
@@ -124,7 +124,7 @@ dNdS <- function(query_file, subject_file,
 
       hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
                                multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
-                               dnds_tool = dnds_tool,
+                               dnds_est.method = dnds_est.method,
                                codonaln_path = codonaln_path )}))]
 
         return(hit.table) 
@@ -138,22 +138,46 @@ dNdS <- function(query_file, subject_file,
 }
 
 #' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
-#' @description This function takes 
+#' @description This function takes a pairwise alignment as input file and estimates the
+#' dNdS ratio of the corresponding alignment. 
 #' @param file a character string specifying the path to a codon alignment file
-#' @param est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" "mase", "clustal", "phylip", "fasta" , "msf".
+#' @param est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
 #' Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the
 #' corresponding dNdS values from a given alignment. The program 'gestimator' can only read "fasta" files,
 #' hence it is important to use format = "fasta" when choosing est.method = "Cameron".
 #' @param format a character string specifying the file format in which the alignment is stored:  
+#' "mase", "clustal", "phylip", "fasta" , "msf"
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details This function ...
-#' @return some value
+#' @details This function takes a pairwise alignments file as input and estimates dNdS ratios
+#' of the corresponding alignments using predefined dNdS estimation methods.
+#' 
+#' The dNdS estimation methods available in this function are:
+#' 
+#' - "Li" : Li's method (1993)
+#' 
+#' - "Cameron" : Cameron's method (1995)
+#' 
+#' @examples \dontrun{
+#' 
+#' # estimate the dNdS rate using Li's method
+#' substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
+#'                  est.method = "Li", format = "clustal")
+#'                  
+#' }
+#' @references 
+#' Li, W.-H. (1993) Unbiased estimation of the rates of synonymous and nonsynonymous substitution. J. Mol. Evol., 36:96-99.
+#' 
+#' Charif, D. and Lobry, J.R. (2007) SeqinR 1.0-2: a contributed package to the R project for statistical computing devoted to biological sequences retrieval and analysis.
+#' 
+#' Thornton, K. (2003) libsequence: a C++ class library for evolutionary genetic analysis. Bioinformatics 19(17): 2325-2327
+#' 
+#' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values.
 #' @import data.table
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta"){
         
-        if(!is.element(tool,c("Cameron","Li")))
-                stop("Please choose a tool that is supported by this function.")
+        if(!is.element(est.method,c("Cameron","Li")))
+                stop("Please choose a dNdS estimation method that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
                 stop("Please choose a format that is supported by seqinr::read.alignment.")
@@ -173,6 +197,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
             {    
                 # To use gestimator a file in fasta format is required    
                 system(paste0("gestimator -i ",file," -o _calculation/gestimout"))
+                
                 hit.table <-data.table::fread("_calculation/gestimout")
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
@@ -193,7 +218,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
                 
                         res_list <- seqinr::kaks(aln)
                         
-                        res <- data.table(t(c(unlist(aln$nam),  res_list$ka[1], res_list$ks[1], (res_list$ka[1]/res_list$ks[1]))))
+                        res <- data.table::data.table(t(c(unlist(aln$nam),  res_list$ka, res_list$ks, (res_list$ka/res_list$ks))))
                         data.table::setnames(res, old = paste0("V",1:5), 
                                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
                  
@@ -209,7 +234,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
 compute_dnds <- function(x, 
                          multialn_tool="clustalw", multialn_path = NULL,
                          codonaln_tool="pal2nal", codonaln_path = NULL,
-                         dnds_tool="gestimator", dnds_path = NULL){
+                         dnds_est.method = "Cameron"){
         #return(x["query_id"])
         names <- list(x["query_id"],x["subject_id"])
         seqs <- list(x["query_cds"],x["subject_cds"])
@@ -235,8 +260,8 @@ compute_dnds <- function(x,
         
         # compute kaks
         hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
-                                      tool = dnds_tool, path = dnds_path)
-        return(hit.table[,dNdS])
+                                      est.method = dnds_est.method)
+        return(hit.table[ , dNdS])
 
 }
 # 
