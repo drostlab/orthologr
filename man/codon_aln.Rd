@@ -3,8 +3,7 @@
 \alias{codon_aln}
 \title{Function to get a codon alignment.}
 \usage{
-codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
-  path)
+codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
@@ -16,8 +15,6 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
 \item{tool}{a character string specifying the program that should be used e.g. "pal2nal".}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
-
-\item{path}{a character string specifying the path to the codon alignment program (in case you don't use the default path).}
 }
 \value{
 if get_aln is TRUE an object of class alignment of the seqinr package.
@@ -29,6 +26,14 @@ alignment.
 }
 \details{
 This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
+}
+\examples{
+\dontrun{
+# performing a codon alignment using PAL2NAL
+codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
+                       file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'),
+                       format = "clustal", tool = "pal2nal", get_aln = TRUE)
+}
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost

@@ -7,19 +7,24 @@
 #' @param format a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".
 #' @param tool a character string specifying the program that should be used e.g. "pal2nal". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
-#' @param path a character string specifying the path to the codon alignment program (in case you don't use the default path).
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
+#' @examples \dontrun{
+#' # performing a codon alignment using PAL2NAL
+#' codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
+#'                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'), 
+#'                        format = "clustal", tool = "pal2nal", get_aln = TRUE)
+#' }
 #' @return if get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE, path){
+codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE){
         
         # the Pal2Nal program is stored as executable within
         # the R package environment: 'exec' folder
         # this is not an elegant version, only motivated by this discussion:
         # http://stackoverflow.com/questions/13463103/inst-and-extdata-folders-in-r-packaging
         # is there a better choice?
-        #path <- paste0(system.file(package = "orthologr"),"/exec/pal2nal.v14/")
+        path <- system.file("pal2nal/pal2nal.v14/pal2nal.pl", package = "orthologr", mustWork = TRUE)
         #path <- "/exec/pal2nal.v14/"
         
         if(!is.element(tool,c("pal2nal")))
@@ -46,7 +51,7 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
                 
                         tryCatch(
                         {   
-                                system(paste0(path,"pal2nal.pl ",file_aln," ",file_nuc," -output ",format," >",file.out))
+                                system(paste0(path," ",file_aln," ",file_nuc," -output ",format," >",file.out))
                 
                         },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                            "... the interface call did not work properly.") ) }
