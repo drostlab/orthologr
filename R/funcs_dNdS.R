@@ -226,7 +226,7 @@ compute_dnds <- function(x,
                   file_nuc = "_alignment/cds.fasta",
                   tool = codonaln_tool,
                   format = "fasta",
-                  get_aln = FALSE, path = codonaln_path)
+                  get_aln = FALSE)
         
         # compute kaks
         hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
