@@ -103,7 +103,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 
 # T_COFFEE Example:
 
-# in case the default execution path of clustalw runs properly on your system
+# in case the default execution path of t_coffee runs properly on your system
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "t_coffee", get_aln = TRUE)
 
@@ -116,6 +116,24 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "t_coffee", get_aln = TRUE,
           t_coffee.params = "-mode expresso")
+
+
+
+# MUSCLE Example:
+
+# in case the default execution path of muscle runs properly on your system
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "muscle", get_aln = TRUE)
+
+# in case the default execution path of muscle is not set within the default path
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "muscle", get_aln = TRUE, path = "path/to/muscle/")
+
+# running muscle using additional parameters
+# details: http://www.drive5.com/muscle/manual/
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "muscle", get_aln = TRUE,
+          muscle.params = "-diags")
 
 
 }
@@ -164,5 +182,9 @@ Fast, scalable generation of high-quality protein multiple sequence alignments u
 http://www.clustal.org/omega/
 
 http://www.clustal.org/omega/README
+
+MAFFT :
+
+http://mafft.cbrc.jp/alignment/software/
 }
 

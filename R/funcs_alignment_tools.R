@@ -158,6 +158,10 @@
 #' 
 #' http://www.clustal.org/omega/README
 #' 
+#' MAFFT : 
+#' 
+#' http://mafft.cbrc.jp/alignment/software/
+#' 
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
