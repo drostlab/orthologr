@@ -10,7 +10,7 @@
 #' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".
 #' @param muscle.params a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
-#' that a set of default parameters is used when running muscle.
+#' that a set of default parameters is used when running muscle. Example: muscle.params = "-diags".
 #' @param clustalo.params a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running clustalo.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
@@ -34,7 +34,7 @@
 #' 
 #' MacOS: system("path/to/clustalw/clustalw2 -help"), Linux: system("path/to/clustalw/clustalw -help"), Windows: system("path/to/clustalw/clustalw2.exe -help")
 #' 
-#' T_COFFEE
+#' T_COFFEE :
 #' 
 #' In case you use the default path to the t_coffee program,
 #' the following calls to clustalw should work properly on your system:
@@ -45,6 +45,20 @@
 #' to specify the 't_coffee' execution path on your system:
 #' 
 #' system("path/to/t_coffee/t_coffee -version")
+#' 
+#' 
+#' MUSCLE : 
+#' 
+#' In case you use the default path to the muscle program,
+#' the following calls to muscle should work properly on your system:
+#' 
+#' system("muscle -help")
+#' 
+#' In case these procedures don't work properly, please use the \code{path} argument
+#' to specify the 'muscle' execution path on your system:
+#' 
+#' system("path/to/muscle/muscle -help")
+#' 
 #' 
 #' @examples \dontrun{
 #' 
@@ -67,7 +81,7 @@
 #'           
 #' # T_COFFEE Example:
 #' 
-#' # in case the default execution path of clustalw runs properly on your system
+#' # in case the default execution path of t_coffee runs properly on your system
 #' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 #'           tool = "t_coffee", get_aln = TRUE)
 #' 
@@ -81,7 +95,25 @@
 #'           tool = "t_coffee", get_aln = TRUE,
 #'           t_coffee.params = "-mode expresso")
 #'           
+#'
+#'
+#' # MUSCLE Example:  
+#' 
+#' # in case the default execution path of muscle runs properly on your system
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "muscle", get_aln = TRUE)
+#' 
+#' # in case the default execution path of muscle is not set within the default path
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "muscle", get_aln = TRUE, path = "path/to/muscle/")
+#' 
+#' # running muscle using additional parameters
+#' # details: http://www.drive5.com/muscle/manual/
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "muscle", get_aln = TRUE,
+#'           muscle.params = "-diags") 
 #'           
+#'                                             
 #' }
 #' @references 
 #' 
@@ -258,13 +290,25 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                  tryCatch(
                  {        
                           if(is.null(path)){
-                         
-                                   system(paste0("muscle -in ",file," -out ",file.out))
+                                  if(is.null(muscle.params)){
+                                          # write output into clustalw format using the -clwstrict argument
+                                           system(paste0("muscle -in ",file," -out ",file.out, " -clwstrict"," -quiet"))
+                                  } else {
+                                          # write output into clustalw format using the -clwstrict argument
+                                           system(paste0("muscle -in ",file," ",muscle.params," -out ",file.out," -clwstrict"," -quiet"))
+                                  }
                  
                            } else {
-                         
-                                   system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
-                                       file," -out ",file.out))
+                                   if(is.null(muscle.params)){
+                                           # write output into clustalw format using the -clwstrict argument
+                                           system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
+                                                  file," -out ",file.out," -clwstrict"," -quiet"))
+                                   } else {
+                                           # write output into clustalw format using the -clwstrict argument
+                                           system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
+                                                         file," ",muscle.params," -out ",file.out," -clwstrict"," -quiet"))
+                                           
+                                   }
                          
                            }
                  
@@ -275,7 +319,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                  )
                  
                  if(get_aln){
-                         aln <- seqinr::read.alignment(file.out, format = "fasta")
+                         aln <- seqinr::read.alignment(file.out, format = "clustal")
                          return(aln)
                  }
          }

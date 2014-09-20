@@ -23,7 +23,7 @@ that a set of default parameters is used when running clustalw. Example: clustal
 that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".}
 
 \item{muscle.params}{a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running muscle.}
+that a set of default parameters is used when running muscle. Example: muscle.params = "-diags".}
 
 \item{clustalo.params}{a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running clustalo.}
@@ -56,7 +56,7 @@ to specify the 'clustalw' execution path on your system:
 
 MacOS: system("path/to/clustalw/clustalw2 -help"), Linux: system("path/to/clustalw/clustalw -help"), Windows: system("path/to/clustalw/clustalw2.exe -help")
 
-T_COFFEE
+T_COFFEE :
 
 In case you use the default path to the t_coffee program,
 the following calls to clustalw should work properly on your system:
@@ -67,6 +67,19 @@ In case these procedures don't work properly, please use the \code{path} argumen
 to specify the 't_coffee' execution path on your system:
 
 system("path/to/t_coffee/t_coffee -version")
+
+
+MUSCLE :
+
+In case you use the default path to the muscle program,
+the following calls to muscle should work properly on your system:
+
+system("muscle -help")
+
+In case these procedures don't work properly, please use the \code{path} argument
+to specify the 'muscle' execution path on your system:
+
+system("path/to/muscle/muscle -help")
 }
 \examples{
 \dontrun{
