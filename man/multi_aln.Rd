@@ -29,7 +29,7 @@ that a set of default parameters is used when running muscle.}
 that a set of default parameters is used when running clustalo.}
 }
 \value{
-If get_aln is TRUE an object of class alignment of the seqinr package.
+In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 }
 \description{
 This function takes a multiple FASTA file containing DNA or amino acid sequences
@@ -67,25 +67,6 @@ In case these procedures don't work properly, please use the \code{path} argumen
 to specify the 't_coffee' execution path on your system:
 
 system("path/to/t_coffee/t_coffee -version")
-
-MUSCLE:
-
-Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797.
-
-Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113.
-
-http://www.drive5.com/muscle/
-
-http://www.drive5.com/muscle/manual/
-
-CLUSTALO:
-
-Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011).
-Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
-
-http://www.clustal.org/omega/
-
-http://www.clustal.org/omega/README
 }
 \examples{
 \dontrun{
@@ -140,6 +121,7 @@ http://www.clustal.org/clustal2/
 
 http://www.ebi.ac.uk/Tools/msa/clustalw2/help/
 
+
 T_COFFEE
 
 T-Coffee: A novel method for multiple sequence alignments.
@@ -148,5 +130,26 @@ Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
 http://www.tcoffee.org/Projects/tcoffee/
 
 http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf
+
+
+MUSCLE:
+
+Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797.
+
+Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113.
+
+http://www.drive5.com/muscle/
+
+http://www.drive5.com/muscle/manual/
+
+
+CLUSTALO:
+
+Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011).
+Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
+
+http://www.clustal.org/omega/
+
+http://www.clustal.org/omega/README
 }
 

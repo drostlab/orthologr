@@ -46,25 +46,6 @@
 #' 
 #' system("path/to/t_coffee/t_coffee -version")
 #' 
-#' MUSCLE:
-#' 
-#' Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797. 
-#' 
-#' Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113. 
-#' 
-#' http://www.drive5.com/muscle/
-#' 
-#' http://www.drive5.com/muscle/manual/
-#' 
-#' CLUSTALO:
-#' 
-#' Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011). 
-#' Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
-#' 
-#' http://www.clustal.org/omega/
-#' 
-#' http://www.clustal.org/omega/README
-#' 
 #' @examples \dontrun{
 #' 
 #' # CLUSTALW Example:
@@ -114,6 +95,7 @@
 #' 
 #' http://www.ebi.ac.uk/Tools/msa/clustalw2/help/
 #' 
+#' 
 #' T_COFFEE
 #' 
 #' T-Coffee: A novel method for multiple sequence alignments. 
@@ -124,7 +106,27 @@
 #' http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf
 #' 
 #' 
-#' @return If get_aln is TRUE an object of class alignment of the seqinr package.
+#' MUSCLE:
+#' 
+#' Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797. 
+#' 
+#' Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113. 
+#' 
+#' http://www.drive5.com/muscle/
+#' 
+#' http://www.drive5.com/muscle/manual/
+#' 
+#' 
+#' CLUSTALO:
+#' 
+#' Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011). 
+#' Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
+#' 
+#' http://www.clustal.org/omega/
+#' 
+#' http://www.clustal.org/omega/README
+#' 
+#' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                       clustalw.params = NULL, t_coffee.params = NULL,
