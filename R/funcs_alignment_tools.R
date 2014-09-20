@@ -2,12 +2,20 @@
 #' @description This function takes a multiple FASTA file containing DNA or amino acid sequences
 #' that shall be aligned and computes a multiple alignment using a defined multiple alignment tool.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
-#' @param tool a character string specifying the program that should be used: "clustalw", "tcoffee", "muscle", and "clustalo". 
+#' @param tool a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", and "clustalo". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
-#' @author Sarah Scharfenberg and Hajk-Georg Drost 
+#' @param clustalw.params a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".
+#' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running t_coffee. Example: t_coffee.params = "-mode expresso".
+#' @param muscle.params a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running muscle.
+#' @param clustalo.params a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running clustalo.
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function provides an interface between R and common multiple alignment programs
-#' such as "clustalw", "tcoffee", "muscle", and "clustalo".
+#' such as "clustalw", "t_coffee", "muscle", and "clustalo".
 #' 
 #' CLUSTALW : 
 #' 
@@ -26,6 +34,36 @@
 #' 
 #' MacOS: system("path/to/clustalw/clustalw2 -help"), Linux: system("path/to/clustalw/clustalw -help"), Windows: system("path/to/clustalw/clustalw2.exe -help")
 #' 
+#' T_COFFEE
+#' 
+#' In case you use the default path to the t_coffee program,
+#' the following calls to clustalw should work properly on your system:
+#' 
+#' system("t_coffee -version")
+#' 
+#' In case these procedures don't work properly, please use the \code{path} argument
+#' to specify the 't_coffee' execution path on your system:
+#' 
+#' system("path/to/t_coffee/t_coffee -version")
+#' 
+#' MUSCLE:
+#' 
+#' Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797. 
+#' 
+#' Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113. 
+#' 
+#' http://www.drive5.com/muscle/
+#' 
+#' http://www.drive5.com/muscle/manual/
+#' 
+#' CLUSTALO:
+#' 
+#' Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011). 
+#' Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
+#' 
+#' http://www.clustal.org/omega/
+#' 
+#' http://www.clustal.org/omega/README
 #' 
 #' @examples \dontrun{
 #' 
@@ -39,13 +77,60 @@
 #' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'), 
 #'           tool = "clustalw", get_aln = TRUE, path = "path/to/clustalw/")
 #' 
+#' # running clustalw using additional parameters
+#' # details: system("clustalw2 -help")
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "clustalw", get_aln = TRUE, 
+#'           clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
+#'           
+#'           
+#' # T_COFFEE Example:
 #' 
+#' # in case the default execution path of clustalw runs properly on your system
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "t_coffee", get_aln = TRUE)
+#' 
+#' # in case the default execution path of t_coffee is not set within the default path
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "t_coffee", get_aln = TRUE, path = "path/to/t_coffee/")
+#' 
+#' # running t_coffee using additional parameters
+#' # details: http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "t_coffee", get_aln = TRUE,
+#'           t_coffee.params = "-mode expresso")
+#'           
+#'           
 #' }
+#' @references 
+#' 
+#' CLUSTALW:
+#' 
+#' Larkin MA, Blackshields G, Brown NP, Chenna R, McGettigan PA, McWilliam H, Valentin F,
+#' Wallace IM, Wilm A, Lopez R, Thompson JD, Gibson TJ, Higgins DG. (2007).
+#' Clustal W and Clustal X version 2.0. Bioinformatics, 23, 2947-2948.
+#' 
+#' http://www.clustal.org/clustal2/
+#' 
+#' http://www.ebi.ac.uk/Tools/msa/clustalw2/help/
+#' 
+#' T_COFFEE
+#' 
+#' T-Coffee: A novel method for multiple sequence alignments. 
+#' Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
+#' 
+#' http://www.tcoffee.org/Projects/tcoffee/
+#' 
+#' http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf
+#' 
+#' 
 #' @return If get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
+multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
+                      clustalw.params = NULL, t_coffee.params = NULL,
+                      muscle.params = NULL, clustalo.params = NULL){
         
-        if(!is.element(tool,c("clustalw", "tcoffee", "muscle", "clustalo")))
+        if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo")))
                 stop("Please choose a tool that is supported by this function.")
         
         if(!file.exists("_alignment/")){
@@ -62,8 +147,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
         
         if(tool == "clustalw"){
                 
-                
-                # find out on what kind of OS this running
+                # find out on what kind of OS ClustalW is running
                 operating_sys <- Sys.info()[1]
                 
                 if (operating_sys == "Darwin") 
@@ -81,15 +165,33 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 {
                        if(is.null(path)){
                                
-                               # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are used
-                                system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
-                        
+                               # if no specific parameters are set,
+                               # then use the default parameters
+                               if(is.null(clustalw.params)){
+                                       
+                                        # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
+                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
+                               } else {
+                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",clustalw.params," -quiet"))                                       
+                               }
                         } else {
-                                # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are used
-                                system(
-                                        paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                               file," -outfile=",file.out," -quiet")
-                                )
+                                
+                                # if no specific parameters are set,
+                                # then use the default parameters
+                                if(is.null(clustalw.params)){
+                                        
+                                        # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
+                                        system(
+                                                paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
+                                                file," -outfile=",file.out," -quiet")
+                                        )
+                                } else {
+                                        
+                                        system(
+                                                paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
+                                                       file," -outfile=",file.out," ",clustalw.params," -quiet")
+                                        )    
+                                }
                         }
                 },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                    "... the interface call did not work properly.") )}
@@ -103,20 +205,37 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL){
                 }
         }
  
-        if(tool == "tcoffee"){
+        if(tool == "t_coffee"){
                 
                 # test whether the connection to t_coffee works
                 tryCatch(
                 {
                         if(is.null(path)){
-                        
-                                system(paste0("t_coffee ",file," >",file.out))
-                        
+                                
+                                if(is.null(t_coffee.params)){
+                                        # perform an accurate alignment which is very accurate, but slow
+                                        # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
+                                        system(paste0("t_coffee -infile ",file," -mode accurate"," -outfile ",file.out),
+                                                show.output.on.console = FALSE)
+                                } else {
+                                        system(paste0("t_coffee -infile ",file," ",t_coffee.params," -outfile ",file.out),
+                                               show.output.on.console = FALSE)
+                                        
+                                }
                         } else {
-                        
-                                system(paste0("export PATH=$PATH:",path,"; ","t_coffee ",
-                                              file," >",file.out))
-                        
+                                
+                                if(is.null(t_coffee.params)){
+                                        # perform a accurate alignment which is very accurate, but slow
+                                        # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
+                                        system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
+                                                 file," -mode accurate"," -outfile ",file.out),
+                                                 show.output.on.console = FALSE)
+                                } else {
+                                        
+                                        system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
+                                                      file," ",t_coffee.params," -outfile ",file.out),
+                                               show.output.on.console = FALSE)
+                                }
                         }
                 
                 },error = function(){ print(paste0("Please check the correct path to ",tool,

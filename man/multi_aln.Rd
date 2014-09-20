@@ -3,16 +3,30 @@
 \alias{multi_aln}
 \title{An interface function to common multiple alignment tools.}
 \usage{
-multi_aln(file, tool, get_aln = "FALSE", path = NULL)
+multi_aln(file, tool, get_aln = "FALSE", path = NULL,
+  clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
+  clustalo.params = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
 
-\item{tool}{a character string specifying the program that should be used: "clustalw", "tcoffee", "muscle", and "clustalo".}
+\item{tool}{a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", and "clustalo".}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
 \item{path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
+
+\item{clustalw.params}{a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".}
+
+\item{t_coffee.params}{a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running t_coffee. Example: t_coffee.params = "-mode expresso".}
+
+\item{muscle.params}{a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running muscle.}
+
+\item{clustalo.params}{a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running clustalo.}
 }
 \value{
 If get_aln is TRUE an object of class alignment of the seqinr package.
@@ -23,7 +37,7 @@ that shall be aligned and computes a multiple alignment using a defined multiple
 }
 \details{
 This function provides an interface between R and common multiple alignment programs
-such as "clustalw", "tcoffee", "muscle", and "clustalo".
+such as "clustalw", "t_coffee", "muscle", and "clustalo".
 
 CLUSTALW :
 
@@ -41,6 +55,37 @@ to specify the 'clustalw' execution path on your system:
 
 
 MacOS: system("path/to/clustalw/clustalw2 -help"), Linux: system("path/to/clustalw/clustalw -help"), Windows: system("path/to/clustalw/clustalw2.exe -help")
+
+T_COFFEE
+
+In case you use the default path to the t_coffee program,
+the following calls to clustalw should work properly on your system:
+
+system("t_coffee -version")
+
+In case these procedures don't work properly, please use the \code{path} argument
+to specify the 't_coffee' execution path on your system:
+
+system("path/to/t_coffee/t_coffee -version")
+
+MUSCLE:
+
+Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797.
+
+Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113.
+
+http://www.drive5.com/muscle/
+
+http://www.drive5.com/muscle/manual/
+
+CLUSTALO:
+
+Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011).
+Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
+
+http://www.clustal.org/omega/
+
+http://www.clustal.org/omega/README
 }
 \examples{
 \dontrun{
@@ -55,10 +100,53 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "clustalw", get_aln = TRUE, path = "path/to/clustalw/")
 
+# running clustalw using additional parameters
+# details: system("clustalw2 -help")
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "clustalw", get_aln = TRUE,
+          clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
+
+
+# T_COFFEE Example:
+
+# in case the default execution path of clustalw runs properly on your system
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "t_coffee", get_aln = TRUE)
+
+# in case the default execution path of t_coffee is not set within the default path
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "t_coffee", get_aln = TRUE, path = "path/to/t_coffee/")
+
+# running t_coffee using additional parameters
+# details: http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "t_coffee", get_aln = TRUE,
+          t_coffee.params = "-mode expresso")
+
 
 }
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
+}
+\references{
+CLUSTALW:
+
+Larkin MA, Blackshields G, Brown NP, Chenna R, McGettigan PA, McWilliam H, Valentin F,
+Wallace IM, Wilm A, Lopez R, Thompson JD, Gibson TJ, Higgins DG. (2007).
+Clustal W and Clustal X version 2.0. Bioinformatics, 23, 2947-2948.
+
+http://www.clustal.org/clustal2/
+
+http://www.ebi.ac.uk/Tools/msa/clustalw2/help/
+
+T_COFFEE
+
+T-Coffee: A novel method for multiple sequence alignments.
+Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
+
+http://www.tcoffee.org/Projects/tcoffee/
+
+http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf
 }
 
