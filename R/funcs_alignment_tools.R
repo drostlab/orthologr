@@ -8,7 +8,7 @@
 #' @param clustalw.params a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".
 #' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
-#' that a set of default parameters is used when running t_coffee. Example: t_coffee.params = "-mode expresso".
+#' that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".
 #' @param muscle.params a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running muscle.
 #' @param clustalo.params a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
