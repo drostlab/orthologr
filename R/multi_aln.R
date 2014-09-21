@@ -2,7 +2,7 @@
 #' @description This function takes a multiple FASTA file containing DNA or amino acid sequences
 #' that shall be aligned and computes a multiple alignment using a defined multiple alignment tool.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
-#' @param tool a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", and "clustalo". 
+#' @param tool a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", "clustalo", and "mafft". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param clustalw.params a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
@@ -10,12 +10,14 @@
 #' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".
 #' @param muscle.params a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
-#' that a set of default parameters is used when running muscle. Example: muscle.params = "-diags".
+#' that a set of default parameters is used when running muscle. Example: muscle.params = "-diags -clwstrict".
 #' @param clustalo.params a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
-#' that a set of default parameters is used when running clustalo.
+#' that a set of default parameters is used when running clustalo. Example: clustalo.params = "--threads 2 --outfmt clu"
+#' @param mafft.params a character string listing the input paramters that shall be passed to the executing mafft program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running mafft. Example: mafft.params = "--maxiterate 1 --thread 2 --clustalout".
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function provides an interface between R and common multiple alignment programs
-#' such as "clustalw", "t_coffee", "muscle", and "clustalo".
+#' such as "clustalw", "t_coffee", "muscle", "clustalo", and "mafft".
 #' 
 #' CLUSTALW : 
 #' 
@@ -41,7 +43,7 @@
 #' 
 #' system("t_coffee -version")
 #' 
-#' In case these procedures don't work properly, please use the \code{path} argument
+#' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 't_coffee' execution path on your system:
 #' 
 #' system("path/to/t_coffee/t_coffee -version")
@@ -54,12 +56,39 @@
 #' 
 #' system("muscle -help")
 #' 
-#' In case these procedures don't work properly, please use the \code{path} argument
+#' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 'muscle' execution path on your system:
 #' 
 #' system("path/to/muscle/muscle -help")
 #' 
 #' 
+#' #' CLUSTALO : 
+#' 
+#' In case you use the default path to the clustalo program,
+#' the following calls to clustalo should work properly on your system:
+#' 
+#' system("clustalo --help")
+#' 
+#' In case this procedures doesn't work properly, please use the \code{path} argument
+#' to specify the 'clustalo' execution path on your system:
+#' 
+#' system("path/to/clustalo/clustalo --help")
+#' 
+#' 
+#' MAFFT : 
+#' 
+#' In case you use the default path to the mafft program,
+#' the following calls to mafft should work properly on your system:
+#' 
+#' system("mafft -help")
+#' 
+#' In case this procedures doesn't work properly, please use the \code{path} argument
+#' to specify the 'mafft' execution path on your system:
+#' 
+#' system("path/to/mafft/mafft -help")
+#' 
+#' @note Note that when using the 'clustalw.params', ... parameters, make sure the corresponding alignment tool
+#' returns a file in clustal format *.aln. This is only important when \code{get_aln} = \code{TRUE}.
 #' @examples \dontrun{
 #' 
 #' # CLUSTALW Example:
@@ -111,9 +140,43 @@
 #' # details: http://www.drive5.com/muscle/manual/
 #' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 #'           tool = "muscle", get_aln = TRUE,
-#'           muscle.params = "-diags") 
+#'           muscle.params = "-diags -clwstrict") 
+#'           
+#' 
+#' # CLUSTALO Example:  
+#' 
+#' # in case the default execution path of clustalo runs properly on your system
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "clustalo", get_aln = TRUE)
+#' 
+#' # in case the default execution path of clustalo is not set within the default path
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "clustalo", get_aln = TRUE, path = "path/to/clustalo/")
+#' 
+#' # running clustalo using additional parameters
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "clustalo", get_aln = TRUE,
+#'           clustalo.params = "--outfmt clu")         
+#'           
 #'           
 #'                                             
+#' # MAFFT Example:  
+#' 
+#' # in case the default execution path of mafft runs properly on your system
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "mafft", get_aln = TRUE)
+#' 
+#' # in case the default execution path of mafft is not set within the default path
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "mafft", get_aln = TRUE, path = "path/to/mafft/")
+#' 
+#' # running mafft using additional parameters
+#' # details: http://www.drive5.com/mafft/manual/
+#' multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'           tool = "mafft", get_aln = TRUE,
+#'           mafft.params = "--maxiterate 1 --clustalout")         
+#'           
+#'                                                                                   
 #' }
 #' @references 
 #' 
@@ -160,15 +223,23 @@
 #' 
 #' MAFFT : 
 #' 
+#' Katoh, Standley 2013 (Molecular Biology and Evolution 30:772-780)  
+#' MAFFT multiple sequence alignment software version 7: improvements in performance and usability. 
+#' 
 #' http://mafft.cbrc.jp/alignment/software/
+#' 
+#' http://mafft.cbrc.jp/alignment/software/manual/manual.html
+#' 
+#' http://mafft.cbrc.jp/alignment/software/tips0.html
 #' 
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                       clustalw.params = NULL, t_coffee.params = NULL,
-                      muscle.params = NULL, clustalo.params = NULL){
+                      muscle.params = NULL, clustalo.params = NULL,
+                      mafft.params = NULL){
         
-        if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo")))
+        if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
                 stop("Please choose a tool that is supported by this function.")
         
         if(!file.exists("_alignment/")){
@@ -210,7 +281,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                                         # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
                                         system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
                                } else {
-                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",clustalw.params," -quiet"))                                       
+                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",clustalw.params))                                       
                                }
                         } else {
                                 
@@ -227,7 +298,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                                         
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                                       file," -outfile=",file.out," ",clustalw.params," -quiet")
+                                                       file," -outfile=",file.out," ",clustalw.params)
                                         )    
                                 }
                         }
@@ -299,7 +370,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                                            system(paste0("muscle -in ",file," -out ",file.out, " -clwstrict"," -quiet"))
                                   } else {
                                           # write output into clustalw format using the -clwstrict argument
-                                           system(paste0("muscle -in ",file," ",muscle.params," -out ",file.out," -clwstrict"," -quiet"))
+                                           system(paste0("muscle -in ",file," ",muscle.params," -out ",file.out))
                                   }
                  
                            } else {
@@ -310,7 +381,7 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                                    } else {
                                            # write output into clustalw format using the -clwstrict argument
                                            system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
-                                                         file," ",muscle.params," -out ",file.out," -clwstrict"," -quiet"))
+                                                         file," ",muscle.params," -out ",file.out))
                                            
                                    }
                          
@@ -334,13 +405,28 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                  tryCatch(
                  {       
                          if(is.null(path)){
-                         
-                                 system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clustal --force"))
+                                 
+                                 if(is.null(clustalo.params)){
+                                         
+                                         system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu"))
+                                 
+                                 } else {
+                                         
+                                         system(paste0("clustalo -i ",file," -o ",file.out," ",clustalo.params))
+                                 }
                  
                          } else {
-                         
-                                 system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                               file," -o ",file.out," --outfmt clustal"))
+                                 if(is.null(clustalo.params)){
+                                         
+                                         system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
+                                                file," -o ",file.out," --outfmt clustal"))
+                                 
+                                 } else {
+                                         
+                                         system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
+                                                       file," -o ",file.out," ",clustalo.params))
+                                         
+                                 }
                          
                         }
                  
@@ -356,8 +442,65 @@ multi_aln <- function(file, tool, get_aln = "FALSE", path = NULL,
                          return(aln)
                  }
          }
+        
+        if(tool == "mafft"){
+                
+                # test whether the connection to mafft works
+                tryCatch(
+                {
+                 if(is.null(path)){
+                
+                         # if no specific parameters are set,
+                         # then use the default parameters
+                         if(is.null(mafft.params)){
+                        
+                                system(paste0("mafft --quiet --clustalout ",file," >",file.out))
+                                
+                         } else {
+                                 
+                                system(paste0("mafft"," ",mafft.params," ",file," >",file.out))                                       
+                         }
+                } else {
+                
+                         # if no specific parameters are set,
+                         # then use the default parameters
+                         if(is.null(mafft.params)){
+                        
+                                system(
+                                        paste0("export PATH=$PATH:",path,"; ","mafft --quiet --clustalout ",
+                                               file," >",file.out)
+                                       )
+                         } else {
+                        
+                                system(
+                                        paste0("export PATH=$PATH:",path,"; ","mafft"," ",
+                                               mafft.params," ",file," >",file.out)
+                                )    
+                        }
+                }
+               },error = function(){ print(paste0("Please check the correct path to ",tool,
+                                   "... the interface call did not work properly.") )}
+                , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                )
+
+                if(get_aln){
+                        aln <- seqinr::read.alignment(file.out, format = "clustal")
+                        return(aln)
+                }
+        }
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

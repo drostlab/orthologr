@@ -5,12 +5,12 @@
 \usage{
 multi_aln(file, tool, get_aln = "FALSE", path = NULL,
   clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
-  clustalo.params = NULL)
+  clustalo.params = NULL, mafft.params = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
 
-\item{tool}{a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", and "clustalo".}
+\item{tool}{a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", "clustalo", and "mafft".}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
@@ -23,10 +23,13 @@ that a set of default parameters is used when running clustalw. Example: clustal
 that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".}
 
 \item{muscle.params}{a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running muscle. Example: muscle.params = "-diags".}
+that a set of default parameters is used when running muscle. Example: muscle.params = "-diags -clwstrict".}
 
 \item{clustalo.params}{a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running clustalo.}
+that a set of default parameters is used when running clustalo. Example: clustalo.params = "--threads 2 --outfmt clu"}
+
+\item{mafft.params}{a character string listing the input paramters that shall be passed to the executing mafft program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running mafft. Example: mafft.params = "--maxiterate 1 --thread 2 --clustalout".}
 }
 \value{
 In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
@@ -37,7 +40,7 @@ that shall be aligned and computes a multiple alignment using a defined multiple
 }
 \details{
 This function provides an interface between R and common multiple alignment programs
-such as "clustalw", "t_coffee", "muscle", and "clustalo".
+such as "clustalw", "t_coffee", "muscle", "clustalo", and "mafft".
 
 CLUSTALW :
 
@@ -63,7 +66,7 @@ the following calls to clustalw should work properly on your system:
 
 system("t_coffee -version")
 
-In case these procedures don't work properly, please use the \code{path} argument
+In case this procedures doesn't work properly, please use the \code{path} argument
 to specify the 't_coffee' execution path on your system:
 
 system("path/to/t_coffee/t_coffee -version")
@@ -76,10 +79,40 @@ the following calls to muscle should work properly on your system:
 
 system("muscle -help")
 
-In case these procedures don't work properly, please use the \code{path} argument
+In case this procedures doesn't work properly, please use the \code{path} argument
 to specify the 'muscle' execution path on your system:
 
 system("path/to/muscle/muscle -help")
+
+
+#' CLUSTALO :
+
+In case you use the default path to the clustalo program,
+the following calls to clustalo should work properly on your system:
+
+system("clustalo --help")
+
+In case this procedures doesn't work properly, please use the \code{path} argument
+to specify the 'clustalo' execution path on your system:
+
+system("path/to/clustalo/clustalo --help")
+
+
+MAFFT :
+
+In case you use the default path to the mafft program,
+the following calls to mafft should work properly on your system:
+
+system("mafft -help")
+
+In case this procedures doesn't work properly, please use the \code{path} argument
+to specify the 'mafft' execution path on your system:
+
+system("path/to/mafft/mafft -help")
+}
+\note{
+Note that when using the 'clustalw.params', ... parameters, make sure the corresponding alignment tool
+returns a file in clustal format *.aln. This is only important when \code{get_aln} = \code{TRUE}.
 }
 \examples{
 \dontrun{
@@ -133,7 +166,41 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # details: http://www.drive5.com/muscle/manual/
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "muscle", get_aln = TRUE,
-          muscle.params = "-diags")
+          muscle.params = "-diags -clwstrict")
+
+
+# CLUSTALO Example:
+
+# in case the default execution path of clustalo runs properly on your system
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "clustalo", get_aln = TRUE)
+
+# in case the default execution path of clustalo is not set within the default path
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "clustalo", get_aln = TRUE, path = "path/to/clustalo/")
+
+# running clustalo using additional parameters
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "clustalo", get_aln = TRUE,
+          clustalo.params = "--outfmt clu")
+
+
+
+# MAFFT Example:
+
+# in case the default execution path of mafft runs properly on your system
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "mafft", get_aln = TRUE)
+
+# in case the default execution path of mafft is not set within the default path
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "mafft", get_aln = TRUE, path = "path/to/mafft/")
+
+# running mafft using additional parameters
+# details: http://www.drive5.com/mafft/manual/
+multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool = "mafft", get_aln = TRUE,
+          mafft.params = "--maxiterate 1 --clustalout")
 
 
 }
@@ -185,6 +252,13 @@ http://www.clustal.org/omega/README
 
 MAFFT :
 
+Katoh, Standley 2013 (Molecular Biology and Evolution 30:772-780)
+MAFFT multiple sequence alignment software version 7: improvements in performance and usability.
+
 http://mafft.cbrc.jp/alignment/software/
+
+http://mafft.cbrc.jp/alignment/software/manual/manual.html
+
+http://mafft.cbrc.jp/alignment/software/tips0.html
 }
 
