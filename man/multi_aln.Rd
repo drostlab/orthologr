@@ -3,7 +3,7 @@
 \alias{multi_aln}
 \title{An interface function to common multiple alignment tools.}
 \usage{
-multi_aln(file, tool, get_aln = "FALSE", path = NULL,
+multi_aln(file, tool, get_aln = FALSE, path = NULL,
   clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
   clustalo.params = NULL, mafft.params = NULL)
 }
