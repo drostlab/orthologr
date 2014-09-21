@@ -1,30 +1,47 @@
 #' @title Interface function to BLAST+
-#' @description This function performs a blast+ search of a given set of protein sequences against a given database.
+#' @description This function performs a BLAST+ search of a given set of sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
-#' used to run BLAST searches
+#' used to run BLAST searches.
+#' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running BLAST.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @references 
+#' 
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
 #' @examples \dontrun{
-#' # performing a best hit BLAST search
+#' # performing a BLAST search using blastp (default)
 #' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+#' 
 #' 
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
 #' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       comp_cores = 2)
+#'       
+
+#'  # running blastp using additional parameters
+#'  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       blast_params = "-max_target_seqs 1")
+#'              
 #' }
 #'
-#' @return A data.table storing the BLAST hit table returned by the BLAST program.
+#' @return A data.table storing the BLAST hit table returned by BLAST.
 #' @import seqinr
 #' @export
 blast <- function(query_file, subject_file, 
-                  eval = "1E-5", path = NULL,
-                  comp_cores = 1){
+                  blast_algorithm = "blastp", eval = "1E-5",
+                  path = NULL, comp_cores = 1, blast_params = NULL){
+        
+        if(!is.element(blast_algorithm,c("blastp")))
+                stop("Please choose a valid BLAST mode.")
         
         # initialize the BLAST search
         
@@ -60,18 +77,55 @@ blast <- function(query_file, subject_file,
         tryCatch(
         {      
                 if(is.null(path)){
-                        system(
-                                paste0("blastp -db ",database," -query ",input,
-                                       " -evalue ",eval," -out ", output ," -outfmt 6", 
-                                       " -num_threads ", comp_cores)
-                                )
+                        
+                        if(blast_algorithm == "blastp"){
+                                
+                                if(is.null(blast_params)){
+                                        
+                                        # use the default parameters when running blastp
+                                        system(
+                                               paste0("blastp -db ",database," -query ",input,
+                                                      " -evalue ",eval," -out ", output ," -outfmt 6", 
+                                                      " -num_threads ", comp_cores)
+                                               )
+                                } else {
+                                        
+                                        # add additional parameters when running blastp
+                                        system(
+                                                paste0("blastp -db ",database," -query ",input,
+                                                       " -evalue ",eval," -out ", output ," -outfmt 6", 
+                                                       " -num_threads ", comp_cores," ",blast_params)
+                                        )   
+                                        
+                                }
+                        }
+                        
                 } else {
-                        system(
-                                paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                       database," -query ",input," -evalue ",
-                                       eval," -out ", output ," -outfmt 6", 
-                                       " -num_threads ", comp_cores)
-                               )
+                        
+                        if(blast_algorithm == "blastp"){
+                                
+                                if(is.null(blast_params)){
+                                        
+                                        # use the default parameters when running blastp
+                                        system(
+                                                paste0("export PATH=$PATH:",path,"; blastp -db ",
+                                                       database," -query ",input," -evalue ",
+                                                       eval," -out ", output ," -outfmt 6", 
+                                                       " -num_threads ", comp_cores)
+                                              )
+                                } else {
+                                        
+                                        # add additional parameters when running blastp
+                                        system(
+                                                paste0("export PATH=$PATH:",path,"; blastp -db ",
+                                                       database," -query ",input," -evalue ",
+                                                       eval," -out ", output ," -outfmt 6", 
+                                                       " -num_threads ", comp_cores," ",blast_params)
+                                        )
+                                        
+                                        
+                                }
+                        }
                 }
         
         },error = function(){ print(paste0("Please check the correct path to ",tool,
@@ -268,4 +322,83 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
                 }
         }
         return(list(dt, dbname))
+}
+
+
+
+#' @title Advanced interface function to BLAST+
+#' @description This function performs a BLAST+ search of a given set of sequences and a given set of parameters against a BLAST database.
+#' @param query_file a character string specifying the path to the sequence file of interest (query organism).
+#' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk".
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running BLAST.
+#' @details
+#'  
+#' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
+#' 
+#' "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
+#' 
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @references 
+#' 
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
+#' @examples \dontrun{
+#' 
+#' 
+#' # performing a BLAST search using blastp (default)
+#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -outfmt 6 -num_threads 2")
+#'       
+#'       
+#'              
+#' }
+#'
+#' @return the \code{advanced_blast} function creates a folder named '_blast' and stores
+#' the hit table returned by BLAST in this folder.
+#' @export
+advanced_blast <- function(query_file, subject_file, format = "fasta", 
+                           blast_algorithm = "blastp", path = NULL,
+                           blast_params = NULL){
+        
+        # http://blast.ncbi.nlm.nih.gov/Blast.cgi
+        if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
+                                         "psi-blast", "phi-blast", "delta-blast",
+                                         "blastx","tblastn","tblastx")))
+                stop("Please choose a valid BLAST mode.")
+        
+        # initialize the BLAST search
+        
+        query.dt <- set_blast(file = query_file, format = format)[[1]]
+        # make a BLASTable databse of the subject
+        database <- set_blast(file = subject_file, format = format, makedb = TRUE)[[2]]
+        # create an internal folder structure for the BLAST process 
+        input = "_blast/blastinput.fasta" 
+        output = "_blast/blastresult.csv"
+        
+        
+        if(!file.exists("_blast/")){
+                
+                dir.create("_blast")
+        }
+        
+        
+        if(is.null(path)){
+                
+                system(
+                        paste0(blast_algorithm," -db ",database," -query ",input,
+                               " -out ", output ," ",blast_params)
+                )   
+                
+        } else {
+        
+                system(
+                       paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                              database," -query ",input," -out ", output ," ",blast_params)
+                      )
+        
+        }
 }

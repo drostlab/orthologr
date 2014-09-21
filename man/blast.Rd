@@ -3,41 +3,56 @@
 \alias{blast}
 \title{Interface function to BLAST+}
 \usage{
-blast(query_file, subject_file, eval = "1E-5", path = NULL,
-  comp_cores = 1)
+blast(query_file, subject_file, blast_algorithm = "blastp", eval = "1E-5",
+  path = NULL, comp_cores = 1, blast_params = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
+\item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
+
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be
-used to run BLAST searches}
+used to run BLAST searches.}
+
+\item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running BLAST.}
 }
 \value{
-A data.table storing the BLAST hit table returned by the BLAST program.
+A data.table storing the BLAST hit table returned by BLAST.
 }
 \description{
-This function performs a blast+ search of a given set of protein sequences against a given database.
+This function performs a BLAST+ search of a given set of sequences against a given database.
 }
 \examples{
 \dontrun{
-# performing a best hit BLAST search
+# performing a BLAST search using blastp (default)
 blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
 
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
 blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       comp_cores = 2)
+
+ # running blastp using additional parameters
+ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      blast_params = "-max_target_seqs 1")
+
 }
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
+}
+\references{
+http://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
 

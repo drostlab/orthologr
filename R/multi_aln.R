@@ -281,6 +281,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                         # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
                                         system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
                                } else {
+                                       # add additional parameters when running clustalw
                                         system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",clustalw.params))                                       
                                }
                         } else {
@@ -289,13 +290,14 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 # then use the default parameters
                                 if(is.null(clustalw.params)){
                                         
-                                        # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
+                                        # use the default parameters when running clustalw
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
                                                 file," -outfile=",file.out," -quiet")
                                         )
                                 } else {
                                         
+                                        # add additional parameters when running clustalw
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
                                                        file," -outfile=",file.out," ",clustalw.params)
@@ -322,11 +324,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                         if(is.null(path)){
                                 
                                 if(is.null(t_coffee.params)){
+                                        
+                                        # use the default parameters when running t_coffee
                                         # perform an accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
                                         system(paste0("t_coffee -infile ",file," -mode accurate"," -outfile ",file.out),
                                                 show.output.on.console = FALSE)
                                 } else {
+                                        
+                                        # add additional parameters when running t_coffee
                                         system(paste0("t_coffee -infile ",file," ",t_coffee.params," -outfile ",file.out),
                                                show.output.on.console = FALSE)
                                         
@@ -334,6 +340,8 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                         } else {
                                 
                                 if(is.null(t_coffee.params)){
+                                        
+                                        # use the default parameters when running t_coffee
                                         # perform a accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
                                         system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
@@ -341,6 +349,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                                  show.output.on.console = FALSE)
                                 } else {
                                         
+                                        # add additional parameters when running t_coffee
                                         system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
                                                       file," ",t_coffee.params," -outfile ",file.out),
                                                show.output.on.console = FALSE)
@@ -366,19 +375,30 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  {        
                           if(is.null(path)){
                                   if(is.null(muscle.params)){
+                                          
+                                          # use the default parameters when running muscle
                                           # write output into clustalw format using the -clwstrict argument
                                            system(paste0("muscle -in ",file," -out ",file.out, " -clwstrict"," -quiet"))
+                                           
                                   } else {
+                                          
+                                          # add additional parameters when running muscle
                                           # write output into clustalw format using the -clwstrict argument
                                            system(paste0("muscle -in ",file," ",muscle.params," -out ",file.out))
+                                           
                                   }
                  
                            } else {
                                    if(is.null(muscle.params)){
+                                           
+                                           # use the default parameters when running muscle
                                            # write output into clustalw format using the -clwstrict argument
                                            system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
                                                   file," -out ",file.out," -clwstrict"," -quiet"))
+                                           
                                    } else {
+                                           
+                                           # add additional parameters when running muscle
                                            # write output into clustalw format using the -clwstrict argument
                                            system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
                                                          file," ",muscle.params," -out ",file.out))
@@ -408,21 +428,25 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                  
                                  if(is.null(clustalo.params)){
                                          
+                                         # use the default parameters when running clustalo
                                          system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu"))
                                  
                                  } else {
                                          
+                                         # add additional parameters when running clustalo
                                          system(paste0("clustalo -i ",file," -o ",file.out," ",clustalo.params))
                                  }
                  
                          } else {
                                  if(is.null(clustalo.params)){
                                          
+                                         # use the default parameters when running clustalo
                                          system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
                                                 file," -o ",file.out," --outfmt clustal"))
                                  
                                  } else {
                                          
+                                         # add additional parameters when running clustalo
                                          system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
                                                        file," -o ",file.out," ",clustalo.params))
                                          
@@ -453,11 +477,13 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          # if no specific parameters are set,
                          # then use the default parameters
                          if(is.null(mafft.params)){
-                        
+                                
+                                # use the default parameters when running mafft
                                 system(paste0("mafft --quiet --clustalout ",file," >",file.out))
                                 
                          } else {
-                                 
+                                
+                                # add additional parameters when running mafft
                                 system(paste0("mafft"," ",mafft.params," ",file," >",file.out))                                       
                          }
                 } else {
@@ -465,13 +491,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          # if no specific parameters are set,
                          # then use the default parameters
                          if(is.null(mafft.params)){
-                        
+                                
+                                # use the default parameters when running mafft
                                 system(
                                         paste0("export PATH=$PATH:",path,"; ","mafft --quiet --clustalout ",
                                                file," >",file.out)
                                        )
                          } else {
-                        
+                                
+                                # add additional parameters when running mafft
                                 system(
                                         paste0("export PATH=$PATH:",path,"; ","mafft"," ",
                                                mafft.params," ",file," >",file.out)
