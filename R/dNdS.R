@@ -17,7 +17,7 @@ dNdS <- function(query_file, subject_file,
                  blast_mode = "best hit", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
                  codonaln_tool = "pal2nal", codonaln_path = NULL,
-                 dnds_est.method = "Cameron", comp_cores = 1
+                 dnds_est.method = "Cameron", comp_cores = 1,
                  quiet=FALSE){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
