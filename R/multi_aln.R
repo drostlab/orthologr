@@ -237,7 +237,7 @@
 multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                       clustalw.params = NULL, t_coffee.params = NULL,
                       muscle.params = NULL, clustalo.params = NULL,
-                      mafft.params = NULL
+                      mafft.params = NULL,
                       quiet=FALSE){
         
         if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
