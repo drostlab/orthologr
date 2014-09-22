@@ -3,13 +3,16 @@
 \alias{blast}
 \title{Interface function to BLAST+}
 \usage{
-blast(query_file, subject_file, blast_algorithm = "blastp", eval = "1E-5",
-  path = NULL, comp_cores = 1, blast_params = NULL)
+blast(query_file, subject_file, format = "fasta",
+  blast_algorithm = "blastp", eval = "1E-5", path = NULL,
+  comp_cores = 1, blast_params = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
 
 \item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
 
@@ -53,6 +56,8 @@ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr
 Sarah Scharfenberg and Hajk-Georg Drost
 }
 \references{
+http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+
 http://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
 

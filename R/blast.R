@@ -2,6 +2,7 @@
 #' @description This function performs a BLAST+ search of a given set of sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
@@ -11,6 +12,8 @@
 #' that a set of default parameters is used when running BLAST.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @references 
+#' 
+#' http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
 #' 
 #' http://blast.ncbi.nlm.nih.gov/Blast.cgi
 #' @examples \dontrun{
@@ -36,7 +39,7 @@
 #' @return A data.table storing the BLAST hit table returned by BLAST.
 #' @import seqinr
 #' @export
-blast <- function(query_file, subject_file, 
+blast <- function(query_file, subject_file, format = "fasta",
                   blast_algorithm = "blastp", eval = "1E-5",
                   path = NULL, comp_cores = 1, blast_params = NULL){
         
@@ -141,10 +144,10 @@ blast <- function(query_file, subject_file,
                                "evalue","bit_score")
         
         # define the colClasses for faster file streaming
-        c_Classes <- c(rep("character",2), rep("numeric",10))
+        col_Classes <- c(rep("character",2), rep("numeric",10))
                 
         hit_table <- data.table::fread(input = output, sep = "\t", 
-                                       header = FALSE, colClasses = c_Classes)
+                                       header = FALSE, colClasses = col_Classes)
         
         data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
                              new = blast_table_names)
@@ -160,11 +163,17 @@ blast <- function(query_file, subject_file,
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
+#' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running BLAST.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @examples \dontrun{
+#' 
 #' # performing gene orthology inference using the best hit (BH) method
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
@@ -173,17 +182,28 @@ blast <- function(query_file, subject_file,
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
+#'            
 #' }
 #'
-#' @return A data.table as returned by the blast() function, storing the geneids
+#' @return A data.table as returned by the \code{blast} function, storing the geneids
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 #' @export
-blast_best <- function(query_file, subject_file, path = NULL, comp_cores = 1){
+blast_best <- function(query_file, subject_file, format = "fasta", 
+                       blast_algorithm = "blastp", eval = "1E-5",
+                       path = NULL, comp_cores = 1, blast_params = NULL){
         
+        # default parameters for best hit filtering
+        default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
         # performing a BLAST search from query against subject: blast(query,subject)
+        # using the BLAST parameter: '-max_target_seqs 1' allows to retain
+        # only the best hit result and therefore, speeds up the BLAST search process
         hit_tbl.dt <- blast(query_file = query_file, 
                             subject_file = subject_file, 
-                            path = path, comp_cores = comp_cores)
+                            format = format, path = path, 
+                            comp_cores = comp_cores,blast_params = ifelse(!is.null(blast_params),
+                                                                          paste0(blast_params,
+                                                                          " ",default_pars),
+                                                                          default_pars))
      
         #select only the best hit (E-value) 
         #besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id], lapply(.SD[ , evalue],min)),
@@ -261,7 +281,6 @@ blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
 #'  # running the set function to see an example output
 #'  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
-#' @import data.table
 #' @export
 set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
@@ -331,10 +350,11 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk".
-#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn","deltablast",... .
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{NULL}.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -342,7 +362,18 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
 #' 
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @note This function is also able to return the subject taxonomy.
+#' 
+#' For this purpose the NCBI taxdb must be installed on your system:
+#' 
+#' ftp://ftp.ncbi.nlm.nih.gov/blast/db/taxdb.tar.gz
+#' 
+#' In case you want to use the taxonomy option, set \code{taxonomy} = \code{TRUE}.
 #' @references 
+#' 
+#' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
+#' 
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide
 #' 
 #' http://blast.ncbi.nlm.nih.gov/Blast.cgi
 #' @examples \dontrun{
@@ -351,7 +382,7 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' # performing a BLAST search using blastp (default)
 #' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -outfmt 6 -num_threads 2")
+#'       blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
 #'       
 #'       
 #'              
@@ -362,11 +393,11 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' @export
 advanced_blast <- function(query_file, subject_file, format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
-                           blast_params = NULL){
+                           blast_params = NULL,taxonomy = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
-                                         "psi-blast", "phi-blast", "delta-blast",
+                                         "psiblast", "phiblast", "deltablast",
                                          "blastx","tblastn","tblastx")))
                 stop("Please choose a valid BLAST mode.")
         
@@ -388,17 +419,95 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         
         if(is.null(path)){
                 
-                system(
-                        paste0(blast_algorithm," -db ",database," -query ",input,
-                               " -out ", output ," ",blast_params)
-                )   
+                # here: http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+                # in column -outfmt additional output columns can be selected: ' 6 qseqid sseqid staxids sskingdoms' .. or ' 6 std'
+                # which is the default value and the same as: ' 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore'
+                        
+                        if(taxonomy == TRUE){
+                                
+                                system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                       " -out ", output ," ",blast_params,
+                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                       length mismatch gapopen qstart qend sstart send evalue 
+                                       bitscore score qcovs'")
+                                       )
+                                
+                        } 
+                        
+                        if(taxonomy == FALSE){
+                                
+                                system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                       " -out ", output ," ",blast_params, 
+                                       " -outfmt '6 qseqid sseqid pident nident length mismatch 
+                                       gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                                       )
+                                
+                        } 
                 
         } else {
-        
-                system(
-                       paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
-                              database," -query ",input," -out ", output ," ",blast_params)
-                      )
-        
+                if(taxonomy == TRUE){
+                        
+                       system(
+                               paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                               database," -query ",input," -out ", output ," ",blast_params,
+                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                               length mismatch gapopen qstart qend sstart send evalue bitscore 
+                               score qcovs'")
+                             )
+                       
+                } 
+                
+                if(taxonomy == FALSE){
+                        
+                        system(
+                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                                       database," -query ",input," -out ", output ," ",blast_params,
+                                       " -outfmt '6 qseqid sseqid pident nident length 
+                                       mismatch gapopen qstart qend sstart send evalue bitscore 
+                                       score qcovs'")
+                        )
+                        
+                        
+                }
         }
+        
+        # default parameters that are not returned in the hit table
+        # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+        non_returned_params <- c("db","query_loc","outfm","out","subject","subject_loc",
+                                 "show_gis","num_descriptions","num_alignments","max_target_seqs",
+                                 "html","gilist","negative_gilist","entrez_query","culling_limit",
+                                 "best_hit_overhang","best_hit_score_edge","dbsize","searchsp",
+                                 "import_search_strategy","export_search_strategy","parse_deflines",
+                                 "num_threads","remote")
+        
+        split_params <- unlist(strsplit(blast_params," "))
+        param_names <- split_params[sapply(split_params,grepl,pattern="-[a-zA-Z]",perl = TRUE)]  
+        param_names <- stringr::str_replace(param_names, pattern = "-", replacement = "")
+        
+        
+        default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
+                            "num_ident_matches","alig_length","mismatches", "gap_openings","q_start",
+                            "q_end","s_start","s_end","evalue","bit_score","score_raw",
+                            "query_coverage_per_subj")
+        
+        
+        if(taxonomy == FALSE)
+                default_params <- default_params[!((default_params == "subject_taxonomy") | (default_params == "subject_kingdom"))]
+        
+        
+        additional_params <- param_names[(!is.element(param_names,default_params)) & (!is.element(param_names,non_returned_params))]
+        
+        colNames <- c(default_params,additional_params)
+        
+        
+        hit_table <- data.table::fread(input = output, sep = "\t", 
+                                       header = FALSE)
+ 
+        data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
+                             new = colNames)
+        
+        data.table::setkeyv(hit_table, c("query_id","subject_id"))
+        
+        return(hit_table)        
+        
 }

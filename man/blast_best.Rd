@@ -3,19 +3,30 @@
 \alias{blast_best}
 \title{Function to perform a BLAST best hit search}
 \usage{
-blast_best(query_file, subject_file, path = NULL, comp_cores = 1)
+blast_best(query_file, subject_file, format = "fasta",
+  blast_algorithm = "blastp", eval = "1E-5", path = NULL,
+  comp_cores = 1, blast_params = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+
+\item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
+
+\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore BLAST computations.}
+
+\item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running BLAST.}
 }
 \value{
-A data.table as returned by the blast() function, storing the geneids
+A data.table as returned by the \code{blast} function, storing the geneids
 of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 }
 \description{
@@ -26,6 +37,7 @@ Given a set of protein sequences A, a best hit blast search is being performed f
 }
 \examples{
 \dontrun{
+
 # performing gene orthology inference using the best hit (BH) method
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
@@ -34,6 +46,7 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            comp_cores = 2)
+
 }
 }
 \author{
