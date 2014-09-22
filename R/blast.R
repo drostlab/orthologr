@@ -230,9 +230,14 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #' set of protein sequences and vice versa.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
-#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+#' that a set of default parameters is used when running BLAST.
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
 #' first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
 #' a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
@@ -253,10 +258,18 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #' @return A data.table as returned by the blast() function, storing the geneids
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
 #' @export
-blast_rec <- function(query_file, subject_file, path = NULL, comp_cores = 1){
+blast_rec <- function(query_file, subject_file, format = "fasta", 
+                      blast_algorithm = "blastp", eval = "1E-5",
+                      path = NULL, comp_cores = 1, blast_params = NULL){
         
-        orthoA <- blast_best(query_file,subject_file, path = path, comp_cores = comp_cores)
-        orthoB <- blast_best(subject_file,query_file, path = path, comp_cores = comp_cores)
+        orthoA <- blast_best(query_file,subject_file, 
+                             format = format, blast_algorithm = blast_algorithm,
+                             path = path, comp_cores = comp_cores, blast_params = blast_params)
+        
+        orthoB <- blast_best(subject_file,query_file, 
+                             format = format,blast_algorithm = blast_algorithm,
+                             path = path, comp_cores = comp_cores, blast_params = blast_params)
+        
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
         return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),

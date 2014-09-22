@@ -3,16 +3,27 @@
 \alias{blast_rec}
 \title{Function to perform a BLAST reciprocal best hit (RBH) search}
 \usage{
-blast_rec(query_file, subject_file, path = NULL, comp_cores = 1)
+blast_rec(query_file, subject_file, format = "fasta",
+  blast_algorithm = "blastp", eval = "1E-5", path = NULL,
+  comp_cores = 1, blast_params = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+
+\item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
+
+\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore BLAST computations.}
+
+\item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+that a set of default parameters is used when running BLAST.}
 }
 \value{
 A data.table as returned by the blast() function, storing the geneids
@@ -41,6 +52,6 @@ blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 }
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 
