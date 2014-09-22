@@ -250,6 +250,13 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
         
         file.out <- paste0("_alignment/",tool,".aln")
         
+        if(quiet){
+                clustalw.params = paste0(clustalw.params, " -QUIET")
+                mafft.params = paste0(mafft.params, " --quiet")
+                muscle.params = paste0(muscle.params, " -quiet")
+                # clustalo - no param found to limit the output
+        }
+        
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
         # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
