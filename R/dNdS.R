@@ -17,7 +17,8 @@ dNdS <- function(query_file, subject_file,
                  blast_mode = "best hit", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
                  codonaln_tool = "pal2nal", codonaln_path = NULL,
-                 dnds_est.method = "Cameron", comp_cores = 1){
+                 dnds_est.method = "Cameron", comp_cores = 1
+                 quiet=FALSE){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
@@ -126,7 +127,7 @@ dNdS <- function(query_file, subject_file,
       hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
                                multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
                                dnds_est.method = dnds_est.method,
-                               codonaln_path = codonaln_path )}))]
+                               codonaln_path = codonaln_path , quiet=TRUE)}))]
 
         return(hit.table) 
    #   compute_dnds(res[1,], 
@@ -176,7 +177,7 @@ dNdS <- function(query_file, subject_file,
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values.
 #' @import data.table
 #' @export
-substitutionrate <- function(file, est.method, format = "fasta"){
+substitutionrate <- function(file, est.method, format = "fasta", quiet=FALSE){
         
         if(!is.element(est.method,c("Cameron","Li")))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
@@ -205,7 +206,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
                 
-                print("Substitutionrate successfully calculated by gestimator")
+                if(!quiet){print("Substitutionrate successfully calculated by gestimator")}
                 
                 return(hit.table)
             },error = function(){ print(paste0("Please check the correct path to ",est.method,
@@ -224,7 +225,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
                         data.table::setnames(res, old = paste0("V",1:5), 
                                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
                  
-                        print("Substitutionrate successfully calculated using Li's method.")
+                        if(!quiet){print("Substitutionrate successfully calculated using Li's method.")}
                         
                         return(res)
                         
@@ -236,7 +237,7 @@ substitutionrate <- function(file, est.method, format = "fasta"){
 compute_dnds <- function(x, 
                          multialn_tool="clustalw", multialn_path = NULL,
                          codonaln_tool="pal2nal", codonaln_path = NULL,
-                         dnds_est.method = "Cameron"){
+                         dnds_est.method = "Cameron", quiet=FALSE){
         #return(x["query_id"])
         names <- list(x["query_id"],x["subject_id"])
         seqs <- list(x["query_cds"],x["subject_cds"])
@@ -251,18 +252,18 @@ compute_dnds <- function(x,
         # align aa -> <multialn_tool>.aln
         multi_aln(file = "_alignment/aa.fasta", 
                   tool = multialn_tool, 
-                  get_aln = FALSE, path = multialn_path)
+                  get_aln = FALSE, path = multialn_path, quiet=quiet)
 
         # align codon -> cds.aln
         codon_aln(file_aln = paste0("_alignment/",multialn_tool,".aln"),
                   file_nuc = "_alignment/cds.fasta",
                   tool = codonaln_tool,
                   format = "fasta",
-                  get_aln = FALSE)
+                  get_aln = FALSE, quiet = quiet)
         
         # compute kaks
         hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
-                                      est.method = dnds_est.method)
+                                      est.method = dnds_est.method, quiet=quiet)
         return(hit.table[ , dNdS])
 
 }

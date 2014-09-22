@@ -237,7 +237,8 @@
 multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                       clustalw.params = NULL, t_coffee.params = NULL,
                       muscle.params = NULL, clustalo.params = NULL,
-                      mafft.params = NULL){
+                      mafft.params = NULL
+                      quiet=FALSE){
         
         if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
                 stop("Please choose a tool that is supported by this function.")
@@ -306,7 +307,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                         }
                 },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                    "... the interface call did not work properly.") )}
-                , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 
                 )
                 
@@ -358,7 +359,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 
                 },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                    "... the interface call did not work properly.") )}
-                , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 
                 )
                 
@@ -409,7 +410,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  
                  },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                     "... the interface call did not work properly.") )}
-                 , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                 , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                  
                  )
                  
@@ -456,7 +457,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  
                  },error = function(){ print(paste0("Please check the correct path to ",tool,
                                                     "... the interface call did not work properly.") )}
-                 , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                 , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                  
                  )
          
@@ -508,7 +509,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 }
                },error = function(){ print(paste0("Please check the correct path to ",tool,
                                    "... the interface call did not work properly.") )}
-                , finally = print(paste0("Multiple Alignment successfully written in ",file.out,"."))
+                , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 )
 
                 if(get_aln){
