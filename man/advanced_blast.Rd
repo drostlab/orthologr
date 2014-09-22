@@ -5,7 +5,7 @@
 \usage{
 advanced_blast(query_file, subject_file, format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
-  taxonomy = FALSE)
+  taxonomy = FALSE, taxdb_path = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -21,7 +21,9 @@ advanced_blast(query_file, subject_file, format = "fasta",
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
 
-\item{taxonomy}{a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{NULL}.}
+\item{taxonomy}{a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.}
+
+\item{taxdb_path}{a character string specidying the path to the lical taxonomy database.}
 }
 \value{
 the \code{advanced_blast} function creates a folder named '_blast' and stores

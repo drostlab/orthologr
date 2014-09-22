@@ -194,6 +194,8 @@ blast_best <- function(query_file, subject_file, format = "fasta",
         
         # default parameters for best hit filtering
         default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
+        
+        
         # performing a BLAST search from query against subject: blast(query,subject)
         # using the BLAST parameter: '-max_target_seqs 1' allows to retain
         # only the best hit result and therefore, speeds up the BLAST search process
@@ -367,7 +369,8 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{NULL}.
+#' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.
+#' @param taxdb_path a character string specidying the path to the lical taxonomy database.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -406,7 +409,8 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' @export
 advanced_blast <- function(query_file, subject_file, format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
-                           blast_params = NULL,taxonomy = FALSE){
+                           blast_params = NULL,taxonomy = FALSE,
+                           taxdb_path = NULL){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -429,6 +433,13 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                 dir.create("_blast")
         }
         
+        # write query fasta file 
+        write_AA <- as.list(query.dt[ ,aa])
+        name <- query.dt[ , geneids]      
+        
+        seqinr::write.fasta(write_AA, names = name,
+                            nbchar = 80,open = "w",
+                            file.out = input)
         
         if(is.null(path)){
                 
@@ -438,13 +449,14 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                         
                         if(taxonomy == TRUE){
                                 
-                                system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                       " -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue 
-                                       bitscore score qcovs'")
-                                       )
-                                
+                                if(!is.null(taxdb_path)){
+                                        system( paste0("export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
+                                               " -out ", output ," ",blast_params,
+                                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                                length mismatch gapopen qstart qend sstart send evalue 
+                                                bitscore score qcovs'")
+                                         )
+                                }
                         } 
                         
                         if(taxonomy == FALSE){
@@ -458,15 +470,19 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                         } 
                 
         } else {
+                
                 if(taxonomy == TRUE){
                         
-                       system(
-                               paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
-                               database," -query ",input," -out ", output ," ",blast_params,
-                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                               length mismatch gapopen qstart qend sstart send evalue bitscore 
-                               score qcovs'")
-                             )
+                        if(!is.null(taxdb_path)){     
+                                
+                                system(
+                                       paste0("export PATH=$PATH:",path,"; ","export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",
+                                       database," -query ",input," -out ", output ," ",blast_params,
+                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
+                                       score qcovs'")
+                                      )
+                        }
                        
                 } 
                 
@@ -478,7 +494,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                        " -outfmt '6 qseqid sseqid pident nident length 
                                        mismatch gapopen qstart qend sstart send evalue bitscore 
                                        score qcovs'")
-                        )
+                               )
                         
                         
                 }
@@ -486,6 +502,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         
         # default parameters that are not returned in the hit table
         # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+        non_returned_params <- vector(mode = "character", length = 24)
         non_returned_params <- c("db","query_loc","outfm","out","subject","subject_loc",
                                  "show_gis","num_descriptions","num_alignments","max_target_seqs",
                                  "html","gilist","negative_gilist","entrez_query","culling_limit",
@@ -497,7 +514,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         param_names <- split_params[sapply(split_params,grepl,pattern="-[a-zA-Z]",perl = TRUE)]  
         param_names <- stringr::str_replace(param_names, pattern = "-", replacement = "")
         
-        
+        default_params <- vector(mode = "character")
         default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
                             "num_ident_matches","alig_length","mismatches", "gap_openings","q_start",
                             "q_end","s_start","s_end","evalue","bit_score","score_raw",
@@ -511,10 +528,16 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         additional_params <- param_names[(!is.element(param_names,default_params)) & (!is.element(param_names,non_returned_params))]
         
         colNames <- c(default_params,additional_params)
+       
+        # define the colClasses for faster file streaming
+        if(taxonomy == TRUE)
+                col_Classes <- c(rep("character",4), rep("numeric",13))
         
+        if(taxonomy == FALSE)
+                col_Classes <- c(rep("character",2), rep("numeric",13))
         
         hit_table <- data.table::fread(input = output, sep = "\t", 
-                                       header = FALSE)
+                                       header = FALSE, colClasses = col_Classes)
  
         data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
                              new = colNames)
