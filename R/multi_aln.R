@@ -237,8 +237,7 @@
 multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                       clustalw.params = NULL, t_coffee.params = NULL,
                       muscle.params = NULL, clustalo.params = NULL,
-                      mafft.params = NULL,
-                      quiet = FALSE){
+                      mafft.params = NULL, quiet = FALSE){
         
         if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
                 stop("Please choose a tool that is supported by this function.")
@@ -249,13 +248,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
         }
         
         file.out <- paste0("_alignment/",tool,".aln")
-        
-        if(quiet){
-                clustalw.params = paste0(clustalw.params, " -QUIET")
-                mafft.params = paste0(mafft.params, " --quiet")
-                muscle.params = paste0(muscle.params, " -quiet")
-                # clustalo - no param found to limit the output
-        }
+
+# does not work as expected, could be included in another way or not.
+#         if(quiet){
+#                 clustalw.params = paste0(clustalw.params, " -QUIET")
+#                 mafft.params = paste0(mafft.params, " --quiet")
+#                 muscle.params = paste0(muscle.params, " -quiet")
+#                 # clustalo - no param found to limit the output
+#         }
+
         
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
@@ -467,18 +468,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                  
                  )
-                 
-## LINUX ERROR 
-#                  There is a problem in the configuration of your shell.
-#                  Check the MAFFT_BINARIES environmental variable by
-#                  $ echo $MAFFT_BINARIES
-#                  This variable must be *unset*, unless you have installed MAFFT
-#                  with a special configuration.  To unset this variable, type
-#                  $ unset MAFFT_BINARIES or $ unsetenv MAFFT_BINARIES                  
-#                  To keep this change permanently, edit setting files
-#                  (.bash_profile, .profile, .cshrc, etc) in your home directory
-#                  to delete the MAFFT_BINARIES line.
-         
+                         
                  
                  if(get_aln){
                          aln <- seqinr::read.alignment(file.out, format = "clustal")
@@ -487,20 +477,6 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
          }
         
         if(tool == "mafft"){
-                
-                
-                # find out on what kind of OS ClustalW is running
-                operating_sys <- Sys.info()[1]
-                
-                if (operating_sys == "Darwin") 
-                        call_clustalw <- "mafft"
-                
-                if (operating_sys == "Linux")
-                        call_clustalw <- "unset MAFFT_BINARIES; mafft"
-                
-                #if (operating_sys == "Windows") 
-                #        call_clustalw <- "clustalw2.exe"
-                #
                 
                 # test whether the connection to mafft works
                 tryCatch(
@@ -512,12 +488,12 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          if(is.null(mafft.params)){
                                 
                                 # use the default parameters when running mafft
-                                system(paste0("mafft --clustalout ",file," >",file.out))
+                                system(paste0("mafft --quiet --clustalout ",file," >",file.out))
                                 
                          } else {
                                 
                                 # add additional parameters when running mafft
-                                system(paste0(call_mafft," ",mafft.params," ",file," >",file.out))                                       
+                                system(paste0("mafft ",mafft.params," ",file," >",file.out))                                       
                          }
                 } else {
                 
@@ -543,6 +519,18 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                    "... the interface call did not work properly.") )}
                 , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 )
+               
+               ## LINUX ERROR 
+               #                  There is a problem in the configuration of your shell.
+               #                  Check the MAFFT_BINARIES environmental variable by
+               #                  $ echo $MAFFT_BINARIES
+               #                  This variable must be *unset*, unless you have installed MAFFT
+               #                  with a special configuration.  To unset this variable, type
+               #                  $ unset MAFFT_BINARIES or $ unsetenv MAFFT_BINARIES                  
+               #                  To keep this change permanently, edit setting files
+               #                  (.bash_profile, .profile, .cshrc, etc) in your home directory
+               #                  to delete the MAFFT_BINARIES line.
+               
 
                 if(get_aln){
                         aln <- seqinr::read.alignment(file.out, format = "clustal")
