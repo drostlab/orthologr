@@ -467,6 +467,17 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  , finally = if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                  
                  )
+                 
+## LINUX ERROR 
+#                  There is a problem in the configuration of your shell.
+#                  Check the MAFFT_BINARIES environmental variable by
+#                  $ echo $MAFFT_BINARIES
+#                  This variable must be *unset*, unless you have installed MAFFT
+#                  with a special configuration.  To unset this variable, type
+#                  $ unset MAFFT_BINARIES or $ unsetenv MAFFT_BINARIES                  
+#                  To keep this change permanently, edit setting files
+#                  (.bash_profile, .profile, .cshrc, etc) in your home directory
+#                  to delete the MAFFT_BINARIES line.
          
                  
                  if(get_aln){
@@ -476,6 +487,20 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
          }
         
         if(tool == "mafft"){
+                
+                
+                # find out on what kind of OS ClustalW is running
+                operating_sys <- Sys.info()[1]
+                
+                if (operating_sys == "Darwin") 
+                        call_clustalw <- "mafft"
+                
+                if (operating_sys == "Linux")
+                        call_clustalw <- "unset MAFFT_BINARIES; mafft"
+                
+                #if (operating_sys == "Windows") 
+                #        call_clustalw <- "clustalw2.exe"
+                #
                 
                 # test whether the connection to mafft works
                 tryCatch(
@@ -492,7 +517,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          } else {
                                 
                                 # add additional parameters when running mafft
-                                system(paste0("mafft"," ",mafft.params," ",file," >",file.out))                                       
+                                system(paste0(call_mafft," ",mafft.params," ",file," >",file.out))                                       
                          }
                 } else {
                 
