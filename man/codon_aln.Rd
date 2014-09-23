@@ -3,7 +3,8 @@
 \alias{codon_aln}
 \title{Function to get a codon alignment.}
 \usage{
-codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE)
+codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
+  quiet = FALSE)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}

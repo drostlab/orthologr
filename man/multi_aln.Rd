@@ -5,7 +5,7 @@
 \usage{
 multi_aln(file, tool, get_aln = FALSE, path = NULL,
   clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
-  clustalo.params = NULL, mafft.params = NULL)
+  clustalo.params = NULL, mafft.params = NULL, quiet = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}

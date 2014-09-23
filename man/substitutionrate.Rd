@@ -3,7 +3,7 @@
 \alias{substitutionrate}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment (helper function).}
 \usage{
-substitutionrate(file, est.method, format = "fasta")
+substitutionrate(file, est.method, format = "fasta", quiet = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}

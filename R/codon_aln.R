@@ -17,7 +17,7 @@
 #' }
 #' @return if get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE, quiet=FALSE){
+codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE, quiet = FALSE){
         
         # the Pal2Nal program is stored as executable within
         # the R package environment: 'exec' folder

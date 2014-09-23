@@ -6,7 +6,7 @@
 dNdS(query_file, subject_file, blast_mode = "best hit", blast_path = NULL,
   multialn_tool = "clustalw", multialn_path = NULL,
   codonaln_tool = "pal2nal", codonaln_path = NULL,
-  dnds_est.method = "Cameron", comp_cores = 1)
+  dnds_est.method = "Cameron", comp_cores = 1, quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
