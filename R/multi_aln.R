@@ -487,7 +487,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          if(is.null(mafft.params)){
                                 
                                 # use the default parameters when running mafft
-                                system(paste0("mafft --quiet --clustalout ",file," >",file.out))
+                                system(paste0("mafft --clustalout ",file," >",file.out))
                                 
                          } else {
                                 

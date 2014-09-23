@@ -23,7 +23,7 @@ dNdS <- function(query_file, subject_file,
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
         
-        if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "tcoffee")))
+        if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "tcoffee", "mafft")))
                 stop("Please choose a multiple alignment tool that is supported by this function.")
         
         if(!is.element(codonaln_tool, c("pal2nal")))
