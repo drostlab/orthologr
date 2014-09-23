@@ -150,22 +150,76 @@ dNdS <- function(query_file, subject_file,
 #' hence it is important to use format = "fasta" when choosing est.method = "Cameron".
 #' @param format a character string specifying the file format in which the alignment is stored:  
 #' "mase", "clustal", "phylip", "fasta" , "msf"
+#' @param quiet a logical value specifying whether the output of the coresponding interface shall be printed out.
+#' @param kaks_calc.params a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
+#' \code{kaks_calc.params} = "-m NG -m YN". 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function takes a pairwise alignments file as input and estimates dNdS ratios
 #' of the corresponding alignments using predefined dNdS estimation methods.
 #' 
 #' The dNdS estimation methods available in this function are:
 #' 
-#' - "Li" : Li's method (1993)
+#' - "Li" : Li's method (1993) -> provided by the ape package
 #' 
-#' - "Cameron" : Cameron's method (1995)
+#' - "Cameron" : Cameron's method (1995) -> provided by gestimator
+#' 
+#' dNdS estimation methods provided by KaKs_Calculator 1.2 :
+#' 
+#' Approximate Methods:
+#' 
+#' NG: Nei, M. and Gojobori, T. (1986)
+#' 
+#' LWL: Li, W.H., et al. (1985)
+#' 
+#' LPB: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+#' 
+#' MLWL (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' 
+#' YN: Yang, Z. and Nielsen, R. (2000)
+#' 
+#' MYN (Modified YN): Zhang, Z., et al. (2006)
+#' 
+#' Maximum-Likelihood Methods:
+#' 
+#' GY: Goldman, N. and Yang, Z. (1994)
+#' 
+#' MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
+#' 
+#' MS (Model Selection) and MA (Model Averaging) over:
+#' 
+#' JC,
+#' F81,
+#' K2P, 
+#' HKY,
+#' TrNEF,
+#' TrN,
+#' K3P,
+#' K3PUF,
+#' TIMEF,
+#' TIM,
+#' TVMEF,
+#' TVM,
+#' SYM,
+#' GTR
 #' 
 #' @examples \dontrun{
 #' 
 #' # estimate the dNdS rate using Li's method
 #' substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
 #'                  est.method = "Li", format = "clustal")
-#'                  
+#'  
+#'  # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
+#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'                   est.method = "MA", format = "fasta") 
+#'                   
+#'  # estimate the dNdS rate using Nei and Gojobori's method provided by the KaKs_Calculator 1.2 program
+#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'                   est.method = "NG", format = "fasta")     
+#'   
+#'   # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's method provided by the KaKs_Calculator 1.2 program 
+#'   # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"                 
+#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                   est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")            
 #' }
 #' @references 
 #' Li, W.-H. (1993) Unbiased estimation of the rates of synonymous and nonsynonymous substitution. J. Mol. Evol., 36:96-99.
@@ -174,12 +228,24 @@ dNdS <- function(query_file, subject_file,
 #' 
 #' Thornton, K. (2003) libsequence: a C++ class library for evolutionary genetic analysis. Bioinformatics 19(17): 2325-2327
 #' 
-#' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values.
+#' Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator:
+#' Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263.
+#' 
+#' https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator
+#' 
+#' https://code.google.com/p/kaks-calculator/wiki/AXT
+#' 
+#' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
+#' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
 #' @import data.table
 #' @export
-substitutionrate <- function(file, est.method, format = "fasta", quiet=FALSE){
+substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL){
         
-        if(!is.element(est.method,c("Cameron","Li")))
+        
+        # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
+        kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
+        
+        if(!is.element(est.method,c("Cameron","Li",kaks_calc_methods)))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
@@ -189,6 +255,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet=FALSE){
                 
                 dir.create("_calculation")
         }
+        
         
         if(est.method == "Cameron"){
                
@@ -224,6 +291,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet=FALSE){
                         res <- data.table::data.table(t(c(unlist(aln$nam),  res_list$ka, res_list$ks, (res_list$ka/res_list$ks))))
                         data.table::setnames(res, old = paste0("V",1:5), 
                                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
+                        data.table::setkey(res,query_id)
                  
                         if(!quiet){print("Substitutionrate successfully calculated using Li's method.")}
                         
@@ -231,6 +299,70 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet=FALSE){
                         
         
         }
+        
+        if(is.element(est.method,kaks_calc_methods)){
+                
+                
+                operating_sys <- Sys.info()[1]
+                
+                if (operating_sys == "Darwin"){ 
+                        os <- "Mac"
+                        calc <- "KaKs_Calculator"
+                }
+                
+                if (operating_sys == "Linux"){
+                        os <- "Linux"
+                        calc <- "KaKs_Calculator"
+                }
+                
+                if (operating_sys == "Windows"){ 
+                        os <- "Windows"
+                        calc <- "KaKs_Calculator.exe"
+                }
+                
+               # determine the file seperator of the current OS
+               f_sep <- .Platform$file.sep
+               fa2axt <- system.file(paste0("KaKs_Calculator1.2",f_sep,"parseFastaIntoAXT.pl"), package = "orthologr")
+               
+               file_name <- unlist(strsplit(file,f_sep))
+               file_name <- file_name[length(file_name)]
+               curr_wd <- unlist(strsplit(getwd(),f_sep))
+               wdir <- grepl(" ",curr_wd)
+               
+               curr_wd[wdir] <- stringr::str_replace(string = curr_wd[wdir],replacement = paste0("'",curr_wd[wdir],"'"), pattern = curr_wd[wdir])
+               
+               curr_wd <- paste0(curr_wd,collapse = f_sep)
+               
+               tryCatch(
+                       
+              {
+                       system(paste0("perl ",fa2axt ," ",file," ",curr_wd,f_sep,"_calculation",f_sep,file_name))
+                       KaKs_Calculator <- system.file(paste0("KaKs_Calculator1.2",f_sep,"bin",f_sep,os,f_sep,calc), package = "orthologr")
+               
+                       if(is.null(kaks_calc.params))
+                               system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks"," -m ",est.method)))
+               
+                       if(!is.null(kaks_calc.params))
+                               system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks ",kaks_calc.params)))
+               
+              },error = function(){ print(paste0("KaKs_Calculator 1.2 couln't run properly, please check your input files."))}
+               
+              )
+              
+               kaks_tbl <- read.csv(paste0("_calculation",f_sep,file_name,".axt.kaks"),sep = "\t", header = TRUE)
+               kaks_tbl_res <- kaks_tbl[ , 1:5]
+               kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
+                                          sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[2]) ,
+                                          kaks_tbl_res[ , c(3:5,2)])
+              
+               names(kaks_tbl_res) <- c("query_id","subject_id", "dN", "dS","dNdS","method")
+               kaks_tbl_res <- data.table::as.data.table(kaks_tbl_res)
+               data.table::setkey(kaks_tbl_res,query_id)
+               
+               return(kaks_tbl_res)
+        }
+        
+        
         
 }
 

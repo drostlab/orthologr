@@ -3,7 +3,8 @@
 \alias{substitutionrate}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment (helper function).}
 \usage{
-substitutionrate(file, est.method, format = "fasta", quiet = FALSE)
+substitutionrate(file, est.method, format = "fasta", quiet = FALSE,
+  kaks_calc.params = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}
@@ -15,9 +16,15 @@ hence it is important to use format = "fasta" when choosing est.method = "Camero
 
 \item{format}{a character string specifying the file format in which the alignment is stored:
 "mase", "clustal", "phylip", "fasta" , "msf"}
+
+\item{quiet}{a logical value specifying whether the output of the coresponding interface shall be printed out.}
+
+\item{kaks_calc.params}{a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
+\code{kaks_calc.params} = "-m NG -m YN".}
 }
 \value{
-A data.table storing the query_id, subject_id, dN, dS, and dNdS values.
+A data.table storing the query_id, subject_id, dN, dS, and dNdS values or
+a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
 }
 \description{
 This function takes a pairwise alignment as input file and estimates the
@@ -30,9 +37,48 @@ of the corresponding alignments using predefined dNdS estimation methods.
 
 The dNdS estimation methods available in this function are:
 
-- "Li" : Li's method (1993)
+- "Li" : Li's method (1993) -> provided by the ape package
 
-- "Cameron" : Cameron's method (1995)
+- "Cameron" : Cameron's method (1995) -> provided by gestimator
+
+dNdS estimation methods provided by KaKs_Calculator 1.2 :
+
+Approximate Methods:
+
+NG: Nei, M. and Gojobori, T. (1986)
+
+LWL: Li, W.H., et al. (1985)
+
+LPB: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+
+MLWL (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+
+YN: Yang, Z. and Nielsen, R. (2000)
+
+MYN (Modified YN): Zhang, Z., et al. (2006)
+
+Maximum-Likelihood Methods:
+
+GY: Goldman, N. and Yang, Z. (1994)
+
+MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
+
+MS (Model Selection) and MA (Model Averaging) over:
+
+JC,
+F81,
+K2P,
+HKY,
+TrNEF,
+TrN,
+K3P,
+K3PUF,
+TIMEF,
+TIM,
+TVMEF,
+TVM,
+SYM,
+GTR
 }
 \examples{
 \dontrun{
@@ -41,6 +87,18 @@ The dNdS estimation methods available in this function are:
 substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
                  est.method = "Li", format = "clustal")
 
+ # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
+ substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+                  est.method = "MA", format = "fasta")
+
+ # estimate the dNdS rate using Nei and Gojobori's method provided by the KaKs_Calculator 1.2 program
+ substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+                  est.method = "NG", format = "fasta")
+
+  # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's method provided by the KaKs_Calculator 1.2 program
+  # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"
+ substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+                  est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")
 }
 }
 \author{
@@ -52,5 +110,12 @@ Li, W.-H. (1993) Unbiased estimation of the rates of synonymous and nonsynonymou
 Charif, D. and Lobry, J.R. (2007) SeqinR 1.0-2: a contributed package to the R project for statistical computing devoted to biological sequences retrieval and analysis.
 
 Thornton, K. (2003) libsequence: a C++ class library for evolutionary genetic analysis. Bioinformatics 19(17): 2325-2327
+
+Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator:
+Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263.
+
+https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator
+
+https://code.google.com/p/kaks-calculator/wiki/AXT
 }
 

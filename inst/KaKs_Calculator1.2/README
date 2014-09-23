@@ -1,0 +1,49 @@
+KaKs_Calculator, Version 1.2 (Apr. 2006)
+
+KaKs_Calculator is a program that applies model selection and model averaging 
+in calculating nonsynonymous (Ka) and synonymous (Ks) substitution rates. In 
+addition, several currently acknowledged methods for estimating Ka and Ks are
+also incorporated into KaKs_Calculator.
+
+bin/: Executables, Setup application
+doc/: Documentation
+examples/: an example of axt sequence file
+src/: Source codes
+
+Kaks_Calculator is freely available for academic use only at
+
+	http://evolution.genomics.org.cn/software.htm
+
+Please cite:
+	
+	Zhang, Z., J. Li, X.Q. Zhao, J. Wang, G.K. Wong, and J. Yu. 2006. KaKs_Calculator: calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 4: 259-263.
+
+Future Work: 
+
+Estimate Ka and Ks on clusters based on MCMC/ML within Protein Tertiary Structure.
+
+
+Please send bugs or advice to Zhang Zhang at zhang.zhang@yale.edu
+
+
+Previous Address:
+Zhang Zhang, Ph.D.
+Department of Bioinformatics
+Beijing Institute of Genomics, Chinese Academy of Sciences
+Airport Industrial Zone B6, ShunYi District
+Beijing 101300
+Email: zhangzhang@genomics.org.cn 
+http://evolution.genomics.org.cn
+
+Present Address:
+Zhang Zhang, Ph.D.
+Department of Ecology and Evolutionary Biology
+Yale University
+P.O. Box 208106
+OML 226, 165 Prospect Street
+New Haven, CT 06520
+Email: zhang.zhang@yale.edu
+Tel: 203-432-0943
+http://www.yale.edu/townsend/
+
+//Last Update: Sep. 12, 2008

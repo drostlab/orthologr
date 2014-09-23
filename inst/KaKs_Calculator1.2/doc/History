@@ -1,0 +1,38 @@
+History and bug fixes of KaKs_Calculator
+Please send bugs or advice to Zhang Zhang at zhangzhang@genomics.org.cn.
+
+
+Version 1.2,  April 2006
+Three methods are incorporated into the program of KaKs_Calculator:
+  
+  1. MYN: modified YN, with a consideraton of different transitional rates, that is, MYN is based on the TN93 Model.
+
+  2. MS: Model-selected method according to the AICc, based on 14 candidate models.
+
+  3. MA: Model-averaged method according to the AICc, based on 14 candidate models.
+
+
+Modifications and Bug fixes:
+
+  1. Add more genetic codes and accordingly modify Li's series methods for calculating 0,2,4-fold.
+
+  2. For windows version, implement multi-thread by generating a working thread.
+
+  3. Modify the output format.
+
+  4. Add the function for computing GC Content of entire sequences and of three different codon positions.
+
+
+
+Version 1.0,  October 2005
+Three programs are included in the package:
+
+  1. KaKs_Calculator: Use NG, LWL, LPB, MLWL, MLPB, GY and YN for estimating Ka and Ks.
+
+  2. ConPairs: Concatenate all pairs of sequences with AXT format to a pair of sequences.
+
+  3. AXTConvertor: Convert Clustal/Msf/Nexus/Phylip/Pir format sequences to AXT ones.
+
+
+// End of KaKs_Calculator History
+
