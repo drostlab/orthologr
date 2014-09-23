@@ -245,7 +245,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
         kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
         
-        if(!is.element(est.method,c("Cameron","Li",kaks_calc_methods)))
+        if(!is.element(est.method,c("Comeron","Li",kaks_calc_methods)))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
