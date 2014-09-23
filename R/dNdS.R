@@ -5,7 +5,7 @@
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param codonaln_path a character string specifying the path to the codon alignment program (in case you don't use the default path).
-#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
+#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
@@ -17,19 +17,19 @@ dNdS <- function(query_file, subject_file,
                  blast_mode = "best hit", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
                  codonaln_tool = "pal2nal", codonaln_path = NULL,
-                 dnds_est.method = "Cameron", comp_cores = 1,
+                 dnds_est.method = "Comeron", comp_cores = 1,
                  quiet=FALSE){
         
         if(!is.element(blast_mode, c("best hit","recursive")))
                 stop("Please choose a blast mode that is supported by this function.")
         
-        if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "tcoffee")))
+        if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "tcoffee", "mafft")))
                 stop("Please choose a multiple alignment tool that is supported by this function.")
         
         if(!is.element(codonaln_tool, c("pal2nal")))
                 stop("Please choose a codon alignment tool that is supported by this function.")
         
-        if(!is.element(dnds_est.method, c("Cameron","Li")))
+        if(!is.element(dnds_est.method, c("Comeron","Li")))
                 stop("Please choose a dnds tool that is supported by this function.")
         
         # blast each translated aminoacid sequence against the related database to get a 
@@ -144,10 +144,10 @@ dNdS <- function(query_file, subject_file,
 #' dNdS ratio of the corresponding alignment. Nevertheless, this function is a helper function for
 #' \code{\link{dNdS}}. For dNdS computations you should use the function: \code{\link{dNdS}}.
 #' @param file a character string specifying the path to a codon alignment file
-#' @param est.method a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
-#' Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the
+#' @param est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .
+#' Note, that when using "Comeron" as dNdS estimation method, the program 'gestimator' is used to compute the
 #' corresponding dNdS values from a given alignment. The program 'gestimator' can only read "fasta" files,
-#' hence it is important to use format = "fasta" when choosing est.method = "Cameron".
+#' hence it is important to use format = "fasta" when choosing est.method = "Comeron".
 #' @param format a character string specifying the file format in which the alignment is stored:  
 #' "mase", "clustal", "phylip", "fasta" , "msf"
 #' @param quiet a logical value specifying whether the output of the coresponding interface shall be printed out.
@@ -161,7 +161,7 @@ dNdS <- function(query_file, subject_file,
 #' 
 #' - "Li" : Li's method (1993) -> provided by the ape package
 #' 
-#' - "Cameron" : Cameron's method (1995) -> provided by gestimator
+#' - "Comeron" : Comeron's method (1995)
 #' 
 #' dNdS estimation methods provided by KaKs_Calculator 1.2 :
 #' 
@@ -257,7 +257,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         }
         
         
-        if(est.method == "Cameron"){
+        if(est.method == "Comeron"){
                
            # file in fasta required     
            if(format != "fasta")
@@ -369,7 +369,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 compute_dnds <- function(x, 
                          multialn_tool="clustalw", multialn_path = NULL,
                          codonaln_tool="pal2nal", codonaln_path = NULL,
-                         dnds_est.method = "Cameron", quiet=FALSE){
+                         dnds_est.method = "Comeron", quiet=FALSE){
         #return(x["query_id"])
         names <- list(x["query_id"],x["subject_id"])
         seqs <- list(x["query_cds"],x["subject_cds"])
