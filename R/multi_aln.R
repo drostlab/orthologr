@@ -338,13 +338,11 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                         # use the default parameters when running t_coffee
                                         # perform an accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
-                                        system(paste0("t_coffee -infile ",file," -mode accurate"," -outfile ",file.out),
-                                                show.output.on.console = FALSE)
+                                        system(paste0("t_coffee -infile ",file," -mode accurate"," -outfile ",file.out))
                                 } else {
                                         
                                         # add additional parameters when running t_coffee
-                                        system(paste0("t_coffee -infile ",file," ",t_coffee.params," -outfile ",file.out),
-                                               show.output.on.console = FALSE)
+                                        system(paste0("t_coffee -infile ",file," ",t_coffee.params," -outfile ",file.out))
                                         
                                 }
                         } else {
@@ -355,14 +353,12 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                         # perform a accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
                                         system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
-                                                 file," -mode accurate"," -outfile ",file.out),
-                                                 show.output.on.console = FALSE)
+                                                 file," -mode accurate"," -outfile ",file.out))
                                 } else {
                                         
                                         # add additional parameters when running t_coffee
                                         system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
-                                                      file," ",t_coffee.params," -outfile ",file.out),
-                                               show.output.on.console = FALSE)
+                                                      file," ",t_coffee.params," -outfile ",file.out))
                                 }
                         }
                 
