@@ -441,12 +441,12 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                  if(is.null(clustalo.params)){
                                          
                                          # use the default parameters when running clustalo
-                                         system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu"))
+                                         system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu --force"))
                                  
                                  } else {
                                          
                                          # add additional parameters when running clustalo
-                                         system(paste0("clustalo -i ",file," -o ",file.out," ",clustalo.params))
+                                         system(paste0("clustalo -i ",file," -o ",file.out," --force ",clustalo.params))
                                  }
                  
                          } else {
@@ -454,13 +454,13 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                          
                                          # use the default parameters when running clustalo
                                          system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                                file," -o ",file.out," --outfmt clustal"))
+                                                file," -o ",file.out," --outfmt clustal --force"))
                                  
                                  } else {
                                          
                                          # add additional parameters when running clustalo
                                          system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                                       file," -o ",file.out," ",clustalo.params))
+                                                       file," -o ",file.out," --force ",clustalo.params))
                                          
                                  }
                          
