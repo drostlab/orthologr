@@ -29,8 +29,10 @@ dNdS <- function(query_file, subject_file,
         if(!is.element(codonaln_tool, c("pal2nal")))
                 stop("Please choose a codon alignment tool that is supported by this function.")
         
-        if(!is.element(dnds_est.method, c("Comeron","Li")))
-                stop("Please choose a dnds tool that is supported by this function.")
+        kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
+        
+        if(!is.element(dnds_est.method,c("Comeron","Li",kaks_calc_methods)))
+                stop("Please choose a dNdS estimation method that is supported by this function.")
         
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
