@@ -210,7 +210,7 @@ blast_best <- function(query_file, subject_file, format = "fasta",
         #select only the best hit (E-value) 
         #besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id], lapply(.SD[ , evalue],min)),
         #                         by = key(hit_tbl.dt)]        
-         besthit_tbl <- hit_tbl.dt[ , lapply(.SD[ , evalue],min),
+         besthit_tbl <- hit_tbl.dt[ , unique(lapply(.SD[ , evalue],min)),
                     by = key(hit_tbl.dt)]
         
         #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))

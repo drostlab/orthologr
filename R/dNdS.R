@@ -127,7 +127,7 @@ dNdS <- function(query_file, subject_file,
       hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
                                multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
                                dnds_est.method = dnds_est.method,
-                               codonaln_path = codonaln_path , quiet=TRUE)}))]
+                               codonaln_path = codonaln_path , quiet=quiet)}))]
 
         return(hit.table) 
    #   compute_dnds(res[1,], 
