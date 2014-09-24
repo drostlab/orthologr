@@ -9,10 +9,10 @@ substitutionrate(file, est.method, format = "fasta", quiet = FALSE,
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}
 
-\item{est.method}{a character string specifying the dNdS estimation method, e.g. "Cameron","Li" .
-Note, that when using "Cameron" as dNdS estimation method, the program 'gestimator' is used to compute the
+\item{est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .
+Note, that when using "Comeron" as dNdS estimation method, the program 'gestimator' is used to compute the
 corresponding dNdS values from a given alignment. The program 'gestimator' can only read "fasta" files,
-hence it is important to use format = "fasta" when choosing est.method = "Cameron".}
+hence it is important to use format = "fasta" when choosing est.method = "Comeron".}
 
 \item{format}{a character string specifying the file format in which the alignment is stored:
 "mase", "clustal", "phylip", "fasta" , "msf"}
@@ -39,23 +39,23 @@ The dNdS estimation methods available in this function are:
 
 - "Li" : Li's method (1993) -> provided by the ape package
 
-- "Cameron" : Cameron's method (1995) -> provided by gestimator
+- "Comeron" : Comeron's method (1995)
 
 dNdS estimation methods provided by KaKs_Calculator 1.2 :
 
 Approximate Methods:
 
-NG: Nei, M. and Gojobori, T. (1986)
+"NG": Nei, M. and Gojobori, T. (1986)
 
-LWL: Li, W.H., et al. (1985)
+"LWL": Li, W.H., et al. (1985)
 
-LPB: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+"LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
 
-MLWL (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+"MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
 
-YN: Yang, Z. and Nielsen, R. (2000)
+"YN": Yang, Z. and Nielsen, R. (2000)
 
-MYN (Modified YN): Zhang, Z., et al. (2006)
+"MYN" (Modified YN): Zhang, Z., et al. (2006)
 
 Maximum-Likelihood Methods:
 

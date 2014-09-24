@@ -35,4 +35,7 @@ database from that.
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
 }
+\seealso{
+\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}
+}
 

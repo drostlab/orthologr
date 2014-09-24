@@ -242,12 +242,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
         if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
                 stop("Please choose a tool that is supported by this function.")
         
-        if(!file.exists("_alignment/")){
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
+        if(!file.exists(paste0("_alignment",f_sep))){
                 
                 dir.create("_alignment")
         }
         
-        file.out <- paste0("_alignment/",tool,".aln")
+        file.out <- paste0("_alignment",f_sep,tool,".aln")
 
 # does not work as expected, could be included in another way or not.
 #         if(quiet){

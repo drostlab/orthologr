@@ -19,12 +19,16 @@
 #' @export
 codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE, quiet = FALSE){
         
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
         # the Pal2Nal program is stored as executable within
         # the R package environment: 'exec' folder
         # this is not an elegant version, only motivated by this discussion:
         # http://stackoverflow.com/questions/13463103/inst-and-extdata-folders-in-r-packaging
         # is there a better choice?
-        path <- system.file("pal2nal/pal2nal.v14/pal2nal.pl", package = "orthologr", mustWork = TRUE)
+        path <- system.file(paste0("pal2nal",f_sep,"pal2nal.v14",f_sep,"pal2nal.pl"), package = "orthologr", mustWork = TRUE)
         #path <- "/exec/pal2nal.v14/"
         
         if(!is.element(tool,c("pal2nal")))
@@ -33,12 +37,12 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
         if(!is.element(format,c("clustal", "fasta")))
                 stop("Please choose a format that is supported by this function.")
         
-        if(!file.exists("_alignment/")){
+        if(!file.exists(paste0("_alignment",f_sep))){
                 
                 dir.create("_alignment")
         }
         
-        file.out <- paste0("_alignment/",tool,".aln")
+        file.out <- paste0("_alignment",f_sep,tool,".aln")
         
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE

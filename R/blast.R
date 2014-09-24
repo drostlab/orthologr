@@ -38,6 +38,7 @@
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
 #' @import seqinr
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
 blast <- function(query_file, subject_file, format = "fasta",
                   blast_algorithm = "blastp", eval = "1E-5",
@@ -46,17 +47,19 @@ blast <- function(query_file, subject_file, format = "fasta",
         if(!is.element(blast_algorithm,c("blastp")))
                 stop("Please choose a valid BLAST mode.")
         
-        # initialize the BLAST search
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
         
+        # initialize the BLAST search
         query.dt <- set_blast(file = query_file)[[1]]
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
-        input = "_blast/blastinput.fasta" 
-        output = "_blast/blastresult.csv"
+        input = paste0("_blast",f_sep,"blastinput.fasta") 
+        output = paste0("_blast",f_sep,"blastresult.csv")
         
         
-        if(!file.exists("_blast/")){
+        if(!file.exists(paste0("_blast",f_sep))){
                 
                 dir.create("_blast")
         }
@@ -152,7 +155,6 @@ blast <- function(query_file, subject_file, format = "fasta",
         data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
                              new = blast_table_names)
         
-        #data.table::setkey(hit_table, query_id)
         data.table::setkeyv(hit_table, c("query_id","subject_id"))
         
         return(hit_table)
@@ -187,6 +189,7 @@ blast <- function(query_file, subject_file, format = "fasta",
 #'
 #' @return A data.table as returned by the \code{blast} function, storing the geneids
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
+#' @seealso \code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
 blast_best <- function(query_file, subject_file, format = "fasta", 
                        blast_algorithm = "blastp", eval = "1E-5",
@@ -216,8 +219,6 @@ blast_best <- function(query_file, subject_file, format = "fasta",
         #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
         data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
        
-
-        #data.table::setkey(besthit_tbl, query_id)
         data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
         
         # return a data.table storing only the best hits from the resulting 
@@ -259,6 +260,7 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #'
 #' @return A data.table as returned by the blast() function, storing the geneids
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
+#' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
 blast_rec <- function(query_file, subject_file, format = "fasta", 
                       blast_algorithm = "blastp", eval = "1E-5",
@@ -296,6 +298,7 @@ blast_rec <- function(query_file, subject_file, format = "fasta",
 #'  # running the set function to see an example output
 #'  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}
 #' @export
 set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
@@ -310,6 +313,11 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
         if(!is.data.table(dt))
                 stop("Your CDS file was not corretly transformed into a data.table object.")
+        
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
         
         # WE COULD ALSO INSERT A IF-STATEMENT CHECKING THAT
         # IN CASE THE USER INSERTS AN AA-FASTA FILE,
@@ -327,16 +335,18 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         dt[ , aa := transl(seqs), by = geneids]
         # makedb
         dbname <- vector(mode = "character", length = 1)
-        filename <- unlist(strsplit(file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+        filename <- unlist(strsplit(file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
         filename <- filename[length(filename)]
+        
+        
         if(makedb){
-                if(!file.exists("_database/")){ 
+                if(!file.exists(paste0("_database",f_sep))){ 
                         
                         dir.create("_database") 
                 
                 }
                 
-                dbname <- paste0("_database/out_",filename,"_translate.fasta")
+                dbname <- paste0("_database",f_sep,"out_",filename,"_translate.fasta")
                 seqinr::write.fasta(as.list(dt[ , aa]),
                                     names = dt[ , geneids],
                                     nbchar = 80, open = "w",
@@ -406,6 +416,7 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #'
 #' @return the \code{advanced_blast} function creates a folder named '_blast' and stores
 #' the hit table returned by BLAST in this folder.
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_best}}
 #' @export
 advanced_blast <- function(query_file, subject_file, format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
@@ -418,17 +429,25 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                          "blastx","tblastn","tblastx")))
                 stop("Please choose a valid BLAST mode.")
         
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
         # initialize the BLAST search
         
         query.dt <- set_blast(file = query_file, format = format)[[1]]
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, format = format, makedb = TRUE)[[2]]
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
         # create an internal folder structure for the BLAST process 
-        input = "_blast/blastinput.fasta" 
-        output = "_blast/blastresult.csv"
+        input = paste0("_blast",f_sep,"blastinput.fasta") 
+        output = paste0("_blast",f_sep,"blastresult.csv")
         
         
-        if(!file.exists("_blast/")){
+        if(!file.exists(paste0("_blast",f_sep))){
                 
                 dir.create("_blast")
         }

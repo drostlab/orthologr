@@ -48,11 +48,14 @@ dNdS <- function(query_file, subject_file,
                 q_cds <- read.cds(file = query_file, format = "fasta")
                 s_cds <- read.cds(file = subject_file, format = "fasta")
                 
-                q_aa <- read.proteome(file = "_blast/blastinput.fasta", format = "fasta")
+                # determine the file seperator of the current OS
+                f_sep <- .Platform$file.sep
+
+                q_aa <- read.proteome(file = paste0("_blast",f_sep,"blastinput.fasta"), format = "fasta")
                 
-                filename <- unlist(strsplit(subject_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
     
         }
         
@@ -66,13 +69,13 @@ dNdS <- function(query_file, subject_file,
                 s_cds <- read.cds(file = subject_file, format = "fasta")
                 
                 
-                filename <- unlist(strsplit(query_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                q_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                q_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
                 
-                filename <- unlist(strsplit(subject_file, "/", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_database/out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
                 
                 
         }
@@ -167,17 +170,17 @@ dNdS <- function(query_file, subject_file,
 #' 
 #' Approximate Methods:
 #' 
-#' NG: Nei, M. and Gojobori, T. (1986)
+#' "NG": Nei, M. and Gojobori, T. (1986)
 #' 
-#' LWL: Li, W.H., et al. (1985)
+#' "LWL": Li, W.H., et al. (1985)
 #' 
-#' LPB: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+#' "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
 #' 
-#' MLWL (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
 #' 
-#' YN: Yang, Z. and Nielsen, R. (2000)
+#' "YN": Yang, Z. and Nielsen, R. (2000)
 #' 
-#' MYN (Modified YN): Zhang, Z., et al. (2006)
+#' "MYN" (Modified YN): Zhang, Z., et al. (2006)
 #' 
 #' Maximum-Likelihood Methods:
 #' 
@@ -251,7 +254,10 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
                 stop("Please choose a format that is supported by seqinr::read.alignment.")
         
-        if(!file.exists("_calculation/")){
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
+        if(!file.exists(paste0("_calculation",f_sep))){
                 
                 dir.create("_calculation")
         }
@@ -266,9 +272,9 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
             tryCatch(
             {    
                 # To use gestimator a file in fasta format is required    
-                system(paste0("gestimator -i ",file," -o _calculation/gestimout"))
+                system(paste0("gestimator -i ",file," -o ","_calculation",f_sep,"gestimout"))
                 
-                hit.table <-data.table::fread("_calculation/gestimout")
+                hit.table <-data.table::fread(paste0("_calculation",f_sep,"gestimout"))
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
@@ -374,27 +380,29 @@ compute_dnds <- function(x,
         names <- list(x["query_id"],x["subject_id"])
         seqs <- list(x["query_cds"],x["subject_cds"])
         aa <- list(x["query_aa"],x["subject_aa"])
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
 
         # create cds fasta
-        seqinr::write.fasta(sequences = seqs, names = names, file.out = "_alignment/cds.fasta")
+        seqinr::write.fasta(sequences = seqs, names = names, file.out = paste0("_alignment",f_sep,"cds.fasta"))
         
         # create aa fasta
-        seqinr::write.fasta(sequences = aa, names = names, file.out = "_alignment/aa.fasta")
+        seqinr::write.fasta(sequences = aa, names = names, file.out = paste0("_alignment",f_sep,"aa.fasta"))
         
         # align aa -> <multialn_tool>.aln
-        multi_aln(file = "_alignment/aa.fasta", 
-                  tool = multialn_tool, 
-                  get_aln = FALSE, path = multialn_path, quiet=quiet)
+        multi_aln(file = paste0("_alignment",f_sep,"aa.fasta"), 
+                  tool = multialn_tool, get_aln = FALSE, 
+                  path = multialn_path, quiet = quiet)
 
         # align codon -> cds.aln
-        codon_aln(file_aln = paste0("_alignment/",multialn_tool,".aln"),
-                  file_nuc = "_alignment/cds.fasta",
-                  tool = codonaln_tool,
-                  format = "fasta",
+        codon_aln(file_aln = paste0("_alignment",f_sep,multialn_tool,".aln"),
+                  file_nuc = paste0("_alignment",f_sep,"cds.fasta"),
+                  tool = codonaln_tool,format = "fasta",
                   get_aln = FALSE, quiet = quiet)
         
         # compute kaks
-        hit.table <- substitutionrate(file = paste0("_alignment/",codonaln_tool,".aln"), 
+        hit.table <- substitutionrate(file = paste0("_alignment",f_sep,codonaln_tool,".aln"), 
                                       est.method = dnds_est.method, quiet=quiet)
         return(hit.table[ , dNdS])
 

@@ -69,4 +69,7 @@ http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Pro
 
 http://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
+\seealso{
+\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_best}}
+}
 

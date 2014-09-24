@@ -60,4 +60,7 @@ http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_comm
 
 http://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
+\seealso{
+\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+}
 
