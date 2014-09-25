@@ -324,8 +324,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 
                 
                 if(get_aln){
-                        aln <- seqinr::read.alignment(file.out, format = "clustal")
-                        return(aln)
+                        
+                        tryCatch(
+                                {
+                                        aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                        return(aln)
+                                        
+                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                                                   file.out, " could not be read properly."))}
+                        )
                 }
         }
  
@@ -373,8 +380,14 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 
                 
                 if(get_aln){
-                        aln <- seqinr::read.alignment(file.out, format = "clustal")
-                        return(aln)
+                        
+                        tryCatch(
+                                {
+                                        aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                        return(aln)
+                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                                                   file.out, " could not be read properly."))}
+                        )
                 }
         }
  
@@ -425,8 +438,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  
                  
                  if(get_aln){
-                         aln <- seqinr::read.alignment(file.out, format = "clustal")
-                         return(aln)
+                         
+                         tryCatch(
+                                 {
+                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                         return(aln)
+                                         
+                                 }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                                                     file.out, " could not be read properly."))}
+                         )
                  }
          }
  
@@ -474,8 +494,15 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          
                  
                  if(get_aln){
-                         aln <- seqinr::read.alignment(file.out, format = "clustal")
-                         return(aln)
+                         
+                         tryCatch(
+                                 {
+                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                         return(aln)
+                                         
+                         }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                                                       file.out, " could not be read properly."))}
+                         )
                  }
          }
         
@@ -538,8 +565,14 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                
 
                 if(get_aln){
-                        aln <- seqinr::read.alignment(file.out, format = "clustal")
-                        return(aln)
+                        
+                        tryCatch(
+                                {
+                                        aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                        return(aln)
+                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                                                   file.out, " could not be read properly."))}
+                        )
                 }
         }
 

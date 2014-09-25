@@ -357,20 +357,25 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                
               )
               
-               kaks_tbl <- read.csv(paste0("_calculation",f_sep,file_name,".axt.kaks"),sep = "\t", header = TRUE)
-               kaks_tbl_res <- kaks_tbl[ , 1:5]
-               kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
-                                          sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[2]) ,
-                                          kaks_tbl_res[ , c(3:5,2)])
+              tryCatch(
+                      {
+                              kaks_tbl <- read.csv(paste0("_calculation",f_sep,file_name,".axt.kaks"),sep = "\t", header = TRUE)
+                              kaks_tbl_res <- kaks_tbl[ , 1:5]
+                              kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
+                                                         sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[2]) ,
+                                                         kaks_tbl_res[ , c(3:5,2)])
               
-               names(kaks_tbl_res) <- c("query_id","subject_id", "dN", "dS","dNdS","method")
-               kaks_tbl_res <- data.table::as.data.table(kaks_tbl_res)
-               data.table::setkey(kaks_tbl_res,query_id)
+                              names(kaks_tbl_res) <- c("query_id","subject_id", "dN", "dS","dNdS","method")
+                              kaks_tbl_res <- data.table::as.data.table(kaks_tbl_res)
+                              data.table::setkey(kaks_tbl_res,query_id)
                
-               return(kaks_tbl_res)
+                              return(kaks_tbl_res)
+                              
+                      }, error = function(){print(paste0("Something went wront with KaKs_Calculator .\n",
+                                                         paste0("_calculation",f_sep,file_name,".axt.kaks"),
+                                                         " could not be read properly."))}
+              )
         }
-        
-        
         
 }
 

@@ -47,7 +47,7 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
         # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
-        # AND RENAME THE NEW ONES
+        # AND RENAME THE NEW ONES -> session keys?
         
         # test whether the connection to pal2nal works
     
@@ -67,8 +67,15 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
         
                 
         if(get_aln){
-               dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
-                        return(dna_aln)
+                
+                tryCatch(
+                        {
+                                dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
+                                return(dna_aln)
+               
+                        }, error = function(){print(paste0("Something went wront with Pal2Nal.pl .\n",
+                                                           file.out, " could not be read properly."))}
+                )
         }
 
 }

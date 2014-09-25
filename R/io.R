@@ -25,10 +25,17 @@ read.genome <- function(file, format, ...){
         
         if(format == "fasta"){
                 genome <- vector(mode = "list")
-                genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
-                genome.dt <- data.table::data.table(geneids = names(genome),
-                                                    seqs = unlist(lapply(genome, seqinr::c2s)))
-                data.table::setkey(genome.dt,geneids)
+                
+                tryCatch(
+                        {
+                                 genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
+                                 genome.dt <- data.table::data.table(geneids = names(genome),
+                                                                     seqs = unlist(lapply(genome, seqinr::c2s)))
+                                 data.table::setkey(genome.dt,geneids)
+                                 
+                        }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                        "Please make sure that ",file," contains only DNA sequences and is in ",format," format."))}
+                )
         }
         return(genome.dt)
 }
@@ -62,10 +69,17 @@ read.proteome <- function(file, format, ...){
         
         if(format == "fasta"){
                 proteome <- vector(mode = "list")
-                proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
-                proteome.dt <- data.table::data.table(geneids = names(proteome),
-                                                      seqs = unlist(lapply(proteome, seqinr::c2s)))
-                data.table::setkey(proteome.dt,geneids)
+                
+                tryCatch(
+                         {
+                                 proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
+                                 proteome.dt <- data.table::data.table(geneids = names(proteome),
+                                                                       seqs = unlist(lapply(proteome, seqinr::c2s)))
+                                 data.table::setkey(proteome.dt,geneids)
+                                 
+                         }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                                                             "Please make sure that ",file," contains only amino acid sequences and is in ",format," format."))}
+                )
         }
         return(proteome.dt)
 }
@@ -99,10 +113,17 @@ read.cds <- function(file, format, ...){
         
         if(format == "fasta"){
                 cds <- vector(mode = "list")
-                cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
-                cds.dt <- data.table::data.table(geneids = names(cds),
+                
+                tryCatch(
+                        {
+                                cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
+                                cds.dt <- data.table::data.table(geneids = names(cds),
                                                  seqs = unlist(lapply(cds, seqinr::c2s)))
-                data.table::setkey(cds.dt,geneids)
+                                data.table::setkey(cds.dt,geneids)
+                
+                        }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                                                            "Please make sure that ",file," contains only CDS sequences and is in ",format," format."))}
+                )
         }
         return(cds.dt)
 }

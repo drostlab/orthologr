@@ -74,10 +74,17 @@ blast <- function(query_file, subject_file, format = "fasta",
         
         write_AA <- as.list(query.dt[ ,aa])
         name <- query.dt[ ,geneids]      
-                
-        seqinr::write.fasta(write_AA, names = name,
-                            nbchar = 80,open = "w",
-                            file.out = input)
+        
+        tryCatch(
+         {
+                seqinr::write.fasta(write_AA, names = name,
+                                    nbchar = 80,open = "w",
+                                    file.out = input)
+         },error = function(){ print(paste0("File ",input,
+                                            " could not be written properly to the internal folder environment.",
+                                            " Please check the path to ",input,".") ) }
+         
+        )
         
         # test whether the connection to BLAST+ works
         tryCatch(
@@ -148,16 +155,22 @@ blast <- function(query_file, subject_file, format = "fasta",
         
         # define the colClasses for faster file streaming
         col_Classes <- c(rep("character",2), rep("numeric",10))
-                
-        hit_table <- data.table::fread(input = output, sep = "\t", 
-                                       header = FALSE, colClasses = col_Classes)
         
-        data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
-                             new = blast_table_names)
+        tryCatch(
+         {
+                  hit_table <- data.table::fread(input = output, sep = "\t", 
+                                                 header = FALSE, colClasses = col_Classes)
         
-        data.table::setkeyv(hit_table, c("query_id","subject_id"))
+                  data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
+                                       new = blast_table_names)
         
-        return(hit_table)
+                  data.table::setkeyv(hit_table, c("query_id","subject_id"))
+        
+                  return(hit_table)
+         }, error = function(){ print(paste0("File ",output, "could not be read correctly.",
+                                             " Please check the correct path to ",output,
+                                             " or whether BLAST did write the resulting hit table correctly.") ) }
+        )
 }
 
 
@@ -213,17 +226,22 @@ blast_best <- function(query_file, subject_file, format = "fasta",
         #select only the best hit (E-value) 
         #besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id], lapply(.SD[ , evalue],min)),
         #                         by = key(hit_tbl.dt)]        
-         besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
-                    by = key(hit_tbl.dt)]
+        tryCatch(
+         {
+                 besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
+                                by = key(hit_tbl.dt)]
         
-        #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
-        data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
+                 #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
+                 data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
        
-        data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
+                 data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
         
-        # return a data.table storing only the best hits from the resulting 
-        # BLAST search
-        return( besthit_tbl )
+                 # return a data.table storing only the best hits from the resulting 
+                 # BLAST search
+                 return( besthit_tbl )
+         }, error = function() {print(paste0("The BLAST output couldn't be read properly, maybe a problem occured when 
+                                       selecting best hits from the resulting BLAST hit table."))} 
+        )
               
 }
 
@@ -276,8 +294,14 @@ blast_rec <- function(query_file, subject_file, format = "fasta",
         
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
-        return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
-                                  by = c("query_id","subject_id")) )
+        tryCatch(
+        {
+                return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
+                                          by = c("query_id","subject_id")) )
+                
+        }, error = function(){ print(paste0("The BLAST tables resulting from ",query_file, " and ",
+        subject_file," could not be joined properly to select only the reciprocal best hits."))}
+        )
 }
 
 
@@ -332,7 +356,15 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
         # translate dna to aa sequences
         #dt[ , aa := as.vector(sapply(seqs,transl)), by = geneids]
-        dt[ , aa := transl(seqs), by = geneids]
+        
+        tryCatch(
+          {
+                     dt[ , aa := transl(seqs), by = geneids]
+                     
+          }, error = function() {print(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
+          "\n Please check whether ",file, " stores valid coding sequences."))}
+        )
+
         # makedb
         dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
@@ -353,18 +385,25 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
                                     file.out = dbname 
                                     )
                 
-                if(is.null(path)){
-                        system(
-                                paste0("makeblastdb -in ", dbname,
-                                       " -input_type fasta -dbtype prot")
-                        )
-                } else {
-                        system(
-                                paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
-                                       dbname," -input_type fasta -dbtype prot")
-                        )
-                }
+                tryCatch(
+                {
+                        if(is.null(path)){
+                                system(
+                                        paste0("makeblastdb -in ", dbname,
+                                               " -input_type fasta -dbtype prot")
+                                       )
+                        } else {
+                                system(
+                                        paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
+                                               dbname," -input_type fasta -dbtype prot")
+                                      )
+                        }
+                }, error = function(){ print(paste0("makeblastdb did not work properly. The default parameters are: \n",
+                "-input_type fasta -dbtype prot . \n","Please check that you really want to work with a protein database.\n",
+                "Additionally check: ",dbname," ."))}
+                )
         }
+
         return(list(dt, dbname))
 }
 
@@ -456,67 +495,95 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         write_AA <- as.list(query.dt[ ,aa])
         name <- query.dt[ , geneids]      
         
-        seqinr::write.fasta(write_AA, names = name,
-                            nbchar = 80,open = "w",
-                            file.out = input)
+        tryCatch(
+         {
+                 seqinr::write.fasta(write_AA, names = name,
+                                     nbchar = 80,open = "w",
+                                     file.out = input)
+                 
+         }, error = function(){ print(paste0("File ",input," could not be written properly to the internal folder environment.\n",
+         "Please check: ",query_file, " and ",subject_file,"."))}
+        )
         
         if(is.null(path)){
                 
                 # here: http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
                 # in column -outfmt additional output columns can be selected: ' 6 qseqid sseqid staxids sskingdoms' .. or ' 6 std'
                 # which is the default value and the same as: ' 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore'
-                        
-                        if(taxonomy == TRUE){
+                tryCatch(
+                               {
+                                       if(taxonomy == TRUE){
                                 
-                                if(!is.null(taxdb_path)){
-                                        system( paste0("export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
-                                               " -out ", output ," ",blast_params,
-                                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                                length mismatch gapopen qstart qend sstart send evalue 
-                                                bitscore score qcovs'")
-                                         )
+                                               if(!is.null(taxdb_path)){
+                                                       system( paste0("export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
+                                                               " -out ", output ," ",blast_params,
+                                                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                                               length mismatch gapopen qstart qend sstart send evalue 
+                                                               bitscore score qcovs'")
+                                                              )
+                                                }
+                                        }
+                              }, error = function(){ print(paste0("taxdb could not be included to the BLAST search. \n",
+                                                     "Please check the validity of the path: ",taxdb_path," .\n",
+                                                     "Additionally, check the validity of: ",database,", ",input,
+                                                     ", ",output,", and blast_params: ",blast_params," ."))}
+                      )
+                      
+                tryCatch(
+                        {      
+                                if(taxonomy == FALSE){
+                                
+                                         system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                                 " -out ", output ," ",blast_params, 
+                                                 " -outfmt '6 qseqid sseqid pident nident length mismatch 
+                                                 gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                                               )
+                                
                                 }
-                        } 
-                        
-                        if(taxonomy == FALSE){
-                                
-                                system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                       " -out ", output ," ",blast_params, 
-                                       " -outfmt '6 qseqid sseqid pident nident length mismatch 
-                                       gapopen qstart qend sstart send evalue bitscore score qcovs'")
-                                       )
-                                
-                        } 
+                        }, error = function(){print(paste0("The advanced BLAST search did not work properly.\n",
+                        "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
+                )
                 
         } else {
                 
-                if(taxonomy == TRUE){
+                tryCatch(
+                         {
+                                 if(taxonomy == TRUE){
                         
-                        if(!is.null(taxdb_path)){     
+                                         if(!is.null(taxdb_path)){     
                                 
-                                system(
-                                       paste0("export PATH=$PATH:",path,"; ","export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",
-                                       database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
-                                       score qcovs'")
-                                      )
-                        }
+                                                 system(
+                                                        paste0("export PATH=$PATH:",path,"; ","export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",
+                                                        database," -query ",input," -out ", output ," ",blast_params,
+                                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                                        length mismatch gapopen qstart qend sstart send evalue bitscore 
+                                                        score qcovs'")
+                                                       )
+                                         }
                        
-                } 
+                                  }
+                         }, error = function(){print(paste0("taxdb could not be included to the BLAST search. \n",
+                                                            "Please check the validity of the path: ",taxdb_path," .\n",
+                                                            "Additionally, check the validity of: ",database,", ",input,",
+                                                            ",output,", and blast_params: ",blast_params," ."))}
+                )
                 
-                if(taxonomy == FALSE){
+                tryCatch(
+                         {
+                                 if(taxonomy == FALSE){
                         
-                        system(
-                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
-                                       database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid pident nident length 
-                                       mismatch gapopen qstart qend sstart send evalue bitscore 
-                                       score qcovs'")
-                               )
+                                         system(
+                                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                                                database," -query ",input," -out ", output ," ",blast_params,
+                                                " -outfmt '6 qseqid sseqid pident nident length 
+                                                mismatch gapopen qstart qend sstart send evalue bitscore 
+                                                score qcovs'")
+                                                )
                         
-                        
-                }
+                                 }
+                         }, error = function(){print(paste0("The advanced BLAST search did not work properly.\n",
+                                                            "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
+                )
         }
         
         # default parameters that are not returned in the hit table
@@ -555,14 +622,21 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         if(taxonomy == FALSE)
                 col_Classes <- c(rep("character",2), rep("numeric",13))
         
-        hit_table <- data.table::fread(input = output, sep = "\t", 
-                                       header = FALSE, colClasses = col_Classes)
+        
+        tryCatch(
+                {
+                        hit_table <- data.table::fread(input = output, sep = "\t", 
+                                                       header = FALSE, colClasses = col_Classes)
  
-        data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
-                             new = colNames)
+                        data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
+                                             new = colNames)
         
-        data.table::setkeyv(hit_table, c("query_id","subject_id"))
+                        data.table::setkeyv(hit_table, c("query_id","subject_id"))
         
-        return(hit_table)        
+                        return(hit_table)      
+                        
+                }, error = function(){ print(paste0("File ",output," could not be read properly, please check whether BLAST ",
+                "correctly wrote a resulting BLAST hit table to ",output," ."))}
+        )
         
 }
