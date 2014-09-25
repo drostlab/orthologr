@@ -69,9 +69,9 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal",
                 
                         tryCatch(
                         {   
-                                system(paste0(path," ",file_aln," ",file_nuc," -output ",format," >",file.out))
+                                system(paste0("perl ",path," ",file_aln," ",file_nuc," -output ",format," >",file.out))
                 
-                        },error = function(){ print(paste0("Please check the correct path to ",tool,
+                        },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                                            "... the interface call did not work properly.") ) }
                         
                         )
@@ -87,7 +87,7 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal",
                                 dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
                                 return(dna_aln)
                
-                        }, error = function(){print(paste0("Something went wront with Pal2Nal.pl .\n",
+                        }, error = function(){stop(paste0("Something went wront with Pal2Nal.pl .\n",
                                                            file.out, " could not be read properly."))}
                 )
         }

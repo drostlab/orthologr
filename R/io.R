@@ -33,7 +33,7 @@ read.genome <- function(file, format, ...){
                                                                      seqs = unlist(lapply(genome, seqinr::c2s)))
                                  data.table::setkey(genome.dt,geneids)
                                  
-                        }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                        }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
                         "Please make sure that ",file," contains only DNA sequences and is in ",format," format."))}
                 )
         }
@@ -77,7 +77,7 @@ read.proteome <- function(file, format, ...){
                                                                        seqs = unlist(lapply(proteome, seqinr::c2s)))
                                  data.table::setkey(proteome.dt,geneids)
                                  
-                         }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                         }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
                                                              "Please make sure that ",file," contains only amino acid sequences and is in ",format," format."))}
                 )
         }
@@ -121,7 +121,7 @@ read.cds <- function(file, format, ...){
                                                  seqs = unlist(lapply(cds, seqinr::c2s)))
                                 data.table::setkey(cds.dt,geneids)
                 
-                        }, error = function(){ print(paste0("File ",file, " could not be read properly. \n",
+                        }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
                                                             "Please make sure that ",file," contains only CDS sequences and is in ",format," format."))}
                 )
         }
@@ -141,4 +141,4 @@ transl <- function(sequence){
 }
 
 
-
+test <- function(x){ print(paste0("Test ",x," passed.","\n"))}

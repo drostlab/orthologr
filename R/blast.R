@@ -80,7 +80,7 @@ blast <- function(query_file, subject_file, format = "fasta",
                 seqinr::write.fasta(write_AA, names = name,
                                     nbchar = 80,open = "w",
                                     file.out = input)
-         },error = function(){ print(paste0("File ",input,
+         },error = function(){ stop(paste0("File ",input,
                                             " could not be written properly to the internal folder environment.",
                                             " Please check the path to ",input,".") ) }
          
@@ -141,7 +141,7 @@ blast <- function(query_file, subject_file, format = "fasta",
                         }
                 }
         
-        },error = function(){ print(paste0("Please check the correct path to ",tool,
+        },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                            "... the interface call did not work properly.") ) }
         )
         
@@ -167,7 +167,7 @@ blast <- function(query_file, subject_file, format = "fasta",
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
         
                   return(hit_table)
-         }, error = function(){ print(paste0("File ",output, "could not be read correctly.",
+         }, error = function(){ stop(paste0("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") ) }
         )
@@ -239,7 +239,7 @@ blast_best <- function(query_file, subject_file, format = "fasta",
                  # return a data.table storing only the best hits from the resulting 
                  # BLAST search
                  return( besthit_tbl )
-         }, error = function() {print(paste0("The BLAST output couldn't be read properly, maybe a problem occured when 
+         }, error = function() {stop(paste0("The BLAST output couldn't be read properly, maybe a problem occured when 
                                        selecting best hits from the resulting BLAST hit table."))} 
         )
               
@@ -299,7 +299,7 @@ blast_rec <- function(query_file, subject_file, format = "fasta",
                 return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
                                           by = c("query_id","subject_id")) )
                 
-        }, error = function(){ print(paste0("The BLAST tables resulting from ",query_file, " and ",
+        }, error = function(){ stop(paste0("The BLAST tables resulting from ",query_file, " and ",
         subject_file," could not be joined properly to select only the reciprocal best hits."))}
         )
 }
@@ -361,7 +361,7 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
           {
                      dt[ , aa := transl(seqs), by = geneids]
                      
-          }, error = function() {print(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
+          }, error = function() {stop(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
           "\n Please check whether ",file, " stores valid coding sequences."))}
         )
 
@@ -398,7 +398,7 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
                                                dbname," -input_type fasta -dbtype prot")
                                       )
                         }
-                }, error = function(){ print(paste0("makeblastdb did not work properly. The default parameters are: \n",
+                }, error = function(){ stop(paste0("makeblastdb did not work properly. The default parameters are: \n",
                 "-input_type fasta -dbtype prot . \n","Please check that you really want to work with a protein database.\n",
                 "Additionally check: ",dbname," ."))}
                 )
@@ -501,7 +501,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                      nbchar = 80,open = "w",
                                      file.out = input)
                  
-         }, error = function(){ print(paste0("File ",input," could not be written properly to the internal folder environment.\n",
+         }, error = function(){ stop(paste0("File ",input," could not be written properly to the internal folder environment.\n",
          "Please check: ",query_file, " and ",subject_file,"."))}
         )
         
@@ -523,7 +523,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                                               )
                                                 }
                                         }
-                              }, error = function(){ print(paste0("taxdb could not be included to the BLAST search. \n",
+                              }, error = function(){ stop(paste0("taxdb could not be included to the BLAST search. \n",
                                                      "Please check the validity of the path: ",taxdb_path," .\n",
                                                      "Additionally, check the validity of: ",database,", ",input,
                                                      ", ",output,", and blast_params: ",blast_params," ."))}
@@ -540,7 +540,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                                )
                                 
                                 }
-                        }, error = function(){print(paste0("The advanced BLAST search did not work properly.\n",
+                        }, error = function(){stop(paste0("The advanced BLAST search did not work properly.\n",
                         "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
                 )
                 
@@ -562,7 +562,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                          }
                        
                                   }
-                         }, error = function(){print(paste0("taxdb could not be included to the BLAST search. \n",
+                         }, error = function(){stop(paste0("taxdb could not be included to the BLAST search. \n",
                                                             "Please check the validity of the path: ",taxdb_path," .\n",
                                                             "Additionally, check the validity of: ",database,", ",input,",
                                                             ",output,", and blast_params: ",blast_params," ."))}
@@ -581,7 +581,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
                                                 )
                         
                                  }
-                         }, error = function(){print(paste0("The advanced BLAST search did not work properly.\n",
+                         }, error = function(){stop(paste0("The advanced BLAST search did not work properly.\n",
                                                             "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
                 )
         }
@@ -635,7 +635,7 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         
                         return(hit_table)      
                         
-                }, error = function(){ print(paste0("File ",output," could not be read properly, please check whether BLAST ",
+                }, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
                 "correctly wrote a resulting BLAST hit table to ",output," ."))}
         )
         

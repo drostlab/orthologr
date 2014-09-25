@@ -332,11 +332,14 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                         )    
                                 }
                         }
-                },error = function(){ print(paste0("Please check the correct path to ",tool,
+                       
+                       if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                       
+                },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                                    "... the interface call did not work properly.") )}
                 )
                 
-                if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                
                 
                 
                 if(get_aln){
@@ -346,7 +349,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
                                         return(aln)
                                         
-                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                    file.out, " could not be read properly."))}
                         )
                 }
@@ -388,11 +391,12 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 }
                         }
                 
-                },error = function(){ print(paste0("Please check the correct path to ",tool,
+                        if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                        
+                },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                                    "... the interface call did not work properly.") )}
                 )
                 
-                if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 
                 
                 if(get_aln){
@@ -401,7 +405,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 {
                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
                                         return(aln)
-                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                    file.out, " could not be read properly."))}
                         )
                 }
@@ -445,12 +449,13 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                    }
                          
                            }
+                          
+                          if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                  
-                 },error = function(){ print(paste0("Please check the correct path to ",tool,
+                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                                     "... the interface call did not work properly.") )}
                  )
-                 
-                 if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                
                  
                  
                  if(get_aln){
@@ -460,7 +465,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                          aln <- seqinr::read.alignment(file.out, format = "clustal")
                                          return(aln)
                                          
-                                 }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                 }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                      file.out, " could not be read properly."))}
                          )
                  }
@@ -501,13 +506,11 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          
                         }
                  
-                 },error = function(){ print(paste0("Please check the correct path to ",tool,
+                        if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                        
+                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                                     "... the interface call did not work properly.") )}
                  )
-                 
-                 if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-                 
-                         
                  
                  if(get_aln){
                          
@@ -516,7 +519,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                          aln <- seqinr::read.alignment(file.out, format = "clustal")
                                          return(aln)
                                          
-                         }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                         }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                        file.out, " could not be read properly."))}
                          )
                  }
@@ -561,12 +564,12 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 )    
                         }
                 }
-               },error = function(){ print(paste0("Please check the correct path to ",tool,
+                if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                
+               },error = function(){ stop(paste0("Please check the correct path to ",tool,
                                    "... the interface call did not work properly.") )}
                 )
-               
-               if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-               
+             
                
                ## LINUX ERROR 
                #                  There is a problem in the configuration of your shell.
@@ -586,7 +589,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 {
                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
                                         return(aln)
-                                }, error = function(){print(paste0("Something went wront with ",tool," .\n",
+                                }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                    file.out, " could not be read properly."))}
                         )
                 }

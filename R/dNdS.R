@@ -84,12 +84,12 @@ dNdS <- function(query_file, subject_file,
                 
         }
     
-
+test(1)
         data.table::setnames(q_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
         data.table::setnames(s_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
         data.table::setnames(q_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
         data.table::setnames(s_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))
-        
+test(2)        
 #### A #####
 
 #         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_cds), by = "subject_id")
@@ -107,7 +107,7 @@ dNdS <- function(query_file, subject_file,
 #### C #####
         query_tbl <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(q_aa), by = "query_id")
         subject_tbl <- dplyr::inner_join(dplyr::tbl_dt(s_cds), dplyr::tbl_dt(s_aa), by = "subject_id")
-
+test(3 )
 
 # AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN     
 # DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
@@ -282,7 +282,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                 if(!quiet){print("Substitutionrate successfully calculated by gestimator")}
                 
                 return(hit.table)
-            },error = function(){ print(paste0("Please check the correct path to ",est.method,
+            },error = function(){ stop(paste0("Please check the correct path to ",est.method,
                                                "... the interface call did not work properly.") ) }
             
             )
@@ -351,7 +351,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                        if(!is.null(kaks_calc.params))
                                system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks ",kaks_calc.params)))
                
-              },error = function(){ print(paste0("KaKs_Calculator 1.2 couln't run properly, please check your input files."))}
+              },error = function(){ stop(paste0("KaKs_Calculator 1.2 couln't run properly, please check your input files."))}
                
               )
               
@@ -369,7 +369,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                
                               return(kaks_tbl_res)
                               
-                      }, error = function(){print(paste0("Something went wront with KaKs_Calculator .\n",
+                      }, error = function(){stop(paste0("Something went wront with KaKs_Calculator .\n",
                                                          paste0("_calculation",f_sep,file_name,".axt.kaks"),
                                                          " could not be read properly."))}
               )
@@ -398,6 +398,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' @param codonaln_tool
 #' @param dnds_est.method
 #' @param quiet
+#' @param comp_cores
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @details This function takes the amino acid and CDS sequences two orthologous genes
 #' and writes the corresponding amino acid and CDS sequences as fasta file into
@@ -416,10 +417,12 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 compute_dnds <- function(query_tbl,subject_tbl,
                          multialn_tool = "clustalw", multialn_path = NULL,
                          multialn_params = NULL, codonaln_tool = "pal2nal",
-                         dnds_est.method = "YN", quiet = FALSE){
+                         dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         
         if(ncol(query_tbl) != ncol(subject_tbl))
                 stop("The number of columns in your query_tbl and subject_tbl differ!")
+        
+        multicore <- (comp_cores > 1)
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -429,28 +432,54 @@ compute_dnds <- function(query_tbl,subject_tbl,
         aa_seqs <- vector(mode = "list", length = 2)
         cds_session_fasta <- vector(mode = "character", length = 1)
         aa_session_fasta <- vector(mode = "character", length = 1)
-        pairwise_aln_name <- vector(mode = "character, length = 1")
+        pairwise_aln_name <- vector(mode = "character", length = 1)
+        dNdS_values <- vector(mode = "list", length = ncol(query_tbl))
+        test(4)
         
-        ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
-        ### register all given cores for parallelization
-        ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
-        cores <- parallel::makeForkCluster(parallel::detectCores())
-        doParallel::registerDoParallel(cores)
         
-        ### Perform the sampling process in parallel
-        dNdS_values <- parallel::foreach(i = 1:ncol(query_tbl),.combine="rbind") %dopar% {
-                         
+        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep))){
+                
+                dir.create(paste0("_alignment",f_sep,"orthologs"))
+        }
+        
+        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep))){
+                
+                dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"CDS"))
+        }
+        
+        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep))){
+                
+                dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"AA"))
+        }
+        
+        if(multicore){
+                ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
+                ### register all given cores for parallelization
+                ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
+                cores <- parallel::makeForkCluster(parallel::detectCores())
+                doParallel::registerDoParallel(cores)
+        } 
+                if(comp_cores > parallel::detectCores())
+                        stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
+                
+              for(i in 1:ncol(query_tbl)){
+                  dNdS_values[i] <- list((function(i) {
+                
+          ### Perform the sampling process in parallel
+#         dNdS_values <- foreach::foreach(i = 1:ncol(query_tbl),.combine="rbind") %dopar%{
+                
+                test(i+5)
                 # storing the query gene id and subject gene id of the orthologous gene pair 
-                orthologs_names <- list(query_tbl[i , query_id],subject_tbl[i, "subject_id"])
+                orthologs_names <- list(query_tbl[i , query_id],subject_tbl[i, subject_id])
         
                 # storing the query CDS sequence and subject CDS sequence of the orthologous gene pair 
-                cds_seqs <- list(query_tbl[i, "query_cds"],subject_tbl[i, "subject_cds"])
+                cds_seqs <- list(query_tbl[i, query_cds],subject_tbl[i, subject_cds])
         
                 # storing the query amino acid sequence and subject amino acid sequence of the orthologous gene pair 
-                aa_seqs <- list(query_tbl[i, "query_aa"],subject_tbl[i, "subject_aa"])
+                aa_seqs <- list(query_tbl[i, query_aa],subject_tbl[i, subject_aa])
         
         
-                pairwise_aln_name <- paste0(orthologs_names[[1]],"_",orthologs_names[[1]])
+                pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
         
 
                 # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
@@ -462,14 +491,16 @@ compute_dnds <- function(query_tbl,subject_tbl,
                 seqinr::write.fasta(sequences = aa_seqs, names = orthologs_names, file.out = aa_session_fasta)
         
                 # which multi_aln tool should get the parameters
-                multi_aln_tool_params <- paste0(multialn_tool,".",params)
+                #multi_aln_tool_params <- paste0(multialn_tool,".",params)
+               
+                print(aa_session_fasta)
         
                 # align aa -> <multialn_tool>.aln
                 multi_aln(file = aa_session_fasta, 
                           tool = multialn_tool, get_aln = FALSE, 
                           multi_aln_name = pairwise_aln_name, 
                           path = multialn_path, quiet = quiet)
-        
+
                 multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
         
                 # align codon -> cds.aln
@@ -481,16 +512,19 @@ compute_dnds <- function(query_tbl,subject_tbl,
                 codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
         
                 # compute kaks
-                dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codonaln_tool), 
+                dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
                                                est.method = dnds_est.method, quiet = quiet)
                 
                 return(dNdS.table)
         
-                ### close the cluster connection
-                ### The is important to be able to re-run the function N times
-                ### without getting cluster connection problems
-                parallel::stopCluster(cores)
+             #}
+             })(i)
+        )
         }
+        ### close the cluster connection
+        ### The is important to be able to re-run the function N times
+        ### without getting cluster connection problems
+        #parallel::stopCluster(cores)
         
         # since only one codon alignment is used for dNdS estimation,
         # the resulting dNdS.table should only store one row.
