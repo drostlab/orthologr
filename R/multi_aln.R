@@ -5,6 +5,8 @@
 #' @param tool a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", "clustalo", and "mafft". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
+#' @param multi_aln_name a character string specifying the name of the stored alignment file. 
+#' Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .
 #' @param clustalw.params a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".
 #' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
@@ -235,9 +237,10 @@
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
-                      clustalw.params = NULL, t_coffee.params = NULL,
-                      muscle.params = NULL, clustalo.params = NULL,
-                      mafft.params = NULL, quiet = FALSE){
+                      multi_aln_name = NULL, clustalw.params = NULL, 
+                      t_coffee.params = NULL, muscle.params = NULL, 
+                      clustalo.params = NULL, mafft.params = NULL, 
+                      quiet = FALSE){
         
         if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
                 stop("Please choose a tool that is supported by this function.")
@@ -250,8 +253,21 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 dir.create("_alignment")
         }
         
-        file.out <- paste0("_alignment",f_sep,tool,".aln")
+        if(!file.exists(paste0("_alignment",f_sep,"multi_aln",f_sep))){
+                
+                dir.create(paste0("_alignment",f_sep,"multi_aln"))
+        }
+        
+        if(is.null(multi_aln_name)){
+                
+                file.out <- paste0("_alignment",f_sep,"multi_aln",f_sep,tool,".aln")
+        }
 
+        if(!is.null(multi_aln_name)){
+         
+                file.out <- paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_name,"_",tool,".aln")    
+        }
+        
 # does not work as expected, could be included in another way or not.
 #         if(quiet){
 #                 clustalw.params = paste0(clustalw.params, " -QUIET")

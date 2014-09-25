@@ -3,8 +3,8 @@
 \alias{codon_aln}
 \title{Function to get a codon alignment.}
 \usage{
-codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
-  quiet = FALSE)
+codon_aln(file_aln, file_nuc, format = "clustal", tool = "pal2nal",
+  codon_aln_name = NULL, get_aln = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
@@ -14,6 +14,9 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE,
 \item{format}{a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".}
 
 \item{tool}{a character string specifying the program that should be used e.g. "pal2nal".}
+
+\item{codon_aln_name}{a character string specifying the name of the stored alignment file.
+Default is \code{codon_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 }

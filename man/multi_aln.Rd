@@ -3,7 +3,7 @@
 \alias{multi_aln}
 \title{An interface function to common multiple alignment tools.}
 \usage{
-multi_aln(file, tool, get_aln = FALSE, path = NULL,
+multi_aln(file, tool, get_aln = FALSE, path = NULL, multi_aln_name = NULL,
   clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
   clustalo.params = NULL, mafft.params = NULL, quiet = FALSE)
 }
@@ -15,6 +15,9 @@ multi_aln(file, tool, get_aln = FALSE, path = NULL,
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
 \item{path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
+
+\item{multi_aln_name}{a character string specifying the name of the stored alignment file.
+Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .}
 
 \item{clustalw.params}{a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".}

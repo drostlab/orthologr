@@ -3,21 +3,23 @@
 \alias{dNdS}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for two organisms.}
 \usage{
-dNdS(query_file, subject_file, blast_mode = "best hit", blast_path = NULL,
+dNdS(query_file, subject_file, ortho_detection = "RBH", blast_path = NULL,
   multialn_tool = "clustalw", multialn_path = NULL,
-  codonaln_tool = "pal2nal", codonaln_path = NULL,
-  dnds_est.method = "Comeron", comp_cores = 1, quiet = FALSE)
+  multialn_params = NULL, codonaln_tool = "pal2nal",
+  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
+\item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
+to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
+Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
 \item{multialn_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
-
-\item{codonaln_path}{a character string specifying the path to the codon alignment program (in case you don't use the default path).}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .}
 

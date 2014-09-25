@@ -6,6 +6,8 @@
 #' @param file_nuc a character string specifying the path to the file storing the coding sequences in multiple FASTA format.
 #' @param format a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".
 #' @param tool a character string specifying the program that should be used e.g. "pal2nal". 
+#' @param codon_aln_name a character string specifying the name of the stored alignment file. 
+#' Default is \code{codon_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
@@ -17,7 +19,9 @@
 #' }
 #' @return if get_aln is TRUE an object of class alignment of the seqinr package.
 #' @export
-codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FALSE, quiet = FALSE){
+codon_aln <- function(file_aln, file_nuc, format = "clustal", 
+                      tool = "pal2nal", codon_aln_name = NULL, 
+                      get_aln = FALSE, quiet = FALSE){
         
         
         # determine the file seperator of the current OS
@@ -42,7 +46,17 @@ codon_aln <- function(file_aln, file_nuc, format = "clustal", tool, get_aln = FA
                 dir.create("_alignment")
         }
         
-        file.out <- paste0("_alignment",f_sep,tool,".aln")
+        
+        if(!file.exists(paste0("_alignment",f_sep,"codon_aln",f_sep))){
+                
+                dir.create(paste0("_alignment",f_sep,"codon_aln"))
+        }
+        
+        if(is.null(codon_aln_name))
+                file.out <- paste0("_alignment",f_sep,"codon_aln",f_sep,tool,".aln")
+        
+        if(!is.null(codon_aln_name))
+                file.out <- paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_name,"_",tool,".aln")
         
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE

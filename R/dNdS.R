@@ -2,9 +2,11 @@
 #' @description This function takes 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param ortho_detection a character string specifying the orthology inference method that shall be performed
+#' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
+#' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
-#' @param codonaln_path a character string specifying the path to the codon alignment program (in case you don't use the default path).
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
@@ -14,14 +16,16 @@
 #' @import data.table
 #' @export
 dNdS <- function(query_file, subject_file, 
-                 blast_mode = "best hit", blast_path = NULL, 
+                 ortho_detection = "RBH", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
-                 codonaln_tool = "pal2nal", codonaln_path = NULL,
-                 dnds_est.method = "Comeron", comp_cores = 1,
-                 quiet=FALSE){
+                 multialn_params = NULL, codonaln_tool = "pal2nal", 
+                 dnds_est.method = "YN", comp_cores = 1, quiet = FALSE){
         
-        if(!is.element(blast_mode, c("best hit","recursive")))
-                stop("Please choose a blast mode that is supported by this function.")
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
+        if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","IP")))
+                stop("Please choose a orthology detection method that is supported by this function.")
         
         if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "t_coffee", "mafft")))
                 stop("Please choose a multiple alignment tool that is supported by this function.")
@@ -38,7 +42,7 @@ dNdS <- function(query_file, subject_file,
         # hit table with pairs of geneids  
         
   
-        if(blast_mode == "best hit"){
+        if(ortho_detection == "BH"){
                 
                 hit.table <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_file, 
@@ -50,8 +54,6 @@ dNdS <- function(query_file, subject_file,
                 q_cds <- read.cds(file = query_file, format = "fasta")
                 s_cds <- read.cds(file = subject_file, format = "fasta")
                 
-                # determine the file seperator of the current OS
-                f_sep <- .Platform$file.sep
 
                 q_aa <- read.proteome(file = paste0("_blast",f_sep,"blastinput.fasta"), format = "fasta")
                 
@@ -61,7 +63,7 @@ dNdS <- function(query_file, subject_file,
     
         }
         
-        if(blast_mode == "recursive"){
+        if(ortho_detection == "RBH"){
                                
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
@@ -90,32 +92,28 @@ dNdS <- function(query_file, subject_file,
         
 #### A #####
 
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_cds), by = "subject_id")
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_aa), by = "subject_id")
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_cds), by = "query_id")
-        hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_aa), by = "query_id")  
-        
+#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_cds), by = "subject_id")
+#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_aa), by = "subject_id")
+#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_cds), by = "query_id")
+#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_aa), by = "query_id")  
+
+#### B #####
 #           tbl_cds <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(s_cds), by = c("query_id","subject_id"))
 #           tbl_aa <- dplyr::inner_join(dplyr::tbl_dt(q_aa), dplyr::tbl_dt(s_aa), by = c("query_id","subject_id"))
-#           tbl_cds_aa <- dplyr::inner_join(dplyr::tbl_dt(tbl_cds), dplyr::tbl_dt(tbl_aa), by = "query_id"))
-#           final_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(tbl_cds_aa), by = "query_id"))
+#           tbl_cds_aa <- dplyr::inner_join(dplyr::tbl_dt(tbl_cds), dplyr::tbl_dt(tbl_aa), by = "query_id")
+#           final_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(tbl_cds_aa), by = "query_id")
 #           hit.table <- data.table::copy(final_tbl)
+
+#### C #####
+        query_tbl <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(q_aa), by = "query_id")
+        subject_tbl <- dplyr::inner_join(dplyr::tbl_dt(s_cds), dplyr::tbl_dt(s_aa), by = "subject_id")
+
 
 # AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN     
 # DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
 # HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
 # ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
 # AUẞERDEM IST DER KEY NUR NOCH SUBJECT_ID
-
-
-
-### B ###
-
-# Variante B mit hit.table[q_cds] läuft am Ende auch auf das Problem hinaus, dass setkey
-# für 2 Aufrufe umbesetzt werden muss.
-# Auch muss dabei ebenfalls hit.table überschrieben werden    
-
-        #data.table::setkeyv(hit.table,c("query_id", "subject_id"))
 
 # foreach hit-pair do
         # - create a fasta file containing the aminoacid sequences -> aa.fasta
@@ -127,24 +125,24 @@ dNdS <- function(query_file, subject_file,
       #hit.table[, dnds:= compute_dnds( <Rest der Spalte ?? >), by=c("query_id", "subject_id")]
         
       # obacht hit.table enthalt noch den evalue
+      
+           return(compute_dnds(query_tbl = query_tbl, subject_tbl = subject_tbl,
+                       multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
+                       dnds_est.method = dnds_est.method, quiet = quiet)
+                       )
 
 
-      hit.table[, dnds:=as.vector(apply(.SD, 1 ,FUN=function(x){ compute_dnds(x,
-                               multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
-                               dnds_est.method = dnds_est.method,
-                               codonaln_path = codonaln_path , quiet=quiet)}))]
-
-        return(hit.table) 
-   #   compute_dnds(res[1,], 
-   #                multialn_tool = "clustalw", codonaln_tool = "pal2nal", 
-   #                dnds_tool = "gestimator",
-   #                codonaln_path = "/home/sarah/Programs/pal2nal.v14/")
-
-    #  res[,apply(.SD,1,function(x) View(x) ), by=query_id]
-    # by query id results in a frame with id and lists of 6
+#       final_tbl[ , dnds:=apply(.SD, 1 ,FUN = function(x){ single_dnds(current_pairwise_aln = x,
+#                                                                                 multialn_tool = multialn_tool, 
+#                                                                                 codonaln_tool = codonaln_tool, 
+#                                                                                 dnds_est.method = dnds_est.method, 
+#                                                                                 quiet = quiet)})]
+# 
+#         return(final_tbl) 
+#    
 }
 
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment (helper function).
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
 #' @description This function takes a pairwise alignment as input file and estimates the
 #' dNdS ratio of the corresponding alignment. Nevertheless, this function is a helper function for
 #' \code{\link{dNdS}}. For dNdS computations you should use the function: \code{\link{dNdS}}.
@@ -158,7 +156,7 @@ dNdS <- function(query_file, subject_file,
 #' @param quiet a logical value specifying whether the output of the coresponding interface shall be printed out.
 #' @param kaks_calc.params a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
 #' \code{kaks_calc.params} = "-m NG -m YN". 
-#' @author Sarah Scharfenberg and Hajk-Georg Drost 
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function takes a pairwise alignments file as input and estimates dNdS ratios
 #' of the corresponding alignments using predefined dNdS estimation methods.
 #' 
@@ -379,39 +377,124 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         
 }
 
-compute_dnds <- function(x, 
-                         multialn_tool="clustalw", multialn_path = NULL,
-                         codonaln_tool="pal2nal", codonaln_path = NULL,
-                         dnds_est.method = "Comeron", quiet=FALSE){
-        #return(x["query_id"])
-        names <- list(x["query_id"],x["subject_id"])
-        seqs <- list(x["query_cds"],x["subject_cds"])
-        aa <- list(x["query_aa"],x["subject_aa"])
+
+
+#' @title This function computes the dNdS value of one given pairwise alignment.
+#' @description This function takes a vector containing the query_id, subject_id,
+#' query amino acid sequence, subject amino acid sequence, query CDS sequence, and subject CDS sequence
+#' and then runs the following pipieline:
+#' 
+#' 1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
+#' 
+#' 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
+#' 
+#' 3) dNdS estimation of the codon alignment returned by 2)
+#' 
+#' @param query_tbl
+#' @param subject_tbl
+#' @param multialn_tool
+#' @param multialn_path
+#' @param multialn_params
+#' @param codonaln_tool
+#' @param dnds_est.method
+#' @param quiet
+#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @details This function takes the amino acid and CDS sequences two orthologous genes
+#' and writes the corresponding amino acid and CDS sequences as fasta file into
+#' the internal folder environment. The resulting fasta files (two files) store the 
+#' amino acid sequence of the query_id and subject_id (file one) and the CDS sequence of
+#' the query_id and subject_id (file two). These fasta files are then used to pass through the following pipeline:
+#' 
+#' 1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
+#' 
+#' 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
+#' 
+#' 3) dNdS estimation of the codon alignment returned by 2)
+#' 
+#' @import foreach
+#' @export
+compute_dnds <- function(query_tbl,subject_tbl,
+                         multialn_tool = "clustalw", multialn_path = NULL,
+                         multialn_params = NULL, codonaln_tool = "pal2nal",
+                         dnds_est.method = "YN", quiet = FALSE){
+        
+        if(ncol(query_tbl) != ncol(subject_tbl))
+                stop("The number of columns in your query_tbl and subject_tbl differ!")
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
+        
+        orthologs_names <- vector(mode = "list", length = 2)
+        cds_seqs <- vector(mode = "list", length = 2)
+        aa_seqs <- vector(mode = "list", length = 2)
+        cds_session_fasta <- vector(mode = "character", length = 1)
+        aa_session_fasta <- vector(mode = "character", length = 1)
+        pairwise_aln_name <- vector(mode = "character, length = 1")
+        
+        ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
+        ### register all given cores for parallelization
+        ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
+        cores <- parallel::makeForkCluster(parallel::detectCores())
+        doParallel::registerDoParallel(cores)
+        
+        ### Perform the sampling process in parallel
+        dNdS_values <- parallel::foreach(i = 1:ncol(query_tbl),.combine="rbind") %dopar% {
+                         
+                # storing the query gene id and subject gene id of the orthologous gene pair 
+                orthologs_names <- list(query_tbl[i , query_id],subject_tbl[i, "subject_id"])
+        
+                # storing the query CDS sequence and subject CDS sequence of the orthologous gene pair 
+                cds_seqs <- list(query_tbl[i, "query_cds"],subject_tbl[i, "subject_cds"])
+        
+                # storing the query amino acid sequence and subject amino acid sequence of the orthologous gene pair 
+                aa_seqs <- list(query_tbl[i, "query_aa"],subject_tbl[i, "subject_aa"])
+        
+        
+                pairwise_aln_name <- paste0(orthologs_names[[1]],"_",orthologs_names[[1]])
+        
 
-        # create cds fasta
-        seqinr::write.fasta(sequences = seqs, names = names, file.out = paste0("_alignment",f_sep,"cds.fasta"))
+                # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
+                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,pairwise_aln_name,"_cds.fasta")
+                seqinr::write.fasta(sequences = cds_seqs, names = orthologs_names, file.out = cds_session_fasta)
         
-        # create aa fasta
-        seqinr::write.fasta(sequences = aa, names = names, file.out = paste0("_alignment",f_sep,"aa.fasta"))
+                # create aa fasta of orthologous gene pair having session name: 'pairwise_aln_name'
+                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,pairwise_aln_name,"_aa.fasta")
+                seqinr::write.fasta(sequences = aa_seqs, names = orthologs_names, file.out = aa_session_fasta)
         
-        # align aa -> <multialn_tool>.aln
-        multi_aln(file = paste0("_alignment",f_sep,"aa.fasta"), 
-                  tool = multialn_tool, get_aln = FALSE, 
-                  path = multialn_path, quiet = quiet)
-
-        # align codon -> cds.aln
-        codon_aln(file_aln = paste0("_alignment",f_sep,multialn_tool,".aln"),
-                  file_nuc = paste0("_alignment",f_sep,"cds.fasta"),
-                  tool = codonaln_tool,format = "fasta",
-                  get_aln = FALSE, quiet = quiet)
+                # which multi_aln tool should get the parameters
+                multi_aln_tool_params <- paste0(multialn_tool,".",params)
         
-        # compute kaks
-        hit.table <- substitutionrate(file = paste0("_alignment",f_sep,codonaln_tool,".aln"), 
-                                      est.method = dnds_est.method, quiet=quiet)
-        return(hit.table[ , dNdS])
+                # align aa -> <multialn_tool>.aln
+                multi_aln(file = aa_session_fasta, 
+                          tool = multialn_tool, get_aln = FALSE, 
+                          multi_aln_name = pairwise_aln_name, 
+                          path = multialn_path, quiet = quiet)
+        
+                multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
+        
+                # align codon -> cds.aln
+                codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_session_name),
+                          file_nuc = cds_session_fasta, tool = codonaln_tool,format = "fasta",
+                          codon_aln_name = pairwise_aln_name,
+                          get_aln = FALSE, quiet = quiet)
+        
+                codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
+        
+                # compute kaks
+                dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codonaln_tool), 
+                                               est.method = dnds_est.method, quiet = quiet)
+                
+                return(dNdS.table)
+        
+                ### close the cluster connection
+                ### The is important to be able to re-run the function N times
+                ### without getting cluster connection problems
+                parallel::stopCluster(cores)
+        }
+        
+        # since only one codon alignment is used for dNdS estimation,
+        # the resulting dNdS.table should only store one row.
+        return(dNdS_values)
 
 }
 # 
