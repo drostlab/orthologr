@@ -298,8 +298,8 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 
                 
                 # test whether the connection to clustalw works
-                tryCatch(
-                {
+#                 tryCatch(
+#                 {
                        if(is.null(path)){
                                
                                # if no specific parameters are set,
@@ -333,11 +333,11 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 }
                         }
                        
-                       if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                       #if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                        
-                },error = function(){ stop(paste0("Please check the correct path to ",tool,
-                                                   "... the interface call did not work properly.") )}
-                )
+#                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
+#                                                    "... the interface call did not work properly.") )}
+#                 )
                 
                 
                 

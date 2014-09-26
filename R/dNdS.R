@@ -1,5 +1,6 @@
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for two organisms.
-#' @description This function takes 
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms.
+#' @description This function takes the CDS files of two organisms of interest (query_file and subject_file)
+#' and computes the dNdS estimation values for orthologous gene pairs between these organisms. 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
@@ -13,6 +14,28 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function...
 #' @return A data.table storing the dNdS values of the correspnding genes.
+#' @examples \dontrun{
+#' 
+#' # get a dNdS table using:
+#' # 1) reciprocal best hit for orthology inference (RBH)
+#' # 2) clustalw for pairwise amino acid alignments
+#' # 3) pal2nal for codon alignments
+#' # 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
+#' # 5) single core processing 'comp_cores = 1'
+#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' ortho_detection = "RBH",
+#' multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
+#' codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
+#' 
+#' # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
+#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' ortho_detection = "RBH",
+#' multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
+#' codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+#' 
+#' }
 #' @import data.table
 #' @export
 dNdS <- function(query_file, subject_file, 
@@ -47,10 +70,7 @@ dNdS <- function(query_file, subject_file,
                 hit.table <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_file, 
                                    path = blast_path, comp_cores = comp_cores))
-                
-#                 hit.table <- blast_best(query_file = query_file, subject_file = subject_file, 
-#                                                    path = blast_path, comp_cores = comp_cores)
-#                                 
+                                                
                 q_cds <- read.cds(file = query_file, format = "fasta")
                 s_cds <- read.cds(file = subject_file, format = "fasta")
                 
@@ -84,63 +104,30 @@ dNdS <- function(query_file, subject_file,
                 
         }
     
-test(1)
         data.table::setnames(q_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
         data.table::setnames(s_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
         data.table::setnames(q_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
         data.table::setnames(s_aa, old=c("geneids", "seqs"), new = c("subject_id","subject_aa"))
-test(2)        
-#### A #####
-
-#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_cds), by = "subject_id")
-#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(s_aa), by = "subject_id")
-#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_cds), by = "query_id")
-#         hit.table <- dplyr::inner_join(tbl_dt(hit.table), tbl_dt(q_aa), by = "query_id")  
-
-#### B #####
-#           tbl_cds <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(s_cds), by = c("query_id","subject_id"))
-#           tbl_aa <- dplyr::inner_join(dplyr::tbl_dt(q_aa), dplyr::tbl_dt(s_aa), by = c("query_id","subject_id"))
-#           tbl_cds_aa <- dplyr::inner_join(dplyr::tbl_dt(tbl_cds), dplyr::tbl_dt(tbl_aa), by = "query_id")
-#           final_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(tbl_cds_aa), by = "query_id")
-#           hit.table <- data.table::copy(final_tbl)
-
-#### C #####
+        
+        # joining all tables to a final table containing: query_id, subject_id, query_aa_seq, subject_aa_seq, query_cds_seq, and subject_cds_seq
         query_tbl <- dplyr::inner_join(dplyr::tbl_dt(q_cds), dplyr::tbl_dt(q_aa), by = "query_id")
         subject_tbl <- dplyr::inner_join(dplyr::tbl_dt(s_cds), dplyr::tbl_dt(s_aa), by = "subject_id")
-test(3 )
-
-# AN DIESER STELLE MUSS ICH MICH DOCH SEHR WUNDERN     
-# DURCH DIE ÜBERGABE DES INNER ERGEBNISSES DES INNER JOIN IST DAS RESULTAT
-# HIER EIN DATA.TABLE DER PLÖTZLICH IN DIE KEY SPALTEN GETAUSCHT HAT!
-# ALLERDINGS IST DAS NICHT MIT SEKEY() RÜCKGÄNGIG ZU MACHEN
-# AUẞERDEM IST DER KEY NUR NOCH SUBJECT_ID
-
-# foreach hit-pair do
-        # - create a fasta file containing the aminoacid sequences -> aa.fasta
-        # - create a fatsa file containing the cds -> cds.fasta
-        # - do multi_aln on aa.fasta -> aa.aln
-        # - do codon_aln on aa.aln and cds.fasta -> codon.aln
-        # - do compute_dnds on codon.aln -> fill in hittable
+        joint_query_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(query_tbl), by = "query_id")
+        joint_subject_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(subject_tbl), by = "subject_id")
+        final_tbl <- dplyr::inner_join(dplyr::tbl_dt(joint_query_tbl), dplyr::tbl_dt(joint_subject_tbl), by = c("query_id","subject_id"))
         
-      #hit.table[, dnds:= compute_dnds( <Rest der Spalte ?? >), by=c("query_id", "subject_id")]
-        
-      # obacht hit.table enthalt noch den evalue
-      
-           return(compute_dnds(query_tbl = query_tbl, subject_tbl = subject_tbl,
-                       multialn_tool = multialn_tool, codonaln_tool = codonaln_tool, 
-                       dnds_est.method = dnds_est.method, quiet = quiet)
-                       )
-
-
-#       final_tbl[ , dnds:=apply(.SD, 1 ,FUN = function(x){ single_dnds(current_pairwise_aln = x,
-#                                                                                 multialn_tool = multialn_tool, 
-#                                                                                 codonaln_tool = codonaln_tool, 
-#                                                                                 dnds_est.method = dnds_est.method, 
-#                                                                                 quiet = quiet)})]
-# 
-#         return(final_tbl) 
-#    
+       # return the dNdS table for all query_ids and subject_ids
+           return(compute_dnds(complete_tbl = final_tbl,
+                       multialn_tool = multialn_tool,
+                       multialn_path = multialn_path,
+                       codonaln_tool = codonaln_tool, 
+                       dnds_est.method = dnds_est.method, quiet = quiet,
+                       comp_cores = comp_cores)
+                       )   
 }
+
+
+
 
 #' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
 #' @description This function takes a pairwise alignment as input file and estimates the
@@ -390,8 +377,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
-#' @param query_tbl
-#' @param subject_tbl
+#' @param complete_tbl
 #' @param multialn_tool
 #' @param multialn_path
 #' @param multialn_params
@@ -414,15 +400,14 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' @import foreach
 #' @export
-compute_dnds <- function(query_tbl,subject_tbl,
+compute_dnds <- function(complete_tbl,
                          multialn_tool = "clustalw", multialn_path = NULL,
                          multialn_params = NULL, codonaln_tool = "pal2nal",
                          dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         
-        if(ncol(query_tbl) != ncol(subject_tbl))
-                stop("The number of columns in your query_tbl and subject_tbl differ!")
-        
         multicore <- (comp_cores > 1)
+        
+        print(paste0("MULTICORE: ",multicore))
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -433,8 +418,10 @@ compute_dnds <- function(query_tbl,subject_tbl,
         cds_session_fasta <- vector(mode = "character", length = 1)
         aa_session_fasta <- vector(mode = "character", length = 1)
         pairwise_aln_name <- vector(mode = "character", length = 1)
-        dNdS_values <- vector(mode = "list", length = ncol(query_tbl))
-        test(4)
+        
+        if(!multicore)
+                dNdS_values <- vector(mode = "list", length = ncol(complete_tbl))
+        
         
         
         if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep))){
@@ -452,35 +439,36 @@ compute_dnds <- function(query_tbl,subject_tbl,
                 dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"AA"))
         }
         
+        if(comp_cores > parallel::detectCores())
+                stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
+        
         if(multicore){
                 ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
                 ### register all given cores for parallelization
                 ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
-                cores <- parallel::makeForkCluster(parallel::detectCores())
+                cores <- parallel::makeForkCluster(comp_cores)
                 doParallel::registerDoParallel(cores)
         } 
-                if(comp_cores > parallel::detectCores())
-                        stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
                 
-              for(i in 1:ncol(query_tbl)){
+        if(!multicore){        
+              for(i in 1:ncol(complete_tbl)){
                   dNdS_values[i] <- list((function(i) {
                 
           ### Perform the sampling process in parallel
-#         dNdS_values <- foreach::foreach(i = 1:ncol(query_tbl),.combine="rbind") %dopar%{
+#         dNdS_values <- foreach::foreach(i = 1:ncol(complete_tbl),.combine="rbind") %dopar%{
                 
-                test(i+5)
                 # storing the query gene id and subject gene id of the orthologous gene pair 
-                orthologs_names <- list(query_tbl[i , query_id],subject_tbl[i, subject_id])
+                orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
         
                 # storing the query CDS sequence and subject CDS sequence of the orthologous gene pair 
-                cds_seqs <- list(query_tbl[i, query_cds],subject_tbl[i, subject_cds])
+                cds_seqs <- list(complete_tbl[i, query_cds],complete_tbl[i, subject_cds])
         
                 # storing the query amino acid sequence and subject amino acid sequence of the orthologous gene pair 
-                aa_seqs <- list(query_tbl[i, query_aa],subject_tbl[i, subject_aa])
+                aa_seqs <- list(complete_tbl[i, query_aa],complete_tbl[i, subject_aa])
         
         
-                pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
-        
+                #pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
+                pairwise_aln_name <- paste0("q",i)
 
                 # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
                 cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,pairwise_aln_name,"_cds.fasta")
@@ -492,9 +480,13 @@ compute_dnds <- function(query_tbl,subject_tbl,
         
                 # which multi_aln tool should get the parameters
                 #multi_aln_tool_params <- paste0(multialn_tool,".",params)
-               
-                print(aa_session_fasta)
-        
+                             
+#                 pairwise_aln <- Biostrings::pairwiseAlignment(aa_seqs[[1]],aa_seqs[[2]], type = "global")
+#                 
+#                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
+#                 
+                
+
                 # align aa -> <multialn_tool>.aln
                 multi_aln(file = aa_session_fasta, 
                           tool = multialn_tool, get_aln = FALSE, 
@@ -502,7 +494,8 @@ compute_dnds <- function(query_tbl,subject_tbl,
                           path = multialn_path, quiet = quiet)
 
                 multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
-        
+                
+                
                 # align codon -> cds.aln
                 codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_session_name),
                           file_nuc = cds_session_fasta, tool = codonaln_tool,format = "fasta",
@@ -510,40 +503,103 @@ compute_dnds <- function(query_tbl,subject_tbl,
                           get_aln = FALSE, quiet = quiet)
         
                 codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
-        
+                
+                
+                
                 # compute kaks
                 dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
                                                est.method = dnds_est.method, quiet = quiet)
                 
                 return(dNdS.table)
         
-             #}
-             })(i)
-        )
+                })(i)
+              )
+            }
         }
-        ### close the cluster connection
-        ### The is important to be able to re-run the function N times
-        ### without getting cluster connection problems
-        #parallel::stopCluster(cores)
+
+        if(multicore){
         
-        # since only one codon alignment is used for dNdS estimation,
-        # the resulting dNdS.table should only store one row.
-        return(dNdS_values)
+                ### Perform the sampling process in parallel
+                dNdS_values <- foreach::foreach(i = 1:ncol(complete_tbl),.combine="rbind") %dopar%{
+                
+                # storing the query gene id and subject gene id of the orthologous gene pair 
+                orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
+                
+                # storing the query CDS sequence and subject CDS sequence of the orthologous gene pair 
+                cds_seqs <- list(complete_tbl[i, query_cds],complete_tbl[i, subject_cds])
+                
+                # storing the query amino acid sequence and subject amino acid sequence of the orthologous gene pair 
+                aa_seqs <- list(complete_tbl[i, query_aa],complete_tbl[i, subject_aa])
+                
+                
+                #pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
+                pairwise_aln_name <- paste0("q",i)
+                
+                # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
+                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,pairwise_aln_name,"_cds.fasta")
+                seqinr::write.fasta(sequences = cds_seqs, names = orthologs_names, file.out = cds_session_fasta)
+                
+                # create aa fasta of orthologous gene pair having session name: 'pairwise_aln_name'
+                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,pairwise_aln_name,"_aa.fasta")
+                seqinr::write.fasta(sequences = aa_seqs, names = orthologs_names, file.out = aa_session_fasta)
+                
+                # which multi_aln tool should get the parameters
+                #multi_aln_tool_params <- paste0(multialn_tool,".",params)
+                
+                #                 pairwise_aln <- Biostrings::pairwiseAlignment(aa_seqs[[1]],aa_seqs[[2]], type = "global")
+                #                 
+                #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
+                #                 
+                
+                
+                # align aa -> <multialn_tool>.aln
+                multi_aln(file = aa_session_fasta, 
+                          tool = multialn_tool, get_aln = FALSE, 
+                          multi_aln_name = pairwise_aln_name, 
+                          path = multialn_path, quiet = quiet)
+                
+                multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
+                
+                
+                # align codon -> cds.aln
+                codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_session_name),
+                          file_nuc = cds_session_fasta, tool = codonaln_tool,format = "fasta",
+                          codon_aln_name = pairwise_aln_name,
+                          get_aln = FALSE, quiet = quiet)
+                
+                codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
+                
+                
+                
+                # compute kaks
+                dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
+                                               est.method = dnds_est.method, quiet = quiet)
+                
+                return(dNdS.table)
+                
+        }
+                ### close the cluster connection
+                ### The is important to be able to re-run the function N times
+                ### without getting cluster connection problems
+                parallel::stopCluster(cores)
+        
+        }
+
+
+        if(!multicore)
+                dNdS_tbl <- data.table::as.data.table(do.call(rbind,dNdS_values))
+
+        if(multicore)
+        dNdS_tbl <- data.table::as.data.table(dNdS_values)
+
+        setkeyv(dNdS_tbl,c("query_id","subject_id"))
+
+        return(dNdS_tbl)
 
 }
-# 
-# When running
-# table <- dNdS("data/ortho_thal_cds.fasta", "data/ortho_lyra_cds.fasta")
-# I still get this warning and dont know how to fix.
-# 
-# Warning message:
-# In `[.data.table`(hit.table, , `:=`(dnds, as.vector(apply(.SD, 1,  :
-# Invalid .internal.selfref detected and fixed by taking a copy of the whole 
-# table so that := can add this new column by reference. At an earlier point, 
-# this data.table has been copied by R (or been created manually using structure() 
-# or similar). Avoid key<-, names<- and attr<- which in R currently (and oddly) 
-# may copy the whole data.table. Use set* syntax instead to avoid copying: ?set, 
-# ?setnames and ?setattr. Also, in R<=v3.0.2, list(DT1,DT2) copied the entire DT1 
-# and DT2 (R's list() used to copy named objects); please upgrade to R>v3.0.2 
-#  if that is biting. If this message doesn't help, please report to 
-#  datatable-help so the root cause can be fixed.
+
+
+
+
+
+

@@ -13,7 +13,7 @@
 #      ortho_detection = "RBH", blast_path = NULL,
 #      multialn_tool = "t_coffee", multialn_path = "",
 #      codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2, quiet = FALSE)
-# # 
+# 
 # 
 # compute_dnds <- function(x, 
 #                          multialn_tool="clustalw", multialn_path = NULL,
