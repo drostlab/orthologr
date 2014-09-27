@@ -2,6 +2,10 @@
 #' @description This function performs a BLAST+ search of a given set of sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
@@ -10,7 +14,7 @@
 #' used to run BLAST searches.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references 
 #' 
 #' http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
@@ -21,7 +25,11 @@
 #' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
-#' 
+#' # performing a BLAST search using blastp (default) using amino acid sequences as input file
+#' blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'       seq_type = "protein")
+#'       
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
 #' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
@@ -40,9 +48,10 @@
 #' @import seqinr
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
-blast <- function(query_file, subject_file, format = "fasta",
-                  blast_algorithm = "blastp", eval = "1E-5",
-                  path = NULL, comp_cores = 1, blast_params = NULL){
+blast <- function(query_file, subject_file, seq_type = "cds",
+                  format = "fasta", blast_algorithm = "blastp",
+                  eval = "1E-5", path = NULL, comp_cores = 1,
+                  blast_params = NULL){
         
         if(!is.element(blast_algorithm,c("blastp")))
                 stop("Please choose a valid BLAST mode.")
@@ -51,9 +60,9 @@ blast <- function(query_file, subject_file, format = "fasta",
         f_sep <- .Platform$file.sep
         
         # initialize the BLAST search
-        query.dt <- set_blast(file = query_file)[[1]]
+        query.dt <- set_blast(file = query_file, seq_type = seq_type, format = format)[[1]]
         # make a BLASTable databse of the subject
-        database <- set_blast(file = subject_file, makedb = TRUE)[[2]]
+        database <- set_blast(file = subject_file, seq_type = seq_type, format = format, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
         input = paste0("_blast",f_sep,"blastinput.fasta") 
         output = paste0("_blast",f_sep,"blastresult.csv")
@@ -178,6 +187,10 @@ blast <- function(query_file, subject_file, format = "fasta",
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
@@ -192,6 +205,11 @@ blast <- function(query_file, subject_file, format = "fasta",
 #' # performing gene orthology inference using the best hit (BH) method
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+#'            
+#' # performing gene orthology inference using the best hit (BH) method starting with protein sequences
+#' blast_best(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'            seq_type = "protein")
 #' 
 #' # use multicore processing
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
@@ -204,9 +222,10 @@ blast <- function(query_file, subject_file, format = "fasta",
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 #' @seealso \code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
-blast_best <- function(query_file, subject_file, format = "fasta", 
-                       blast_algorithm = "blastp", eval = "1E-5",
-                       path = NULL, comp_cores = 1, blast_params = NULL){
+blast_best <- function(query_file, subject_file, seq_type = "cds",
+                       format = "fasta", blast_algorithm = "blastp", 
+                       eval = "1E-5", path = NULL, comp_cores = 1,
+                       blast_params = NULL){
         
         # default parameters for best hit filtering
         default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
@@ -216,16 +235,14 @@ blast_best <- function(query_file, subject_file, format = "fasta",
         # using the BLAST parameter: '-max_target_seqs 1' allows to retain
         # only the best hit result and therefore, speeds up the BLAST search process
         hit_tbl.dt <- blast(query_file = query_file, 
-                            subject_file = subject_file, 
+                            subject_file = subject_file,
+                            seq_type = seq_type,
                             format = format, path = path, 
                             comp_cores = comp_cores,blast_params = ifelse(!is.null(blast_params),
                                                                           paste0(blast_params,
                                                                           " ",default_pars),
                                                                           default_pars))
-     
-        #select only the best hit (E-value) 
-        #besthit_tbl <- hit_tbl.dt[ , list(.SD[ , subject_id], lapply(.SD[ , evalue],min)),
-        #                         by = key(hit_tbl.dt)]        
+       
         tryCatch(
          {
                  besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
@@ -251,6 +268,10 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #' set of protein sequences and vice versa.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
@@ -266,9 +287,15 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #'
 #'
 #' @examples \dontrun{
-#' # performing gene orthology inference using the best hit (BH) method
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
 #' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+#'           
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
+#' # starting with protein sequences
+#' blast_rec(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein")
 #' 
 #' # use multicore processing
 #' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
@@ -280,15 +307,18 @@ blast_best <- function(query_file, subject_file, format = "fasta",
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
 #' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
 #' @export
-blast_rec <- function(query_file, subject_file, format = "fasta", 
-                      blast_algorithm = "blastp", eval = "1E-5",
-                      path = NULL, comp_cores = 1, blast_params = NULL){
+blast_rec <- function(query_file, subject_file, seq_type = "cds",
+                      format = "fasta", blast_algorithm = "blastp", 
+                      eval = "1E-5", path = NULL, comp_cores = 1, 
+                      blast_params = NULL){
         
         orthoA <- blast_best(query_file,subject_file, 
-                             format = format, blast_algorithm = blast_algorithm,
+                             format = format, seq_type = seq_type,
+                             blast_algorithm = blast_algorithm,
                              path = path, comp_cores = comp_cores, blast_params = blast_params)
         
-        orthoB <- blast_best(subject_file,query_file, 
+        orthoB <- blast_best(subject_file,query_file,
+                             seq_type = seq_type,
                              format = format,blast_algorithm = blast_algorithm,
                              path = path, comp_cores = comp_cores, blast_params = blast_params)
         
@@ -306,37 +336,93 @@ blast_rec <- function(query_file, subject_file, format = "fasta",
 
 
 #' @title Function preparing the parameters and databases for subsequent BLAST searches
-#' @description This function reads a cds fasta file using read.cds(), translates each
-#' sequence into the corresponding aminoacid sequence and is able to create a blast
-#' database from that.
-#' @param file a character string specifying the path to the file storing the cd.
+#' @description This function reads a file storing a specific sequence type, such as "cds", "protein", or
+#' "dna" in a standard sequence file format such as "fasta", etc. and depending of the \code{makedb}
+#'  parameter either creates a blast-able database, or returns the corresponding protein sequences
+#'  as data.table object for further BLAST searches.  
+#' @param file a character string specifying the path to the file storing the sequences of interest.
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
-#' @param makedb TRUE or FALSE whether a database should be created or not.
+#' @param makedb TRUE or FALSE whether a database should be created or not (BLAST parameter 'makeblastdb').
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param makedb_type a character string specifying the sequence type stored in the BLAST database
+#' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
-#' @return A list with [[1]] a data.table storing the gene id in the first column and
-#' the corresponding dna and aminoacid sequence as string in the second and third column
-#' respectively and [[2]] the name of the database created.
+#' @return A list storing two elements. The first element [[1]] corresponds to the data.table storing the gene ids in the first column and
+#' the corresponding dna (cds) sequence in the second column and the aminoacid sequence third column.
+#' The second list element [[2]] stores the name of the protein database that was created by 'makeblastdb'.
 #' @examples \dontrun{
 #'  # running the set function to see an example output
 #'  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}
 #' @export
-set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
+set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
+                      path = NULL, makedb_type = "protein",...){
         
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
         # CONCERNING THE CASE THAT A POTENTIAL USER
         # COULD INSERT SOME NON-CDS SEQUENCES
         
-        # read cds file
-        # copy the data.table due to this discussion:
-        # http://stackoverflow.com/questions/8030452/pass-by-reference-the-operator-in-the-data-table-package
-        dt <- data.table::copy(read.cds(file = file, format = "fasta", ...))
+        if(!is.element(seq_type,c("cds","protein","dna")))
+                stop("Please choose either: 'cds', 'protein', or 'dna' as seq_type.")
         
-        if(!is.data.table(dt))
-                stop("Your CDS file was not corretly transformed into a data.table object.")
+        if(!is.element(makedb_type,c("protein","nucleotide")))
+                stop("Please choose either: 'protein' or 'nucleotide' as BLAST database type (makedb_type).")
+        
+        if(makedb_type == "protein")
+                db_type <- "prot"
+        
+        if(makedb_type == "nucleotide")
+                db_type <- "nucl"
+        
+        if(seq_type == "cds"){
+                # read cds file
+                # copy the data.table due to this discussion:
+                # http://stackoverflow.com/questions/8030452/pass-by-reference-the-operator-in-the-data-table-package
+                dt <- data.table::copy(read.cds(file = file, format = "fasta", ...))
+        
+                if(!is.data.table(dt))
+                        stop("Your CDS file was not corretly transformed into a data.table object.")
+                
+                # When using data.tables within packaes, always make sure
+                # 'data.table' is included in the DESCRIPTION file as 'Imports' AND
+                # in the NAMESPACE file with 'imports(data.table)' -> @import when using roxygen2
+                # http://stackoverflow.com/questions/10527072/using-data-table-package-inside-my-own-package
+                # https://github.com/hadley/dplyr/issues/548
+        
+                # translate cds to protein sequences
+                tryCatch(
+                         {
+                                 dt[ , aa := transl(seqs), by = geneids]
+        
+                          }, error = function() {stop(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
+                                   ,"\n"," Please check whether ",file, " stores valid coding sequences."))}
+                          )
+
+        }
+        
+        
+        # read file storing protein sequence -> no translation needed
+        if(seq_type == "protein"){
+                
+                dt <- data.table::copy(read.proteome(file = file, format = "fasta", ...))
+                data.table::setnames(dt, old = "seqs", new= "aa")
+        }
+        
+        
+        if(seq_type == "dna"){
+                
+                dt <- data.table::copy(read.genome(file = file, format = "fasta", ...))
+                
+                # here will come -> CDS prediction
+                # then CDS -> protein translation
+                
+        }
         
         
         # determine the file seperator of the current OS
@@ -348,23 +434,6 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         # THE TRANSLATION PROCESS IS BEING OMITTED
         
         
-        # When using data.tables within packaes, always make sure
-        # 'data.table' is included in the DESCRIPTION file as 'Imports' AND
-        # in the NAMESPACE file with 'imports(data.table)' -> @import when using roxygen2
-        # http://stackoverflow.com/questions/10527072/using-data-table-package-inside-my-own-package
-        # https://github.com/hadley/dplyr/issues/548
-        
-        # translate dna to aa sequences
-        #dt[ , aa := as.vector(sapply(seqs,transl)), by = geneids]
-        
-        tryCatch(
-          {
-                     dt[ , aa := transl(seqs), by = geneids]
-                     
-          }, error = function() {stop(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
-          "\n Please check whether ",file, " stores valid coding sequences."))}
-        )
-
         # makedb
         dbname <- vector(mode = "character", length = 1)
         filename <- unlist(strsplit(file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
@@ -372,13 +441,13 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
         
         
         if(makedb){
-                if(!file.exists(paste0("_database",f_sep))){ 
+                if(!file.exists(paste0("_blast_db",f_sep))){ 
                         
-                        dir.create("_database") 
+                        dir.create("_blast_db") 
                 
                 }
                 
-                dbname <- paste0("_database",f_sep,"out_",filename,"_translate.fasta")
+                dbname <- paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta")
                 seqinr::write.fasta(as.list(dt[ , aa]),
                                     names = dt[ , geneids],
                                     nbchar = 80, open = "w",
@@ -390,12 +459,12 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
                         if(is.null(path)){
                                 system(
                                         paste0("makeblastdb -in ", dbname,
-                                               " -input_type fasta -dbtype prot")
+                                               " -input_type fasta -dbtype ",db_type," -hash_index")
                                        )
                         } else {
                                 system(
                                         paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
-                                               dbname," -input_type fasta -dbtype prot")
+                                               dbname," -input_type fasta -dbtype ",db_type," -hash_index")
                                       )
                         }
                 }, error = function(){ stop(paste0("makeblastdb did not work properly. The default parameters are: \n",
@@ -413,11 +482,17 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' @description This function performs a BLAST+ search of a given set of sequences and a given set of parameters against a BLAST database.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn","deltablast",... .
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param makedb_type a character string specifying the sequence type stored in the BLAST database
+#' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
 #' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.
 #' @param taxdb_path a character string specidying the path to the lical taxonomy database.
 #' @details
@@ -426,7 +501,7 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' 
 #' "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
 #' 
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @author Hajk-Georg Drost
 #' @note This function is also able to return the subject taxonomy.
 #' 
 #' For this purpose the NCBI taxdb must be installed on your system:
@@ -457,10 +532,11 @@ set_blast <- function(file, format = "fasta", makedb = FALSE, path = NULL, ...){
 #' the hit table returned by BLAST in this folder.
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_best}}
 #' @export
-advanced_blast <- function(query_file, subject_file, format = "fasta", 
+advanced_blast <- function(query_file, subject_file, 
+                           seq_type = "cds",format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
-                           blast_params = NULL,taxonomy = FALSE,
-                           taxdb_path = NULL){
+                           blast_params = NULL, makedb_type = "protein",
+                           taxonomy = FALSE, taxdb_path = NULL){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -474,9 +550,11 @@ advanced_blast <- function(query_file, subject_file, format = "fasta",
         
         # initialize the BLAST search
         
-        query.dt <- set_blast(file = query_file, format = format)[[1]]
+        query.dt <- set_blast(file = query_file, format = format, 
+                              seq_type = seq_type)[[1]]
         # make a BLASTable databse of the subject
-        database <- set_blast(file = subject_file, format = format, makedb = TRUE)[[2]]
+        database <- set_blast(file = subject_file, format = format, seq_type = seq_type, 
+                              makedb = TRUE, makedb_type = makedb_type)[[2]]
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep

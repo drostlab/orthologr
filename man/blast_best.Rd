@@ -3,7 +3,7 @@
 \alias{blast_best}
 \title{Function to perform a BLAST best hit search}
 \usage{
-blast_best(query_file, subject_file, format = "fasta",
+blast_best(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
   comp_cores = 1, blast_params = NULL)
 }
@@ -11,6 +11,11 @@ blast_best(query_file, subject_file, format = "fasta",
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
 
@@ -41,6 +46,11 @@ Given a set of protein sequences A, a best hit blast search is being performed f
 # performing gene orthology inference using the best hit (BH) method
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+# performing gene orthology inference using the best hit (BH) method starting with protein sequences
+blast_best(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+           seq_type = "protein")
 
 # use multicore processing
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),

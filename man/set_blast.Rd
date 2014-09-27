@@ -3,28 +3,38 @@
 \alias{set_blast}
 \title{Function preparing the parameters and databases for subsequent BLAST searches}
 \usage{
-set_blast(file, format = "fasta", makedb = FALSE, path = NULL, ...)
+set_blast(file, seq_type = "cds", format = "fasta", makedb = FALSE,
+  path = NULL, makedb_type = "protein", ...)
 }
 \arguments{
-\item{file}{a character string specifying the path to the file storing the cd.}
+\item{file}{a character string specifying the path to the file storing the sequences of interest.}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".}
 
-\item{makedb}{TRUE or FALSE whether a database should be created or not.}
+\item{makedb}{TRUE or FALSE whether a database should be created or not (BLAST parameter 'makeblastdb').}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
+
+\item{makedb_type}{a character string specifying the sequence type stored in the BLAST database
+that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".}
 
 \item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
 }
 \value{
-A list with [[1]] a data.table storing the gene id in the first column and
-the corresponding dna and aminoacid sequence as string in the second and third column
-respectively and [[2]] the name of the database created.
+A list storing two elements. The first element [[1]] corresponds to the data.table storing the gene ids in the first column and
+the corresponding dna (cds) sequence in the second column and the aminoacid sequence third column.
+The second list element [[2]] stores the name of the protein database that was created by 'makeblastdb'.
 }
 \description{
-This function reads a cds fasta file using read.cds(), translates each
-sequence into the corresponding aminoacid sequence and is able to create a blast
-database from that.
+This function reads a file storing a specific sequence type, such as "cds", "protein", or
+"dna" in a standard sequence file format such as "fasta", etc. and depending of the \code{makedb}
+ parameter either creates a blast-able database, or returns the corresponding protein sequences
+ as data.table object for further BLAST searches.
 }
 \examples{
 \dontrun{

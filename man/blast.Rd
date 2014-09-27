@@ -3,7 +3,7 @@
 \alias{blast}
 \title{Interface function to BLAST+}
 \usage{
-blast(query_file, subject_file, format = "fasta",
+blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
   comp_cores = 1, blast_params = NULL)
 }
@@ -11,6 +11,11 @@ blast(query_file, subject_file, format = "fasta",
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
 
@@ -38,6 +43,10 @@ This function performs a BLAST+ search of a given set of sequences against a giv
 blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
+# performing a BLAST search using blastp (default) using amino acid sequences as input file
+blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+      seq_type = "protein")
 
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
@@ -53,7 +62,7 @@ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr
 }
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
 http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly

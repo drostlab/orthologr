@@ -3,14 +3,19 @@
 \alias{advanced_blast}
 \title{Advanced interface function to BLAST+}
 \usage{
-advanced_blast(query_file, subject_file, format = "fasta",
+advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
-  taxonomy = FALSE, taxdb_path = NULL)
+  makedb_type = "protein", taxonomy = FALSE, taxdb_path = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk".}
 
@@ -20,6 +25,9 @@ advanced_blast(query_file, subject_file, format = "fasta",
 
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
+
+\item{makedb_type}{a character string specifying the sequence type stored in the BLAST database
+that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".}
 
 \item{taxonomy}{a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.}
 
@@ -60,7 +68,7 @@ advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = '
 }
 }
 \author{
-Hajk-Georg Drost and Sarah Scharfenberg
+Hajk-Georg Drost
 }
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
