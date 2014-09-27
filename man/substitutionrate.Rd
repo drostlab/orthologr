@@ -118,4 +118,8 @@ https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator
 
 https://code.google.com/p/kaks-calculator/wiki/AXT
 }
+\seealso{
+\code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+\code{\link{blast_rec}}, \code{\link{read.cds}}
+}
 

@@ -8,24 +8,25 @@ compute_dnds(complete_tbl, multialn_tool = "clustalw", multialn_path = NULL,
   dnds_est.method = "YN", quiet = FALSE, comp_cores = 1)
 }
 \arguments{
-\item{complete_tbl}{}
+\item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence),
+subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.}
 
-\item{multialn_tool}{}
+\item{multialn_tool}{a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.}
 
-\item{multialn_path}{}
+\item{multialn_path}{a character string specifying the path to the corresponding multiple alignment tool.}
 
-\item{multialn_params}{}
+\item{multialn_params}{a character string specifying additional parameters that shall be passed to the multiple alignment system call.}
 
-\item{codonaln_tool}{}
+\item{codonaln_tool}{a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codonaln_tool} = "pal2nal".}
 
-\item{dnds_est.method}{}
+\item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
-\item{quiet}{}
+\item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 
-\item{comp_cores}{}
+\item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.}
 }
 \description{
-This function takes a vector containing the query_id, subject_id,
+This function takes a vector containing the
 query amino acid sequence, subject amino acid sequence, query CDS sequence, and subject CDS sequence
 and then runs the following pipieline:
 
@@ -49,6 +50,6 @@ the query_id and subject_id (file two). These fasta files are then used to pass 
 3) dNdS estimation of the codon alignment returned by 2)
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 

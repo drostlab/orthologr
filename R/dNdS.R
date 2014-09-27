@@ -3,16 +3,69 @@
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms. 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param seq_type a character string specifying the sequence type stored in the input file.
+#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = "cds".
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". See \code{\link{read.cds}},
+#' \code{\link{read.genome}}, \code{\link{read.proteome}} for more details.
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
-#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .
-#' @param comp_cores a numeric value specifying the number of cores that shall be
+#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
+#' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details This function...
+#' @details 
+#' 
+#' #' The dNdS estimation methods available in this function are:
+#' 
+#' - "Li" : Li's method (1993) -> provided by the ape package
+#' 
+#' - "Comeron" : Comeron's method (1995)
+#' 
+#' dNdS estimation methods provided by KaKs_Calculator 1.2 :
+#' 
+#' Approximate Methods:
+#' 
+#' "NG": Nei, M. and Gojobori, T. (1986)
+#' 
+#' "LWL": Li, W.H., et al. (1985)
+#' 
+#' "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+#' 
+#' "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' 
+#' "YN": Yang, Z. and Nielsen, R. (2000)
+#' 
+#' "MYN" (Modified YN): Zhang, Z., et al. (2006)
+#' 
+#' Maximum-Likelihood Methods:
+#' 
+#' GY: Goldman, N. and Yang, Z. (1994)
+#' 
+#' MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
+#' 
+#' MS (Model Selection) and MA (Model Averaging) over:
+#' 
+#' JC,
+#' F81,
+#' K2P, 
+#' HKY,
+#' TrNEF,
+#' TrN,
+#' K3P,
+#' K3PUF,
+#' TIMEF,
+#' TIM,
+#' TVMEF,
+#' TVM,
+#' SYM,
+#' GTR
+#' 
+#' 
 #' @return A data.table storing the dNdS values of the correspnding genes.
 #' @examples \dontrun{
 #' 
@@ -36,9 +89,11 @@
 #' codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 #' 
 #' }
+#' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+#' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @import data.table
 #' @export
-dNdS <- function(query_file, subject_file, 
+dNdS <- function(query_file, subject_file, format = "fasta",
                  ortho_detection = "RBH", blast_path = NULL, 
                  multialn_tool = "clustalw", multialn_path = NULL,
                  multialn_params = NULL, codonaln_tool = "pal2nal", 
@@ -67,12 +122,14 @@ dNdS <- function(query_file, subject_file,
   
         if(ortho_detection == "BH"){
                 
+                # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores))
+                                   path = blast_path, comp_cores = comp_cores),
+                                   seq_type = "cds", format = format)
                                                 
-                q_cds <- read.cds(file = query_file, format = "fasta")
-                s_cds <- read.cds(file = subject_file, format = "fasta")
+                q_cds <- read.cds(file = query_file, format = format)
+                s_cds <- read.cds(file = subject_file, format = format)
                 
 
                 q_aa <- read.proteome(file = paste0("_blast",f_sep,"blastinput.fasta"), format = "fasta")
@@ -85,12 +142,14 @@ dNdS <- function(query_file, subject_file,
         
         if(ortho_detection == "RBH"){
                                
+                # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores))
+                                   path = blast_path, comp_cores = comp_cores),
+                                   seq_type = "cds", format = format)
                 
-                q_cds <- read.cds(file = query_file, format = "fasta")
-                s_cds <- read.cds(file = subject_file, format = "fasta")
+                q_cds <- read.cds(file = query_file, format = format)
+                s_cds <- read.cds(file = subject_file, format = format)
                 
                 
                 filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
@@ -228,6 +287,8 @@ dNdS <- function(query_file, subject_file,
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
 #' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
 #' @import data.table
+#' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+#' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL){
         
@@ -317,6 +378,8 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                f_sep <- .Platform$file.sep
                fa2axt <- system.file(paste0("KaKs_Calculator1.2",f_sep,"parseFastaIntoAXT.pl"), package = "orthologr")
                
+               ### replace paths like this: path/to a folder/of_interest
+               ### by: path/'to a folder'/of_interest
                file_name <- unlist(strsplit(file,f_sep))
                file_name <- file_name[length(file_name)]
                curr_wd <- unlist(strsplit(getwd(),f_sep))
@@ -325,10 +388,11 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                curr_wd[wdir] <- stringr::str_replace(string = curr_wd[wdir],replacement = paste0("'",curr_wd[wdir],"'"), pattern = curr_wd[wdir])
                
                curr_wd <- paste0(curr_wd,collapse = f_sep)
+               ###
                
                tryCatch(
                        
-              {
+              {        # running KaKs_Calculator inside the orthologr package
                        system(paste0("perl ",fa2axt ," ",file," ",curr_wd,f_sep,"_calculation",f_sep,file_name))
                        KaKs_Calculator <- system.file(paste0("KaKs_Calculator1.2",f_sep,"bin",f_sep,os,f_sep,calc), package = "orthologr")
                
@@ -367,7 +431,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 
 
 #' @title This function computes the dNdS value of one given pairwise alignment.
-#' @description This function takes a vector containing the query_id, subject_id,
+#' @description This function takes a vector containing the
 #' query amino acid sequence, subject amino acid sequence, query CDS sequence, and subject CDS sequence
 #' and then runs the following pipieline:
 #' 
@@ -377,15 +441,16 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
-#' @param complete_tbl
-#' @param multialn_tool
-#' @param multialn_path
-#' @param multialn_params
-#' @param codonaln_tool
-#' @param dnds_est.method
-#' @param quiet
-#' @param comp_cores
-#' @author Sarah Scharfenberg and Hajk-Georg Drost
+#' @param complete_tbl a data.table object storing the query_id, subject_id, query_cds (sequence), 
+#' subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.
+#' @param multialn_tool a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.
+#' @param multialn_path a character string specifying the path to the corresponding multiple alignment tool.
+#' @param multialn_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
+#' @param codonaln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codonaln_tool} = "pal2nal".
+#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
+#' @param quiet a logical value specifying whether a successful interface call shall be printed out.
+#' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function takes the amino acid and CDS sequences two orthologous genes
 #' and writes the corresponding amino acid and CDS sequences as fasta file into
 #' the internal folder environment. The resulting fasta files (two files) store the 
@@ -399,7 +464,6 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
 #' @import foreach
-#' @export
 compute_dnds <- function(complete_tbl,
                          multialn_tool = "clustalw", multialn_path = NULL,
                          multialn_params = NULL, codonaln_tool = "pal2nal",
@@ -590,10 +654,11 @@ compute_dnds <- function(complete_tbl,
                 dNdS_tbl <- data.table::as.data.table(do.call(rbind,dNdS_values))
 
         if(multicore)
-        dNdS_tbl <- data.table::as.data.table(dNdS_values)
+                dNdS_tbl <- data.table::as.data.table(dNdS_values)
 
         setkeyv(dNdS_tbl,c("query_id","subject_id"))
-
+        
+        # returning the dNdS table as data.table object
         return(dNdS_tbl)
 
 }

@@ -524,7 +524,10 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
 #'       
-#'       
+#' # performing a BLAST search using blastp (default) and starting with protein sequences
+#' advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")       
 #'              
 #' }
 #'

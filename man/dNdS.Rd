@@ -3,8 +3,8 @@
 \alias{dNdS}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms.}
 \usage{
-dNdS(query_file, subject_file, ortho_detection = "RBH", blast_path = NULL,
-  multialn_tool = "clustalw", multialn_path = NULL,
+dNdS(query_file, subject_file, format = "fasta", ortho_detection = "RBH",
+  blast_path = NULL, multialn_tool = "clustalw", multialn_path = NULL,
   multialn_params = NULL, codonaln_tool = "pal2nal",
   dnds_est.method = "YN", comp_cores = 1, quiet = FALSE)
 }
@@ -12,6 +12,9 @@ dNdS(query_file, subject_file, ortho_detection = "RBH", blast_path = NULL,
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". See \code{\link{read.cds}},
+\code{\link{read.genome}}, \code{\link{read.proteome}} for more details.}
 
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
@@ -21,9 +24,14 @@ Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "
 
 \item{multialn_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
-\item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li" .}
+\item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
-\item{comp_cores}{a numeric value specifying the number of cores that shall be}
+\item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{tool}{a character string specifying the program that should be used e.g. "clustalw".}
 }
@@ -35,7 +43,50 @@ This function takes the CDS files of two organisms of interest (query_file and s
 and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 }
 \details{
-This function...
+#' The dNdS estimation methods available in this function are:
+
+- "Li" : Li's method (1993) -> provided by the ape package
+
+- "Comeron" : Comeron's method (1995)
+
+dNdS estimation methods provided by KaKs_Calculator 1.2 :
+
+Approximate Methods:
+
+"NG": Nei, M. and Gojobori, T. (1986)
+
+"LWL": Li, W.H., et al. (1985)
+
+"LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+
+"MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+
+"YN": Yang, Z. and Nielsen, R. (2000)
+
+"MYN" (Modified YN): Zhang, Z., et al. (2006)
+
+Maximum-Likelihood Methods:
+
+GY: Goldman, N. and Yang, Z. (1994)
+
+MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
+
+MS (Model Selection) and MA (Model Averaging) over:
+
+JC,
+F81,
+K2P,
+HKY,
+TrNEF,
+TrN,
+K3P,
+K3PUF,
+TIMEF,
+TIM,
+TVMEF,
+TVM,
+SYM,
+GTR
 }
 \examples{
 \dontrun{
@@ -63,5 +114,9 @@ codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
+}
+\seealso{
+\code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+\code{\link{blast_rec}}, \code{\link{read.cds}}
 }
 
