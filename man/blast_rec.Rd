@@ -8,9 +8,9 @@ blast_rec(query_file, subject_file, seq_type = "cds", format = "fasta",
   comp_cores = 1, blast_params = NULL)
 }
 \arguments{
-\item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
+\item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
-\item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
 
 \item{seq_type}{a character string specifying the sequence type stored in the input file.
 Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
@@ -66,6 +66,6 @@ blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 Hajk-Georg Drost and Sarah Scharfenberg
 }
 \seealso{
-\code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+\code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}
 }
 

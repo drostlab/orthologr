@@ -63,6 +63,6 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
 Hajk-Georg Drost and Sarah Scharfenberg
 }
 \seealso{
-\code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+\code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}
 }
 

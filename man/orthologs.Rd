@@ -3,17 +3,34 @@
 \alias{orthologs}
 \title{Interface function to perform orthology inference for a set of organisms}
 \usage{
-orthologs(organisms, format = "fasta", ortho_detection = "RBH")
+orthologs(query_file, subject_file, seq_type = "protein", format = "fasta",
+  ortho_detection = "RBH", path = NULL, comp_cores)
 }
 \arguments{
-\item{organisms}{}
+\item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
-\item{format}{}
+\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
 
-\item{ortho_detection}{}
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "protein".}
+
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+
+\item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
+to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
+Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+
+\item{path}{a character string specifying the path to the corresponding orthology inference tool.
+For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
+"IP": path to InParanoid.}
+
+\item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 }
 \value{
-a data.table storing ...
+A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
+in the second column and the amino acid sequences in the third column.
 }
 \description{
 This function takes nucleotide or protein sequences for a set of organisms

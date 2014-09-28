@@ -46,7 +46,7 @@
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
 #' @import seqinr
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}
 #' @export
 blast <- function(query_file, subject_file, seq_type = "cds",
                   format = "fasta", blast_algorithm = "blastp",
@@ -220,7 +220,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #'
 #' @return A data.table as returned by the \code{blast} function, storing the geneids
 #' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
-#' @seealso \code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+#' @seealso \code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}
 #' @export
 blast_best <- function(query_file, subject_file, seq_type = "cds",
                        format = "fasta", blast_algorithm = "blastp", 
@@ -266,8 +266,8 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 #' @title Function to perform a BLAST reciprocal best hit (RBH) search
 #' @description This function performs a blast+ search (reciprocal best hit) of a given set of protein sequences against a second
 #' set of protein sequences and vice versa.
-#' @param query_file a character string specifying the path to the CDS file of interest (query organism).
-#' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param query_file a character string specifying the path to the sequence file of interest (query organism).
+#' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
@@ -305,7 +305,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 #'
 #' @return A data.table as returned by the blast() function, storing the geneids
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
-#' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_best}}
+#' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}
 #' @export
 blast_rec <- function(query_file, subject_file, seq_type = "cds",
                       format = "fasta", blast_algorithm = "blastp", 
@@ -533,7 +533,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #'
 #' @return the \code{advanced_blast} function creates a folder named '_blast' and stores
 #' the hit table returned by BLAST in this folder.
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_best}}
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}
 #' @export
 advanced_blast <- function(query_file, subject_file, 
                            seq_type = "cds",format = "fasta", 
