@@ -6,7 +6,7 @@
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param multi_aln_name a character string specifying the name of the stored alignment file. 
-#' Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .
+#' Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'toolname.aln' .
 #' @param clustalw.params a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".
 #' @param t_coffee.params a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
