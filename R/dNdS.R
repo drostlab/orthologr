@@ -125,8 +125,8 @@ dNdS <- function(query_file, subject_file, format = "fasta",
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores),
-                                   seq_type = "cds", format = format)
+                                   path = blast_path, comp_cores = comp_cores,
+                                   seq_type = "cds", format = format))
                                                 
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
@@ -136,7 +136,7 @@ dNdS <- function(query_file, subject_file, format = "fasta",
                 
                 filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
     
         }
         
@@ -145,8 +145,8 @@ dNdS <- function(query_file, subject_file, format = "fasta",
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores),
-                                   seq_type = "cds", format = format)
+                                   path = blast_path, comp_cores = comp_cores,
+                                   seq_type = "cds", format = format))
                 
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
@@ -154,11 +154,11 @@ dNdS <- function(query_file, subject_file, format = "fasta",
                 
                 filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                q_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
                 
                 filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_database",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
                 
                 
         }
@@ -470,8 +470,6 @@ compute_dnds <- function(complete_tbl,
                          dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         
         multicore <- (comp_cores > 1)
-        
-        print(paste0("MULTICORE: ",multicore))
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
