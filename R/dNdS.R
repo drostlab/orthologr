@@ -469,6 +469,9 @@ compute_dnds <- function(complete_tbl,
                          multialn_params = NULL, codonaln_tool = "pal2nal",
                          dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         
+        if(comp_cores > parallel::detectCores())
+                stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
+        
         multicore <- (comp_cores > 1)
         
         # determine the file seperator of the current OS
@@ -482,9 +485,9 @@ compute_dnds <- function(complete_tbl,
         pairwise_aln_name <- vector(mode = "character", length = 1)
         
         if(!multicore)
-                dNdS_values <- vector(mode = "list", length = ncol(complete_tbl))
+                dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
         
-        
+
         
         if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep))){
                 
@@ -501,9 +504,7 @@ compute_dnds <- function(complete_tbl,
                 dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"AA"))
         }
         
-        if(comp_cores > parallel::detectCores())
-                stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
-        
+
         if(multicore){
                 ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
                 ### register all given cores for parallelization
@@ -513,11 +514,11 @@ compute_dnds <- function(complete_tbl,
         } 
                 
         if(!multicore){        
-              for(i in 1:ncol(complete_tbl)){
+              for(i in 1:nrow(complete_tbl)){
                   dNdS_values[i] <- list((function(i) {
                 
           ### Perform the sampling process in parallel
-#         dNdS_values <- foreach::foreach(i = 1:ncol(complete_tbl),.combine="rbind") %dopar%{
+#         dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind") %dopar%{
                 
                 # storing the query gene id and subject gene id of the orthologous gene pair 
                 orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
@@ -582,7 +583,7 @@ compute_dnds <- function(complete_tbl,
         if(multicore){
         
                 ### Perform the sampling process in parallel
-                dNdS_values <- foreach::foreach(i = 1:ncol(complete_tbl),.combine="rbind") %dopar%{
+                dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind") %dopar%{
                 
                 # storing the query gene id and subject gene id of the orthologous gene pair 
                 orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
