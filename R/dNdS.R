@@ -642,9 +642,7 @@ compute_dnds <- function(complete_tbl,
                 #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
                 #       
                 
-                
-                
-                aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
+
                 
                 if(aa_aln_type=="multiple"){
                         
@@ -653,6 +651,8 @@ compute_dnds <- function(complete_tbl,
                                   tool = aa_aln_tool, get_aln = FALSE, 
                                   multi_aln_name = aa_aln_name, 
                                   path = aa_aln_path, quiet = quiet)
+                        
+                        aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
                         
                         # align codon -> cds.aln
                         codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,aa_aln_session_name),
