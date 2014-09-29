@@ -520,7 +520,7 @@ compute_dnds <- function(complete_tbl,
                 ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
                 ### register all given cores for parallelization
                 ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
-                cores <- parallel::makeForkCluster(comp_cores)
+                cores <- parallel::makeForkCluster(comp_cores, outfile="")
                 doParallel::registerDoParallel(cores)
                 #registerDoSEQ()
         } 

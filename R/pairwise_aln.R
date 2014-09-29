@@ -91,7 +91,9 @@ pairwise_aln <- function(file, tool = "NW", seq_type = "protein",
                 aln  <- Biostrings::pairwiseAlignment(pattern = seqs[[1]], subject = seqs[[2]],
                                                       type = "global")
                  
-                #write file -> comment Hajk: what does patter() and subject() do in pattern(aln), subject(aln) ?
+                #write file -> comment Hajk: what does pattern() and subject() do in pattern(aln), subject(aln) ?
+                # pattern(aln) == get aligned sequence that was set as pattern input
+                # subject(aln) == get aligned sequence that was set as subject input
                 seqinr::write.fasta(sequences = list(pattern(aln), subject(aln)) , names = names,
                                     file.out = file.out)
                 
