@@ -619,7 +619,9 @@ compute_dnds <- function(complete_tbl,
         if(multicore){
         
                 ### Perform the sampling process in parallel
-                dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind") %dopar%{
+                dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind",
+                                                .packages = c("seqinr","data.table"),
+                                                .errorhandling = "stop", .verbose = TRUE) %dopar%{
                 
                 # storing the query gene id and subject gene id of the orthologous gene pair 
                 orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
