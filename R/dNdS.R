@@ -491,7 +491,10 @@ compute_dnds <- function(complete_tbl,
         if(!multicore)
                 dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
         
-
+        if(!file.exists(paste0("_alignment",f_sep))){
+                
+                dir.create("_alignment")
+        }
         
         if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep))){
                 
@@ -515,6 +518,7 @@ compute_dnds <- function(complete_tbl,
                 ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
                 cores <- parallel::makeForkCluster(comp_cores)
                 doParallel::registerDoParallel(cores)
+                #registerDoSEQ()
         } 
                 
         if(!multicore){        
