@@ -13,7 +13,7 @@
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
-#' @param multialn_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
+#' @param aa_aln_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
 #' @param tool a character string specifying the program that should be used e.g. "clustalw". 
@@ -78,15 +78,15 @@
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #' ortho_detection = "RBH",
-#' multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
-#' codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
+#' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
+#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
 #' 
 #' # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #' ortho_detection = "RBH",
-#' multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
-#' codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+#' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
+#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 #' 
 #' }
 #' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
@@ -95,25 +95,29 @@
 #' @export
 dNdS <- function(query_file, subject_file, format = "fasta",
                  ortho_detection = "RBH", blast_path = NULL, 
-                 multialn_tool = "clustalw", multialn_path = NULL,
-                 multialn_params = NULL, codonaln_tool = "pal2nal", 
+                 aa_aln_type="parwise", aa_aln_tool = "clustalw", aa_aln_path = NULL,
+                 aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
                  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
-        if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","IP")))
+        if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
-        if(!is.element(multialn_tool, c("clustalw", "clustalo","muscle", "t_coffee", "mafft")))
-                stop("Please choose a multiple alignment tool that is supported by this function.")
-        
-        if(!is.element(codonaln_tool, c("pal2nal")))
+        if(aa_aln_type == "multiple"){
+                if(!is.multiple_aln_tool(aa_aln_tool))
+                        stop("Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type to pairwise.")
+        }
+        if(aa_aln_type == "pairwise"){
+                if(!is.pairwise_aln_tool(aa_aln_tool))
+                        stop("Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type to multiple.")
+        }
+
+        if(!is.codon_aln_tool(codon_aln_tool))
                 stop("Please choose a codon alignment tool that is supported by this function.")
         
-        kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
-        
-        if(!is.element(dnds_est.method,c("Comeron","Li",kaks_calc_methods)))
+        if(!is.dnds_est_method(dnds_est.method))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
         
         # blast each translated aminoacid sequence against the related database to get a 
@@ -177,9 +181,10 @@ dNdS <- function(query_file, subject_file, format = "fasta",
         
        # return the dNdS table for all query_ids and subject_ids
            return(compute_dnds(complete_tbl = final_tbl,
-                       multialn_tool = multialn_tool,
-                       multialn_path = multialn_path,
-                       codonaln_tool = codonaln_tool, 
+                       aa_aln_type = aa_aln_type,
+                       aa_aln_tool = aa_aln_tool,
+                       aa_aln_path = aa_aln_path,
+                       codon_aln_tool = codon_aln_tool, 
                        dnds_est.method = dnds_est.method, quiet = quiet,
                        comp_cores = comp_cores)
                        )   
@@ -292,12 +297,11 @@ dNdS <- function(query_file, subject_file, format = "fasta",
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL){
         
-        
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
         kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
         
-        if(!is.element(est.method,c("Comeron","Li",kaks_calc_methods)))
-                stop("Please choose a dNdS estimation method that is supported by this function.")
+        if(!is.dnds_est_method(est.method))
+                 stop("Please choose a dNdS estimation method that is supported by this function.")
         
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
                 stop("Please choose a format that is supported by seqinr::read.alignment.")
@@ -443,10 +447,10 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' @param complete_tbl a data.table object storing the query_id, subject_id, query_cds (sequence), 
 #' subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.
-#' @param multialn_tool a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.
-#' @param multialn_path a character string specifying the path to the corresponding multiple alignment tool.
-#' @param multialn_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
-#' @param codonaln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codonaln_tool} = "pal2nal".
+#' @param aa_aln_tool a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.
+#' @param aa_aln_path a character string specifying the path to the corresponding multiple alignment tool.
+#' @param aa_aln_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
+#' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = "pal2nal".
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
@@ -465,8 +469,8 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' @import foreach
 compute_dnds <- function(complete_tbl,
-                         multialn_tool = "clustalw", multialn_path = NULL,
-                         multialn_params = NULL, codonaln_tool = "pal2nal",
+                         aa_aln_type="parwise", aa_aln_tool = "clustalw", aa_aln_path = NULL,
+                         aa_aln_params = NULL, codon_aln_tool = "pal2nal",
                          dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         
         if(comp_cores > parallel::detectCores())
@@ -482,7 +486,7 @@ compute_dnds <- function(complete_tbl,
         aa_seqs <- vector(mode = "list", length = 2)
         cds_session_fasta <- vector(mode = "character", length = 1)
         aa_session_fasta <- vector(mode = "character", length = 1)
-        pairwise_aln_name <- vector(mode = "character", length = 1)
+        aa_aln_name <- vector(mode = "character", length = 1)
         
         if(!multicore)
                 dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
@@ -530,42 +534,66 @@ compute_dnds <- function(complete_tbl,
                 aa_seqs <- list(complete_tbl[i, query_aa],complete_tbl[i, subject_aa])
         
         
-                #pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
-                pairwise_aln_name <- paste0("q",i)
+                #aa_aln_name <- paste0("query_",i,"___","subject_",i)
+                aa_aln_name <- paste0("q",i)
 
-                # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
-                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,pairwise_aln_name,"_cds.fasta")
+                # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
+                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,aa_aln_name,"_cds.fasta")
                 seqinr::write.fasta(sequences = cds_seqs, names = orthologs_names, file.out = cds_session_fasta)
         
-                # create aa fasta of orthologous gene pair having session name: 'pairwise_aln_name'
-                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,pairwise_aln_name,"_aa.fasta")
+                # create aa fasta of orthologous gene pair having session name: 'aa_aln_name'
+                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,aa_aln_name,"_aa.fasta")
                 seqinr::write.fasta(sequences = aa_seqs, names = orthologs_names, file.out = aa_session_fasta)
         
                 # which multi_aln tool should get the parameters
-                #multi_aln_tool_params <- paste0(multialn_tool,".",params)
-                             
+                #multi_aln_tool_params <- paste0(aa_aln_tool,".",params)
+                          
+                
 #                 pairwise_aln <- Biostrings::pairwiseAlignment(aa_seqs[[1]],aa_seqs[[2]], type = "global")
 #                 
 #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
 #                 
                 
-
-                # align aa -> <multialn_tool>.aln
-                multi_aln(file = aa_session_fasta, 
-                          tool = multialn_tool, get_aln = FALSE, 
-                          multi_aln_name = pairwise_aln_name, 
-                          path = multialn_path, quiet = quiet)
-
-                multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
                 
-                
-                # align codon -> cds.aln
-                codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_session_name),
-                          file_nuc = cds_session_fasta, tool = codonaln_tool,format = "fasta",
-                          codon_aln_name = pairwise_aln_name,
-                          get_aln = FALSE, quiet = quiet)
+              
+                if(aa_aln_type=="multiple"){
+                        
+                        # align aa -> <aa_aln_tool>.aln
+                        multi_aln(file = aa_session_fasta, 
+                                  tool = aa_aln_tool, get_aln = FALSE, 
+                                  multi_aln_name = aa_aln_name, 
+                                  path = aa_aln_path, quiet = quiet)
         
-                codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
+                        aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
+                        
+                        # align codon -> cds.aln
+                        codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,aa_aln_session_name),
+                                  file_nuc = cds_session_fasta, tool = codon_aln_tool,format = "fasta",
+                                  codon_aln_name = aa_aln_name,
+                                  get_aln = FALSE, quiet = quiet)
+                }
+                if(aa_aln_type=="pairwise"){
+                        
+                        # align aa -> <aa_aln_tool>.aln
+                        pairwise_aln(file = aa_session_fasta, 
+                                     tool = aa_aln_tool, 
+                                     seqtype = "AA",
+                                     get_aln = FALSE,
+                                     pairwise_aln_name = aa_aln_name, 
+                                     path = aa_aln_path, quiet = quiet)
+                        
+                        aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,"_AA.aln")
+                        
+                        # align codon -> cds.aln
+                        codon_aln(file_aln = paste0("_alignment",f_sep,"pairwise_aln",f_sep,aa_aln_session_name),
+                                  file_nuc = cds_session_fasta, tool = codon_aln_tool,format = "fasta",
+                                  codon_aln_name = aa_aln_name,
+                                  get_aln = FALSE, quiet = quiet)
+                }
+                
+                
+        
+                codon_aln_session_name <- paste0(aa_aln_name,"_",codon_aln_tool,".aln")
                 
                 
                 
@@ -595,43 +623,64 @@ compute_dnds <- function(complete_tbl,
                 aa_seqs <- list(complete_tbl[i, query_aa],complete_tbl[i, subject_aa])
                 
                 
-                #pairwise_aln_name <- paste0("query_",i,"___","subject_",i)
-                pairwise_aln_name <- paste0("q",i)
+                #aa_aln_name <- paste0("query_",i,"___","subject_",i)
+                aa_aln_name <- paste0("q",i)
                 
-                # create cds fasta of orthologous gene pair having session name: 'pairwise_aln_name'
-                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,pairwise_aln_name,"_cds.fasta")
+                # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
+                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,aa_aln_name,"_cds.fasta")
                 seqinr::write.fasta(sequences = cds_seqs, names = orthologs_names, file.out = cds_session_fasta)
                 
-                # create aa fasta of orthologous gene pair having session name: 'pairwise_aln_name'
-                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,pairwise_aln_name,"_aa.fasta")
+                # create aa fasta of orthologous gene pair having session name: 'aa_aln_name'
+                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,aa_aln_name,"_aa.fasta")
                 seqinr::write.fasta(sequences = aa_seqs, names = orthologs_names, file.out = aa_session_fasta)
                 
                 # which multi_aln tool should get the parameters
-                #multi_aln_tool_params <- paste0(multialn_tool,".",params)
+                #multi_aln_tool_params <- paste0(aa_aln_tool,".",params)
                 
                 #                 pairwise_aln <- Biostrings::pairwiseAlignment(aa_seqs[[1]],aa_seqs[[2]], type = "global")
                 #                 
                 #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
-                #                 
+                #       
                 
                 
-                # align aa -> <multialn_tool>.aln
-                multi_aln(file = aa_session_fasta, 
-                          tool = multialn_tool, get_aln = FALSE, 
-                          multi_aln_name = pairwise_aln_name, 
-                          path = multialn_path, quiet = quiet)
                 
-                multi_aln_session_name <- paste0(pairwise_aln_name,"_",multialn_tool,".aln")
+                aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
                 
+                if(aa_aln_type=="multiple"){
+                        
+                        # align aa -> <aa_aln_tool>.aln
+                        multi_aln(file = aa_session_fasta, 
+                                  tool = aa_aln_tool, get_aln = FALSE, 
+                                  multi_aln_name = aa_aln_name, 
+                                  path = aa_aln_path, quiet = quiet)
+                        
+                        # align codon -> cds.aln
+                        codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,aa_aln_session_name),
+                                  file_nuc = cds_session_fasta, tool = codon_aln_tool,format = "fasta",
+                                  codon_aln_name = aa_aln_name,
+                                  get_aln = FALSE, quiet = quiet)
+                }
                 
-                # align codon -> cds.aln
-                codon_aln(file_aln = paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_session_name),
-                          file_nuc = cds_session_fasta, tool = codonaln_tool,format = "fasta",
-                          codon_aln_name = pairwise_aln_name,
-                          get_aln = FALSE, quiet = quiet)
-                
-                codon_aln_session_name <- paste0(pairwise_aln_name,"_",codonaln_tool,".aln")
-                
+                if(aa_aln_type=="pairwise"){
+                        
+                        # align aa -> <aa_aln_tool>.aln
+                        pairwise_aln(file = aa_session_fasta, 
+                                     tool = aa_aln_tool, 
+                                     seqtype = "AA",
+                                     get_aln = FALSE,
+                                     pairwise_aln_name = aa_aln_name, 
+                                     path = aa_aln_path, quiet = quiet)
+                        
+                        aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,"_AA.aln")
+                        
+                        # align codon -> cds.aln
+                        codon_aln(file_aln = paste0("_alignment",f_sep,"pairwise_aln",f_sep,aa_aln_session_name),
+                                  file_nuc = cds_session_fasta, tool = codon_aln_tool,format = "fasta",
+                                  codon_aln_name = aa_aln_name,
+                                  get_aln = FALSE, quiet = quiet)
+                }
+
+                codon_aln_session_name <- paste0(aa_aln_name,"_",codon_aln_tool,".aln")
                 
                 
                 # compute kaks

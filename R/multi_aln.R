@@ -242,7 +242,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                       clustalo.params = NULL, mafft.params = NULL, 
                       quiet = FALSE){
         
-        if(!is.element(tool,c("clustalw", "t_coffee", "muscle", "clustalo","mafft")))
+        if(!is.multiple_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
         # determine the file seperator of the current OS

@@ -21,10 +21,12 @@
 #' @references 
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
-pairwise_aln <- function(file, tool = "NW", seqtype, format="fasta", get_aln = FALSE, path = NULL,
-                      pairwise_aln_name = NULL, quiet = FALSE){
+pairwise_aln <- function(file, tool = "NW", seqtype, 
+                         get_aln = FALSE, pairwise_aln_name = NULL,
+                         path = NULL, quiet = FALSE){
         
-        if(!is.element(tool, c("NW")))
+        
+        if(!is.pairwise_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
         if(!is.element(seqtype,c("DNA","AA")))
@@ -50,7 +52,7 @@ pairwise_aln <- function(file, tool = "NW", seqtype, format="fasta", get_aln = F
         
         if(!is.null(pairwise_aln_name)){
                 
-                file.out <- paste0("_alignment",f_sep,"paiwise_aln",f_sep,pairwise_aln_name,"_",tool,"_",seqtype,".aln")    
+                file.out <- paste0("_alignment",f_sep,"pairwise_aln",f_sep,pairwise_aln_name,"_",tool,"_",seqtype,".aln")    
         }
         
         # Needleman-Wunsch using Biostrings::pairwiseAlignment( type=global)
