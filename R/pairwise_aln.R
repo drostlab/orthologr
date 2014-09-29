@@ -2,11 +2,13 @@
 #' @description This function takes a FASTA file containing two DNA or amino acid sequences
 #' that shall be aligned and computes a paiwise alignment using a defined alignment method.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
-#' @param tool a character string specifying the program/algorithm that should be used: "NW". 
+#' @param tool a character string specifying the program/algorithm that should be used: "NW".
+#' @param seq_type a character string specifying the sequence type stored within the given FASTA file. Options are
+#' \code{seq_type} = "protein", "cds", "dna". Default is \code{seq_type} = "protein". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param path a character string specifying the path to the pairwise alignment program (in case you don't use the default path).
 #' @param paiwise_aln_name a character string specifying the name of the stored alignment file. 
-#' Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seqtype.aln' .
+#' Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @details This function provides an interface between R and common pairwise alignment programs.
 #' @examples \dontrun{        
@@ -15,12 +17,12 @@
 #' 
 #' # in case Biostrings works properly
 #' pairwise_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-#'              tool = "NW", get_aln = TRUE, seqtype="AA")
+#'              tool = "NW", get_aln = TRUE, seq_type = "protein")
 #'                                                    
 #' }
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
-pairwise_aln <- function(file, tool = "NW", seqtype, 
+pairwise_aln <- function(file, tool = "NW", seq_type = "protein", 
                          get_aln = FALSE, pairwise_aln_name = NULL,
                          path = NULL, quiet = FALSE){
         
@@ -28,8 +30,15 @@ pairwise_aln <- function(file, tool = "NW", seqtype,
         if(!is.pairwise_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
-        if(!is.element(seqtype,c("DNA","AA")))
-                stop("Please choose a seqtype that is supported by this function.")
+        if(!is.element(seq_type,c("dna","cds","protein")))
+                stop("Please choose a seq_type that is supported by this function.")
+        
+        if(is.element(seq_type,c("dna","cds")))
+                seqtype <- "DNA"
+           
+        if(seq_type == "protein")
+                seqtype <- "AA"
+        
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -58,7 +67,7 @@ pairwise_aln <- function(file, tool = "NW", seqtype,
         if(tool == "NW"){
                 
                 #read file
-                if(seqtype == "DNA"){
+                if(is.element(seq_type,c("dna","cds"))){
 #                         not possible as is sorts the input by name
 #                         seqs <- read.cds(file=file, format=format)
 #                         names <- dt[,geneids] 
@@ -68,7 +77,7 @@ pairwise_aln <- function(file, tool = "NW", seqtype,
                         names <- names(input) 
                         seqs <- lapply(input, function(x){return (Biostrings::DNAString(seqinr::c2s(x)))})      
                 }
-                if(seqtype == "AA"){
+                if(seq_type == "protein"){
 #                         dt <- read.proteome(file=file, format=format)
 #                         names <- dt[,geneids] 
 #                         seqs <- sapply(dt[,seqs] , Biostrings::AAString)
@@ -80,9 +89,9 @@ pairwise_aln <- function(file, tool = "NW", seqtype,
                 
                 # align
                 aln  <- Biostrings::pairwiseAlignment(pattern = seqs[[1]], subject = seqs[[2]],
-                                                      type="global")
+                                                      type = "global")
                  
-                #write file
+                #write file -> comment Hajk: what does patter() and subject() do in pattern(aln), subject(aln) ?
                 seqinr::write.fasta(sequences = list(pattern(aln), subject(aln)) , names = names,
                                     file.out = file.out)
                 
@@ -91,3 +100,8 @@ pairwise_aln <- function(file, tool = "NW", seqtype,
                 if(get_aln) return(aln)
         }
 }
+
+
+
+
+
