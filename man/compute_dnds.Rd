@@ -3,21 +3,22 @@
 \alias{compute_dnds}
 \title{This function computes the dNdS value of one given pairwise alignment.}
 \usage{
-compute_dnds(complete_tbl, multialn_tool = "clustalw", multialn_path = NULL,
-  multialn_params = NULL, codonaln_tool = "pal2nal",
-  dnds_est.method = "YN", quiet = FALSE, comp_cores = 1)
+compute_dnds(complete_tbl, aa_aln_type = "parwise",
+  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
+  codon_aln_tool = "pal2nal", dnds_est.method = "YN", quiet = FALSE,
+  comp_cores = 1)
 }
 \arguments{
 \item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence),
 subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.}
 
-\item{multialn_tool}{a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.}
+\item{aa_aln_tool}{a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.}
 
-\item{multialn_path}{a character string specifying the path to the corresponding multiple alignment tool.}
+\item{aa_aln_path}{a character string specifying the path to the corresponding multiple alignment tool.}
 
-\item{multialn_params}{a character string specifying additional parameters that shall be passed to the multiple alignment system call.}
+\item{aa_aln_params}{a character string specifying additional parameters that shall be passed to the multiple alignment system call.}
 
-\item{codonaln_tool}{a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codonaln_tool} = "pal2nal".}
+\item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = "pal2nal".}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 

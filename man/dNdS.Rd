@@ -4,8 +4,8 @@
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms.}
 \usage{
 dNdS(query_file, subject_file, format = "fasta", ortho_detection = "RBH",
-  blast_path = NULL, multialn_tool = "clustalw", multialn_path = NULL,
-  multialn_params = NULL, codonaln_tool = "pal2nal",
+  blast_path = NULL, aa_aln_type = "parwise", aa_aln_tool = "clustalw",
+  aa_aln_path = NULL, aa_aln_params = NULL, codon_aln_tool = "pal2nal",
   dnds_est.method = "YN", comp_cores = 1, quiet = FALSE)
 }
 \arguments{
@@ -22,7 +22,7 @@ Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "
 
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
-\item{multialn_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
+\item{aa_aln_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
@@ -100,15 +100,15 @@ GTR
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 ortho_detection = "RBH",
-multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
-codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
+aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
+codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
 
 # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 ortho_detection = "RBH",
-multialn_tool = "clustalw", multialn_path = "/path/to/clustalw/",
-codonaln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
+codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 
 }
 }

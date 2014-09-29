@@ -5,7 +5,7 @@
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
   ortho_detection = "BH", blast_path = NULL, mafft_path = NULL,
-  comp_cores = 1)
+  comp_cores = 1, quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -55,8 +55,8 @@ Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence st
 \dontrun{
 
  # performing standard divergence stratigraphy
- divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-                         subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+ divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                         subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
                          eval = "1E-5", ortho_detection = "BH",mafft_path = "path/to/mafft",
                          comp_cores = 1)
 
