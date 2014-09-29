@@ -39,8 +39,8 @@
 #'  @examples \dontrun{
 #'  
 #'  # performing standard divergence stratigraphy
-#'  divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'                          subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'  divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'                          eval = "1E-5", ortho_detection = "BH",mafft_path = "path/to/mafft",
 #'                          comp_cores = 1)
 #'  
@@ -52,17 +52,17 @@
 #' @export
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "BH", blast_path = NULL, 
-                                    mafft_path = NULL, comp_cores = 1){
+                                    mafft_path = NULL, comp_cores = 1, quiet=FALSE){
         
-        if(!is.element(ortho_detection, c("BH","RBH")))
+        if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         dNdS_tbl <- dNdS(query_file = query_file,
                          subject_file = subject_file,
                          ortho_detection = ortho_detection,
-                         multialn_tool = "mafft", multialn_path = mafft_path,
-                         codonaln_tool = "pal2nal", dnds_est.method = "Comeron",
-                         comp_cores = comp_cores)
+                         aa_aln_type = "multiple", aa_aln_tool = "mafft", aa_aln_path = mafft_path,
+                         codon_aln_tool = "pal2nal", dnds_est.method = "Comeron",
+                         comp_cores = comp_cores, quiet=quiet)
         
         # divergence map: standard = col1: divergence stratum, col2: query_id
         dm_tbl <- DivergenceMap(dNdS_tbl[ ,list(dNdS,query_id)])
@@ -76,16 +76,16 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 
 DivergenceMap <- function(dNdS_tbl){
         
-        DecileValues <- quantile(dNdS_tbl[ , dNdS],probs = seq(0, 1, 0.1))
+        DecileValues <- stats::quantile(dNdS_tbl[ , dNdS],probs = seq(0, 1, 0.1))
         
-        j <- 1
-        i <- 2
-        for(i in 2:length(DecileValues)){
+        #j <- 1
+        #i <- 2 # not neccessary
+        for(i in length(DecileValues):2){
                 
                 AllGenesOfDecile_i <- na.omit(which((dNdS_tbl[ , dNdS] < DecileValues[i]) & (dNdS_tbl[ , dNdS] >= DecileValues[i-1])))
-                dNdS_tbl[AllGenesOfDecile_i, dNdS] <- j
+                dNdS_tbl[AllGenesOfDecile_i, dNdS:=(i-1)] 
                 
-                j <- j + 1
+                #j <- j + 1
         }
         
         ## assigning all KaKs values to Decile-Class : 10 which have the exact Kaks-value
