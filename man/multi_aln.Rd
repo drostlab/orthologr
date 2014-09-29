@@ -17,7 +17,7 @@ multi_aln(file, tool, get_aln = FALSE, path = NULL, multi_aln_name = NULL,
 \item{path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
 \item{multi_aln_name}{a character string specifying the name of the stored alignment file.
-Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .}
+Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'toolname.aln' .}
 
 \item{clustalw.params}{a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".}

@@ -18,7 +18,6 @@
 #'              tool = "NW", get_aln = TRUE, seqtype="AA")
 #'                                                    
 #' }
-#' @references 
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 pairwise_aln <- function(file, tool = "NW", seqtype, 
