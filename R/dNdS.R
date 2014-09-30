@@ -77,14 +77,14 @@
 #' # 5) single core processing 'comp_cores = 1'
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' ortho_detection = "RBH",
+#' ortho_detection = "RBH", aa_aln_type = "multiple",
 #' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
 #' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
 #' 
 #' # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' ortho_detection = "RBH",
+#' ortho_detection = "RBH", aa_aln_type = "multiple",
 #' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
 #' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 #' 
@@ -95,15 +95,19 @@
 #' @export
 dNdS <- function(query_file, subject_file, format = "fasta",
                  ortho_detection = "RBH", blast_path = NULL, 
-                 aa_aln_type="parwise", aa_aln_tool = "clustalw", aa_aln_path = NULL,
-                 aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
-                 dnds_est.method = "YN", comp_cores = 1, quiet = FALSE){
+                 aa_aln_type = "parwise", aa_aln_tool = "clustalw", 
+                 aa_aln_path = NULL, aa_aln_params = NULL, 
+                 codon_aln_tool = "pal2nal", dnds_est.method = "YN", 
+                 comp_cores = 1, quiet = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
+        
+        if(!is.element(aa_aln_type,c("multiple","pairwise")))
+                stop("")
         
         if(aa_aln_type == "multiple"){
                 if(!is.multiple_aln_tool(aa_aln_tool))
@@ -520,7 +524,7 @@ compute_dnds <- function(complete_tbl,
                 ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
                 ### register all given cores for parallelization
                 ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
-                cores <- parallel::makeForkCluster(comp_cores)
+                cores <- parallel::makeForkCluster(comp_cores, outfile="")
                 doParallel::registerDoParallel(cores)
                 #registerDoSEQ()
         } 
@@ -564,7 +568,7 @@ compute_dnds <- function(complete_tbl,
                 
                 
               
-                if(aa_aln_type=="multiple"){
+                if(aa_aln_type == "multiple"){
                         
                         # align aa -> <aa_aln_tool>.aln
                         multi_aln(file = aa_session_fasta, 
@@ -580,7 +584,7 @@ compute_dnds <- function(complete_tbl,
                                   codon_aln_name = aa_aln_name,
                                   get_aln = FALSE, quiet = quiet)
                 }
-                if(aa_aln_type=="pairwise"){
+                if(aa_aln_type == "pairwise"){
                         
                         # align aa -> <aa_aln_tool>.aln
                         pairwise_aln(file = aa_session_fasta, 
@@ -619,7 +623,9 @@ compute_dnds <- function(complete_tbl,
         if(multicore){
         
                 ### Perform the sampling process in parallel
-                dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind") %dopar%{
+                dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind",
+                                                .packages = c("seqinr","data.table"),
+                                                .errorhandling = "stop", .verbose = TRUE) %dopar%{
                 
                 # storing the query gene id and subject gene id of the orthologous gene pair 
                 orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])

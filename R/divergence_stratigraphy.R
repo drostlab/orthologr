@@ -73,7 +73,12 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 
 
 
-
+#' @title Function to sort dNdS values into divergence strata.
+#' @description This function takes a data.table returned by dNdS
+#' and sorts the corresponding dNdS value into divergence strata (deciles).
+#' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @return a data.table storing a standard divergence map.
 DivergenceMap <- function(dNdS_tbl){
         
         DecileValues <- stats::quantile(dNdS_tbl[ , dNdS],probs = seq(0, 1, 0.1))
