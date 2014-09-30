@@ -14,7 +14,7 @@
 #'  parallel computations on a multicore machine.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
-#'  processing this function.
+#'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
 #' @details Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence stratigraphy
 #'  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
 #'  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
@@ -57,7 +57,7 @@
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "BH", blast_path = NULL, 
                                     mafft_path = NULL, comp_cores = 1, quiet = FALSE,
-                                    clean_folders = TRUE){
+                                    clean_folders = FALSE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -76,7 +76,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         if(clean_folders)
                 clean_all_folders()
         
-        return ( dm_tbl )
+        return ( na.omit(dm_tbl) )
         
 }
 
