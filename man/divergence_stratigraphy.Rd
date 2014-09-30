@@ -5,7 +5,7 @@
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
   ortho_detection = "BH", blast_path = NULL, mafft_path = NULL,
-  comp_cores = 1, quiet = FALSE)
+  comp_cores = 1, quiet = FALSE, clean_folders = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -24,6 +24,11 @@ Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform
 parallel computations on a multicore machine.}
+
+\item{quiet}{a logical value specifying whether a successful interface call shall be printed out to the console.}
+
+\item{clean_folders}{a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
+processing this function.}
 }
 \value{
 A data.table storing the divergence map of the query organism.
@@ -58,13 +63,13 @@ Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence st
  divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
                          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
                          eval = "1E-5", ortho_detection = "BH",mafft_path = "path/to/mafft",
-                         comp_cores = 1)
+                         comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
 
 
  }
 }
 \author{
-Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
 Quint M et al. (2012). "A transcriptomic hourglass in plant embryogenesis". Nature (490): 98-101.

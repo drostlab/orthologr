@@ -14,6 +14,8 @@
 #' used to run BLAST searches.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
+#'  processing this function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references 
 #' 
@@ -51,7 +53,7 @@
 blast <- function(query_file, subject_file, seq_type = "cds",
                   format = "fasta", blast_algorithm = "blastp",
                   eval = "1E-5", path = NULL, comp_cores = 1,
-                  blast_params = NULL){
+                  blast_params = NULL, clean_folders = TRUE){
         
         if(!is.element(blast_algorithm,c("blastp")))
                 stop("Please choose a valid BLAST mode.")
@@ -174,7 +176,10 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                                        new = blast_table_names)
         
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
-        
+                  
+                  if(clean_folders)
+                          clean_all_folders()
+                  
                   return(hit_table)
          }, error = function(){ stop(paste0("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
@@ -198,6 +203,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
+#'  processing this function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @examples \dontrun{
@@ -225,7 +232,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 blast_best <- function(query_file, subject_file, seq_type = "cds",
                        format = "fasta", blast_algorithm = "blastp", 
                        eval = "1E-5", path = NULL, comp_cores = 1,
-                       blast_params = NULL){
+                       blast_params = NULL, clean_folders = TRUE){
         
         # default parameters for best hit filtering
         default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
@@ -252,7 +259,10 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
                  data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
        
                  data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
-        
+                 
+                 if(clean_folders)
+                         clean_all_folders()
+                 
                  # return a data.table storing only the best hits from the resulting 
                  # BLAST search
                  return( besthit_tbl )
@@ -279,6 +289,8 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
+#'  processing this function.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
 #' first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
@@ -310,7 +322,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 blast_rec <- function(query_file, subject_file, seq_type = "cds",
                       format = "fasta", blast_algorithm = "blastp", 
                       eval = "1E-5", path = NULL, comp_cores = 1, 
-                      blast_params = NULL){
+                      blast_params = NULL, clean_folders = TRUE){
         
         orthoA <- blast_best(query_file,subject_file, 
                              format = format, seq_type = seq_type,
@@ -325,7 +337,10 @@ blast_rec <- function(query_file, subject_file, seq_type = "cds",
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
         tryCatch(
-        {
+        {       
+                if(clean_folders)
+                        clean_all_folders()
+                
                 return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
                                           by = c("query_id","subject_id")) )
                 

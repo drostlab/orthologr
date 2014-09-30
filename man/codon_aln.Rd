@@ -19,6 +19,8 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool = "pal2nal",
 Default is \code{codon_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
+
+\item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 }
 \value{
 if get_aln is TRUE an object of class alignment of the seqinr package.

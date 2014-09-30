@@ -18,6 +18,8 @@ pairwise_aln(file, tool = "NW", seq_type = "protein", get_aln = FALSE,
 
 \item{path}{a character string specifying the path to the pairwise alignment program (in case you don't use the default path).}
 
+\item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
+
 \item{paiwise_aln_name}{a character string specifying the name of the stored alignment file.
 Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .}
 }
@@ -39,6 +41,8 @@ This function provides an interface between R and common pairwise alignment prog
 # in case Biostrings works properly
 pairwise_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
              tool = "NW", get_aln = TRUE, seq_type = "protein")
+
+
 
 }
 }

@@ -4,7 +4,7 @@
 \title{Interface function to perform orthology inference for a set of organisms}
 \usage{
 orthologs(query_file, subject_file, seq_type = "protein", format = "fasta",
-  ortho_detection = "RBH", path = NULL, comp_cores = 1)
+  ortho_detection = "RBH", path = NULL, comp_cores = 1, quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -27,6 +27,8 @@ For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": 
 "IP": path to InParanoid.}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
+
+\item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes

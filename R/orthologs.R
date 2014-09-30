@@ -16,6 +16,7 @@
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
 #' "IP": path to InParanoid.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
+#' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @details This function takes sequence files of a query organism and a subject organism and performs orthology inference
 #' using a defined orthology inference method to dectect orthologous genes.
 #' @author Hajk-Georg Drost
@@ -61,7 +62,7 @@
 #' @export
 orthologs <- function(query_file,subject_file, seq_type = "protein",
                       format = "fasta",ortho_detection = "RBH", 
-                      path = NULL, comp_cores = 1){
+                      path = NULL, comp_cores = 1, quiet = FALSE){
         
         if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")

@@ -3,7 +3,7 @@
 \alias{compute_dnds}
 \title{This function computes the dNdS value of one given pairwise alignment.}
 \usage{
-compute_dnds(complete_tbl, aa_aln_type = "parwise",
+compute_dnds(complete_tbl, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
   codon_aln_tool = "pal2nal", dnds_est.method = "YN", quiet = FALSE,
   comp_cores = 1)
@@ -11,6 +11,9 @@ compute_dnds(complete_tbl, aa_aln_type = "parwise",
 \arguments{
 \item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence),
 subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.}
+
+\item{aa_aln_type}{a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
+Default is \code{aa_aln_type} = "multiple".}
 
 \item{aa_aln_tool}{a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.}
 

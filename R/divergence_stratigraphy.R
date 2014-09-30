@@ -12,7 +12,10 @@
 #' @param mafft_path a character string specifying the path to the multiple alignment program MAFFT (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
-#'  @details Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence stratigraphy
+#' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
+#' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
+#'  processing this function.
+#' @details Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence stratigraphy
 #'  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
 #'  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
 #'  stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column.
@@ -29,30 +32,32 @@
 #'  
 #'  5) Assigning dNdS values to divergence strata (deciles)
 #'  
-#'  @author Hajk-Georg Drost
-#'  @references
+#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @references
 #'  
 #'  Quint M et al. (2012). "A transcriptomic hourglass in plant embryogenesis". Nature (490): 98-101.
 #'  
 #'  Drost HG et al. (2014). "Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis".
 #'  
-#'  @examples \dontrun{
+#' @examples \dontrun{
 #'  
 #'  # performing standard divergence stratigraphy
 #'  divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'                          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'                          eval = "1E-5", ortho_detection = "BH",mafft_path = "path/to/mafft",
-#'                          comp_cores = 1)
+#'                          comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
 #'  
 #'  
 #'  }
-#'  @return A data.table storing the divergence map of the query organism.
-#'  @seealso \code{\link{dNdS}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}},
+#'  
+#' @return A data.table storing the divergence map of the query organism.
+#' @seealso \code{\link{dNdS}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}},
 #'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "BH", blast_path = NULL, 
-                                    mafft_path = NULL, comp_cores = 1, quiet=FALSE){
+                                    mafft_path = NULL, comp_cores = 1, quiet = FALSE,
+                                    clean_folders = TRUE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -62,10 +67,14 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                          ortho_detection = ortho_detection,
                          aa_aln_type = "multiple", aa_aln_tool = "mafft", aa_aln_path = mafft_path,
                          codon_aln_tool = "pal2nal", dnds_est.method = "Comeron",
-                         comp_cores = comp_cores, quiet=quiet)
+                         comp_cores = comp_cores, quiet = quiet)
         
         # divergence map: standard = col1: divergence stratum, col2: query_id
         dm_tbl <- DivergenceMap(dNdS_tbl[ ,list(dNdS,query_id)])
+        
+        
+        if(clean_folders)
+                clean_all_folders()
         
         return ( dm_tbl )
         

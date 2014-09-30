@@ -33,6 +33,9 @@ that a set of default parameters is used when running clustalo. Example: clustal
 
 \item{mafft.params}{a character string listing the input paramters that shall be passed to the executing mafft program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running mafft. Example: mafft.params = "--maxiterate 1 --thread 2 --clustalout".}
+
+\item{quiet}{a logical value specifying whether the output of the corresponding multiple alignment tool shall be printed out to the console.
+Default is \code{quiet} = \code{FALSE}.}
 }
 \value{
 In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.

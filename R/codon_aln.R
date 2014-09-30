@@ -9,6 +9,7 @@
 #' @param codon_aln_name a character string specifying the name of the stored alignment file. 
 #' Default is \code{codon_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
+#' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
 #' @examples \dontrun{

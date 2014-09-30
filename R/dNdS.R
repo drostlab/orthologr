@@ -13,10 +13,14 @@
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
+#' Default is \code{aa_aln_type} = "multiple".
+#' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
 #' @param aa_aln_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
-#' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
-#' @param tool a character string specifying the program that should be used e.g. "clustalw". 
+#' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine. 
+#' @param quiet a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
+#' Default is \code{quiet} = \code{FALSE}.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details 
 #' 
@@ -93,12 +97,13 @@
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @import data.table
 #' @export
-dNdS <- function(query_file, subject_file, format = "fasta",
-                 ortho_detection = "RBH", blast_path = NULL, 
-                 aa_aln_type = "parwise", aa_aln_tool = "clustalw", 
-                 aa_aln_path = NULL, aa_aln_params = NULL, 
-                 codon_aln_tool = "pal2nal", dnds_est.method = "YN", 
-                 comp_cores = 1, quiet = FALSE){
+dNdS <- function(query_file, subject_file, seq_type = "protein",
+                 format = "fasta", ortho_detection = "RBH", 
+                 blast_path = NULL, aa_aln_type = "multiple", 
+                 aa_aln_tool = "clustalw", aa_aln_path = NULL, 
+                 aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
+                 dnds_est.method = "YN", comp_cores = 1, 
+                 quiet = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -453,6 +458,8 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.
 #' @param aa_aln_tool a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.
 #' @param aa_aln_path a character string specifying the path to the corresponding multiple alignment tool.
+#' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
+#' Default is \code{aa_aln_type} = "multiple".
 #' @param aa_aln_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
 #' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = "pal2nal".
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
@@ -474,7 +481,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' @references http://www.r-bloggers.com/the-wonders-of-foreach/
 #' @import foreach
 compute_dnds <- function(complete_tbl,
-                         aa_aln_type="parwise", aa_aln_tool = "clustalw", aa_aln_path = NULL,
+                         aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
                          aa_aln_params = NULL, codon_aln_tool = "pal2nal",
                          dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
         

@@ -3,15 +3,21 @@
 \alias{dNdS}
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms.}
 \usage{
-dNdS(query_file, subject_file, format = "fasta", ortho_detection = "RBH",
-  blast_path = NULL, aa_aln_type = "parwise", aa_aln_tool = "clustalw",
-  aa_aln_path = NULL, aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE)
+dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
+  ortho_detection = "RBH", blast_path = NULL, aa_aln_type = "multiple",
+  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
+  codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1,
+  quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.
+Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
+in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". See \code{\link{read.cds}},
 \code{\link{read.genome}}, \code{\link{read.proteome}} for more details.}
@@ -22,18 +28,19 @@ Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "
 
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
+\item{aa_aln_type}{a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
+Default is \code{aa_aln_type} = "multiple".}
+
+\item{aa_aln_tool}{a character string specifying the program that should be used e.g. "clustalw".}
+
 \item{aa_aln_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.}
 
-\item{seq_type}{a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-translated to protein sequences. Default is \code{seq_type} = "cds".}
-
-\item{tool}{a character string specifying the program that should be used e.g. "clustalw".}
+\item{quiet}{a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
+Default is \code{quiet} = \code{FALSE}.}
 }
 \value{
 A data.table storing the dNdS values of the correspnding genes.
