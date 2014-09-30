@@ -488,6 +488,10 @@ compute_dnds <- function(complete_tbl,
         aa_session_fasta <- vector(mode = "character", length = 1)
         aa_aln_name <- vector(mode = "character", length = 1)
         
+        print(nrow(complete_tbl))
+        print("\n")
+        print(head((complete_tbl)))
+        
         if(!multicore)
                 dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
         

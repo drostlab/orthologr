@@ -596,7 +596,7 @@ advanced_blast <- function(query_file, subject_file,
                                        if(taxonomy == TRUE){
                                 
                                                if(!is.null(taxdb_path)){
-                                                       system( paste0("export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
+                                                       system( paste0("export BLASTDB=",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
                                                                " -out ", output ," ",blast_params,
                                                                " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                                                length mismatch gapopen qstart qend sstart send evalue 
