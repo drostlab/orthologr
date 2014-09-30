@@ -49,8 +49,34 @@ Most functions are optimized in terms of computational performance.
 For this purpose, you need following programming languages on your system:
 
  - [__R__](http://www.cran.r-project.org) >= 3.1.1
+ 
+ Please make sure you have the latest __R__ version installed on your system.
+ 
+ To check which R version is currently installed on your system run the following command in __R__
+ 
+```r
+ # ckecking the current R version
+ version$version.string
+ 
+```
+ 
  - [__C++11__](http://isocpp.org/about)
+ 
+ Please make also sure that you have C++11 installed on your system,
+ this is important to use the features provided by [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html).
+ 
  - [__Perl__](https://www.perl.org) >= 5.12
+ 
+ The Perl language is used to run [__Pal2Nal__](http://www.bork.embl.de/pal2nal/) and parts of
+ [KaKs_Calculator](https://code.google.com/p/kaks-calculator/).
+ 
+Run the following command in your Terminal to check whether you have __Perl__
+installed and what version is installed on your system
+ 
+```shell
+ perl -v
+```
+ 
  - [__Python__](https://www.python.org) >= 2.8
 
 
