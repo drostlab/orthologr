@@ -471,6 +471,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
+#' @references http://www.r-bloggers.com/the-wonders-of-foreach/
 #' @import foreach
 compute_dnds <- function(complete_tbl,
                          aa_aln_type="parwise", aa_aln_tool = "clustalw", aa_aln_path = NULL,
@@ -491,10 +492,6 @@ compute_dnds <- function(complete_tbl,
         cds_session_fasta <- vector(mode = "character", length = 1)
         aa_session_fasta <- vector(mode = "character", length = 1)
         aa_aln_name <- vector(mode = "character", length = 1)
-        
-        print(nrow(complete_tbl))
-        print("\n")
-        print(head((complete_tbl)))
         
         if(!multicore)
                 dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
@@ -519,15 +516,6 @@ compute_dnds <- function(complete_tbl,
                 dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"AA"))
         }
         
-
-        if(multicore){
-                ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
-                ### register all given cores for parallelization
-                ### detectCores(all.tests = TRUE, logical = FALSE) returns the number of cores available on a multi-core machine
-                cores <- parallel::makeForkCluster(comp_cores, outfile="")
-                doParallel::registerDoParallel(cores)
-                #registerDoSEQ()
-        } 
                 
         if(!multicore){        
               for(i in 1:nrow(complete_tbl)){
@@ -620,12 +608,16 @@ compute_dnds <- function(complete_tbl,
             }
         }
 
+
         if(multicore){
-        
+                ### Parallellizing the sampling process using the 'doMC' and 'parallel' package
+                ### register all given cores for parallelization
+                doMC::registerDoMC(comp_cores)
+                
                 ### Perform the sampling process in parallel
                 dNdS_values <- foreach::foreach(i = 1:nrow(complete_tbl),.combine="rbind",
                                                 .packages = c("seqinr","data.table"),
-                                                .errorhandling = "stop", .verbose = TRUE) %dopar%{
+                                                .errorhandling = "stop") %dopar%{
                 
                 # storing the query gene id and subject gene id of the orthologous gene pair 
                 orthologs_names <- list(complete_tbl[i , query_id],complete_tbl[i, subject_id])
@@ -703,12 +695,8 @@ compute_dnds <- function(complete_tbl,
                 
                 return(dNdS.table)
                 
-        }
-                ### close the cluster connection
-                ### The is important to be able to re-run the function N times
-                ### without getting cluster connection problems
-                parallel::stopCluster(cores)
-        
+               }
+                
         }
 
 
