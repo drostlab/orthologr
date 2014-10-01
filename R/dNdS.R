@@ -304,7 +304,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @export
-substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL){
+substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL,
+                             subst_name = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
         kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
@@ -324,6 +325,16 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         }
         
         
+        if(is.null(subst_name)){
+                
+                file.out <- paste0("_calculation",f_sep,tool,".aln")
+        }
+        
+        if(!is.null(subst_name)){
+                
+                file.out <- paste0("_calculation",f_sep,sub_aln_name,"_",tool,".aln")    
+        }
+        
         if(est.method == "Comeron"){
                
            # file in fasta required     
@@ -333,9 +344,9 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
             tryCatch(
             {    
                 # To use gestimator a file in fasta format is required    
-                system(paste0("gestimator -i ",file," -o ","_calculation",f_sep,"gestimout"))
+                system(paste0("gestimator -i ",file," -o ",file.out))
                 
-                hit.table <-data.table::fread(paste0("_calculation",f_sep,"gestimout"))
+                hit.table <-data.table::fread(file.out))
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
@@ -607,6 +618,7 @@ compute_dnds <- function(complete_tbl,
                 
                 # compute kaks
                 dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
+                                               subst_name = aa_aln_name,
                                                est.method = dnds_est.method, quiet = quiet)
                 
                 return(dNdS.table)
@@ -696,9 +708,9 @@ compute_dnds <- function(complete_tbl,
 
                 codon_aln_session_name <- paste0(aa_aln_name,"_",codon_aln_tool,".aln")
                 
-                
                 # compute kaks
                 dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
+                                               subst_name = aa_aln_name,
                                                est.method = dnds_est.method, quiet = quiet)
                 
                 return(dNdS.table)
