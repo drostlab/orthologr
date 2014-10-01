@@ -332,7 +332,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         
         if(!is.null(subst_name)){
                 
-                file.out <- paste0("_calculation",f_sep,sub_aln_name,"_",tool,".aln")    
+                file.out <- paste0("_calculation",f_sep,subst_name,"_",tool,".aln")    
         }
         
         if(est.method == "Comeron"){
