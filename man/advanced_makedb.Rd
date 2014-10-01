@@ -13,6 +13,8 @@ that shall be transformed to a blast-able database.}
 calling makeblastdb from a shell like environment that shall be handed to the 'makeblastdb' call.
 Examples could be: \code{params} = "-input_type fasta -dbtype prot -hash_index".}
 
+\item{folder}{a character string specifying the internal folder in which the database shall be stored. Default is \code{folder} = "_blast_db".}
+
 \item{path}{a character string specifying the path to the makeblastdb program (in case you don't use the default path).
 Default is \code{path} = \code{NULL}.}
 }

@@ -735,6 +735,7 @@ advanced_blast <- function(query_file, subject_file,
 #' @param params a character string specifying the arguments in the same notation as
 #' calling makeblastdb from a shell like environment that shall be handed to the 'makeblastdb' call.
 #' Examples could be: \code{params} = "-input_type fasta -dbtype prot -hash_index".
+#' @param folder a character string specifying the internal folder in which the database shall be stored. Default is \code{folder} = "_blast_db".
 #' @param path a character string specifying the path to the makeblastdb program (in case you don't use the default path). 
 #' Default is \code{path} = \code{NULL}.
 #' @references
@@ -761,16 +762,19 @@ advanced_makedb <- function(database_file, params, folder = "_blast_db/", path =
         if(!file.exists(folder))
                 dir.create(folder)
         
+        file.copy(database_file,folder)
         
-        print(outfile)
-        
+        f_sep <- .Platform$file.sep
+        input_name <- unlist(strsplit(outfile,f_sep))
+        input_name <- input_name[length(input_name)]
+
         tryCatch({
                 
                 if(is.null(path))
-                        system(paste0("makeblastdb -in ",database_file," -out ",outfile," ",params))
+                        system(paste0("makeblastdb -in ",paste0(folder,input_name)," ",params))
                 
                 if(!is.null(path))
-                        system(paste0("export PATH=makeblastdb -in ",database_file," -out ",outfile," ",params))
+                        system(paste0("export PATH=makeblastdb -in ",paste0(folder,input_name)," ",params))
                 
         }, error = function(){ stop(paste0("Something went wrong with the makeblastdb call.","\n",
                                "Please check your aruments: ",params," and database_file: ",database_file))}
