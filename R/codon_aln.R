@@ -1,7 +1,6 @@
-#' @title Function to get a codon alignment.
+#' @title Function to compute a codon alignment.
 #' @description This function takes a protein alignment and the corresponding coding sequences 
-#' both given as files and uses the method specified by tool to create the corresponding codon
-#' alignment.
+#' as sequence files and computes the corresponding codon alignment.
 #' @param file_aln a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.
 #' @param file_nuc a character string specifying the path to the file storing the coding sequences in multiple FASTA format.
 #' @param format a character string specifying the file format used to store the codon alignment, e.g. "fasta", "clustal".
@@ -11,14 +10,28 @@
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
-#' @details This function provides an interface between R and common codon alignment tools such as "PAL2NAL".
+#' @details This function provides an interface between the R language and common codon alignment tools such as "PAL2NAL".
+#' Codon alignments can be used to quantify the evolutionary pressure acting on protein sequences based on dNdS estimation. 
+#' 
+#' The popular codon alignment tool PAL2NAL is included in this package and is being called when choosing \code{tool} = \code{"pal2nal"}.
 #' @examples \dontrun{
+#' 
 #' # performing a codon alignment using PAL2NAL
 #' codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
 #'                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'), 
 #'                        format = "clustal", tool = "pal2nal", get_aln = TRUE)
+#'                        
 #' }
-#' @return if get_aln is TRUE an object of class alignment of the seqinr package.
+#' @return In case \code{get_aln} = \code{TRUE} an seqinr alignment object is returned.
+#' @references 
+#' 
+#' Mikita Suyama, David Torrents, and Peer Bork (2006)
+#' PAL2NAL: robust conversion of protein sequence alignments into the corresponding codon alignments. Nucleic Acids Res. 34, W609-W612.
+#' 
+#' http://www.bork.embl.de/pal2nal/
+#' 
+#' http://abacus.gene.ucl.ac.uk/software/paml.html
+#' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}
 #' @export
 codon_aln <- function(file_aln, file_nuc, format = "clustal", 
                       tool = "pal2nal", codon_aln_name = NULL, 

@@ -27,4 +27,7 @@ clean_all_folders()
 \author{
 Hajk-Georg Drost
 }
+\seealso{
+\code{\link{divergence_stratigraphy}}
+}
 

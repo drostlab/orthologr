@@ -47,7 +47,7 @@ the internal folder environment. The resulting fasta files (two files) store the
 amino acid sequence of the query_id and subject_id (file one) and the CDS sequence of
 the query_id and subject_id (file two). These fasta files are then used to pass through the following pipeline:
 
-1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
+1) Multiple-Alignment or Pairwise-Alignment of query amino acid sequence and subject amino acid sequence
 
 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
 
@@ -58,5 +58,8 @@ Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
 http://www.r-bloggers.com/the-wonders-of-foreach/
+}
+\seealso{
+\code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 }
 

@@ -85,21 +85,34 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @title Function to sort dNdS values into divergence strata.
 #' @description This function takes a data.table returned by dNdS
 #' and sorts the corresponding dNdS value into divergence strata (deciles).
-#' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
+#' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}, but only selecting dNdS_obj[ , list(dNdS,query_id)].
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @examples \dontrun{
+#' 
+#' # get a divergence map of example sequences
+#' dNdS_tbl <-  dNdS( query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                    subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                    ortho_detection = "RBH", aa_aln_type = "multiple",
+#'                    aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
+#'                    dnds_est.method = "YN", comp_cores = 1 )
+#'                  
+#' divMap <- DivergenceMap( dNdS_tbl[ , list(dNdS,query_id)] )                       
+#' 
+#'               
+#' 
+#' }
+#' @seealso \code{\link{divergence_stratigraphy}}
 #' @return a data.table storing a standard divergence map.
+#' @export
 DivergenceMap <- function(dNdS_tbl){
         
         DecileValues <- stats::quantile(dNdS_tbl[ , dNdS],probs = seq(0, 1, 0.1))
         
-        #j <- 1
-        #i <- 2 # not neccessary
         for(i in length(DecileValues):2){
                 
                 AllGenesOfDecile_i <- na.omit(which((dNdS_tbl[ , dNdS] < DecileValues[i]) & (dNdS_tbl[ , dNdS] >= DecileValues[i-1])))
                 dNdS_tbl[AllGenesOfDecile_i, dNdS:=(i-1)] 
                 
-                #j <- j + 1
         }
         
         ## assigning all KaKs values to Decile-Class : 10 which have the exact Kaks-value

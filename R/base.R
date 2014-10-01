@@ -11,6 +11,7 @@
 #' clean_all_folders() 
 #' 
 #' }
+#' @seealso \code{\link{divergence_stratigraphy}}
 #' @export
 clean_all_folders <- function(){
         

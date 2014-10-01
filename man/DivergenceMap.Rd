@@ -6,7 +6,7 @@
 DivergenceMap(dNdS_tbl)
 }
 \arguments{
-\item{dNdS_tbl}{a data.table object returned by \code{\link{dNdS}}.}
+\item{dNdS_tbl}{a data.table object returned by \code{\link{dNdS}}, but only selecting dNdS_obj[ , list(dNdS,query_id)].}
 }
 \value{
 a data.table storing a standard divergence map.
@@ -15,7 +15,26 @@ a data.table storing a standard divergence map.
 This function takes a data.table returned by dNdS
 and sorts the corresponding dNdS value into divergence strata (deciles).
 }
+\examples{
+\dontrun{
+
+# get a divergence map of example sequences
+dNdS_tbl <-  dNdS( query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                   ortho_detection = "RBH", aa_aln_type = "multiple",
+                   aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal",
+                   dnds_est.method = "YN", comp_cores = 1 )
+
+divMap <- DivergenceMap( dNdS_tbl[ , list(dNdS,query_id)] )
+
+
+
+}
+}
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg
+}
+\seealso{
+\code{\link{divergence_stratigraphy}}
 }
 

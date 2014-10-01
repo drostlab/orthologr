@@ -157,7 +157,7 @@ as well as an pairwise alignment interface to the [Biostrings](http://www.biocon
 
 ### Codon Alignment Tools
 
-The Codon Alignment Tools Pal2Nal is already integrated in the `orthologr` package
+The codon alignment tool [Pal2Nal](http://www.bork.embl.de/pal2nal/) is already integrated in the `orthologr` package
 and doens't need to be installed.
 
  - [__Pal2Nal__](http://www.bork.embl.de/pal2nal/)

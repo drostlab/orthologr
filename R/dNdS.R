@@ -472,13 +472,14 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
 #' amino acid sequence of the query_id and subject_id (file one) and the CDS sequence of
 #' the query_id and subject_id (file two). These fasta files are then used to pass through the following pipeline:
 #' 
-#' 1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
+#' 1) Multiple-Alignment or Pairwise-Alignment of query amino acid sequence and subject amino acid sequence
 #' 
 #' 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
 #' @references http://www.r-bloggers.com/the-wonders-of-foreach/
+#' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 #' @import foreach
 compute_dnds <- function(complete_tbl,
                          aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
