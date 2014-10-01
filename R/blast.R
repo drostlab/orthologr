@@ -64,13 +64,13 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, seq_type = seq_type, format = format, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
-        input = paste0("_blast",f_sep,"blastinput.fasta") 
-        output = paste0("_blast",f_sep,"blastresult.csv")
+        input = paste0("_blast_db",f_sep,"blastinput.fasta") 
+        output = paste0("_blast_db",f_sep,"blastresult.csv")
         
         
-        if(!file.exists(paste0("_blast",f_sep))){
+        if(!file.exists(paste0("_blast_db",f_sep))){
                 
-                dir.create("_blast")
+                dir.create("_blast_db")
         }
         
         
@@ -466,7 +466,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                                        )
                         } else {
                                 system(
-                                        paste0("export PATH=$PATH:",path,"; makeblastdb -in ",
+                                        paste0("export PATH=",path,"; makeblastdb -in ",
                                                dbname," -input_type fasta -dbtype ",db_type," -hash_index")
                                       )
                         }
@@ -534,7 +534,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #'              
 #' }
 #'
-#' @return the \code{advanced_blast} function creates a folder named '_blast' and stores
+#' @return the \code{advanced_blast} function creates a folder named '_blast_db' and stores
 #' the hit table returned by BLAST in this folder.
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}
 #' @export
@@ -566,13 +566,13 @@ advanced_blast <- function(query_file, subject_file,
         f_sep <- .Platform$file.sep
         
         # create an internal folder structure for the BLAST process 
-        input = paste0("_blast",f_sep,"blastinput.fasta") 
-        output = paste0("_blast",f_sep,"blastresult.csv")
+        input = paste0("_blast_db",f_sep,"blastinput.fasta") 
+        output = paste0("_blast_db",f_sep,"blastresult.csv")
         
         
-        if(!file.exists(paste0("_blast",f_sep))){
+        if(!file.exists(paste0("_blast_db",f_sep))){
                 
-                dir.create("_blast")
+                dir.create("_blast_db")
         }
         
         # write query fasta file 
@@ -637,7 +637,7 @@ advanced_blast <- function(query_file, subject_file,
                                          if(!is.null(taxdb_path)){     
                                 
                                                  system(
-                                                        paste0("export PATH=$PATH:",path,"; ","export BLASTDB=$BLASTDB:",taxdb_path,"; ",blast_algorithm," -db ",
+                                                        paste0("export PATH=",path,"; ","export BLASTDB=",taxdb_path,"; ",blast_algorithm," -db ",
                                                         database," -query ",input," -out ", output ," ",blast_params,
                                                         " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                                         length mismatch gapopen qstart qend sstart send evalue bitscore 
@@ -724,3 +724,61 @@ advanced_blast <- function(query_file, subject_file,
         )
         
 }
+
+
+
+#' @title Advanced interface function to makeblastdb
+#' @description This function provides a simple, but powerful interface
+#' between the R language and 'makeblastdb'.
+#' @param database_file a character string specifying the path to the input file
+#' that shall be transformed to a blast-able database.
+#' @param params a character string specifying the arguments in the same notation as
+#' calling makeblastdb from a shell like environment that shall be handed to the 'makeblastdb' call.
+#' Examples could be: \code{params} = "-input_type fasta -dbtype prot -hash_index".
+#' @param path a character string specifying the path to the makeblastdb program (in case you don't use the default path). 
+#' Default is \code{path} = \code{NULL}.
+#' @references
+#' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
+#' 
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide
+#' 
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
+#' @author Hajk-Georg Drost
+#' @examples \dontrun{
+#' 
+#' # make the A. thaliana genome to a blast-able database
+#' advanced_makedb( database_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'                  params = "-input_type fasta -dbtype prot -hash_index" )
+#'                  
+#'                  
+#' }
+#' @export
+advanced_makedb <- function(database_file, params, folder = "_blast_db/", path = NULL){
+        
+        
+        outfile <- set_path(database_file, add.folder = folder)
+        
+        if(!file.exists(folder))
+                dir.create(folder)
+        
+        
+        print(outfile)
+        
+        tryCatch({
+                
+                if(is.null(path))
+                        system(paste0("makeblastdb -in ",database_file," -out ",outfile," ",params))
+                
+                if(!is.null(path))
+                        system(paste0("export PATH=makeblastdb -in ",database_file," -out ",outfile," ",params))
+                
+        }, error = function(){ stop(paste0("Something went wrong with the makeblastdb call.","\n",
+                               "Please check your aruments: ",params," and database_file: ",database_file))}
+                
+                )
+}
+
+
+
+
+

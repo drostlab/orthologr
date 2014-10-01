@@ -34,7 +34,7 @@ that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". 
 \item{taxdb_path}{a character string specidying the path to the lical taxonomy database.}
 }
 \value{
-the \code{advanced_blast} function creates a folder named '_blast' and stores
+the \code{advanced_blast} function creates a folder named '_blast_db' and stores
 the hit table returned by BLAST in this folder.
 }
 \description{
