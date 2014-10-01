@@ -585,7 +585,7 @@ compute_dnds <- function(complete_tbl,
                         # align aa -> <aa_aln_tool>.aln
                         pairwise_aln(file = aa_session_fasta, 
                                      tool = aa_aln_tool, 
-                                     seqtype = "protein",
+                                     seq_type = "protein",
                                      get_aln = FALSE,
                                      pairwise_aln_name = aa_aln_name, 
                                      path = aa_aln_path, quiet = quiet)
@@ -680,7 +680,7 @@ compute_dnds <- function(complete_tbl,
                         # align aa -> <aa_aln_tool>.aln
                         pairwise_aln(file = aa_session_fasta, 
                                      tool = aa_aln_tool, 
-                                     seqtype = "protein",
+                                     seq_type = "protein",
                                      get_aln = FALSE,
                                      pairwise_aln_name = aa_aln_name, 
                                      path = aa_aln_path, quiet = quiet)
