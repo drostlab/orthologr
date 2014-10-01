@@ -62,12 +62,12 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
-        dNdS_tbl <- dNdS(query_file = query_file,
+        dNdS_tbl <- na.omit(dNdS(query_file = query_file,
                          subject_file = subject_file,
                          ortho_detection = ortho_detection,
                          aa_aln_type = "multiple", aa_aln_tool = "mafft", aa_aln_path = mafft_path,
                          codon_aln_tool = "pal2nal", dnds_est.method = "Comeron",
-                         comp_cores = comp_cores, quiet = quiet)
+                         comp_cores = comp_cores, quiet = quiet))
         
         # divergence map: standard = col1: divergence stratum, col2: query_id
         dm_tbl <- DivergenceMap(dNdS_tbl[ ,list(dNdS,query_id)])
