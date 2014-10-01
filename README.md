@@ -80,12 +80,43 @@ installed and what version is installed on your system
  - [__Python__](https://www.python.org) >= 2.8
 
 
+
+### Install additional R packages imported by orthologr
+
+The `orthologr` package depends on a series of add ons (__R__ packages) that can
+be downloaded as follows
+
+
+```r
+# install all CRAN packages on which orthologr depends on
+install.packages(c("Rcpp","data.table","dplyr","doMC","foreach","ape"))
+
+# install all Bioconductor packages orthologr depends on
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+
+biocLite("Biostrings")
+
+
+```
+
+
 ### Orthology Inference Tools
 
 The `orthologr` package provides interfaces to the following bioinformatics tools 
 enabling orthology detection (orthology inference):
 
  - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download])
+ 
+ There are several interface functions to BLAST+ implemented in `orthologr`
+ 
+ - `blast()` : Interface function to BLAST+
+ - `blast_best()` : Function to perform a BLAST+ best hit search
+ - `blast_rec()` : Function to perform a BLAST+ reciprocal best hit (RBH) search
+ - `set_blast()` : Function preparing the parameters and databases for subsequent BLAST+ searches
+ - `advanced_blast()` : Advanced interface function to BLAST+
+ - `advanced_makedb()` : Advanced interface function to makeblastdb
+ 
  - [__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/)
  - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/)
  - [__InParanoid__](http://inparanoid.sbc.su.se/cgi-bin/index.cgi)
@@ -101,6 +132,9 @@ are not used.
  - [__MUSCLE__](http://www.drive5.com/muscle/)
  - [__ClustalO__](http://www.clustal.org/omega/)
  - [__MAFFT__](http://mafft.cbrc.jp/alignment/software/)
+
+In `orthologr` the function `multi_aln()` provides interfaces to all of these multiple alignment tools
+as well as an pairwise alignment interface to the [Biostrings](http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a Needleman-Wunsch algorithm.
 
 
 ### Codon Alignment Tools
