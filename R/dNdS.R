@@ -325,18 +325,18 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
         }
         
         
-        if(is.null(subst_name)){
-                
-                file.out <- paste0("_calculation",f_sep,tool,".aln")
-        }
-        
-        if(!is.null(subst_name)){
-                
-                file.out <- paste0("_calculation",f_sep,subst_name,"_",tool,".aln")    
-        }
-        
         if(est.method == "Comeron"){
-               
+         
+                if(is.null(subst_name)){
+                        
+                        file.out <- paste0("_calculation",f_sep,"gestimout")
+                }
+                
+                if(!is.null(subst_name)){
+                        
+                        file.out <- paste0("_calculation",f_sep,subst_name,"_gestimout")    
+                }
+                
            # file in fasta required     
            if(format != "fasta")
                    stop("To use gestimator an alignment file in fasta format is required.")
