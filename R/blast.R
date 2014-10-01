@@ -184,7 +184,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 }
 
 
-#' @title Function to perform a BLAST best hit search
+#' @title Function to perform a BLAST+ best hit search
 #' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
@@ -265,7 +265,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 }
 
 
-#' @title Function to perform a BLAST reciprocal best hit (RBH) search
+#' @title Function to perform a BLAST+ reciprocal best hit (RBH) search
 #' @description This function performs a blast+ search (reciprocal best hit) of a given set of protein sequences against a second
 #' set of protein sequences and vice versa.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
@@ -504,6 +504,9 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' 
 #' "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
 #' 
+#' 
+#' The intention of this function is to provide the user with an easy to use interface function
+#' to BLAST which uses the same notation as the original BLAST program.
 #' @author Hajk-Georg Drost
 #' @note This function is also able to return the subject taxonomy.
 #' 

@@ -44,6 +44,10 @@ This function performs a BLAST+ search of a given set of sequences and a given s
 Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
 
 "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
+
+
+The intention of this function is to provide the user with an easy to use interface function
+to BLAST which uses the same notation as the original BLAST program.
 }
 \note{
 This function is also able to return the subject taxonomy.
