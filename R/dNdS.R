@@ -346,7 +346,7 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
                 # To use gestimator a file in fasta format is required    
                 system(paste0("gestimator -i ",file," -o ",file.out))
                 
-                hit.table <-data.table::fread(file.out))
+                hit.table <-data.table::fread(file.out)
                 data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                                      new = c("query_id","subject_id","dN","dS","dNdS"))
                 data.table::setkey(hit.table, query_id)
