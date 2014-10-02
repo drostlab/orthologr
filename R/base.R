@@ -54,7 +54,55 @@ set_path <- function(file, add.folder = NULL){
                 return(paste0(curr_wd,file_name))
         }
         
-        
 }
 
+
+#' @title Function to filter the dNdS output of dNdS()
+#' @description This function takes the output data.table returned by \code{\link{dNdS}} and
+#' filters the output by the following criteria:
+#' 
+#' 1) all dN values having an NA value or omitted
+#' 2) all dS values having an NA value or omitted
+#' 3) all dNdS values >= the specified \code{dnds.threshold} are omitted
+#' 
+#' @param dNdS_tbl a \code{data.table} returned by \code{\link{dNdS}}.
+#' @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
+#' Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Default is \code{dnds.threshold} = 2.
+#' @details
+#' 
+#' The dNdS ratio quantifies the selection pressure acting on a given protein sequence.
+#' 
+#' It is proposed that:
+#' 
+#'  1) dNdS values < 1 reflect stabilizing selection of a protein
+#'  
+#'  2) dNdS value = 1 reflect neutral selection of a protein
+#'  
+#'  3) dNdS values > 1 reflect variational selection of a protein
+#' 
+#' Now an assumption must be generated to allow for dNdS filtering.
+#' Given a \code{dnds.threshold} all value above this threshold are omitted from the dataset.
+#' 
+#' @author Hajk-Georg Drost
+#' @examples \dontrun{
+#' 
+#' filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                   ortho_detection = "RBH", aa_aln_type = "multiple",
+#'                   aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
+#'                   codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1) , dnds.threshold = 2)
+#' 
+#' 
+#' }
+#' @import dplyr
+#' @seealso \code{\link{divergence_stratum}}
+#' @export
+filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
+        
+        return ( dNdS_tbl %>%
+                        tbl_dt() %>%
+                             dplyr::select(dN,dS,dNdS,query_id) %>%
+                                    dplyr::filter(!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
+        
+}
 

@@ -12,6 +12,8 @@
 #' @param mafft_path a character string specifying the path to the multiple alignment program MAFFT (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
+#'  @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
+#' Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Default is \code{dnds.threshold} = 2.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 #'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
@@ -56,27 +58,28 @@
 #' @export
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "BH", blast_path = NULL, 
-                                    mafft_path = NULL, comp_cores = 1, quiet = FALSE,
-                                    clean_folders = FALSE){
+                                    mafft_path = NULL, comp_cores = 1,dnds.threshold = 2,
+                                    quiet = FALSE, clean_folders = FALSE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
-        dNdS_tbl <- na.omit(dNdS(query_file = query_file,
-                         subject_file = subject_file,
-                         ortho_detection = ortho_detection,
-                         aa_aln_type = "multiple", aa_aln_tool = "mafft", aa_aln_path = mafft_path,
-                         codon_aln_tool = "pal2nal", dnds_est.method = "Comeron",
-                         comp_cores = comp_cores, quiet = quiet))
+        dNdS_tbl <- filter_dNdS( dNdS(query_file = query_file,
+                                      subject_file = subject_file,
+                                      ortho_detection = ortho_detection,
+                                      aa_aln_type = "multiple", aa_aln_tool = "mafft",
+                                      aa_aln_path = mafft_path, codon_aln_tool = "pal2nal", 
+                                      dnds_est.method = "Comeron", comp_cores = comp_cores, 
+                                      quiet = quiet) , dnds.threshold = dnds.threshold)
         
         # divergence map: standard = col1: divergence stratum, col2: query_id
-        dm_tbl <- DivergenceMap(dNdS_tbl[ ,list(dNdS,query_id)])
+        dm_tbl <- DivergenceMap( dNdS_tbl[ ,list(dNdS,query_id)] )
         
         
         if(clean_folders)
                 clean_all_folders()
         
-        return ( na.omit(dm_tbl) )
+        return ( dm_tbl )
         
 }
 
