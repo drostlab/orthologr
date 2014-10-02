@@ -62,7 +62,9 @@ set_path <- function(file, add.folder = NULL){
 #' filters the output by the following criteria:
 #' 
 #' 1) all dN values having an NA value or omitted
+#' 
 #' 2) all dS values having an NA value or omitted
+#' 
 #' 3) all dNdS values >= the specified \code{dnds.threshold} are omitted
 #' 
 #' @param dNdS_tbl a \code{data.table} returned by \code{\link{dNdS}}.
@@ -101,8 +103,7 @@ filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
         
         return ( dNdS_tbl %>%
                         tbl_dt() %>%
-                             dplyr::select(dN,dS,dNdS,query_id) %>%
-                                    dplyr::filter(!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
+                                dplyr::filter(!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
         
 }
 
