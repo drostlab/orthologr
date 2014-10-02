@@ -96,7 +96,6 @@ set_path <- function(file, add.folder = NULL){
 #' 
 #' 
 #' }
-#' @import dplyr
 #' @seealso \code{\link{divergence_stratum}}
 #' @export
 filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){

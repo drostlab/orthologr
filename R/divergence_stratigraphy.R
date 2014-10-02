@@ -73,7 +73,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                       quiet = quiet) , dnds.threshold = dnds.threshold)
         
         # divergence map: standard = col1: divergence stratum, col2: query_id
-        dm_tbl <- DivergenceMap( dNdS_tbl[ ,list(dNdS,query_id)] )
+        dm_tbl <- DivergenceMap( dNdS_tbl )
         
         
         if(clean_folders)
@@ -88,7 +88,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @title Function to sort dNdS values into divergence strata.
 #' @description This function takes a data.table returned by dNdS
 #' and sorts the corresponding dNdS value into divergence strata (deciles).
-#' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}, but only selecting dNdS_obj[ , list(dNdS,query_id)].
+#' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @examples \dontrun{
 #' 
@@ -99,7 +99,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #'                    aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
 #'                    dnds_est.method = "YN", comp_cores = 1 )
 #'                  
-#' divMap <- DivergenceMap( dNdS_tbl[ , list(dNdS,query_id)] )                       
+#' divMap <- DivergenceMap( dNdS_tbl )                       
 #' 
 #'               
 #' 
@@ -109,21 +109,25 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @export
 DivergenceMap <- function(dNdS_tbl){
         
-        DecileValues <- stats::quantile(dNdS_tbl[ , dNdS],probs = seq(0, 1, 0.1))
+        dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id)
+        
+        DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0, 1, 0.1))
         
         for(i in length(DecileValues):2){
                 
-                AllGenesOfDecile_i <- na.omit(which((dNdS_tbl[ , dNdS] < DecileValues[i]) & (dNdS_tbl[ , dNdS] >= DecileValues[i-1])))
-                dNdS_tbl[AllGenesOfDecile_i, dNdS:=(i-1)] 
+                AllGenesOfDecile_i <- na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) & (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i-1])))
+                dNdS_tbl_divMap[AllGenesOfDecile_i, dNdS:=(i-1)] 
                 
         }
         
         ## assigning all KaKs values to Decile-Class : 10 which have the exact Kaks-value
         ## as the 100% quantile, because in the loop we tested for < X% leaving out
         ## the exact 100% quantile
-        dNdS_tbl[which(dNdS_tbl[ , dNdS] == DecileValues[length(DecileValues)]) , 1] <- 10
+        dNdS_tbl_divMap[which(dNdS_tbl_divMap[ , dNdS] == DecileValues[length(DecileValues)]) , 1] <- 10
         
-        return(dNdS_tbl)
+        data.table::setnames(dNdS_tbl_divMap, old = "dNdS", new = "divergence_strata")
+        
+        return(dNdS_tbl_divMap[ , list(divergence_strata,query_id)])
         
 }
 

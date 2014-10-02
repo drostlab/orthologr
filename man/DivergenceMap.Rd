@@ -6,7 +6,7 @@
 DivergenceMap(dNdS_tbl)
 }
 \arguments{
-\item{dNdS_tbl}{a data.table object returned by \code{\link{dNdS}}, but only selecting dNdS_obj[ , list(dNdS,query_id)].}
+\item{dNdS_tbl}{a data.table object returned by \code{\link{dNdS}}.}
 }
 \value{
 a data.table storing a standard divergence map.
@@ -25,7 +25,7 @@ dNdS_tbl <-  dNdS( query_file = system.file('seqs/ortho_thal_cds.fasta', package
                    aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal",
                    dnds_est.method = "YN", comp_cores = 1 )
 
-divMap <- DivergenceMap( dNdS_tbl[ , list(dNdS,query_id)] )
+divMap <- DivergenceMap( dNdS_tbl )
 
 
 
