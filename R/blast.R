@@ -734,6 +734,18 @@ advanced_blast <- function(query_file, subject_file,
                                                                bitscore score qcovs'")
                                                               )
                                                 }
+                                               
+                                               if(is.null(db_path)){
+                                                       system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                                                      " -out ", output ," ",blast_params,
+                                                                      " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                                               length mismatch gapopen qstart qend sstart send evalue 
+                                                               bitscore score qcovs'")
+                                                       )
+                                               }
+                                               
+                                               
+                                               
                                         }
                               }, error = function(){ stop(paste0("taxdb could not be included to the BLAST search. \n",
                                                      "Please check the validity of the path: ",db_path," .\n",
@@ -771,6 +783,20 @@ advanced_blast <- function(query_file, subject_file,
                                                         length mismatch gapopen qstart qend sstart send evalue bitscore 
                                                         score qcovs'")
                                                        )
+                                         } 
+                                         
+                                         
+                                         if(is.null(db_path)){
+                                                 
+                                                 system(
+                                                         paste0("export PATH=",path,"; ",blast_algorithm," -db ",
+                                                                database," -query ",input," -out ", output ," ",blast_params,
+                                                                " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                                        length mismatch gapopen qstart qend sstart send evalue bitscore 
+                                                        score qcovs'")
+                                                 )
+                                                 
+                                                 
                                          }
                        
                                   }
