@@ -5,7 +5,8 @@
 \usage{
 advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
-  makedb_type = "protein", taxonomy = FALSE, db_path = NULL)
+  makedb_type = "protein", taxonomy = FALSE, db_path = NULL,
+  sql_database = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -32,6 +33,9 @@ that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". 
 \item{taxonomy}{a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.}
 
 \item{db_path}{a character string specidying the path to the local BLAST database.}
+
+\item{sql_database}{a logical value specifying whether an SQL database shall be created to store the BLAST output.
+This is only useful when the amount of data does not fit in-memory anymore.}
 }
 \value{
 the \code{advanced_blast} function creates a folder named '_blast_db' and stores
@@ -48,6 +52,14 @@ Following BLAST programs and algorithms can be assigned to \code{blast_algorithm
 
 The intention of this function is to provide the user with an easy to use interface function
 to BLAST which uses the same notation as the original BLAST program.
+
+When using \code{taxonomy} =  \code{TRUE}, then the taxdb.btd and taxdb.bti must be stored
+in the same folder as BLAST-able database. In case you need to specify the path to your BLAST database,
+use the \code{db_path} argument.
+
+The \code{advanced_blast} function can also store the BLAST output CSV file in an SQLite database.
+This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
+to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument.
 }
 \note{
 This function is also able to return the subject taxonomy.
@@ -82,6 +94,26 @@ adv_blast_test <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.f
 
 best_hit <- adv_blast_test \%>\% group_by(query_id) \%>\% summarise(min(evalue))
 
+
+# using a SQLite database to store the BLAST output and
+# select some example data
+
+library(dplyr)
+
+sql_example <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                              subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+                              seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1",
+                              sql_database = TRUE)
+
+head(sql_example)
+
+glimpse(sql_example)
+
+# select all rows that have an evalue of zero
+filter(sql_example,evalue == 0)
+
+# select the best hit using the evalue criterion
+sql_example \%>\% group_by(query_id) \%>\% summarise(best_hit_eval = min(evalue))
 
 }
 }

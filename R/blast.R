@@ -566,6 +566,8 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
 #' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.
 #' @param db_path a character string specidying the path to the local BLAST database.
+#' @param sql_database a logical value specifying whether an SQL database shall be created to store the BLAST output.
+#' This is only useful when the amount of data does not fit in-memory anymore.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -575,6 +577,16 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' 
 #' The intention of this function is to provide the user with an easy to use interface function
 #' to BLAST which uses the same notation as the original BLAST program.
+#' 
+#' When using \code{taxonomy} =  \code{TRUE}, then the taxdb.btd and taxdb.bti must be stored
+#' in the same folder as BLAST-able database. In case you need to specify the path to your BLAST database,
+#' use the \code{db_path} argument.
+#' 
+#' The \code{advanced_blast} function can also store the BLAST output CSV file in an SQLite database.
+#' This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
+#' to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument. 
+#' 
+#' 
 #' @author Hajk-Georg Drost
 #' @note This function is also able to return the subject taxonomy.
 #' 
@@ -627,6 +639,26 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #'                                  
 #' best_hit <- adv_blast_test %>% group_by(query_id) %>% summarise(min(evalue))
 #'
+#'
+#' # using a SQLite database to store the BLAST output and
+#' # select some example data
+#' 
+#' library(dplyr)
+#' 
+#' sql_example <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                               subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'                               seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1",
+#'                               sql_database = TRUE)
+#'
+#' head(sql_example)
+#' 
+#' glimpse(sql_example)
+#' 
+#' # select all rows that have an evalue of zero
+#' filter(sql_example,evalue == 0)
+#' 
+#' # select the best hit using the evalue criterion
+#' sql_example %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
 #'                                                  
 #' }
 #'
@@ -638,7 +670,7 @@ advanced_blast <- function(query_file, subject_file,
                            seq_type = "cds",format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
                            blast_params = NULL, makedb_type = "protein",
-                           taxonomy = FALSE, db_path = NULL){
+                           taxonomy = FALSE, db_path = NULL,sql_database = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -805,15 +837,38 @@ advanced_blast <- function(query_file, subject_file,
         
         tryCatch(
                 {
-                        hit_table <- data.table::fread(input = output, sep = "\t", 
+                        if(!sql_database){
+                                
+                                    hit_table <- data.table::fread(input = output, sep = "\t", 
                                                        header = FALSE, colClasses = col_Classes)
  
-                        data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
-                                             new = colNames)
-        
-                        data.table::setkeyv(hit_table, c("query_id","subject_id"))
-        
-                        return(hit_table)      
+                                    data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
+                                                         new = colNames)
+                        
+                                    data.table::setkeyv(hit_table, c("query_id","subject_id"))
+                                    
+                                    return(hit_table) 
+                        
+                        }
+                        
+                        if(sql_database){
+                                
+                                        
+                                blast_sql_db <- dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"), create = TRUE)
+                                
+                                connect_db <- RSQLite::dbConnect("SQLite", dbname = paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"))
+                                
+                                RSQLite::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
+                                                      header = FALSE, sep = "\t", overwrite = TRUE)
+                                
+                                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
+                                
+                                # dplyr::rename(blast_sqlite,colNames)
+                                
+                                return(blast_sqlite)
+                                
+                        }
+                          
                         
                 }, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
                 "correctly wrote a resulting BLAST hit table to ",output," ."))}
