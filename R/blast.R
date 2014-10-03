@@ -565,7 +565,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' @param makedb_type a character string specifying the sequence type stored in the BLAST database
 #' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
 #' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.
-#' @param taxdb_path a character string specidying the path to the lical taxonomy database.
+#' @param db_path a character string specidying the path to the local BLAST database.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -616,7 +616,18 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")       
+#'  
 #'              
+#' # when performing an advanced BLAST search, you can easily select the best hit using
+#' library(dplyr)
+#' 
+#' adv_blast_test <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                                  subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'                                  seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1")
+#'                                  
+#' best_hit <- adv_blast_test %>% group_by(query_id) %>% summarise(min(evalue))
+#'
+#'                                                  
 #' }
 #'
 #' @return the \code{advanced_blast} function creates a folder named '_blast_db' and stores
@@ -627,7 +638,7 @@ advanced_blast <- function(query_file, subject_file,
                            seq_type = "cds",format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
                            blast_params = NULL, makedb_type = "protein",
-                           taxonomy = FALSE, taxdb_path = NULL){
+                           taxonomy = FALSE, db_path = NULL){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -683,8 +694,8 @@ advanced_blast <- function(query_file, subject_file,
                                {
                                        if(taxonomy == TRUE){
                                 
-                                               if(!is.null(taxdb_path)){
-                                                       system( paste0("export BLASTDB=",taxdb_path,"; ",blast_algorithm," -db ",database," -query ",input,
+                                               if(!is.null(db_path)){
+                                                       system( paste0("export BLASTDB=",db_path,"; ",blast_algorithm," -db ",database," -query ",input,
                                                                " -out ", output ," ",blast_params,
                                                                " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                                                length mismatch gapopen qstart qend sstart send evalue 
@@ -693,7 +704,7 @@ advanced_blast <- function(query_file, subject_file,
                                                 }
                                         }
                               }, error = function(){ stop(paste0("taxdb could not be included to the BLAST search. \n",
-                                                     "Please check the validity of the path: ",taxdb_path," .\n",
+                                                     "Please check the validity of the path: ",db_path," .\n",
                                                      "Additionally, check the validity of: ",database,", ",input,
                                                      ", ",output,", and blast_params: ",blast_params," ."))}
                       )
@@ -719,10 +730,10 @@ advanced_blast <- function(query_file, subject_file,
                          {
                                  if(taxonomy == TRUE){
                         
-                                         if(!is.null(taxdb_path)){     
+                                         if(!is.null(db_path)){     
                                 
                                                  system(
-                                                        paste0("export PATH=",path,"; ","export BLASTDB=",taxdb_path,"; ",blast_algorithm," -db ",
+                                                        paste0("export PATH=",path,"; ","export BLASTDB=",db_path,"; ",blast_algorithm," -db ",
                                                         database," -query ",input," -out ", output ," ",blast_params,
                                                         " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                                         length mismatch gapopen qstart qend sstart send evalue bitscore 
@@ -732,7 +743,7 @@ advanced_blast <- function(query_file, subject_file,
                        
                                   }
                          }, error = function(){stop(paste0("taxdb could not be included to the BLAST search. \n",
-                                                            "Please check the validity of the path: ",taxdb_path," .\n",
+                                                            "Please check the validity of the path: ",db_path," .\n",
                                                             "Additionally, check the validity of: ",database,", ",input,",
                                                             ",output,", and blast_params: ",blast_params," ."))}
                 )

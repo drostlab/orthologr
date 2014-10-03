@@ -5,7 +5,7 @@
 \usage{
 advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
-  makedb_type = "protein", taxonomy = FALSE, taxdb_path = NULL)
+  makedb_type = "protein", taxonomy = FALSE, db_path = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -31,7 +31,7 @@ that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". 
 
 \item{taxonomy}{a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.}
 
-\item{taxdb_path}{a character string specidying the path to the lical taxonomy database.}
+\item{db_path}{a character string specidying the path to the local BLAST database.}
 }
 \value{
 the \code{advanced_blast} function creates a folder named '_blast_db' and stores
@@ -71,6 +71,17 @@ advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = '
 advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
+
+
+# when performing an advanced BLAST search, you can easily select the best hit using
+library(dplyr)
+
+adv_blast_test <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                                 subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+                                 seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1")
+
+best_hit <- adv_blast_test \%>\% group_by(query_id) \%>\% summarise(min(evalue))
+
 
 }
 }
