@@ -22,19 +22,27 @@
 advanced_ds <- function(query_file, subject_set, eval = "1E-5",
                         blast_path = NULL,blast_params = NULL,
                         comp_cores = 1, dnds.threshold = 2, 
-                        quiet = FALSE, clean_folders = FALSE ){
+                        quiet = FALSE, clean_folders = FALSE){
         
+        
+        multicore <- (comp_cores > 1)
         
         subj_organisms <- list.files(subject_set)
         
+        blast_output_names <- paste0(get_filename(query_file),"_",
+                                     sapply(subj_organisms,get_filename))
         
+        # blast all query sequences against all subject organisms
         for(i in 1:length(subj_organisms)){
                 
                 advanced_blast(query_file = query_file,
                                subject_file = subj_organisms[i],
                                seq_type = "cds", blast_algorithm = "blastp",
                                path = blast_path, blast_params = blast_params,
-                               makedb_type = "protein")
+                               makedb_type = "protein",
+                               session_name = blast_output_names[i],
+                               write.only = TRUE, 
+                               blast_params = paste0("-evalue ",eval," -num_threads ",comp_cores))
                                                
         } 
         

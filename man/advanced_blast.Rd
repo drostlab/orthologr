@@ -6,7 +6,7 @@
 advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
   makedb_type = "protein", taxonomy = FALSE, db_path = NULL,
-  sql_database = FALSE)
+  sql_database = FALSE, session_name = NULL, write.only = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -36,6 +36,11 @@ that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". 
 
 \item{sql_database}{a logical value specifying whether an SQL database shall be created to store the BLAST output.
 This is only useful when the amount of data does not fit in-memory anymore.}
+
+\item{session_name}{a character string specifying the name of the BLAST output. Default is \code{session_name} = \code{NULL}.}
+
+\item{write.only}{a logical value specifying whether the resulting blast output should be returned as
+data.table or database connection. Default is \code{write.only} = \code{FALSE}.}
 }
 \value{
 the \code{advanced_blast} function creates a folder named '_blast_db' and stores

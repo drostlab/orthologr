@@ -568,6 +568,9 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' @param db_path a character string specidying the path to the local BLAST database.
 #' @param sql_database a logical value specifying whether an SQL database shall be created to store the BLAST output.
 #' This is only useful when the amount of data does not fit in-memory anymore.
+#' @param session_name a character string specifying the name of the BLAST output. Default is \code{session_name} = \code{NULL}.
+#' @param write.only a logical value specifying whether the resulting blast output should be returned as
+#' data.table or database connection. Default is \code{write.only} = \code{FALSE}.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -670,7 +673,9 @@ advanced_blast <- function(query_file, subject_file,
                            seq_type = "cds",format = "fasta", 
                            blast_algorithm = "blastp", path = NULL,
                            blast_params = NULL, makedb_type = "protein",
-                           taxonomy = FALSE, db_path = NULL,sql_database = FALSE){
+                           taxonomy = FALSE, db_path = NULL,
+                           sql_database = FALSE, session_name = NULL,
+                           write.only = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -693,9 +698,12 @@ advanced_blast <- function(query_file, subject_file,
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
+        if(is.null(session_name))
+                session_name <- get_filename(query_file)
+        
         # create an internal folder structure for the BLAST process 
-        input = paste0("_blast_db",f_sep,"blastinput.fasta") 
-        output = paste0("_blast_db",f_sep,"blastresult.csv")
+        input = paste0("_blast_db",f_sep,session_name,"_blastinput.fasta") 
+        output = paste0("_blast_db",f_sep,session_name,"_blastresult.csv")
         
         
         if(!file.exists(paste0("_blast_db",f_sep))){
@@ -743,8 +751,6 @@ advanced_blast <- function(query_file, subject_file,
                                                                bitscore score qcovs'")
                                                        )
                                                }
-                                               
-                                               
                                                
                                         }
                               }, error = function(){ stop(paste0("taxdb could not be included to the BLAST search. \n",
@@ -824,82 +830,84 @@ advanced_blast <- function(query_file, subject_file,
                 )
         }
         
-        # default parameters that are not returned in the hit table
-        # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
-        non_returned_params <- vector(mode = "character", length = 24)
-        non_returned_params <- c("db","query_loc","outfm","out","subject","subject_loc",
-                                 "show_gis","num_descriptions","num_alignments","max_target_seqs",
-                                 "html","gilist","negative_gilist","entrez_query","culling_limit",
-                                 "best_hit_overhang","best_hit_score_edge","dbsize","searchsp",
-                                 "import_search_strategy","export_search_strategy","parse_deflines",
-                                 "num_threads","remote")
+        if(!write.only){
+                
+                       # default parameters that are not returned in the hit table
+                       # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+                       non_returned_params <- vector(mode = "character", length = 24)
+                       non_returned_params <- c("db","query_loc","outfm","out","subject","subject_loc",
+                                                "show_gis","num_descriptions","num_alignments","max_target_seqs",
+                                                "html","gilist","negative_gilist","entrez_query","culling_limit",
+                                                "best_hit_overhang","best_hit_score_edge","dbsize","searchsp",
+                                                "import_search_strategy","export_search_strategy","parse_deflines",
+                                                "num_threads","remote")
         
-        split_params <- unlist(strsplit(blast_params," "))
-        param_names <- split_params[sapply(split_params,grepl,pattern="-[a-zA-Z]",perl = TRUE)]  
-        param_names <- stringr::str_replace(param_names, pattern = "-", replacement = "")
+                       split_params <- unlist(strsplit(blast_params," "))
+                       param_names <- split_params[sapply(split_params,grepl,pattern="-[a-zA-Z]",perl = TRUE)]  
+                       param_names <- stringr::str_replace(param_names, pattern = "-", replacement = "")
         
-        default_params <- vector(mode = "character")
-        default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
-                            "num_ident_matches","alig_length","mismatches", "gap_openings","q_start",
-                            "q_end","s_start","s_end","evalue","bit_score","score_raw",
-                            "query_coverage_per_subj")
-        
-        
-        if(taxonomy == FALSE)
-                default_params <- default_params[!((default_params == "subject_taxonomy") | (default_params == "subject_kingdom"))]
+                       default_params <- vector(mode = "character")
+                       default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
+                                           "num_ident_matches","alig_length","mismatches", "gap_openings","q_start",
+                                           "q_end","s_start","s_end","evalue","bit_score","score_raw",
+                                           "query_coverage_per_subj")
         
         
-        additional_params <- param_names[(!is.element(param_names,default_params)) & (!is.element(param_names,non_returned_params))]
+                       if(taxonomy == FALSE)
+                               default_params <- default_params[!((default_params == "subject_taxonomy") | (default_params == "subject_kingdom"))]
         
-        colNames <- c(default_params,additional_params)
+        
+                       additional_params <- param_names[(!is.element(param_names,default_params)) & (!is.element(param_names,non_returned_params))]
+        
+                       colNames <- c(default_params,additional_params)
        
-        # define the colClasses for faster file streaming
-        if(taxonomy == TRUE)
-                col_Classes <- c(rep("character",4), rep("numeric",13))
+                       # define the colClasses for faster file streaming
+                       if(taxonomy == TRUE)
+                               col_Classes <- c(rep("character",4), rep("numeric",13))
         
-        if(taxonomy == FALSE)
-                col_Classes <- c(rep("character",2), rep("numeric",13))
+                       if(taxonomy == FALSE)
+                               col_Classes <- c(rep("character",2), rep("numeric",13))
         
-        
-        tryCatch(
-                {
-                        if(!sql_database){
+                       
+                       tryCatch(
+                                {
+                                  if(!sql_database){
                                 
-                                    hit_table <- data.table::fread(input = output, sep = "\t", 
-                                                       header = FALSE, colClasses = col_Classes)
+                                               hit_table <- data.table::fread(input = output, sep = "\t", 
+                                                                             header = FALSE, colClasses = col_Classes)
  
-                                    data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
-                                                         new = colNames)
+                                               data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
+                                                                    new = colNames)
                         
-                                    data.table::setkeyv(hit_table, c("query_id","subject_id"))
+                                               data.table::setkeyv(hit_table, c("query_id","subject_id"))
                                     
-                                    return(hit_table) 
+                                               return(hit_table) 
                         
-                        }
+                                   }
                         
-                        if(sql_database){
+                                   if(sql_database){
                                 
                                         
-                                blast_sql_db <- dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"), create = TRUE)
+                                               blast_sql_db <- dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"), create = TRUE)
                                 
-                                connect_db <- RSQLite::dbConnect("SQLite", dbname = paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"))
+                                               connect_db <- RSQLite::dbConnect("SQLite", dbname = paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"))
                                 
-                                RSQLite::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
-                                                      header = FALSE, sep = "\t", overwrite = TRUE)
+                                               RSQLite::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
+                                                                      header = FALSE, sep = "\t", overwrite = TRUE)
                                 
-                                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
+                                               blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
                                 
-                                # dplyr::rename(blast_sqlite,colNames)
+                                               # dplyr::rename(blast_sqlite,colNames)
                                 
-                                return(blast_sqlite)
+                                               return(blast_sqlite)
                                 
-                        }
+                                    }
                           
                         
-                }, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
-                "correctly wrote a resulting BLAST hit table to ",output," ."))}
-        )
-        
+                               }, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
+                                  "correctly wrote a resulting BLAST hit table to ",output," ."))}
+                       )
+        }
 }
 
 
