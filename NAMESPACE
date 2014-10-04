@@ -2,6 +2,7 @@
 
 export(DivergenceMap)
 export(advanced_blast)
+export(advanced_ds)
 export(advanced_makedb)
 export(blast)
 export(blast_best)
