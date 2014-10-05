@@ -467,8 +467,8 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 # https://github.com/hadley/dplyr/issues/548
         
                 
-#                 # omit empty sequences
-#                 dt <- dt[,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
+                # omit empty sequences
+                dt <- dt[,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
                 
                 # omit sequences taht are not multiples of 3
                 dt <- dt[,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
