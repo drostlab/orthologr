@@ -466,6 +466,14 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 # http://stackoverflow.com/questions/10527072/using-data-table-package-inside-my-own-package
                 # https://github.com/hadley/dplyr/issues/548
         
+                
+                # omit empty sequences
+                dt <- dt[,.SD[sapply(seqs,function(x){return(x!="")})]]
+                
+                # omit sequences taht are not multiples of 3
+                dt<-dt[,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
+                
+                
                 # translate cds to protein sequences
                 tryCatch(
                          {
