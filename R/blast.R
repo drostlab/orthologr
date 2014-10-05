@@ -468,7 +468,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
         
                 
                 # omit empty sequences
-                dt <- dt[,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
+                dt <- dt[,.SD[sapply(seqs,is.dnaSequence})]]
                 
                 # omit sequences taht are not multiples of 3
                 dt <- dt[,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
