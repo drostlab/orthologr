@@ -465,14 +465,15 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 # in the NAMESPACE file with 'imports(data.table)' -> @import when using roxygen2
                 # http://stackoverflow.com/questions/10527072/using-data-table-package-inside-my-own-package
                 # https://github.com/hadley/dplyr/issues/548
-        
                 
                 # omit empty sequences
-                dt <- dt[,.SD[sapply(seqs,is.dnaSequence)]]
+                dt <- dt[,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
                 
                 # omit sequences taht are not multiples of 3
                 dt <- dt[,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
-                
+
+                # omit sequences consisting of others than ACGT
+                dt <- dt[,.SD[sapply(seqs,is.dnaSequence)]]
                 
                 # translate cds to protein sequences
                 tryCatch(
