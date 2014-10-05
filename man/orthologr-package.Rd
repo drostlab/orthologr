@@ -20,9 +20,9 @@ License: \tab GPL-2\cr
 
 }
 \author{
-Hajk-Georg Drost, Kristian Karsten Ullrich, Sarah Scharfenberg, Norman Urban
+Hajk-Georg Drost, Kristian Karsten Ullrich, Sarah Scharfenberg
 
-Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de> and Kristian Karsten Ullrich
+Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
 }
 \references{
 
