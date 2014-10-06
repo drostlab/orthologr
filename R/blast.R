@@ -568,6 +568,9 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' @description This function performs a BLAST+ search of a given set of sequences and a given set of parameters against a BLAST database.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
+#' In case a NCBI database is used, it is possible to specify \code{subject_file} = "nr", "plaza", "cdd_delta". Other databases
+#' will be added in future versions of \pkg{orthologr}. When specifying \code{subject_file} = "nr", "plaza", ...
+#' make sure the corresponding database ("nr", "plaza","cdd_delta" ...) is stored in the blast working directory "blast_db".
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
@@ -654,8 +657,8 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' # you can also use deltablast to perform BLAST searches
 #' # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"                          
 #' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")                                       
+#'                subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")                                       
 #'                              
 #'                                                                  
 #'                                                                                                                                          
@@ -709,6 +712,13 @@ advanced_blast <- function(query_file, subject_file,
                                          "blastx","tblastn","tblastx")))
                 stop("Please choose a valid BLAST mode.")
         
+        if(is.element(subject_file,c("nr","plaza","cdd_delta"))){
+                
+                use_ncbi_database <- TRUE
+        } else {
+                
+                use_ncbi_database <- FALSE
+        }
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -717,9 +727,25 @@ advanced_blast <- function(query_file, subject_file,
         
         query.dt <- set_blast(file = query_file, format = format, 
                               seq_type = seq_type)[[1]]
-        # make a BLASTable databse of the subject
-        database <- set_blast(file = subject_file, format = format, seq_type = seq_type, 
-                              makedb = TRUE, makedb_type = makedb_type)[[2]]
+        if(!use_ncbi_database){
+                
+                # make a BLASTable databse of the subject
+                database <- set_blast(file = subject_file, format = format, seq_type = seq_type, 
+                                       makedb = TRUE, makedb_type = makedb_type)[[2]]
+        }
+        
+        if(use_ncbi_database){
+                
+                if(use_ncbi_database == "nr")
+                        database <- "nr" 
+                
+                if(use_ncbi_database == "plaza")
+                        database <- "plaza"
+                
+                if(use_ncbi_database == "cdd_delta")
+                        database <- "cdd_delta" 
+                
+        }
         
         if(is.null(session_name))
                 session_name <- get_filename(query_file)

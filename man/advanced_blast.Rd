@@ -11,7 +11,10 @@ advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
-\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
+\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).
+In case a NCBI database is used, it is possible to specify \code{subject_file} = "nr", "plaza", "cdd_delta". Other databases
+will be added in future versions of \pkg{orthologr}. When specifying \code{subject_file} = "nr", "plaza", ...
+make sure the corresponding database ("nr", "plaza","cdd_delta" ...) is stored in the blast working directory "blast_db".}
 
 \item{seq_type}{a character string specifying the sequence type stored in the input file.
 Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
@@ -98,8 +101,8 @@ advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'o
 # you can also use deltablast to perform BLAST searches
 # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"
 advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")
+               subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+               blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")
 
 
 
