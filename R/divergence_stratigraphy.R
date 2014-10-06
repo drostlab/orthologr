@@ -111,7 +111,7 @@ DivergenceMap <- function(dNdS_tbl){
         
         dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id)
         
-        DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0.1, 1, 0.1))
+        DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0.0, 1, 0.1))
         
         for(i in length(DecileValues):2){
                 
