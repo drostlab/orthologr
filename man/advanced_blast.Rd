@@ -65,6 +65,8 @@ use the \code{db_path} argument.
 The \code{advanced_blast} function can also store the BLAST output CSV file in an SQLite database.
 This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
 to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument.
+
+In case you want to use deltablast, you need to all cdd_delta.* files into the folder "_blast_db".
 }
 \note{
 This function is also able to return the subject taxonomy.
@@ -88,6 +90,17 @@ advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = '
 advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
+
+
+
+# DELTA-BLAST
+#
+# you can also use deltablast to perform BLAST searches
+# make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"
+advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")
+
 
 
 # when performing an advanced BLAST search, you can easily select the best hit using

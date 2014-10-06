@@ -491,7 +491,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
         if(seq_type == "protein"){
                 
                 dt <- data.table::copy(read.proteome(file = file, format = "fasta", ...))
-                data.table::setnames(dt, old = "seqs", new= "aa")
+                data.table::setnames(dt, old = "seqs", new = "aa")
         }
         
         
@@ -527,7 +527,10 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 
                 }
                 
-                dbname <- paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta")
+                currwd <- getwd()
+                setwd(file.path(currwd,"_blast_db"))
+                
+                dbname <- paste0("out_",filename,"_translate.fasta")
                 seqinr::write.fasta(as.list(dt[ , aa]),
                                     names = dt[ , geneids],
                                     nbchar = 80, open = "w",
@@ -551,6 +554,9 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 "-input_type fasta -dbtype prot . \n","Please check that you really want to work with a protein database.\n",
                 "Additionally check: ",dbname," ."))}
                 )
+                
+                # return to global working directory
+                setwd(file.path(currwd))
         }
         
         return(list(na.omit(dt), dbname))
@@ -598,7 +604,7 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
 #' to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument. 
 #' 
-#' 
+#' In case you want to use deltablast, you need to all cdd_delta.* files into the folder "_blast_db".
 #' @author Hajk-Georg Drost
 #' @note This function is also able to return the subject taxonomy.
 #' 
@@ -641,7 +647,18 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")       
 #'  
+#' 
 #'              
+#' # DELTA-BLAST
+#' #
+#' # you can also use deltablast to perform BLAST searches
+#' # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"                          
+#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")                                       
+#'                              
+#'                                                                  
+#'                                                                                                                                          
 #' # when performing an advanced BLAST search, you can easily select the best hit using
 #' library(dplyr)
 #' 
@@ -704,21 +721,21 @@ advanced_blast <- function(query_file, subject_file,
         database <- set_blast(file = subject_file, format = format, seq_type = seq_type, 
                               makedb = TRUE, makedb_type = makedb_type)[[2]]
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
-        
         if(is.null(session_name))
                 session_name <- get_filename(query_file)
         
         # create an internal folder structure for the BLAST process 
-        input = paste0("_blast_db",f_sep,session_name,"_blastinput.fasta") 
-        output = paste0("_blast_db",f_sep,session_name,"_blastresult.csv")
+        input = paste0(session_name,"_blastinput.fasta") 
+        output = paste0(session_name,"_blastresult.csv")
         
         
         if(!file.exists(paste0("_blast_db",f_sep))){
                 
                 dir.create("_blast_db")
         }
+        
+        currwd <- getwd()
+        setwd(file.path(currwd,"_blast_db"))
         
         # write query fasta file 
         write_AA <- as.list(query.dt[ ,aa])
@@ -839,6 +856,7 @@ advanced_blast <- function(query_file, subject_file,
                 )
         }
         
+        
         if(!write.only){
                 
                        # default parameters that are not returned in the hit table
@@ -889,7 +907,10 @@ advanced_blast <- function(query_file, subject_file,
                                                                     new = colNames)
                         
                                                data.table::setkeyv(hit_table, c("query_id","subject_id"))
-                                    
+                                               
+                                               # return to the global working directory
+                                               setwd(file.path(currwd))
+                                               
                                                return(hit_table) 
                         
                                    }
@@ -907,7 +928,7 @@ advanced_blast <- function(query_file, subject_file,
                                                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
                                 
                                                # dplyr::rename(blast_sqlite,colNames)
-                                
+                                               
                                                return(blast_sqlite)
                                 
                                     }
@@ -917,6 +938,8 @@ advanced_blast <- function(query_file, subject_file,
                                   "correctly wrote a resulting BLAST hit table to ",output," ."))}
                        )
         }
+        
+        
 }
 
 
