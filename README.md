@@ -4,8 +4,8 @@ orthologr
 ### A package combining common gene orthology detection methods and dNdS models for pipeline processing 
 
 The `orthologr` package provides interfaces between R and common bioinformatics tools
-used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS computations,
-and CDS predictions.
+used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
+CDS prediction, and divergence stratigraphy.
 
 ## Fast installation guide
 
