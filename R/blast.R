@@ -79,8 +79,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, seq_type = seq_type, format = format, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
-        input = paste0("_blast_db",f_sep,"blastinput.fasta") 
-        output = paste0("_blast_db",f_sep,"blastresult.csv")
+        input = "blastinput.fasta"
+        output = "blastresult.csv"
         
         
         if(!file.exists(paste0("_blast_db",f_sep))){
@@ -88,6 +88,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                 dir.create("_blast_db")
         }
         
+        currwd <- getwd()
+        setwd(file.path(currwd, "_blast_db"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -196,6 +198,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") ) }
         )
+        
+        setwd(currwd)
 }
 
 
