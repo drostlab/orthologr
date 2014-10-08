@@ -192,14 +192,14 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
                   
+                  setwd(file.path(currwd))
                   
                   return(hit_table)
          }, error = function(){ stop(paste0("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") ) }
         )
-        
-        setwd(currwd)
+
 }
 
 
