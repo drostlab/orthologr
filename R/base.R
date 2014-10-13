@@ -118,4 +118,6 @@ get_filename <- function(file_path){
 }
 
 
-
+#' @useDynLib orthologr
+#' @importFrom Rcpp sourceCpp
+NULL

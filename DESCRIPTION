@@ -8,7 +8,7 @@ Author: Hajk-Georg Drost, Sarah Scharfenberg, Kristian Karsten Ullrich
 Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
 Description: The present collection of functions can be used to perform
     orthology detection and dN/dS computations for biological research.
-License: GPL-2
+License: GPL-3
 Depends:
     R (>= 3.0.2),
     seqinr (>= 3.0-7)
@@ -18,3 +18,4 @@ Imports:
     dplyr (>= 0.2),
     doMC (>= 1.3.3),
     foreach (>= 1.4.2)
+LinkingTo: Rcpp (>= 0.11.3)
