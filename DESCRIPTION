@@ -14,8 +14,8 @@ Depends:
     seqinr (>= 3.0-7)
 Imports:
     parallel (>= 3.0.2),
-    data.table (>= 1.9.2),
-    dplyr (>= 0.2),
+    data.table (>= 1.9.4),
+    dplyr (>= 0.3),
     doMC (>= 1.3.3),
     foreach (>= 1.4.2)
 LinkingTo: Rcpp

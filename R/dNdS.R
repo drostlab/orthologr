@@ -112,15 +112,15 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         if(!is.element(aa_aln_type,c("multiple","pairwise")))
-                stop("")
+                stop("Please choose a supported alignement type: 'multiple' or 'pairwise'")
         
         if(aa_aln_type == "multiple"){
                 if(!is.multiple_aln_tool(aa_aln_tool))
-                        stop("Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type to pairwise.")
+                        stop("Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type = 'pairwise'.")
         }
         if(aa_aln_type == "pairwise"){
                 if(!is.pairwise_aln_tool(aa_aln_tool))
-                        stop("Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type to multiple.")
+                        stop("Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type = 'multiple'.")
         }
 
         if(!is.codon_aln_tool(codon_aln_tool))
@@ -132,7 +132,6 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
-  
         if(ortho_detection == "BH"){
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
@@ -144,34 +143,38 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
                 
-
-                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"blastinput.fasta"), format = "fasta")
+                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_qry <- filename_qry[length(filename_qry)]
+                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_qry,"_translate.fasta"), format = "fasta")
                 
-                filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_subj <- filename_subj[length(filename_subj)]
+                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_subj,"_translate.fasta"), format = "fasta")
     
         }
         
         if(ortho_detection == "RBH"){
-                               
+                           
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
                                    path = blast_path, comp_cores = comp_cores,
                                    seq_type = "cds", format = format))
                 
+                
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
                 
                 
-                filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                filename <- filename[length(filename)]
-                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_qry <- filename_qry[length(filename_qry)]
                 
-                filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                filename <- filename[length(filename)]
-                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename,"_translate.fasta"), format = "fasta")
+                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_qry,"_translate.fasta"), format = "fasta")
+                
+                filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_subj <- filename_subj[length(filename_subj)]
+                
+                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_subj,"_translate.fasta"), format = "fasta")
                 
                 
         }
