@@ -344,6 +344,9 @@ substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, 
             tryCatch(
             {    
                 # To use gestimator a file in fasta format is required    
+
+                # include this line instead of the following, to use internal gestimator
+                #gestimator(file = file, file_out=file.out) 
                 system(paste0("gestimator -i ",file," -o ",file.out))
                 
                 hit.table <-data.table::fread(file.out)
