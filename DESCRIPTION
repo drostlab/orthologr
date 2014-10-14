@@ -17,5 +17,6 @@ Imports:
     data.table (>= 1.9.4),
     dplyr (>= 0.3),
     doMC (>= 1.3.3),
-    foreach (>= 1.4.2)
+    foreach (>= 1.4.2),
+    Rcpp (>= 0.11.3)
 LinkingTo: Rcpp
