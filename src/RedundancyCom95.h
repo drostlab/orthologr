@@ -11,8 +11,8 @@ using namespace std;
 
 
 //#include <Comparisons.cpp>
-#include <Kimura80.cpp>
-#include <GranthamWeights.cpp>
+#include "Kimura80.h"
+#include "GranthamWeights.h"
 
 // Below is a simple example of exporting a C++ function to R. You can
 // source this function into an R session using the Rcpp::sourceCpp 

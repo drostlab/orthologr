@@ -6,7 +6,7 @@
 #include <iostream>     // std::cout
 
 
-#include <Comeron95.cpp>
+#include "Comeron95.h"
 
 using namespace Rcpp;
 using namespace std;
@@ -16,12 +16,9 @@ using namespace std;
 // function (or via the Source button on the editor toolbar)
 
 // For more on using Rcpp click the Help button on the editor toolbar
-
-//' @params file a character string specifying the path to the Codon Alignment file.
-
-
+//' @export
 // [[Rcpp::export]]
-void gestimator(string file, string file_out = "", int maxHits = 3, 
+void gestimator(std::string file, std::string file_out = "", int maxHits = 3, 
                 bool verbose = false, bool remove_all_gaps = false) {
 
    // read codon file

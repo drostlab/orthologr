@@ -1,3 +1,3 @@
-source(file = "src/gestimator.cpp")
+#source(file = "src/gestimator.cpp")
 
-gestimator(file = "inst/seqs/pal2nal.aln")
+#gestimator(file = "inst/seqs/pal2nal.aln")

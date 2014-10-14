@@ -8,7 +8,7 @@ using namespace std;
 //#include <Sequence.cpp>
 //#include <RedundancyCom95.cpp>
 
-#include <Sites.cpp>
+#include "Sites.h"
 //#include <GranthamWeights.cpp>
 //#include <SingleSub.cpp>
 

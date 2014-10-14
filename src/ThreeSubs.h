@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // For more on using Rcpp click the Help button on the editor toolbar
 
-#include <TwoSubs.cpp>
+#include "TwoSubs.h"
 
 class ThreeSubs{
         private:

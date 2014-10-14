@@ -4,7 +4,7 @@ using namespace std;
 
 //#include <RedundancyCom95.cpp>
 //#include <ThreeSubs.cpp>
-#include <ThreeSubs.cpp>
+#include "ThreeSubs.h"
 
 // Below is a simple example of exporting a C++ function to R. You can
 // source this function into an R session using the Rcpp::sourceCpp 

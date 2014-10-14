@@ -1,8 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace std;
-#include <Grantham.cpp>
-#include <Sequence.cpp>
+#include "Grantham.h"
+#include "Sequence.h"
 
 
 // Below is a simple example of exporting a C++ function to R. You can
