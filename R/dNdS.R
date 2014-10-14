@@ -303,6 +303,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @import data.table
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
+#' @useDynLib orthologr
+#' @importFrom Rcpp sourceCpp
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL,
                              subst_name = NULL){
