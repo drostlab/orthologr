@@ -143,9 +143,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
                 
-                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                filename_qry <- filename_qry[length(filename_qry)]
-                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_qry,"_translate.fasta"), format = "fasta")
+                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"blastinput.fasta"), format = "fasta")
                 
                 filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename_subj <- filename_subj[length(filename_subj)]
