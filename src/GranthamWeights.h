@@ -2,7 +2,8 @@
 using namespace Rcpp;
 using namespace std;
 #include "Grantham.h"
-#include "Sequence.h"
+//#include "Sequence.h"
+#include "Kimura80.h"
 
 
 // Below is a simple example of exporting a C++ function to R. You can

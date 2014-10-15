@@ -11,7 +11,7 @@ using namespace std;
 
 
 //#include <Comparisons.cpp>
-#include "Kimura80.h"
+//#include "Kimura80.h"
 #include "GranthamWeights.h"
 
 // Below is a simple example of exporting a C++ function to R. You can
