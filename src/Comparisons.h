@@ -97,6 +97,8 @@ unsigned NumDiffs (const string & seq1,
     }
     
     
+
+
     
     //    Takes two ints, assumed to be integer representations of nucleotides. 
 //    The way to ensure that the int represents a nucleotide in a valid way is
@@ -114,10 +116,8 @@ string TsTv (int i, int j) {
 		cout << "Trying to fix ..."; 
 		// whereever it comes from, there is still a call of TsTv without using nucToInt. 
 		// We try to cath those here
-		char c = i;
-		i = nucToInt(c);
-		c = j;
-		j = nucToInt(c);
+		i = nucToInt( (char) i);
+		j = nucToInt( (char) j);
 		if( ! (i<=3 && j <= 3)){
 			cout << "Still not right."<<endl;
 			return "Unknown";
