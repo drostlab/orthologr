@@ -36,7 +36,7 @@ class Kimura80
                     if (std::toupper(seq1->second[i]) != 
         		std::toupper(seq2->second[i]))	//if the sites differ at that position
                       {
-                        type = TsTv (seq1->second[i], seq2->second[i]);	//check if difference is Ts or Tv
+                        type = TsTv (nucToInt(seq1->second[i]), nucToInt(seq2->second[i]));	//check if difference is Ts or Tv
                       
         		if (type == "Ts")
         		  {	//Ts
