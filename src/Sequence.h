@@ -85,6 +85,7 @@ int nucToInt(char c){
                   case 't': return 1;break;
                   case 'g': return 2;break;
                   case 'c': return 3;break;
+		  //default: return -1;
           }
   }
  

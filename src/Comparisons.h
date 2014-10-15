@@ -4,6 +4,8 @@ using namespace std;
 #include <assert.h>
 #include <string>
 
+#include "Sequence.h"
+
 // Below is a simple example of exporting a C++ function to R. You can
 // source this function into an R session using the Rcpp::sourceCpp 
 // function (or via the Source button on the editor toolbar)
@@ -107,7 +109,21 @@ unsigned NumDiffs (const string & seq1,
 // [[Rcpp::export]]
 string TsTv (int i, int j) {
       //assert(i<=3 && j <= 3);
-      if( ! (i<=3 && j <= 3)){ cout << "Wrong Nucleotide "<<"i="<<i<<" j="<<j<<endl; return "Unknown";}
+      if( ! (i<=3 && j <= 3)){ 
+		cout << "Wrong Nucleotide "<<"i="<<i<<" j="<<j<<endl;
+		cout << "Trying to fix ..."; 
+		// whereever it comes from, there is still a call of TsTv without using nucToInt. 
+		// We try to cath those here
+		char c = i;
+		i = nucToInt(c);
+		c = j;
+		j = nucToInt(c);
+		if( ! (i<=3 && j <= 3)){
+			cout << "Still not right."<<endl;
+			return "Unknown";
+		}
+		cout << endl;
+      }
       int type = i + j;
       if (type%2!=0.)        //if odd
         {
