@@ -160,7 +160,7 @@ void omega(const pair<string,string> *seq1, const pair<string,string> *seq2){
      	//NOTE--this is an ad-hoc treatment of the analysis!!!
      	if (K80->K () < 1.0)
      	  Bs = 0.0;
-     	delete (K80);
+     	//delete (K80);
            }
 
     Qa = (q0 + q2S) / (sites->L0() + sites->L2S());
@@ -178,7 +178,7 @@ void omega(const pair<string,string> *seq1, const pair<string,string> *seq2){
         Kimura80 *K80 = new Kimura80 (seq1, seq2);
         if (K80->K () < 1.0)
           Ba = 0.0;
-        delete (K80);
+        //delete (K80);
       }
 
     //calculate numbers of mutation per site type

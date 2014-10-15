@@ -145,7 +145,7 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
                          }
                          
                         // manually deleting the previous results
-                        delete C;
+                        //delete C;
                         C=NULL;
                  } // end j
                  
