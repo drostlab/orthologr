@@ -35,6 +35,12 @@ Default is \code{aa_aln_type} = "multiple".}
 
 \item{aa_aln_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
+\item{aa_aln_params}{a character string specifying additional parameters that shall be passed to the selected alignment tool. Default is \code{aa_aln_params} = \code{NULL}
+(no addintional parameters are passed to the selected alignment tool).}
+
+\item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
+Right now only "pal2nal" can be selected as codon alignment tool.}
+
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.}

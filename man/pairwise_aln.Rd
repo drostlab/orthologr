@@ -16,12 +16,12 @@ pairwise_aln(file, tool = "NW", seq_type = "protein", get_aln = FALSE,
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
+\item{pairwise_aln_name}{a character string specifying the name of the stored alignment file.
+Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .}
+
 \item{path}{a character string specifying the path to the pairwise alignment program (in case you don't use the default path).}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
-
-\item{paiwise_aln_name}{a character string specifying the name of the stored alignment file.
-Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .}
 }
 \value{
 In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.

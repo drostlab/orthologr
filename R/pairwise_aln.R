@@ -6,7 +6,7 @@
 #' @param seq_type a character string specifying the sequence type stored within the given FASTA file. Options are
 #' \code{seq_type} = "protein", "cds", "dna". Default is \code{seq_type} = "protein". 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
-#' @param paiwise_aln_name a character string specifying the name of the stored alignment file. 
+#' @param pairwise_aln_name a character string specifying the name of the stored alignment file. 
 #' Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .
 #' @param path a character string specifying the path to the pairwise alignment program (in case you don't use the default path).
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.

@@ -21,6 +21,9 @@ hence it is important to use format = "fasta" when choosing est.method = "Comero
 
 \item{kaks_calc.params}{a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
 \code{kaks_calc.params} = "-m NG -m YN".}
+
+\item{subst_name}{a character string specifying the substitution name that shall be added to the internal folder path naming.
+Default is \code{subst_name} = \code{NULL}.}
 }
 \value{
 A data.table storing the query_id, subject_id, dN, dS, and dNdS values or
@@ -91,14 +94,18 @@ substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
                   est.method = "MA", format = "fasta")
 
- # estimate the dNdS rate using Nei and Gojobori's method provided by the KaKs_Calculator 1.2 program
+ # estimate the dNdS rate using Nei and Gojobori's method provided by the
+ # KaKs_Calculator 1.2 program
  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
                   est.method = "NG", format = "fasta")
 
-  # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's method provided by the KaKs_Calculator 1.2 program
+  # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's
+  # method provided by the KaKs_Calculator 1.2 program
   # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"
  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
                   est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")
+
+
 }
 }
 \author{

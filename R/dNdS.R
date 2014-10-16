@@ -17,6 +17,10 @@
 #' Default is \code{aa_aln_type} = "multiple".
 #' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
 #' @param aa_aln_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
+#' @param aa_aln_params  a character string specifying additional parameters that shall be passed to the selected alignment tool. Default is \code{aa_aln_params} = \code{NULL} 
+#' (no addintional parameters are passed to the selected alignment tool).
+#' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
+#' Right now only "pal2nal" can be selected as codon alignment tool.
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine. 
 #' @param quiet a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
@@ -217,6 +221,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @param quiet a logical value specifying whether the output of the coresponding interface shall be printed out.
 #' @param kaks_calc.params a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
 #' \code{kaks_calc.params} = "-m NG -m YN". 
+#' @param subst_name a character string specifying the substitution name that shall be added to the internal folder path naming. 
+#' Default is \code{subst_name} = \code{NULL}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function takes a pairwise alignments file as input and estimates dNdS ratios
 #' of the corresponding alignments using predefined dNdS estimation methods.
@@ -276,14 +282,18 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
 #'                   est.method = "MA", format = "fasta") 
 #'                   
-#'  # estimate the dNdS rate using Nei and Gojobori's method provided by the KaKs_Calculator 1.2 program
+#'  # estimate the dNdS rate using Nei and Gojobori's method provided by the 
+#'  # KaKs_Calculator 1.2 program
 #'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
 #'                   est.method = "NG", format = "fasta")     
 #'   
-#'   # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's method provided by the KaKs_Calculator 1.2 program 
+#'   # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's 
+#'   # method provided by the KaKs_Calculator 1.2 program 
 #'   # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"                 
 #'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                   est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")            
+#'                   est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")
+#'                   
+#'                                           
 #' }
 #' @references 
 #' Li, W.-H. (1993) Unbiased estimation of the rates of synonymous and nonsynonymous substitution. J. Mol. Evol., 36:96-99.
@@ -307,7 +317,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @useDynLib orthologr
 #' @importFrom Rcpp sourceCpp
 #' @export
-substitutionrate <- function(file, est.method, format = "fasta", quiet = FALSE, kaks_calc.params = NULL,
+substitutionrate <- function(file, est.method, format = "fasta",
+                             quiet = FALSE, kaks_calc.params = NULL,
                              subst_name = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program

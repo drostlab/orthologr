@@ -167,7 +167,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                         }
                 }
         
-        },error = function(){ stop(paste0("Please check the correct path to ",tool,
+        },error = function(){ stop(paste0("Please check the correct path to ",blast_algorithm,
                                            "... the interface call did not work properly.") ) }
         )
         
@@ -652,7 +652,8 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' # performing a BLAST search using blastp (default) and starting with protein sequences
 #' advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type = "protein", blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")       
+#'       seq_type = "protein", blast_algorithm = "blastp", 
+#'       blast_params = "-evalue 1E-5 -num_threads 2")       
 #'  
 #' 
 #'              
@@ -669,11 +670,13 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' # when performing an advanced BLAST search, you can easily select the best hit using
 #' library(dplyr)
 #' 
-#' adv_blast_test <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                                  subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'                                  seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1")
+#' advB <- advanced_blast(
+#'            query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'            seq_type = "cds",blast_algorithm = "blastp", 
+#'            blast_params = "-evalue 1E-5 -num_threads 1")
 #'                                  
-#' best_hit <- adv_blast_test %>% group_by(query_id) %>% summarise(min(evalue))
+#' best_hit <- advB %>% group_by(query_id) %>% summarise(min(evalue))
 #'
 #'
 #' # using a SQLite database to store the BLAST output and
@@ -681,20 +684,21 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' 
 #' library(dplyr)
 #' 
-#' sql_example <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                               subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'                               seq_type = "cds",blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1",
-#'                               sql_database = TRUE)
+#' sqlE <- advanced_blast(
+#'              query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'              subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'              seq_type = "cds",blast_algorithm = "blastp", 
+#'              blast_params = "-evalue 1E-5 -num_threads 1", sql_database = TRUE)
 #'
-#' head(sql_example)
+#' head(sqlE)
 #' 
-#' glimpse(sql_example)
+#' glimpse(sqlE)
 #' 
 #' # select all rows that have an evalue of zero
-#' filter(sql_example,evalue == 0)
+#' filter(sqlE,evalue == 0)
 #' 
 #' # select the best hit using the evalue criterion
-#' sql_example %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
+#' sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
 #'                                                  
 #' }
 #'

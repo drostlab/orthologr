@@ -42,7 +42,8 @@ filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package 
                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
                   ortho_detection = "RBH", aa_aln_type = "multiple",
                   aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-                  codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1) , dnds.threshold = 2)
+                  codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1) ,
+                  dnds.threshold = 2)
 
 
 }
@@ -51,6 +52,6 @@ filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package 
 Hajk-Georg Drost
 }
 \seealso{
-\code{\link{divergence_stratum}}
+\code{\link{divergence_stratigraphy}}
 }
 

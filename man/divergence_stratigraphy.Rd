@@ -4,7 +4,7 @@
 \title{Function to perform divergence stratigraphy}
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
-  ortho_detection = "BH", blast_path = NULL, mafft_path = NULL,
+  ortho_detection = "RBH", blast_path = NULL, mafft_path = NULL,
   comp_cores = 1, dnds.threshold = 2, quiet = FALSE,
   clean_folders = FALSE)
 }
@@ -50,7 +50,7 @@ Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence st
 
  Following steps are performed to obtain a standard divergence map based on divergence_stratigraphy:
 
- 1) Orthology Inference using BLAST best hit ("BH") or BLAST reciprocal best hit ("RBH")
+ 1) Orthology Inference using BLAST reciprocal best hit ("RBH")
 
  2) Pairwise amino acid alignments of orthologous genes using the MAFFT program
 
@@ -64,10 +64,11 @@ Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence st
 \dontrun{
 
  # performing standard divergence stratigraphy
- divergence_stratigraphy(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-                         subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-                         eval = "1E-5", ortho_detection = "BH",mafft_path = "path/to/mafft",
-                         comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval = "1E-5", ortho_detection = "RBH",mafft_path = "path/to/mafft",
+      comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
 
 
  }
