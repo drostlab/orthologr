@@ -110,13 +110,13 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @export
 DivergenceMap <- function(dNdS_tbl){
         
-        dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), "dNdS", "query_id")
+        dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id)
         
-        DecileValues <- stats::quantile(dNdS_tbl_divMap[ , "dNdS"],probs = seq(0.0, 1, 0.1))
+        DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0.0, 1, 0.1))
         
         for(i in length(DecileValues):2){
                 
-                AllGenesOfDecile_i <- na.omit(which((dNdS_tbl_divMap[ , "dNdS"] < DecileValues[i]) & (dNdS_tbl_divMap[ , "dNdS"] >= DecileValues[i-1])))
+                AllGenesOfDecile_i <- na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) & (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i-1])))
                 dNdS_tbl_divMap[AllGenesOfDecile_i, dNdS:=(i-1)] 
                 
         }
@@ -128,7 +128,7 @@ DivergenceMap <- function(dNdS_tbl){
         
         data.table::setnames(dNdS_tbl_divMap, old = "dNdS", new = "divergence_strata")
         
-        return(dNdS_tbl_divMap[ , list("divergence_strata","query_id")])
+        return(dNdS_tbl_divMap[ , list(divergence_strata,query_id)])
         
 }
 

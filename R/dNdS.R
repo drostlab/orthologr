@@ -100,6 +100,7 @@
 #' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @import data.table
+#' @import dplyr
 #' @export
 dNdS <- function(query_file, subject_file, seq_type = "protein",
                  format = "fasta", ortho_detection = "RBH", 
@@ -139,8 +140,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         if(ortho_detection == "BH"){
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
-                hit.table <- data.table::copy(
-                        blast_best(query_file = query_file, subject_file = subject_file, 
+                hit.table <- data.table::copy( blast_best(query_file = query_file, subject_file = subject_file, 
                                    path = blast_path, comp_cores = comp_cores,
                                    seq_type = "cds", format = format))
                                                 
