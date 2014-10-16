@@ -21,18 +21,3 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// timesTwo
-int timesTwo(int x);
-RcppExport SEXP orthologr_timesTwo(SEXP xSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< int >::type x(xSEXP );
-        int __result = timesTwo(x);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}

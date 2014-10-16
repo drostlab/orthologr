@@ -6,7 +6,3 @@ gestimator <- function(file, file_out = "", maxHits = 3L, verbose = FALSE, remov
     invisible(.Call('orthologr_gestimator', PACKAGE = 'orthologr', file, file_out, maxHits, verbose, remove_all_gaps))
 }
 
-timesTwo <- function(x) {
-    .Call('orthologr_timesTwo', PACKAGE = 'orthologr', x)
-}
-
