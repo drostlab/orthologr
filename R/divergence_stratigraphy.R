@@ -17,7 +17,9 @@
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 #'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
-#' @details Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence stratigraphy
+#' @param ds.values a logical value specifying whether divegrence stratum values (ds values) or dNdS values shall be returned
+#' by \code{divergence_stratigraphy}. Default is \code{ds.values} = \code{TRUE}.
+#' @details Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence stratigraphy
 #'  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
 #'  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
 #'  stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column.
@@ -60,7 +62,7 @@
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "RBH", blast_path = NULL, 
                                     mafft_path = NULL, comp_cores = 1,dnds.threshold = 2,
-                                    quiet = FALSE, clean_folders = FALSE){
+                                    quiet = FALSE, clean_folders = FALSE, ds.values = TRUE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -73,8 +75,17 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                       dnds_est.method = "Comeron", comp_cores = comp_cores, 
                                       quiet = quiet) , dnds.threshold = dnds.threshold)
         
-        # divergence map: standard = col1: divergence stratum, col2: query_id
-        dm_tbl <- DivergenceMap( dNdS_tbl )
+        
+        if(ds.values){
+                # divergence map: standard = col1: divergence stratum, col2: query_id
+                dm_tbl <- DivergenceMap( dNdS_tbl )
+        }
+        
+        if(!ds.values){
+                
+                dm_tbl <- na.omit(dNdS_tbl) 
+                
+        }
         
         
         if(clean_folders)

@@ -6,7 +6,7 @@
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
   ortho_detection = "RBH", blast_path = NULL, mafft_path = NULL,
   comp_cores = 1, dnds.threshold = 2, quiet = FALSE,
-  clean_folders = FALSE)
+  clean_folders = FALSE, ds.values = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -33,6 +33,9 @@ Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Defau
 
 \item{clean_folders}{a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 processing this function. Default is \code{clean_folders} = \code{FALSE}.}
+
+\item{ds.values}{a logical value specifying whether divegrence stratum values (ds values) or dNdS values shall be returned
+by \code{divergence_stratigraphy}. Default is \code{ds.values} = \code{TRUE}.}
 }
 \value{
 A data.table storing the divergence map of the query organism.
@@ -43,7 +46,7 @@ divergence stratigraphy (Quint et al.,2012 ; Drost et al. 2014) against a
 closely related subject organism.
 }
 \details{
-Introduced by Quint et al.,2012 and extended in Drost et al. 2014, divergence stratigraphy
+Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence stratigraphy
  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
  stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column.
