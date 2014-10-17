@@ -83,7 +83,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         
         if(!ds.values){
                 
-                dm_tbl <- na.omit(dNdS_tbl) 
+                dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
                 
         }
         
