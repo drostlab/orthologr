@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include <assert.h>     /* assert */
 #include <math.h> 
+#include <string>
 using namespace Rcpp;
 using namespace std;
 
@@ -28,14 +29,16 @@ private:
         double p0, p2V, p2S, p4, q0, q2V, q2S, q4;
       Sites *sites;
      const  RedundancyCom95 *sitesObj;
-        double dN,dS;
-        double N,S;     // number of nonsynonymous and synonymous substitutions respectively
+        double dN;
+        double dS;
+        double N;
+        double S;     // number of nonsynonymous and synonymous substitutions respectively
         int maxhits;
         
 
 
         
-void diverge(const pair<string,string> *seq1, const pair<string,string> *seq2,
+void diverge(const pair<string,string> *seq1, const pair<std::string,std::string> *seq2,
            GranthamWeights2 *_weights2 = NULL, GranthamWeights3 *_weights3 = NULL
                      ){
                /*
@@ -131,7 +134,7 @@ void diverge(const pair<string,string> *seq1, const pair<string,string> *seq2,
       
 }
         
-void omega(const pair<string,string> *seq1, const pair<string,string> *seq2){
+void omega(const pair<string,string> *seq1, const pair<std::string,std::string> *seq2){
 /*
     calculate values needed to obtain dN and dS.
     formulae are from Comeron '95 and use the identical notation
