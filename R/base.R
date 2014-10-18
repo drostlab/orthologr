@@ -1,3 +1,8 @@
+#' @useDynLib orthologr
+#' @importFrom Rcpp sourceCpp
+NULL
+
+
 #' @title Function to delete the internal folder hierarchy
 #' @description This function deletes all internal folders that have been created
 #' during pipeline processing. Internally this function uses \code{\link{unlink}}
@@ -118,5 +123,6 @@ get_filename <- function(file_path){
         file_name <- unlist(strsplit(split_path[length(split_path)],"[.]"))[1]
         return(file_name)
 }
+
 
 

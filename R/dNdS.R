@@ -99,8 +99,6 @@
 #' }
 #' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
-#' @import data.table
-#' @import dplyr
 #' @export
 dNdS <- function(query_file, subject_file, seq_type = "protein",
                  format = "fasta", ortho_detection = "RBH", 
@@ -311,11 +309,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' 
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
 #' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
-#' @import data.table
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
-#' @useDynLib orthologr
-#' @importFrom Rcpp sourceCpp
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta",
                              quiet = FALSE, kaks_calc.params = NULL,

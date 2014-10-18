@@ -91,7 +91,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         if(clean_folders)
                 clean_all_folders()
         
-        return ( dm_tbl )
+        return ( as.data.frame(dm_tbl) )
         
 }
 

@@ -60,7 +60,6 @@
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
-#' @import seqinr
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @export
 blast <- function(query_file, subject_file, seq_type = "cds",
