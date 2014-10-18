@@ -121,7 +121,8 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @export
 DivergenceMap <- function(dNdS_tbl){
         
-        # due to the discussion raised here:
+        # due to the discussion of no visible binding for global variable for
+        # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         query_id <- divergence_strata <- NULL
         
