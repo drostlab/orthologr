@@ -181,8 +181,8 @@ class RedundancyCom95{
 //         cout << codon[0] << codon[1] << codon[2] <<  " : First2S = " << First2S <<endl;
                 first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=First2V;
 //         cout << codon[0] << codon[1] << codon[2] <<  " : First2V = " << First2V <<endl;
-}
           }
+        }
       }
   }
 

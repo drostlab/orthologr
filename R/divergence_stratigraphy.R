@@ -121,6 +121,10 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @export
 DivergenceMap <- function(dNdS_tbl){
         
+        # due to the discussion raised here:
+        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
+        query_id <- divergence_strata <- NULL
+        
         dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id)
         
         DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0.0, 1, 0.1), na.rm = TRUE)
