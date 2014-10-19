@@ -325,6 +325,11 @@ substitutionrate <- function(file, est.method, format = "fasta",
         if(!is.element(format,c("mase", "clustal", "phylip", "fasta" , "msf" )))
                 stop("Please choose a format that is supported by seqinr::read.alignment.")
         
+        # due to the discussion of no visible binding for global variable for
+        # data.table objects see:
+        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
+        query_id <- NULL
+        
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
@@ -504,6 +509,7 @@ substitutionrate <- function(file, est.method, format = "fasta",
 #' @references http://www.r-bloggers.com/the-wonders-of-foreach/
 #' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 #' @import foreach
+#' @import data.table
 compute_dnds <- function(complete_tbl,
                          aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
                          aa_aln_params = NULL, codon_aln_tool = "pal2nal",
@@ -511,6 +517,12 @@ compute_dnds <- function(complete_tbl,
         
         if(comp_cores > parallel::detectCores())
                 stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
+        
+        
+        # due to the discussion of no visible binding for global variable for
+        # data.table objects see:
+        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
+        query_id <- subject_id <- query_cds <- subject_cds <- query_aa <- subject_aa <- NULL
         
         multicore <- (comp_cores > 1)
         

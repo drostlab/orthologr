@@ -24,11 +24,5 @@ Hajk-Georg Drost, Kristian Karsten Ullrich, Sarah Scharfenberg
 
 Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
 }
-\references{
 
-}
 \keyword{ package }
-
-\examples{
-%% ~~ simple examples of the most important functions ~~
-}

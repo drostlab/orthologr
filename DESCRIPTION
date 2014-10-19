@@ -10,10 +10,10 @@ Description: The present collection of functions can be used to perform
     orthology detection and dN/dS computations for biological research.
 License: GPL-3
 Depends:
-    R (>= 3.0.2),
-    seqinr (>= 3.0-7),
-    data.table (>= 1.9.4)
+    R (>= 3.1.1)
 Imports:
+    seqinr (>= 3.0-7),
+    data.table (>= 1.9.4),
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
     doMC (>= 1.3.3),

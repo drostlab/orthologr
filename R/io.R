@@ -23,6 +23,8 @@ read.genome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
         
+        geneids <- NULL
+        
         if(format == "fasta"){
                 genome <- vector(mode = "list")
                 
@@ -67,6 +69,8 @@ read.proteome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
         
+        geneids <- NULL 
+        
         if(format == "fasta"){
                 proteome <- vector(mode = "list")
                 
@@ -110,6 +114,8 @@ read.proteome <- function(file, format, ...){
 read.cds <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
+        
+        geneids <- NULL
         
         if(format == "fasta"){
                 cds <- vector(mode = "list")

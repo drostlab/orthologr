@@ -67,6 +67,11 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
+        # due to the discussion of no visible binding for global variable for
+        # data.table objects see:
+        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
+        query_id <- NULL
+        
         dNdS_tbl <- filter_dNdS( dNdS(query_file = query_file,
                                       subject_file = subject_file,
                                       ortho_detection = ortho_detection,
@@ -118,6 +123,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
 #' @return a data.table storing a standard divergence map.
+#' @import data.table
 #' @export
 DivergenceMap <- function(dNdS_tbl){
         

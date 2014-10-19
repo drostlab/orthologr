@@ -221,9 +221,9 @@ Larkin MA, Blackshields G, Brown NP, Chenna R, McGettigan PA, McWilliam H, Valen
 Wallace IM, Wilm A, Lopez R, Thompson JD, Gibson TJ, Higgins DG. (2007).
 Clustal W and Clustal X version 2.0. Bioinformatics, 23, 2947-2948.
 
-http://www.clustal.org/clustal2/
+\url{http://www.clustal.org/clustal2/}
 
-http://www.ebi.ac.uk/Tools/msa/clustalw2/help/
+\url{http://www.ebi.ac.uk/Tools/msa/clustalw2/help/}
 
 
 T_COFFEE
@@ -231,9 +231,9 @@ T_COFFEE
 T-Coffee: A novel method for multiple sequence alignments.
 Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
 
-http://www.tcoffee.org/Projects/tcoffee/
+\url{http://www.tcoffee.org/Projects/tcoffee/}
 
-http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf
+\url{http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf}
 
 
 MUSCLE:
@@ -242,29 +242,29 @@ Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and hi
 
 Edgar, R.C. (2004) MUSCLE: a multiple sequence alignment method with reduced time and space complexity. BMC Bioinformatics, (5) 113.
 
-http://www.drive5.com/muscle/
+\url{http://www.drive5.com/muscle/}
 
-http://www.drive5.com/muscle/manual/
+\url{http://www.drive5.com/muscle/manual/}
 
 
 CLUSTALO:
 
-Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Söding J, Thompson JD, Higgins DG (2011).
+Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Soeding J, Thompson JD, Higgins DG (2011).
 Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
 
-http://www.clustal.org/omega/
+\url{http://www.clustal.org/omega/}
 
-http://www.clustal.org/omega/README
+\url{http://www.clustal.org/omega/README}
 
 MAFFT :
 
 Katoh, Standley 2013 (Molecular Biology and Evolution 30:772-780)
 MAFFT multiple sequence alignment software version 7: improvements in performance and usability.
 
-http://mafft.cbrc.jp/alignment/software/
+\url{http://mafft.cbrc.jp/alignment/software/}
 
-http://mafft.cbrc.jp/alignment/software/manual/manual.html
+\url{http://mafft.cbrc.jp/alignment/software/manual/manual.html}
 
-http://mafft.cbrc.jp/alignment/software/tips0.html
+\url{http://mafft.cbrc.jp/alignment/software/tips0.html}
 }
 
