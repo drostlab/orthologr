@@ -103,7 +103,6 @@ set_path <- function(file, add.folder = NULL){
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
-#' @import dplyr
 #' @export
 filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
         
