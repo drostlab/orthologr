@@ -31,8 +31,6 @@ private:
      const  RedundancyCom95 *sitesObj;
         double dN;
         double dS;
-        double N;
-        double S;     // number of nonsynonymous and synonymous substitutions respectively
         int maxhits;
         
 

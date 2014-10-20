@@ -53,10 +53,10 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
 
 //  // check correct infile reading 
 //   for(int i=0;i<data.size();i++){
-//           Rcpp::cout << i << endl;
-//           Rcpp::cout << data[i].first << endl;
-//           Rcpp::cout << data[i].second << endl;
-//           Rcpp::cout << data[i].second.length()<<endl;
+//           Rcpp::Rcout << i << endl;
+//           Rcpp::Rcout << data[i].first << endl;
+//           Rcpp::Rcout << data[i].second << endl;
+//           Rcpp::Rcout << data[i].second.length()<<endl;
 //   }
 
    in_stream.close();
@@ -77,8 +77,8 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
         }
       else
         {
-          Rcpp::cout <<"seq1\tseq2\tKa\tKs\tomega\tp0\tp2S\tp2V\tp4\tq0\tq2S\tq2V\tq4\t";
-          Rcpp::cout <<"Aa\tAs\tBa\tBs\tL0\tL2S\tL2V\tL4"<<endl;
+          Rcpp::Rcout <<"seq1\tseq2\tKa\tKs\tomega\tp0\tp2S\tp2V\tp4\tq0\tq2S\tq2V\tq4\t";
+          Rcpp::Rcout <<"Aa\tAs\tBa\tBs\tL0\tL2S\tL2V\tL4"<<endl;
         }
      }
    
@@ -98,26 +98,26 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
                    Comeron95 *C = new Comeron95(&data[i], &data[j], maxHits,&code_degeneracy);
                    if (file_out == "")
                         {
-                          Rcpp::cout.precision(4); 
-                          Rcpp::cout << data[i].first << '\t';
-                          Rcpp::cout << data[j].first << '\t';
-                          Rcpp::cout << C->dn() << '\t';
-                          Rcpp::cout << C->ds() << '\t';
-                          Rcpp::cout << C->ratio();
+                          Rcpp::Rcout.precision(4); 
+                          Rcpp::Rcout << data[i].first << '\t';
+                          Rcpp::Rcout << data[j].first << '\t';
+                          Rcpp::Rcout << C->dn() << '\t';
+                          Rcpp::Rcout << C->ds() << '\t';
+                          Rcpp::Rcout << C->ratio();
                           if (verbose)
                             {
-                              Rcpp::cout <<'\t';
-                              Rcpp::cout <<C->P0() << '\t' <<C->P2S()<<'\t';
-                              Rcpp::cout <<C->P2V() <<'\t' <<C->P4()<<'\t';
-                              Rcpp::cout <<C->Q0() << '\t' <<C->Q2S()<<'\t';
-                              Rcpp::cout <<C->Q2V() << '\t' <<C->Q4()<<'\t';
-                              Rcpp::cout <<C->aa()<<'\t'<<C->as()<<'\t'<<C->ba()<<'\t'<<C->bs()<<'\t';
-                              Rcpp::cout.precision(6);
-                              Rcpp::cout <<C->L0() << '\t' <<C->L2S()<<'\t';
-                              Rcpp::cout <<C->L2V() << '\t' <<C->L4()<<endl;
+                              Rcpp::Rcout <<'\t';
+                              Rcpp::Rcout <<C->P0() << '\t' <<C->P2S()<<'\t';
+                              Rcpp::Rcout <<C->P2V() <<'\t' <<C->P4()<<'\t';
+                              Rcpp::Rcout <<C->Q0() << '\t' <<C->Q2S()<<'\t';
+                              Rcpp::Rcout <<C->Q2V() << '\t' <<C->Q4()<<'\t';
+                              Rcpp::Rcout <<C->aa()<<'\t'<<C->as()<<'\t'<<C->ba()<<'\t'<<C->bs()<<'\t';
+                              Rcpp::Rcout.precision(6);
+                              Rcpp::Rcout <<C->L0() << '\t' <<C->L2S()<<'\t';
+                              Rcpp::Rcout <<C->L2V() << '\t' <<C->L4()<<endl;
                             }
                           else
-                            Rcpp::cout << endl;
+                            Rcpp::Rcout << endl;
                         }
                       else
                         {
