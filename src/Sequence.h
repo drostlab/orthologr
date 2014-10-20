@@ -71,6 +71,7 @@ char intToNuc(int i){
                   case 2: return 'G';break;
                   case 3: return 'C';break;
           }
+          return 'X';
   }
   
     //the map is case-insensitive...
@@ -87,6 +88,7 @@ int nucToInt(char c){
                   case 'c': return 3;break;
 		  //default: return -1;
           }
+          return -1;
   }
  
 

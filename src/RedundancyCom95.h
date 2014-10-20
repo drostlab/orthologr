@@ -391,8 +391,11 @@ void FillThirdPositionCounts ()
     \throw Sequence::SeqException if precondition is not met
   */
   {
-    if(codonPrecondition(codon)) 
+    if(codonPrecondition(codon)) {
         return firstNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    }
+    Rcpp::Rcout << "Error in FirstNon - no codon"<< endl;
+    return -1;
   }
 
   double First2S (const std::string & codon) const 
@@ -405,6 +408,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return first2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in First2S - no codon"<< endl;
+    return -1;
   }
 
   double First2V (const std::string & codon) const 
@@ -417,6 +422,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in First2V - no codon"<< endl;
+    return -1;
   }
 
   double ThirdNon (const std::string & codon) const 
@@ -428,6 +435,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return thirdNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in ThirdNon - no codon"<< endl;
+    return -1;
   }
 
   double ThirdFour (const std::string & codon) const 
@@ -439,6 +448,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in ThirdFour - no codon"<< endl;
+    return -1;
   }
 
   double Third2S (const std::string & codon) const 
@@ -450,6 +461,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return third2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in Third2s - no codon"<< endl;
+    return -1;
   }
 
   double Third2V (const std::string & codon) const 
@@ -461,6 +474,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return third2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in Third2V - no codon"<< endl;
+    return -1;
   }
 
   double L0_vals (const std::string & codon) const 
@@ -473,6 +488,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in L0_vals - no codon"<< endl;
+    return -1;
   }
 
   double L2S_vals (const std::string & codon) const 
@@ -485,6 +502,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in L2S_vals - no codon"<< endl;
+    return -1;
   }
 
   double L2V_vals (const std::string & codon) const 
@@ -497,6 +516,8 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
+    Rcpp::Rcout << "Error in L2V_vals - no codon"<< endl;
+    return -1;
   }
 
   double L4_vals (const std::string & codon) const 
@@ -512,6 +533,8 @@ void FillThirdPositionCounts ()
  //   cout << "This? "<<l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] <<endl;
         return l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
     }
+    Rcpp::Rcout << "Error in L4_vals - no codon"<< endl;
+    return -1;
   }
   
 

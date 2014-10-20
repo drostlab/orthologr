@@ -53,10 +53,10 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
 
 //  // check correct infile reading 
 //   for(int i=0;i<data.size();i++){
-//           cout << i << endl;
-//           cout << data[i].first << endl;
-//           cout << data[i].second << endl;
-//           cout << data[i].second.length()<<endl;
+//           Rcpp::cout << i << endl;
+//           Rcpp::cout << data[i].first << endl;
+//           Rcpp::cout << data[i].second << endl;
+//           Rcpp::cout << data[i].second.length()<<endl;
 //   }
 
    in_stream.close();
@@ -77,8 +77,8 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
         }
       else
         {
-          cout <<"seq1\tseq2\tKa\tKs\tomega\tp0\tp2S\tp2V\tp4\tq0\tq2S\tq2V\tq4\t";
-          cout <<"Aa\tAs\tBa\tBs\tL0\tL2S\tL2V\tL4"<<endl;
+          Rcpp::cout <<"seq1\tseq2\tKa\tKs\tomega\tp0\tp2S\tp2V\tp4\tq0\tq2S\tq2V\tq4\t";
+          Rcpp::cout <<"Aa\tAs\tBa\tBs\tL0\tL2S\tL2V\tL4"<<endl;
         }
      }
    
@@ -98,26 +98,26 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
                    Comeron95 *C = new Comeron95(&data[i], &data[j], maxHits,&code_degeneracy);
                    if (file_out == "")
                         {
-                          cout.precision(4); 
-                          cout << data[i].first << '\t';
-                          cout << data[j].first << '\t';
-                          cout << C->dn() << '\t';
-                          cout << C->ds() << '\t';
-                          cout << C->ratio();
+                          Rcpp::cout.precision(4); 
+                          Rcpp::cout << data[i].first << '\t';
+                          Rcpp::cout << data[j].first << '\t';
+                          Rcpp::cout << C->dn() << '\t';
+                          Rcpp::cout << C->ds() << '\t';
+                          Rcpp::cout << C->ratio();
                           if (verbose)
                             {
-                              cout <<'\t';
-                              cout <<C->P0() << '\t' <<C->P2S()<<'\t';
-                              cout <<C->P2V() <<'\t' <<C->P4()<<'\t';
-                              cout <<C->Q0() << '\t' <<C->Q2S()<<'\t';
-                              cout <<C->Q2V() << '\t' <<C->Q4()<<'\t';
-                              cout <<C->aa()<<'\t'<<C->as()<<'\t'<<C->ba()<<'\t'<<C->bs()<<'\t';
-                              cout.precision(6);
-                              cout <<C->L0() << '\t' <<C->L2S()<<'\t';
-                              cout <<C->L2V() << '\t' <<C->L4()<<endl;
+                              Rcpp::cout <<'\t';
+                              Rcpp::cout <<C->P0() << '\t' <<C->P2S()<<'\t';
+                              Rcpp::cout <<C->P2V() <<'\t' <<C->P4()<<'\t';
+                              Rcpp::cout <<C->Q0() << '\t' <<C->Q2S()<<'\t';
+                              Rcpp::cout <<C->Q2V() << '\t' <<C->Q4()<<'\t';
+                              Rcpp::cout <<C->aa()<<'\t'<<C->as()<<'\t'<<C->ba()<<'\t'<<C->bs()<<'\t';
+                              Rcpp::cout.precision(6);
+                              Rcpp::cout <<C->L0() << '\t' <<C->L2S()<<'\t';
+                              Rcpp::cout <<C->L2V() << '\t' <<C->L4()<<endl;
                             }
                           else
-                            cout << endl;
+                            Rcpp::cout << endl;
                         }
                       else
                         {
