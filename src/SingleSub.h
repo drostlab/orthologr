@@ -272,22 +272,22 @@ class SingleSub{
       p2Vi = p4i = p0j = p2Sj = p2Vj = p4j = 0.0;
     Calculate (sitesObj, cod1, cod2);
     
-//      cout << "q0i  "<<q0i<<endl;
-//      cout << "q2Si  "<<q2Si<<endl;
-//      cout << "q2Vi  " << q2Vi<<endl;
-//      cout << "q4i  " << q4i <<endl;
-//      cout << "q0j  " << q0j<<endl;
-//      cout << "q2Sj  " << q2Sj<<endl;
-//      cout << "q2Vj  " << q2Vj<<endl;
-//      cout << "q4j  " << q4j<<endl;
-//      cout << "p0i  " << p0i<<endl;
-//      cout << "p2Si  " << p2Si<<endl;
-//      cout << "p2Vi  " << p2Vi<<endl;
-//      cout << "p4i  " << p4i<<endl;
-//      cout << "p0j  " << p0j<<endl;
-//      cout << "p2Sj  " << p2Sj<<endl;
-//      cout << "p2Vj  " << p2Vj<<endl;
-//      cout << "p4j  " << p4j<<endl;
+//      Rcpp::Rcout << "q0i  "<<q0i<<endl;
+//      Rcpp::Rcout << "q2Si  "<<q2Si<<endl;
+//      Rcpp::Rcout << "q2Vi  " << q2Vi<<endl;
+//      Rcpp::Rcout << "q4i  " << q4i <<endl;
+//      Rcpp::Rcout << "q0j  " << q0j<<endl;
+//      Rcpp::Rcout << "q2Sj  " << q2Sj<<endl;
+//      Rcpp::Rcout << "q2Vj  " << q2Vj<<endl;
+//      Rcpp::Rcout << "q4j  " << q4j<<endl;
+//      Rcpp::Rcout << "p0i  " << p0i<<endl;
+//      Rcpp::Rcout << "p2Si  " << p2Si<<endl;
+//      Rcpp::Rcout << "p2Vi  " << p2Vi<<endl;
+//      Rcpp::Rcout << "p4i  " << p4i<<endl;
+//      Rcpp::Rcout << "p0j  " << p0j<<endl;
+//      Rcpp::Rcout << "p2Sj  " << p2Sj<<endl;
+//      Rcpp::Rcout << "p2Vj  " << p2Vj<<endl;
+//      Rcpp::Rcout << "p4j  " << p4j<<endl;
   }
    double P0(void) const
   /*

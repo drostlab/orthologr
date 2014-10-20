@@ -81,9 +81,9 @@ class RedundancyCom95{
                         type = TsTv( codonState, l);//find out if change is Ts or Tv
 
                         codonTrans = TranslateCodon (codon);
-//                        cout << "Codontransl: "<<codon <<" "<<codonTrans <<endl;
+//                        Rcpp::Rcout << "Codontransl: "<<codon <<" "<<codonTrans <<endl;
                         mutationTrans = TranslateCodon (mutation);
-//                        cout << "Mutationtransl: "<<mutation <<" "<<mutationTrans <<endl;
+//                        Rcpp::Rcout << "Mutationtransl: "<<mutation <<" "<<mutationTrans <<endl;
 
                         //if neither codon is a stop
                         if ((codonTrans)[0] != '*'
@@ -176,11 +176,11 @@ class RedundancyCom95{
                   }
                 //fill array
 		firstNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=FirstN;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : FirstN  = " << FirstN <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : FirstN  = " << FirstN <<endl;
 		first2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=First2S;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : First2S = " << First2S <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : First2S = " << First2S <<endl;
                 first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=First2V;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : First2V = " << First2V <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : First2V = " << First2V <<endl;
           }
         }
       }
@@ -227,9 +227,9 @@ void FillThirdPositionCounts ()
                         type = TsTv (codonState, l);	//find out if change is Ts or Tv
 
                         codonTrans = TranslateCodon (codon);
-                //        cout << "Codontransl: "<<codon <<" "<<codonTrans <<endl;
+                //        Rcpp::Rcout << "Codontransl: "<<codon <<" "<<codonTrans <<endl;
                         mutationTrans = TranslateCodon (mutation);
-                //        cout << "Mutationtransl: "<<mutation <<" "<<mutationTrans <<endl;
+                //        Rcpp::Rcout << "Mutationtransl: "<<mutation <<" "<<mutationTrans <<endl;
 
                         if ((codonTrans)[0] != '*'
                             && (mutationTrans)[0] != '*')
@@ -309,13 +309,13 @@ void FillThirdPositionCounts ()
                     Third4 = 0.0;
                   }
 		thirdNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=ThirdN;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : ThirdN = " << ThirdN <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : ThirdN = " << ThirdN <<endl;
                 third2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=Third2S;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : Third2S = " << Third2S <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : Third2S = " << Third2S <<endl;
                 third2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=Third2V;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : Third2V = " << Third2V <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : Third2V = " << Third2V <<endl;
 		thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]=Third4;
-//         cout << codon[0] << codon[1] << codon[2] <<  " : Third4 = " << Third4 <<endl;
+//         Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : Third4 = " << Third4 <<endl;
               }
           }
       }
@@ -343,23 +343,23 @@ void FillThirdPositionCounts ()
 		l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] = 1. 
 		  + firstNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] 
 		  + thirdNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-//                  cout << "l0_vals "<<l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
+//                  Rcpp::Rcout << "l0_vals "<<l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
 
 		l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] = 
 		  first2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] + 
 		  third2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-//                  cout << "l2s_vals "<<l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
+//                  Rcpp::Rcout << "l2s_vals "<<l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
 
 		l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] =
 		  first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] + 
 		  third2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-//                  cout << "l2v_vals "<<l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
+//                  Rcpp::Rcout << "l2v_vals "<<l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
 
-//                cout << codon[0] << codon[1] << codon[2] <<  " : later = " << thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] <<endl;
-//                cout << sizeof(l2V_vals) << endl;
+//                Rcpp::Rcout << codon[0] << codon[1] << codon[2] <<  " : later = " << thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] <<endl;
+//                Rcpp::Rcout << sizeof(l2V_vals) << endl;
 		l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] = 
 		thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];	
-//                  cout << "l4_vals "<<l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
+//                  Rcpp::Rcout << "l4_vals "<<l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])]<<endl;
 
 
                 }
@@ -394,7 +394,7 @@ void FillThirdPositionCounts ()
     if(codonPrecondition(codon)) {
         return firstNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
     }
-    Rcpp::Rcout << "Error in FirstNon - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in FirstNon - no codon"<< endl;
     return -1;
   }
 
@@ -408,7 +408,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return first2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in First2S - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in First2S - no codon"<< endl;
     return -1;
   }
 
@@ -422,7 +422,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in First2V - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in First2V - no codon"<< endl;
     return -1;
   }
 
@@ -435,7 +435,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return thirdNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in ThirdNon - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in ThirdNon - no codon"<< endl;
     return -1;
   }
 
@@ -448,7 +448,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in ThirdFour - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in ThirdFour - no codon"<< endl;
     return -1;
   }
 
@@ -461,7 +461,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return third2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in Third2s - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in Third2s - no codon"<< endl;
     return -1;
   }
 
@@ -474,7 +474,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return third2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in Third2V - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in Third2V - no codon"<< endl;
     return -1;
   }
 
@@ -488,7 +488,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in L0_vals - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in L0_vals - no codon"<< endl;
     return -1;
   }
 
@@ -502,7 +502,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in L2S_vals - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in L2S_vals - no codon"<< endl;
     return -1;
   }
 
@@ -516,7 +516,7 @@ void FillThirdPositionCounts ()
   {
     if(codonPrecondition(codon)) 
         return l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
-    Rcpp::Rcout << "Error in L2V_vals - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in L2V_vals - no codon"<< endl;
     return -1;
   }
 
@@ -528,12 +528,12 @@ void FillThirdPositionCounts ()
     \note the return value = ThirdFour(\a codon )
   */
   {
-      //    cout << "Is this codon "<<codon <<" a codon? "<<codonPrecondition(codon)<<endl;
+      //    Rcpp::Rcout << "Is this codon "<<codon <<" a codon? "<<codonPrecondition(codon)<<endl;
     if(codonPrecondition(codon)){
- //   cout << "This? "<<l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] <<endl;
+ //   Rcpp::Rcout << "This? "<<l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])] <<endl;
         return l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
     }
-    Rcpp::Rcout << "Error in L4_vals - no codon"<< endl;
+    Rcpp::RRcpp::Rcout << "Error in L4_vals - no codon"<< endl;
     return -1;
   }
   

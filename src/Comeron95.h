@@ -95,7 +95,7 @@ void diverge(const pair<string,string> *seq1, const pair<std::string,std::string
 //                      {
 //                              ndiff = NumDiffs(codon1,codon2);
 
-                        //cout << "CHECK:NDIFF="<<ndiff<<endl;
+                        //Rcpp::Rcout << "CHECK:NDIFF="<<ndiff<<endl;
                         if (ndiff == 2
                             && maxhits >= 2)
                           {	//if codons differ at 2 sites,
@@ -264,13 +264,13 @@ public:
                 
                 // proof if seqs have same length
                 if( seq1->second.length() != seq2->second.length() ){
-                        cout << "Sequences of unequal length.\n";
+                        Rcpp::Rcout << "Sequences of unequal length.\n";
                 }
                 
                 // proof if seqs are multiple of 3
                 if(! ( (seq1->second.length()%3 == 0) && (seq2->second.length()%3 == 0)) ){
-                        cout << "Sequence lengths are not multiples of 3. ";
-                        cout << seq1->second.length() << " and " << seq2->second.length() <<endl;
+                        Rcpp::Rcout << "Sequence lengths are not multiples of 3. ";
+                        Rcpp::Rcout << seq1->second.length() << " and " << seq2->second.length() <<endl;
                 }
                 
                 // set weighting schemes
@@ -278,13 +278,13 @@ public:
 //            if(_weights2==NULL)
 //              {
 //                __2wasNULL=true;
-               GranthamWeights2 * weights2 = new GranthamWeights2();
+//               GranthamWeights2 * weights2 = new GranthamWeights2();
 //              }
         
 //            if( _weights3 == NULL)
 //              {
 //                __3wasNULL=true;
-                GranthamWeights3 * weights3 = new GranthamWeights3();
+//                GranthamWeights3 * weights3 = new GranthamWeights3();
 //              }
         
                 

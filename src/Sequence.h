@@ -14,7 +14,7 @@ using namespace std;
 // [[Rcpp::export]]
 bool ambigousNucleotides(const std::string & codon){
         for(int i=0;i<3;i++){
-//                cout << codon[i] << endl;
+//                Rcpp::Rcout << codon[i] << endl;
                 if(! ((codon)[i] == 'A' 
                 || (codon)[i] == 'C' 
                 || (codon)[i] == 'G' 
@@ -52,7 +52,7 @@ bool ambigousNucleotides(const std::string & codon){
 // [[Rcpp::export]]
 bool codonPrecondition(const std::string & codon)
   {
-  //  cout << "Precondition length = " << codon.length() << endl;
+  //  Rcpp::Rcout << "Precondition length = " << codon.length() << endl;
      
     
     if ( codon.length() != 3 || !ambigousNucleotides(codon) )
@@ -287,7 +287,7 @@ char Universal(string codon)
 // [[Rcpp::export]]
 std::string TranslateCodon(string codon)
   {
-//             cout << "Translate "<<codon;
+//             Rcpp::Rcout << "Translate "<<codon;
 
     if (codon.length() != 3) //if the range is less than 3 in length (1 codon), return an empty string
       return std::string();
@@ -297,7 +297,7 @@ std::string TranslateCodon(string codon)
         codon[0] = char(std::toupper(codon[0]));
         codon[1] = char(std::toupper(codon[1]));
         codon[2] = char(std::toupper(codon[2]));
-//                cout << "  Universal of  "<<codon<<endl;
+//                Rcpp::Rcout << "  Universal of  "<<codon<<endl;
 
             translation += Universal (codon);
 

@@ -35,7 +35,7 @@ class Sites {
 //                 std::find_if(codon2.begin(),codon2.end(),ambiguousNucleotide()) == codon2.end() )
               {
                 _L0 += (sitesObj->L0_vals(codon1) + sitesObj->L0_vals(codon2))/2.0;
-           //     cout << sitesObj->L0_vals(codon1) << "+" <<sitesObj->L0_vals(codon2) << "/2 =" << _L0<<endl;
+           //     Rcpp::Rcout << sitesObj->L0_vals(codon1) << "+" <<sitesObj->L0_vals(codon2) << "/2 =" << _L0<<endl;
                 _L2S += (sitesObj->L2S_vals(codon1) + sitesObj->L2S_vals(codon2))/2.0;
                 _L2V += (sitesObj->L2V_vals(codon1) + sitesObj->L2V_vals(codon2))/2.0;
                 _L4 += (sitesObj->L4_vals(codon1) + sitesObj->L4_vals(codon2))/2.0;
@@ -60,7 +60,7 @@ class Sites {
                     codon2[j] = char(std::toupper((sequence2->second)[i + j]));
                   }
                 nc = NumDiffs (codon1, codon2);
-//        cout << "Number of diffs between "<< codon1 << " and " << codon2 << " are " <<nc<<endl;
+//        Rcpp::Rcout << "Number of diffs between "<< codon1 << " and " << codon2 << " are " <<nc<<endl;
                 if (nc == 0)	//still need to count if there are 0 changes
                   siteinc (sitesObj,codon1, codon2);
                 else if (maxhits <= 3 && nc == 1)

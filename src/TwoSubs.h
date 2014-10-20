@@ -124,15 +124,15 @@ class TwoSubs{
  
 
 
-//       cout << "q0  "<<q0<<endl;
-//      cout << "q2S  "<<q2S<<endl;
-//      cout << "q2V  " << q2V<<endl;
-//      cout << "q4  " << q4 <<endl;
+//       Rcpp::Rcout << "q0  "<<q0<<endl;
+//      Rcpp::Rcout << "q2S  "<<q2S<<endl;
+//      Rcpp::Rcout << "q2V  " << q2V<<endl;
+//      Rcpp::Rcout << "q4  " << q4 <<endl;
 //  
-//      cout << "p0  " << p0<<endl;
-//      cout << "p2S  " << p2S<<endl;
-//      cout << "p2V  " << p2V<<endl;
-//      cout << "p4  " << p4<<endl;
+//      Rcpp::Rcout << "p0  " << p0<<endl;
+//      Rcpp::Rcout << "p2S  " << p2S<<endl;
+//      Rcpp::Rcout << "p2V  " << p2V<<endl;
+//      Rcpp::Rcout << "p4  " << p4<<endl;
 
  }
 

@@ -122,7 +122,7 @@ string TsTv (int i, int j) {
 		i = nucToInt( toChar(i));
 		j = nucToInt( toChar(j));
 		if( ! (i<=3 && j <= 3)){
-			cout << "Wrong Nucleotide "<<"i="<<i<<" j="<<j<<endl;
+			Rcpp::Rcout << "Wrong Nucleotide "<<"i="<<i<<" j="<<j<<endl;
 			return "Unknown";
 		}
       }
@@ -136,7 +136,7 @@ string TsTv (int i, int j) {
           return ("Ts");	//a transition
         }
 
-      cout << "Neither Transition, not Transversion" <<endl;
+      Rcpp::Rcout << "Neither Transition, not Transversion" <<endl;
       return ("Unknown");	//can be used for error checking
     }
     

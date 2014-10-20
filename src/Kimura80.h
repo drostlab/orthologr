@@ -86,8 +86,8 @@ class Kimura80
           {
             if (seqa->second.length () != seqb->second.length ()){
              // throw SeqException ("Sequence::Kimura80::Kimura80(): constructor called with two sequence objects of unequal length");
-            cout << "Sequence::Kimura80::Kimura80(): constructor called with two sequence objects of unequal length"<<endl;
-            cout << seqa->second.length () << " vs. " << seqb->second.length () <<endl;
+            Rcpp::Rcout << "Sequence::Kimura80::Kimura80(): constructor called with two sequence objects of unequal length"<<endl;
+            Rcpp::Rcout << seqa->second.length () << " vs. " << seqb->second.length () <<endl;
             }
             num_Ts = 0;
             num_Tv = 0;
