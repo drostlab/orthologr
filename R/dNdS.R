@@ -415,9 +415,11 @@ substitutionrate <- function(file, est.method, format = "fasta",
                         calc <- "KaKs_Calculator.exe"
                 }
                 
+                               
                # determine the file seperator of the current OS
                f_sep <- .Platform$file.sep
                fa2axt <- system.file(paste0("KaKs_Calculator1.2",f_sep,"parseFastaIntoAXT.pl"), package = "orthologr")
+                              
                
                ### replace paths like this: path/to a folder/of_interest
                ### by: path/'to a folder'/of_interest
@@ -426,15 +428,18 @@ substitutionrate <- function(file, est.method, format = "fasta",
                curr_wd <- unlist(strsplit(getwd(),f_sep))
                wdir <- grepl(" ",curr_wd)
                
-               curr_wd[wdir] <- stringr::str_replace(string = curr_wd[wdir],replacement = paste0("'",curr_wd[wdir],"'"), pattern = curr_wd[wdir])
-               
+               if(any(wdir)){
+                       curr_wd[wdir] <- stringr::str_replace(string = curr_wd[wdir],replacement = paste0("'",curr_wd[wdir],"'"), pattern = curr_wd[wdir])
+               }
                curr_wd <- paste0(curr_wd,collapse = f_sep)
+               
                ###
                
                tryCatch(
                        
-              {        # running KaKs_Calculator inside the orthologr package
+              {        # converting to input file for KaKs_Calculator
                        system(paste0("perl ",fa2axt ," ",file," ",curr_wd,f_sep,"_calculation",f_sep,file_name))
+                       # running KaKs_Calculator inside the orthologr package
                        KaKs_Calculator <- system.file(paste0("KaKs_Calculator1.2",f_sep,"bin",f_sep,os,f_sep,calc), package = "orthologr")
                
                        if(is.null(kaks_calc.params))
