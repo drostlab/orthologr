@@ -17,7 +17,7 @@ Options are are: "cds", "protein", or "dna". In case of "cds", sequence are tran
 in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 translated to protein sequences. Default is \code{seq_type} = "cds".}
 
-\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.}
 
 \item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
 
@@ -54,11 +54,17 @@ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       comp_cores = 2)
 
+
  # running blastp using additional parameters
  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       blast_params = "-max_target_seqs 1")
 
+
+# running blastp using additional parameters and an external blastp path
+ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
 }
 }
 \author{

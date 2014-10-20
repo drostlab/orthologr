@@ -17,7 +17,7 @@ Options are are: "cds", "protein", or "dna". In case of "cds", sequence are tran
 in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 translated to protein sequences. Default is \code{seq_type} = "cds".}
 
-\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.}
 
 \item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
 
@@ -57,6 +57,12 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            comp_cores = 2)
 
+
+# performing gene orthology inference using the best hit (BH) method and external
+# blastp path
+blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+           path = "path/to/blastp/")
 }
 }
 \author{

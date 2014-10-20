@@ -93,6 +93,18 @@ set_path <- function(file, add.folder = NULL){
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' 
+#' # a small example using clustalw
+#' filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                   ortho_detection = "RBH", aa_aln_type = "multiple",
+#'                   aa_aln_tool = "clustalw",
+#'                   codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1) , 
+#'                   dnds.threshold = 2)
+#'                   
+#'                   
+#'                   
+#' # in case your alignment tool has an external path, please use the 'aa_aln_path' argument:
+#' # aa_aln_path = "/path/to/clustalw/"
 #' filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'                   ortho_detection = "RBH", aa_aln_type = "multiple",
@@ -103,6 +115,7 @@ set_path <- function(file, add.folder = NULL){
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
+#' @import dplyr
 #' @export
 filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
         

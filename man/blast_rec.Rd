@@ -50,16 +50,30 @@ that were found to be best hits in both directions are retained and returned.
 blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
+
+
 # performing gene orthology inference using the reciprocal best hit (RBH) method
 # starting with protein sequences
 blast_rec(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type = "protein")
 
+
+
 # use multicore processing
 blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            comp_cores = 2)
+
+
+# performing gene orthology inference using the reciprocal best hit (RBH) method
+# and external path to blastp
+blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+          path = "path/to/blastp")
+
+
+
 }
 }
 \author{

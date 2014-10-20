@@ -140,6 +140,14 @@ filter(sqlE,evalue == 0)
 # select the best hit using the evalue criterion
 sqlE \%>\% group_by(query_id) \%>\% summarise(best_hit_eval = min(evalue))
 
+
+
+# using advanced_blast() with external BLAST path
+advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+               subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+               blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2",
+               path = "path/to/blastp/")
+
 }
 }
 \author{

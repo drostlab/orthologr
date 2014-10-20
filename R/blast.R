@@ -6,7 +6,7 @@
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
@@ -51,12 +51,17 @@
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       comp_cores = 2)
 #'       
-
+#'
 #'  # running blastp using additional parameters
 #'  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       blast_params = "-max_target_seqs 1")
-#'              
+#'
+#'
+#' # running blastp using additional parameters and an external blastp path
+#'  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")              
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
@@ -215,7 +220,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
+#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
@@ -257,7 +262,13 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
-#'            
+#'
+#'
+#' # performing gene orthology inference using the best hit (BH) method and external
+#' # blastp path
+#' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'            path = "path/to/blastp/")
 #' }
 #'
 #' @return A data.table as returned by the \code{blast} function, storing the geneids
@@ -357,16 +368,30 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
 #' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #'           
+#'           
+#'           
 #' # performing gene orthology inference using the reciprocal best hit (RBH) method
 #' # starting with protein sequences
 #' blast_rec(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein")
 #' 
+#' 
+#' 
 #' # use multicore processing
 #' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            comp_cores = 2)
+#'            
+#'            
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
+#' # and external path to blastp
+#' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'           path = "path/to/blastp")
+#'           
+#'           
+#'           
 #' }
 #'
 #' @return A data.table as returned by the blast() function, storing the geneids
@@ -714,7 +739,15 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
 #' 
 #' # select the best hit using the evalue criterion
 #' sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
+#' 
 #'                                                  
+#'                                                                                                   
+#' # using advanced_blast() with external BLAST path                                                                                                                                                   
+#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2",
+#'                path = "path/to/blastp/")
+#' 
 #' }
 #'
 #' @return the \code{advanced_blast} function creates a folder named '_blast_db' and stores
