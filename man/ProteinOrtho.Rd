@@ -53,6 +53,15 @@ ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'ort
              subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
              seq_type = "protein",format = "fasta")
 
+
+# finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
+# using multicore processing
+ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+             subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+             seq_type = "protein",format = "fasta", comp_cores = 2)
+
+
+
 # it is also possible to run ProteinOrtho using the synteny option
 # make sure you can provide a *.gff file
 # see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details
