@@ -153,7 +153,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         
         return(ProteinOrtho_tbl)
         
-                }, error = function(e) stop(paste("The ProteinOrtho interface call did not terminate properly.",
+                }, error = function() stop(paste("The ProteinOrtho interface call did not terminate properly.",
                                             "Please make sure you passed all parameters correctly to ProteinOrtho.",
                                             "Did you provide a *.gff file in case you used the synteny option?",sep="\n"))
         )

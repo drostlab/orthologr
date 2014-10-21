@@ -137,7 +137,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 ortho_tbl <- data.table::copy(
                         blast_best(query_file = query_file, subject_file = subject_files, 
                                    path = path, comp_cores = comp_cores,
-                                   seq_type = seq_type, format = format))
+                                   seq_type = seq_type, format = format,
+                                   detailed_output = TRUE))
                 
         }
         

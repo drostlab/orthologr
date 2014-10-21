@@ -5,7 +5,7 @@
 \usage{
 blast_best(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
-  comp_cores = 1, blast_params = NULL)
+  comp_cores = 1, blast_params = NULL, detailed_output = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -29,6 +29,9 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
+
+\item{detailed_output}{a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
+ortholog pairs.}
 }
 \value{
 A data.table as returned by the \code{blast} function, storing the geneids
@@ -47,10 +50,21 @@ Given a set of protein sequences A, a best hit blast search is being performed f
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
+
+
 # performing gene orthology inference using the best hit (BH) method starting with protein sequences
 blast_best(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
            seq_type = "protein")
+
+
+
+# getting the entire BLAST table as output using the argument 'detailed_output = TRUE'
+blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+           detailed_output = TRUE)
+
+
 
 # use multicore processing
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -58,11 +72,14 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
            comp_cores = 2)
 
 
+
 # performing gene orthology inference using the best hit (BH) method and external
 # blastp path
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            path = "path/to/blastp/")
+
+
 }
 }
 \author{

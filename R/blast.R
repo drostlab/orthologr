@@ -227,6 +227,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
+#' ortholog pairs.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @references
@@ -253,10 +255,21 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #'            
+#'            
+#'            
 #' # performing gene orthology inference using the best hit (BH) method starting with protein sequences
 #' blast_best(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'            seq_type = "protein")
+#' 
+#' 
+#' 
+#' # getting the entire BLAST table as output using the argument 'detailed_output = TRUE'
+#' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'            detailed_output = TRUE)
+#' 
+#' 
 #' 
 #' # use multicore processing
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
@@ -264,11 +277,14 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 #'            comp_cores = 2)
 #'
 #'
+#'
 #' # performing gene orthology inference using the best hit (BH) method and external
 #' # blastp path
 #' blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'            path = "path/to/blastp/")
+#'            
+#'            
 #' }
 #'
 #' @return A data.table as returned by the \code{blast} function, storing the geneids
@@ -279,7 +295,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
 blast_best <- function(query_file, subject_file, seq_type = "cds",
                        format = "fasta", blast_algorithm = "blastp", 
                        eval = "1E-5", path = NULL, comp_cores = 1,
-                       blast_params = NULL){
+                       blast_params = NULL, detailed_output = FALSE){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -302,10 +318,12 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
                                                                           " ",default_pars),
                                                                           default_pars))
        
-        tryCatch(
-         {
-                 besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
-                                by = key(hit_tbl.dt)]
+        if(!detailed_output){
+                
+                tryCatch(
+                        {
+                                besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
+                                                          by = key(hit_tbl.dt)]
         
                  #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
                  data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
@@ -319,6 +337,12 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
          }, error = function() {stop(paste0("The BLAST output couldn't be read properly, maybe a problem occured when 
                                        selecting best hits from the resulting BLAST hit table."))} 
         )
+        
+        } else {
+                
+                return(hit_tbl.dt)
+                
+        }
               
 }
 
