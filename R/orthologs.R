@@ -57,6 +57,23 @@
 #'           seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)          
 #'           
 #' 
+#' 
+#' ### Orthology Inference using ProteinOrtho
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "PO")
+#'           
+#' # multicore version          
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "PO", comp_cores = 2)  
+#'           
+#'                           
+#' ### Orthology Inference using OrthoMCL
+#' 
+#' 
+#' 
+#' 
 #' }
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
@@ -85,6 +102,44 @@ orthologs <- function(query_file,subject_file, seq_type = "protein",
                         blast_rec(query_file = query_file, subject_file = subject_file, 
                                   path = path, comp_cores = comp_cores,
                                   seq_type = seq_type, format = format))
+                
+                
+        }
+        
+        
+        if(ortho_detection == "PO"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        ProteinOrtho(query_file = query_file, subject_file = subject_file, 
+                                     path = path, comp_cores = comp_cores,
+                                     seq_type = seq_type, format = format))
+                
+                
+                
+        }
+        
+        
+        if(ortho_detection == "OrthoMCL"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        OrthoMCL(query_file = query_file, subject_file = subject_file, 
+                                 path = path, comp_cores = comp_cores,
+                                 seq_type = seq_type, format = format))
+                
+                
+                
+        }
+        
+        
+        if(ortho_detection == "IP"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        InParanoid(query_file = query_file, subject_file = subject_file, 
+                                   path = path, comp_cores = comp_cores,
+                                   seq_type = seq_type, format = format))
                 
                 
         }
