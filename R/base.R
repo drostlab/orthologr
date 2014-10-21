@@ -115,7 +115,6 @@ set_path <- function(file, add.folder = NULL){
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
-#' @import dplyr
 #' @export
 filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
         
@@ -124,9 +123,7 @@ filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         dN <- dS <- NULL
         
-        return ( dNdS_tbl %>%
-                        tbl_dt() %>%
-                                dplyr::filter(!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
+        return ( dplyr::filter(dplyr::tbl_dt(dNdS_tbl),!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
         
 }
 
