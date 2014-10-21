@@ -135,7 +135,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        blast_best(query_file = query_file, subject_file = subject_file, 
+                        blast_best(query_file = query_file, subject_file = subject_files, 
                                    path = path, comp_cores = comp_cores,
                                    seq_type = seq_type, format = format))
                 
@@ -145,7 +145,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        blast_rec(query_file = query_file, subject_file = subject_file, 
+                        blast_rec(query_file = query_file, subject_file = subject_files, 
                                   path = path, comp_cores = comp_cores,
                                   seq_type = seq_type, format = format))
                 
@@ -157,8 +157,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        ProteinOrtho(query_file = query_file, subject_file = subject_file, 
-                                     path = path, comp_cores = comp_cores,
+                        ProteinOrtho(query_file = query_file, subject_files = subject_files, 
+                                     po_path = path, comp_cores = comp_cores,
                                      seq_type = seq_type, format = format))
                 
                 
@@ -170,7 +170,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        OrthoMCL(query_file = query_file, subject_file = subject_file, 
+                        OrthoMCL(query_file = query_file, subject_file = subject_files, 
                                  path = path, comp_cores = comp_cores,
                                  seq_type = seq_type, format = format))
                 
@@ -183,7 +183,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        InParanoid(query_file = query_file, subject_file = subject_file, 
+                        InParanoid(query_file = query_file, subject_file = subject_files, 
                                    path = path, comp_cores = comp_cores,
                                    seq_type = seq_type, format = format))
                 
