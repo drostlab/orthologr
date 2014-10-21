@@ -191,7 +191,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         joint_subject_tbl <- dplyr::inner_join(dplyr::tbl_dt(hit.table), dplyr::tbl_dt(subject_tbl), by = "subject_id")
         final_tbl <- dplyr::inner_join(dplyr::tbl_dt(joint_query_tbl), dplyr::tbl_dt(joint_subject_tbl), by = c("query_id","subject_id"))
         
-        if(nrows(final_tbl) == 0)
+        if(nrow(final_tbl) == 0)
                 stop("No orthologs could be found! Please check your input files!")
         
         
