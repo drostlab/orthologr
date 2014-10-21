@@ -2,8 +2,23 @@
 #' @description This function takes nucleotide or protein sequences for a set of organisms 
 #' and performs orthology inference to detect orthologous genes within the given organisms
 #' based on selected orthology inference programs.
+#' 
+#' The following interfaces are implemented in the \code{orthologs} function:
+#'  
+#' BLAST based methods:
+#' 
+#' \itemize{
+#'   \item BLAST best hit (BH)
+#'   \item BLAST reciprocal best hit (RBH)
+#'   \item ProteinOrtho 
+#'   \item OrthoMCL
+#'   \item InParanoid
+#' }
+#' 
+#' 
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
-#' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
+#' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
+#' Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
@@ -19,9 +34,23 @@
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @details This function takes sequence files of a query organism and a subject organism and performs orthology inference
 #' using a defined orthology inference method to dectect orthologous genes.
+#' 
+#' 
+#' 
+#' 
 #' @author Hajk-Georg Drost
 #' @return A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
 #' in the second column and the amino acid sequences in the third column.
+#' @references
+#' 
+#' BLAST: \url{http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml}
+#' 
+#' ProteinOrtho: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/}
+#' 
+#' OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
+#' 
+#' InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
+#' 
 #' @examples \dontrun{
 #' 
 #' ### Best Hit
@@ -29,17 +58,17 @@
 #' # perform orthology inference using BLAST reciprocal best hit
 #' # and fasta sequence files storing protein sequences
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "BH")
 #'           
 #' # multicore version          
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "BH", comp_cores = 2)          
 #'           
 #' # the same using CDS sequences
 #' orthologs(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           seq_type = "cds", ortho_detection = "BH")
 #' 
 #' 
@@ -48,36 +77,53 @@
 #' # perform orthology inference using BLAST reciprocal best hit
 #' # and fasta sequence files storing protein sequences
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "RBH")
 #'           
 #' # multicore version          
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)          
 #'           
 #' 
 #' 
 #' ### Orthology Inference using ProteinOrtho
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "PO")
 #'           
 #' # multicore version          
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "PO", comp_cores = 2)  
 #'           
 #'                           
 #' ### Orthology Inference using OrthoMCL
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "OrthoMCL")
+#'           
+#' # multicore version          
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "OrthoMCL", comp_cores = 2)  
+#'
 #' 
 #' 
-#' 
-#' 
+#' ### Orthology Inference using InParanoid
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "IP")
+#'           
+#' # multicore version          
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "IP", comp_cores = 2)  
+#'
 #' }
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
-orthologs <- function(query_file,subject_file, seq_type = "protein",
+orthologs <- function(query_file,subject_files, seq_type = "protein",
                       format = "fasta",ortho_detection = "RBH", 
                       path = NULL, comp_cores = 1, quiet = FALSE){
         
