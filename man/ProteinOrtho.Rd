@@ -12,7 +12,7 @@ ProteinOrtho(query_file, subject_files, po_params = NULL, eval = "1E-5",
 
 \item{subject_files}{a character string specifying the paths to the sequence files of interest (subject organisms).}
 
-\item{po_params}{a character string specifying additional parameters that shall be handed to the PorteoOrtho call,
+\item{po_params}{a character string specifying additional parameters that shall be handed to the ProteinOrtho call,
 e.g. \code{po_params} = \code{"-identity=35 -cov=75"}. See \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}
 for parameter details.}
 
@@ -27,7 +27,7 @@ Options are: "protein", or "dna". ProteinOrtho can only handle protein or nucleo
 in the standard execution path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be
-used to run PrteinOrtho.}
+used to run ProteinOrtho.}
 
 \item{delete_files}{a boolean value specifying whether the folder '_ProteinOrtho' that stored the
 ProteinOrtho output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.}

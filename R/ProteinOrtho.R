@@ -3,7 +3,7 @@
 #' and performs orthology inference using ProteinOrtho as orthology detection program (methodology).
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
-#' @param po_params a character string specifying additional parameters that shall be handed to the PorteoOrtho call,
+#' @param po_params a character string specifying additional parameters that shall be handed to the ProteinOrtho call,
 #' e.g. \code{po_params} = \code{"-identity=35 -cov=75"}. See \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}
 #' for parameter details.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
@@ -13,7 +13,7 @@
 #' @param po_path a character string specifying the execution path to the \code{proteinortho5.pl} file (in case it is not sored
 #' in the standard execution path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
-#' used to run PrteinOrtho.
+#' used to run ProteinOrtho.
 #' @param delete_files a boolean value specifying whether the folder '_ProteinOrtho' that stored the
 #' ProteinOrtho output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.
 #' @details This function provides an interface to the ProteinOrtho program
