@@ -31,7 +31,7 @@ read.genome <- function(file, format, ...){
                 tryCatch(
                         {
                                  genome <- seqinr::read.fasta(file, seqtype = "DNA", ...)
-                                 genome_names <- lapply(names(genome), function(x){return(strsplit(x, "\t")[[1]][1])})
+                                 genome_names <- unlist(lapply(names(genome), function(x){return(strsplit(x, "\t")[[1]][1])}))
                                  genome.dt <- data.table::data.table(geneids = genome_names,
                                                                      seqs = unlist(lapply(genome, seqinr::c2s)))
                                  data.table::setkey(genome.dt,geneids)
@@ -78,7 +78,7 @@ read.proteome <- function(file, format, ...){
                 tryCatch(
                          {
                                  proteome <- seqinr::read.fasta(file, seqtype = "AA", ...)
-                                 proteome_names <- lapply(names(proteome), function(x){return(strsplit(x, "\t")[[1]][1])})
+                                 proteome_names <- unlist(lapply(names(proteome), function(x){return(strsplit(x, "\t")[[1]][1])}))
                                  proteome.dt <- data.table::data.table(geneids = proteome_names,
                                                                        seqs = unlist(lapply(proteome, seqinr::c2s)))
                                  data.table::setkey(proteome.dt,geneids)
@@ -125,7 +125,7 @@ read.cds <- function(file, format, ...){
                 tryCatch(
                         {
                                 cds <- seqinr::read.fasta(file, seqtype = "DNA", ...)
-                                cds_names <- lapply(names(cds), function(x){return(strsplit(x, "\t")[[1]][1])})
+                                cds_names <- unlist(lapply(names(cds), function(x){return(strsplit(x, "\t")[[1]][1])}))
                                 cds.dt <- data.table::data.table(geneids = cds_names ,
                                                  seqs = unlist(lapply(cds, seqinr::c2s)))
                                 data.table::setkey(cds.dt,geneids)
