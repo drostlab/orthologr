@@ -129,5 +129,33 @@ sequences of these organisms. The `eval` is set to `1E-5` (default ; see [Quint 
 with a multicore machine, you can set the `comp_cores` argument to any number of cores
 supported by your machine. The `clean_folders` argument specifies whether the internal folder structure shall be deleted (cleaned) after processing is finished. In this case all output files returned by BLAST and MAFFT are deleted.
 
+You can run a test __Divergence Stratigraphy__ with 20 example genes stored in the `orthologr` package:
+
+```{r}
+library(orthologr)
+
+# performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval = "1E-5", ortho_detection = "RBH",
+      comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+
+```
+
+This example function call assumes that you have MAFFT installed in your executable PATH.
+If you didn't install MAFFT in your executable PATH please add the `mafft_path = "path/to/mafft"` argument
+to the function call shown above.
+
+Please note that performing __Divergence Stratigraphy__ using two large geneomes might take
+(even on a multicore machine) up to several minutes or hours (depending on the number of available computing cores).
+On a 8 core machine with 3.4 GHz i7 processors the computation of an divergence map between _A. thaliana_ and _A. lyrata_
+took 65 minutes.
+
+When your diverge map computations are done and you have a divergence map of your query organism,
+subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](https://github.com/HajkD/myTAI) package.
+
+Please see [Introduction to the myTAI package](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd)
+for more details.
 
 
