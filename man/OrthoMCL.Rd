@@ -31,6 +31,9 @@ used to run OrthoMCL.}
 \item{delete_files}{a boolean value specifying whether the folder '_OrthoMCL' that stored the
 OrthoMCL output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.}
 }
+\value{
+a data.frame storing the OrthoMCL output.
+}
 \description{
 This function takes a query organism and a set of subject organisms
 and performs orthology inference using OrthoMCL as orthology detection program (methodology).

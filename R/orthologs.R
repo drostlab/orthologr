@@ -8,7 +8,6 @@
 #' BLAST based methods:
 #' 
 #' \itemize{
-#'   \item BLAST best hit (BH)
 #'   \item BLAST reciprocal best hit (RBH)
 #'   \item ProteinOrtho 
 #'   \item OrthoMCL
@@ -26,7 +25,7 @@
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-#' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
 #' "IP": path to InParanoid.
@@ -52,25 +51,6 @@
 #' InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 #' 
 #' @examples \dontrun{
-#' 
-#' ### Best Hit
-#' 
-#' # perform orthology inference using BLAST reciprocal best hit
-#' # and fasta sequence files storing protein sequences
-#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type = "protein", ortho_detection = "BH")
-#'           
-#' # multicore version          
-#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type = "protein", ortho_detection = "BH", comp_cores = 2)          
-#'           
-#' # the same using CDS sequences
-#' orthologs(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'           subject_files = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'           seq_type = "cds", ortho_detection = "BH")
-#' 
 #' 
 #' ### Reciprocal Best Hit
 #' 
@@ -128,20 +108,9 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                       format = "fasta",ortho_detection = "RBH", 
                       path = NULL, comp_cores = 1, quiet = FALSE){
         
-        if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","IP")))
+        if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
-        
-        if(ortho_detection == "BH"){
-                
-                
-                ortho_tbl <- data.table::copy(
-                        blast_best(query_file = query_file, subject_file = subject_files, 
-                                   path = path, comp_cores = comp_cores,
-                                   seq_type = seq_type, format = format,
-                                   detailed_output = TRUE))
-                
-        }
         
         if(ortho_detection == "RBH"){
                 

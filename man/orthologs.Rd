@@ -21,7 +21,7 @@ translated to protein sequences. Default is \code{seq_type} = "protein".}
 
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
 For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
@@ -45,7 +45,6 @@ The following interfaces are implemented in the \code{orthologs} function:
 BLAST based methods:
 
 \itemize{
-  \item BLAST best hit (BH)
   \item BLAST reciprocal best hit (RBH)
   \item ProteinOrtho
   \item OrthoMCL
@@ -58,25 +57,6 @@ using a defined orthology inference method to dectect orthologous genes.
 }
 \examples{
 \dontrun{
-
-### Best Hit
-
-# perform orthology inference using BLAST reciprocal best hit
-# and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "BH")
-
-# multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "BH", comp_cores = 2)
-
-# the same using CDS sequences
-orthologs(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-          seq_type = "cds", ortho_detection = "BH")
-
 
 ### Reciprocal Best Hit
 

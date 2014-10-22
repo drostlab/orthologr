@@ -5,15 +5,9 @@
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
 #' @param outgroup_file a character string specifying the path to the sequence file of interest (outgroup organism).
 #' Since the outgroup option in InParanoid is experimental, the default is \code{outgroup_file} = \code{NULL}.
-#' @param ip_params a character string specifying additional parameters that shall be handed to the InParanoid call,
-#' e.g. \code{ip_params} = \code{""}. See \url{http://inparanoid.sbc.su.se/cgi-bin/faq.cgi}
-#' for details.
-#' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' There is only the option: "protein". InParanoid can only handle protein sequences stored in fasta files.
 #' @param format when using InParanoid you can only specify \code{format} = \code{"fasta"}.
-#' @param comp_cores a numeric value specifying the number of cores that shall be
-#' used to run InParanoid.
 #' @param delete_files a boolean value specifying whether the folder '_InParanoid' that stored the
 #' InParanoid output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.
 #' @details This function...
@@ -28,12 +22,17 @@
 #' @examples \dontrun{
 #' 
 #' # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
-#' 
+#' InParanoid(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'              subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'              seq_type = "protein",format = "fasta")
+#'              
+#'              
 #' }
+#' @return a list storing the ortholog groups returned by InParanoid.
 #' @export
-InParanoid <- function(query_file, subject_file, outgroup_file = NULL,ip_params = NULL,eval = "1E-5",
-                       seq_type = "protein", format = "fasta", 
-                       comp_cores = 1, delete_files = FALSE){
+InParanoid <- function(query_file, subject_file, 
+                       outgroup_file = NULL, seq_type = "protein", 
+                       format = "fasta", delete_files = FALSE){
         
         if(format != "fasta")
                 stop("InParanoid only supports fasta files.")
@@ -53,10 +52,101 @@ InParanoid <- function(query_file, subject_file, outgroup_file = NULL,ip_params 
         setwd(file.path(currwd, "_InParanoid"))
         
         
-        
+        if(is.null(ip_path)){
+                
+                if(is.null(outgroup_file)){
+                        
+                        system(paste0("perl inparanoid.pl ",query_file," ",subject_file))
+                                
+                } else {
+                                
+                        system(paste0("perl inparanoid.pl ",query_file," ",subject_file," ",outgroup_file))
+                        
+                }
+                        
+                
+        } else {
+                
+                if(is.null(outgroup_file)){
+                        
+                        system(paste0("perl ",ip_path,f_sep,"inparanoid.pl ",query_file," ",subject_file))
+                
+                } else {
+                        
+                        system(paste0("perl ",ip_path,f_sep,"inparanoid.pl ",query_file," ",subject_file," ",outgroup_file))
+                        
+                }
+                                
+        }
         
         setwd(currwd)
         
+        tryCatch(
+                 {
+                         # get the query file name
+                         query_name <- unlist(strsplit(query_file,f_sep))
+                         query_name <- query_name[length(query_name)]
+                         
+                         # get the subject file name
+                         subject_name <- unlist(strsplit(subject_file,f_sep))
+                         subject_name <- subject_name[length(subject_name)]
+                         
+                         if(!is.null(outgroup_file)){
+                                 
+                                 # get the outgroup file name
+                                 outgroup_name <- unlist(strsplit(outgroup_file,f_sep))
+                                 outgroup_name <- outgroup_name[length(outgroup_name)]
+                                 
+                         }
+                         
+                         
+                         if(is.null(outgroup_file)){
+                                 
+                                 ip_tbl_name <- paste0("table.",query_name,"-",subject_name)
+                                 
+                         } else {
+                                 
+                                 ip_tbl_name <- paste0("table.",query_name,"-",subject_name,"-",outgroup_name)
+                         }
+                         
+                         
+                         # read InParanoid output
+                         InParanoid_list <- sapply(readLines(paste0("_InParanoid",f_sep,ip_tbl_name)),function(x) unlist(strsplit(x,"\t")))
+                         
+#                          # store the output table of InParanoid
+#                          InParanoid_tbl <- data.table::fread(paste0("_InParanoid",f_sep,ip_tbl_name,sep = "\t",header = FALSE, skip = 1)
+#                          
+#                          if(is.null(outgroup_file)){
+#                                  
+#                                  data.table::setnames(InParanoid_tbl,old = paste0("V",1:dim(InParanoid_tbl)[2]),
+#                                                       new = c("OrthoID","Score","OrthoA","bootstrap_support_A","OrthoB","bootstrap_support_B"))
+#                                  
+#                                  
+#                          } else {
+#                                  
+#                                  data.table::setnames(InParanoid_tbl,old = paste0("V",1:dim(InParanoid_tbl)[2]),
+#                                                       new = c("OrthoID","Score","OrthoA","bootstrap_support_A","OrthoB","bootstrap_support_B","OrthoC","bootstrap_support_C"))
+#                                  
+#                          }
+#                          
+#                          data.table::setkeyv(InParanoid_tbl,c("OrthoA","OrthoB"))
+#                          
+#                          if(delete_files)
+#                                  unlink("_InParanoid",recursive = TRUE, force = TRUE)
+#                          
+#                          
+#                          return(InParanoid_tbl)
+                  return(InParanoid_list)
         
+ 
+                  }, error = function() stop(paste("The InParanoid_tbl interface call did not terminate properly.",
+                                             "Please make sure you passed all parameters correctly to InParanoid_tbl.",sep="\n"))
+        )
+
         
 }
+
+
+
+
+

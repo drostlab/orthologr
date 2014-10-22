@@ -32,6 +32,9 @@ used to run ProteinOrtho.}
 \item{delete_files}{a boolean value specifying whether the folder '_ProteinOrtho' that stored the
 ProteinOrtho output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.}
 }
+\value{
+a data.frame storing the ProteinOrtho output.
+}
 \description{
 This function takes a query organism and a set of subject organisms
 and performs orthology inference using ProteinOrtho as orthology detection program (methodology).
