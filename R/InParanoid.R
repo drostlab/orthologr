@@ -10,13 +10,37 @@
 #' @param format when using InParanoid you can only specify \code{format} = \code{"fasta"}.
 #' @param delete_files a boolean value specifying whether the folder '_InParanoid' that stored the
 #' InParanoid output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.
-#' @details This function...
+#' @details This function aims to provide an interface between \code{R} and the standalone version of the
+#' orthology inference program InParanoid.
+#' 
+#' InParanoid can be downloaded here: \url{http://software.sbc.su.se/cgi-bin/request.cgi?project=inparanoid}.
+#' 
+#' Note that the standalone version provided by the InParanoid community resembles InParanoid version 4.1 !
+#' 
+#' To use an outgroup organism (OrthoC) in InParanoid version 4.1, you need to modify the perl script by hand...
+#' Within the 'inparanoid.pl' script you need to set the parameter '$use_outgroup = 0;' (default) to '$use_outgroup = 1;',
+#' to be able to use the outgroup organism functionality.
+#' 
+#' In case you changed '$use_outgroup = 1;' in 'inparanoid.pl' you can use the \code{outgroup_file} argument
+#' provided by this function (\code{InParanoid}). Otherwise you can only specify \code{query_file} and \code{subject_file} (see examples).
+#' 
 #' @author Hajk-Georg Drost
 #' @references
 #' 
 #' Ostlund G, Schmitt T, Forslund K, Kostler T, Messina DN, Roopra S, Frings O and Sonnhammer ELL.
 #' InParanoid 7: new algorithms and tools for eukaryotic orthology analysis. Nucleic Acids Res. 38:D196-D203 (2010)
 #'
+#'
+#' "InParanoid: A Comprehensive Database of Eukaryotic Orthologs"
+#' O'Brien Kevin P, Remm Maido and Sonnhammer Erik L.L
+#' Nucleic Acids Res. 33:D476-D480 (2005)
+#' 
+#' 
+#' "Automatic clustering of orthologs and in-paralogs from pairwise species comparisons"
+#' Maido Remm, Christian E. V. Storm, and Erik L. L. Sonnhammer
+#' J. Mol. Biol. 314:1041-1052 (2001)
+#' 
+#' 
 #' \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 #' 
 #' @examples \dontrun{
