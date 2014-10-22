@@ -92,7 +92,7 @@
 #'
 #'  @examples \dontrun{
 #' # run example with augustus
-#' augustus( file="/home/sarah/Programs/augustus-3.0.3/examples/example.fa", 
+#' augustus( file=system.file('seqs/example.fa', package = 'orthologr'), 
 #' species="human", params = "--UTR=on") 
 #' }
 #'
