@@ -3,8 +3,9 @@
 \alias{orthologs}
 \title{Interface function to perform orthology inference for a set of organisms}
 \usage{
-orthologs(query_file, subject_files, seq_type = "protein", format = "fasta",
-  ortho_detection = "RBH", path = NULL, comp_cores = 1, quiet = FALSE)
+orthologs(query_file, subject_files, seq_type = "protein",
+  outgroup_file = NULL, format = "fasta", ortho_detection = "RBH",
+  path = NULL, comp_cores = 1, quiet = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -16,6 +17,9 @@ Different orthology inference methods can detect orthologs using multiple subjec
 Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 translated to protein sequences. Default is \code{seq_type} = "protein".}
+
+\item{outgroup_file}{a character string specifying the paths to the sequence files of interest (outgroup organisms).
+This argument is only used by \code{\link{InParanoid}}.}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
 
@@ -121,6 +125,6 @@ OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
 InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 }
 \seealso{
-\code{\link{blast_best}}, \code{\link{blast_rec}}
+\code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}
 }
 

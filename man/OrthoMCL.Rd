@@ -70,4 +70,7 @@ Current Protocols in Bioinformatics. 2011 35:6.12.1–6.12.19.
 
 \url{http://www.orthomcl.org/orthomcl/}
 }
+\seealso{
+\code{\link{orthologs}}
+}
 

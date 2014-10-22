@@ -88,6 +88,7 @@
 #'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 #' }
 #' @return a data.frame storing the ProteinOrtho output.
+#' @seealso \code{\link{orthologs}}
 #' @export
 
 ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-5",

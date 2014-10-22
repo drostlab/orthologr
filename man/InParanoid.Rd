@@ -52,4 +52,7 @@ InParanoid 7: new algorithms and tools for eukaryotic orthology analysis. Nuclei
 
 \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 }
+\seealso{
+\code{\link{orthologs}}
+}
 

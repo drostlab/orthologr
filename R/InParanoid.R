@@ -29,6 +29,7 @@
 #'              
 #' }
 #' @return a list storing the ortholog groups returned by InParanoid.
+#' @seealso \code{\link{orthologs}}
 #' @export
 InParanoid <- function(query_file, subject_file, 
                        outgroup_file = NULL, seq_type = "protein", 

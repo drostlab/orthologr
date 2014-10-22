@@ -114,4 +114,7 @@ Lechner M et al. (2011) Proteinortho: Detection of (Co-)orthologs in large-scale
 
 \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}
 }
+\seealso{
+\code{\link{orthologs}}
+}
 

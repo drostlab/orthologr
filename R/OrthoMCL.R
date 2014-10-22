@@ -41,6 +41,7 @@
 #' 
 #' }
 #' @return a data.frame storing the OrthoMCL output.
+#' @seealso \code{\link{orthologs}}
 #' @export
 
 OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1E-5",

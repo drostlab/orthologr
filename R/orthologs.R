@@ -18,6 +18,8 @@
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
 #' Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).
+#' @param outgroup_file a character string specifying the paths to the sequence files of interest (outgroup organisms).
+#' This argument is only used by \code{\link{InParanoid}}.
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
@@ -101,12 +103,13 @@
 #'           seq_type = "protein", ortho_detection = "IP", comp_cores = 2)  
 #'
 #' }
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}
+#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}
 #' @export
 #' 
 orthologs <- function(query_file,subject_files, seq_type = "protein",
-                      format = "fasta",ortho_detection = "RBH", 
-                      path = NULL, comp_cores = 1, quiet = FALSE){
+                      outgroup_file = NULL, format = "fasta",
+                      ortho_detection = "RBH", path = NULL, 
+                      comp_cores = 1, quiet = FALSE){
         
         if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -142,7 +145,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 ortho_tbl <- data.table::copy(
                         OrthoMCL(query_file = query_file, subject_files = subject_files, 
-                                 path = path, comp_cores = comp_cores,
+                                 orthomcl_path = path, comp_cores = comp_cores,
                                  seq_type = seq_type, format = format))
                 
                 
@@ -153,10 +156,9 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
         if(ortho_detection == "IP"){
                 
                 
-                ortho_tbl <- data.table::copy(
-                        InParanoid(query_file = query_file, subject_file = subject_files, 
-                                   path = path, comp_cores = comp_cores,
-                                   seq_type = seq_type, format = format))
+                ortho_tbl <- InParanoid(query_file = query_file, subject_file = subject_files, 
+                                   outgroup_file = outgroup_file,ip_path = path, comp_cores = comp_cores,
+                                   seq_type = seq_type, format = format)
                 
                 
         }
