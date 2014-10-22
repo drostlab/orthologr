@@ -43,7 +43,7 @@ and performs orthology inference using the ProteinOrtho methodology.
 ProteinOrtho is a orthology inference program to detect orthologous genes within different species.
 For this purpose it compares similarities of given gene sequences and clusters them to find significant groups.
 To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs.
-(resource: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}).
+(source: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}).
 }
 \examples{
 \dontrun{

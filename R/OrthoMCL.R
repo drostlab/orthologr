@@ -32,7 +32,29 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
                      comp_cores = 1, delete_files = FALSE){
         
         
+        if(format != "fasta")
+                stop("OrthoMCL only supports fasta files.")
         
+        if(!is.element(seq_type,c("protein","dna")))
+                stop("OrthoMCL only supports protein sequences or nucleotide sequences. Please choose: 'protein' or 'dna'.")
+        
+        # determine the file seperator of the current OS
+        f_sep <- .Platform$file.sep
+        
+        if(!file.exists(paste0("_ProteinOrtho",f_sep))){
+                
+                dir.create("_ProteinOrtho")
+        }
+        
+        currwd <- getwd()
+        setwd(file.path(currwd, "_ProteinOrtho"))
+        
+        # determine the number of cores on a multicore machine
+        cores <- parallel::detectCores()
+        
+        # in case one tries to use more cores than are available
+        if(comp_cores > cores)
+                stop("You chose more cores than are available on your machine.")
         
         
 }

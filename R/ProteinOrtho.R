@@ -22,7 +22,7 @@
 #' ProteinOrtho is a orthology inference program to detect orthologous genes within different species. 
 #' For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. 
 #' To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs.
-#' (resource: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}).
+#' (source: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}).
 #' 
 #' @author Hajk-Georg Drost
 #' @references
@@ -78,6 +78,12 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         if(!is.element(seq_type,c("protein","dna")))
                 stop("ProteinOrtho only supports protein sequences or nucleotide sequences. Please choose: 'protein' or 'dna'.")
         
+        if(seq_type == "protein")
+                blast_program <- "blastp+"
+        
+        if(seq_type == "dna")
+                blast_program <- "blastn+"
+                
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
@@ -101,16 +107,22 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                 
                 if(is.null(po_params)){
                         
-                        system(paste0("proteinortho5.pl -cpus=",comp_cores,
-                                      " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
-                                      paste0(subject_files," ")))
+                        
+                                system(paste0("proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
+                                              " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
+                                              paste0(subject_files," ")))
+                        
+                        
                 }
                 
                 if(!is.null(po_params)){
                         
-                        system(paste0("proteinortho5.pl -cpus=",comp_cores,
-                                      " -project=ProteinOrtho ","-e=",eval," ",po_params," ",
-                                      query_file," ",paste0(subject_files," ")))
+                  
+                                system(paste0("proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
+                                              " -project=ProteinOrtho ","-e=",eval," ",po_params," ",
+                                              query_file," ",paste0(subject_files," ")))
+                                
+                        
                 }
         
         } else {
@@ -118,14 +130,19 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                 
                 if(is.null(po_params)){
                         
-                        system(paste0(po_path,f_sep,"proteinortho5.pl -cpus=",comp_cores,
-                                      " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
-                                      paste0(subject_files," ")))
+                                
+                                system(paste0(po_path,f_sep,"proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
+                                              " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
+                                              paste0(subject_files," ")))
+                                
+                                  
+                       
                 }
                 
                 if(!is.null(po_params)){
                         
-                        system(paste0(po_path,f_sep,"proteinortho5.pl -cpus=",comp_cores,
+                        
+                        system(paste0(po_path,f_sep,"proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
                                       " -project=ProteinOrtho ","-e=",eval," ",po_params," ",
                                       query_file," ",paste0(subject_files," ")))
                 }
