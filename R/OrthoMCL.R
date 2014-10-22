@@ -18,11 +18,26 @@
 #' @details This function...
 #' @author Hajk-Georg Drost
 #' @references
+#' Li Li, Christian J. Stoeckert, Jr., and David S. Roos
+#' OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes
+#' Genome Res. 2003 13: 2178-2189.
+#' 
+#' Feng Chen, Aaron J. Mackey, Christian J. Stoeckert, Jr., and David S. Roos
+#' OrthoMCL-DB: querying a comprehensive multi-species collection of ortholog groups 
+#' Nucleic Acids Res. 2006 34: D363-8.
+#' 
+#' Feng Chen, Aaron J. Mackey, Jeroen K. Vermunt, and David S. Roos 
+#' Assessing Performance of Orthology Detection Strategies Applied to Eukaryotic Genomes
+#' PLoS ONE 2007 2(4): e383.
+#' 
+#' Fischer, S., Brunk, B. P., Chen, F., Gao, X., Harb, O. S., Iodice, J. B., Shanmugam, D., Roos, D. S. and Stoeckert, C. J.
+#' Using OrthoMCL to Assign Proteins to OrthoMCL-DB Groups or to Cluster Proteomes Into New Ortholog Groups
+#' Current Protocols in Bioinformatics. 2011 35:6.12.1–6.12.19.
 #' 
 #' \url{http://www.orthomcl.org/orthomcl/}
 #' @examples \dontrun{
 #' 
-#' # # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
+#' # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
 #' 
 #' }
 #' @export
@@ -41,13 +56,13 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_ProteinOrtho",f_sep))){
+        if(!file.exists(paste0("_OrthoMCL",f_sep))){
                 
-                dir.create("_ProteinOrtho")
+                dir.create("_OrthoMCL")
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd, "_ProteinOrtho"))
+        setwd(file.path(currwd, "_OrthoMCL"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -55,6 +70,13 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
         # in case one tries to use more cores than are available
         if(comp_cores > cores)
                 stop("You chose more cores than are available on your machine.")
+        
+        
+        
+        
+        
+        setwd(currwd)
+        
         
         
 }

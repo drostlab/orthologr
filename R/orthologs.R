@@ -123,6 +123,7 @@
 #' }
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
+#' 
 orthologs <- function(query_file,subject_files, seq_type = "protein",
                       format = "fasta",ortho_detection = "RBH", 
                       path = NULL, comp_cores = 1, quiet = FALSE){
@@ -171,7 +172,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        OrthoMCL(query_file = query_file, subject_file = subject_files, 
+                        OrthoMCL(query_file = query_file, subject_files = subject_files, 
                                  path = path, comp_cores = comp_cores,
                                  seq_type = seq_type, format = format))
                 
