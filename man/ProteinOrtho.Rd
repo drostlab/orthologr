@@ -70,6 +70,8 @@ ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'ort
              seq_type = "protein",format = "fasta",po_params = "-synteny")
 
 
+
+
 # in case you need to specify the BLAST path or want to add
 # additional parameters to the BLAST run, please use the 'po_params' argument
 ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -77,6 +79,14 @@ ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'ort
              seq_type = "protein",format = "fasta",
              po_params  "-blastpath='path/to/blastp' -blastParameters='seq no'")
 
+
+
+
+# finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
+# using "dna" sequences
+ProteinOrtho(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+             subject_files = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+             seq_type = "dna",format = "fasta")
 
 
 }
