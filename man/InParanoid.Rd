@@ -3,12 +3,17 @@
 \alias{InParanoid}
 \title{Interface function to InParanoid}
 \usage{
-InParanoid(query_file, subject_files, ip_params = NULL, eval = "1E-5",
-  seq_type = "protein", format = "fasta", comp_cores = 1,
+InParanoid(query_file, subject_file, outgroup_file = NULL, ip_params = NULL,
+  eval = "1E-5", seq_type = "protein", format = "fasta", comp_cores = 1,
   delete_files = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
+
+\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
+
+\item{outgroup_file}{a character string specifying the path to the sequence file of interest (outgroup organism).
+Since the outgroup option in InParanoid is experimental, the default is \code{outgroup_file} = \code{NULL}.}
 
 \item{ip_params}{a character string specifying additional parameters that shall be handed to the InParanoid call,
 e.g. \code{ip_params} = \code{""}. See \url{http://inparanoid.sbc.su.se/cgi-bin/faq.cgi}
@@ -26,8 +31,6 @@ used to run InParanoid.}
 
 \item{delete_files}{a boolean value specifying whether the folder '_InParanoid' that stored the
 InParanoid output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.}
-
-\item{subject_file}{a character string specifying the path to the sequence file of interest (subject organism).}
 }
 \description{
 This function takes a query organism and a set of subject organisms

@@ -3,6 +3,8 @@
 #' and performs orthology inference using InParanoid as orthology detection program (methodology).
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
+#' @param outgroup_file a character string specifying the path to the sequence file of interest (outgroup organism).
+#' Since the outgroup option in InParanoid is experimental, the default is \code{outgroup_file} = \code{NULL}.
 #' @param ip_params a character string specifying additional parameters that shall be handed to the InParanoid call,
 #' e.g. \code{ip_params} = \code{""}. See \url{http://inparanoid.sbc.su.se/cgi-bin/faq.cgi}
 #' for details.
@@ -29,7 +31,7 @@
 #' 
 #' }
 #' @export
-InParanoid <- function(query_file, subject_files, ip_params = NULL,eval = "1E-5",
+InParanoid <- function(query_file, subject_file, outgroup_file = NULL,ip_params = NULL,eval = "1E-5",
                        seq_type = "protein", format = "fasta", 
                        comp_cores = 1, delete_files = FALSE){
         
