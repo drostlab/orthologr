@@ -1,0 +1,133 @@
+---
+title: "Divergence Stratigraphy using orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Divergence Stratigraphy using orthologr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(orthologr)
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+The `orthologr` package allows you to perform __Divergence Stratigraphy__ for query and subject organisms
+of interest. __Divergence Stratigraphy__ is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column ([Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html); Drost et al., 2014).
+
+Following steps are performed to obtain a standard divergence map based on the `divergence_stratigraphy()` function:
+
+1) Orthology Inference using BLAST reciprocal best hit ("RBH")
+
+2) Pairwise amino acid alignments of orthologous genes using the [MAFFT](http://mafft.cbrc.jp/alignment/software/) program
+
+3) Codon alignments of orthologous genes using [PAL2NAL](http://www.bork.embl.de/pal2nal/)
+
+4) dNdS estimation using [Comeron's method (1995)](http://link.springer.com/article/10.1007/BF00173196)
+
+5) Assigning estimated dNdS values to divergence strata (deciles of all dNdS values)
+
+
+This vignette assumes that you already have `orthologr` and  [MAFFT](http://mafft.cbrc.jp/alignment/software/) installed
+on your system. [PAL2NAL](http://www.bork.embl.de/pal2nal/) and [Comeron's method (1995)](http://link.springer.com/article/10.1007/BF00173196)
+are already included in the `orthologr` package and don't need to be installed.
+
+## Fast Installation guide for orthologr
+
+```r
+# install orthologr from CRAN
+install.packages("orthologr")
+
+# or the developer version from github
+library(devtools)
+install_github("HajkD/orthologr")
+
+# On Windows, this won't work - see ?build_github_devtools
+install_github("HajkD/orthologr")
+
+# When working with Windows, first you need to install the
+# R package: rtools -> install.packages("rtools")
+
+# Afterwards you can install devtools -> install.packages("devtools")
+# and then you can run:
+
+devtools::install_github("HajkD/orthologr")
+
+# and then call it from the library
+library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
+
+
+
+```
+
+## Retrieving a divergence map
+
+A divergence map quantifies for each protein coding gene of a given organism the
+degree of selection pressure. The selection pressure is quantified by dNdS estimation.
+
+To perform __Divergence Stratigraphy__ using `orthologr` you need the following prerequisites
+
+* a CDS file covering all protein coding genes of the query organism of interest
+* a CDS file covering all protein coding genes of the subject organism of interest
+
+In the following example, we will use _Arabidopsis thaliana_ as query organism
+and _Arabidopsis lyrata_ as subject organism.
+
+First, we need to download the CDS sequences for all protein coding genes of _A. thaliana_
+and _A. lyrata_.
+
+The CDS retrieval can be done using a `Terminal` or by manual downloading the files
+
+* `Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz`
+* `Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz`
+
+```shell
+
+# download CDS file of A. thaliana
+curl ftp://ftp.ensemblgenomes.org/pub/
+plants/release-23/fasta/arabidopsis_thaliana/
+cds/Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz 
+-o Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# download CDS file of A. lyrata
+
+curl ftp://ftp.ensemblgenomes.org/pub/plants/
+release-23/fasta/arabidopsis_lyrata/cds/
+Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz 
+-o Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+
+```
+When the download is finished you need to unzip the files and
+then start R to perform the following analyses:
+
+```{r,eval=FALSE}
+library(orthologr)
+
+# compute the divergence map of A. thaliana
+Athaliana_DM <- divergence_stratigraphy(
+                         query_file = "path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa",
+                         subject_file = "path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa",
+                         eval = "1E-5", ortho_detection = "RBH",
+                         comp_cores = 1, quiet = TRUE, clean_folders = TRUE )
+
+```
+
+In `divergence_stratigraphy()` the `query_file` and `subject_file` arguments take an
+character string storing the path to the corresponding __fasta__ files containing the protein
+sequences of these organisms. The `eval` is set to `1E-5` (default ; see [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html)) and BLAST reciprocal best hit is used for orthology inference. In case you work
+with a multicore machine, you can set the `comp_cores` argument to any number of cores
+supported by your machine. The `clean_folders` argument specifies whether the internal folder structure shall be deleted (cleaned) after processing is finished. In this case all output files returned by BLAST and MAFFT are deleted.
+
+
+
