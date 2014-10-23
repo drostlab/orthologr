@@ -1,0 +1,165 @@
+---
+title: "Orthology Inference using orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Orthology Inference using orthologr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(orthologr)
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+Orthology Inference is the process of detecting [orthologous genes](https://www.biostars.org/p/1595/) between a query organism and
+a set of subject organisms. Motivated by the discussion on which orthology inference method, paradigm or program is 
+the [most accurate](https://www.biostars.org/p/7568/) one, the `orthologr` package provides several interface functions to common
+orthology inference tools such as [OrthoMCL](http://www.orthomcl.org/orthomcl/), [ProteinOrtho](https://www.bioinf.uni-leipzig.de/Software/proteinortho/), [InParanoid](http://inparanoid.sbc.su.se/cgi-bin/index.cgi), and [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download) _best reciprocal hit_. Future versions of the `orthologr` package will also implement interfaces to non-BLAST based methods such as
+[MetaPhOrs](http://orthology.phylomedb.org/), [EnsemblCompara](http://www.ensembl.org/info/docs/api/compara/index.html), [PhylomeDB](http://phylomedb.org/), etc and will allow to benchmark the goodness of the corresponding orthology inference run via [Orthology Benchmarking](http://orthology.benchmarkservice.org/cgi-bin/gateway.pl).
+
+To perform orthology inference you can start with the `orthologs()` function provided by `orthologr`.
+The `orthologs()` function takes nucleotide or protein sequences stored in fasta files for a set of organisms 
+and performs orthology inference to detect orthologous genes within the given organisms based on selected orthology inference programs.
+
+The following interfaces are (yet) implemented in the `orthologs()` function:
+
+### BLAST based methods:
+
+- BLAST reciprocal best hit (RBH)
+
+- ProteinOrtho
+
+- OrthoMCL
+
+- InParanoid
+
+
+Using a simple example stored in the package environment of `orthologr` you
+can get an impression on how to use the `orthologs()` function.
+
+__Note:__ it is assumed that when using `orthologs()` all corresponding programs you
+want to use are already installed on your machine and are executable via either
+the default execution PATH or you specifically define the location of the executable file
+via the `path` argument that can be passed to `orthologs()`.
+
+```{r}
+
+library(orthologr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "RBH")
+
+
+```
+
+This small example returns 20 orthologous genes between _Arabidopsis thaliana_ and _Arabidopsis lyrata_.
+As you can see, the `query_file` and `subject_files` arguments take the proteomes of_Arabidopsis thaliana_ (`query_file`) and _Arabidopsis lyrata_ (`subject_files`) stored in fasta files. The `seq_type` argument specifies that you will pass protein sequences (proteomes)
+to the `orthologs()` function. In case you only have either genomes (DNA sequences) or CDS files, you can
+modify the `seq_type` argument to `seq_type = "dna"` (when working with only genome data) or `seq_type = "cds"` (when working with CDS files).
+Internally the `orthologs()` function will perform a CDS prediction using `predict_cds()` and will furthermore translate the predicted
+CDS sequences into protein sequences. Analogously when `seq_type = "cds"` is specified, internally the `orthologs()` function will
+translate all CDS sequences into protein sequences to run orthologx inference based on protein sequences.
+
+__Note__: future versions of `orthologr` will allow to perform orthology inference using DNA sequences.
+Nevertheless, since most orthology inference methods or paradigms rely on protein sequences, the first version
+of `orthologr` will follow this paradigm.
+
+In case you have to specify the path to the corresponding orthology inference method 
+you can use the `path` argument as follows:
+
+
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# using an external execution path
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "RBH", path = "here/path/to/blastp")
+
+
+```
+
+
+When you are working on a multicore machine, you can also specify the `comp_cores`
+argument that will allow you to run all analyses in parallel (to speed up computations).
+
+
+```{r}
+
+library(orthologr)
+
+# running orthology inference in parallel using 2 cores
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)
+
+
+```
+
+In this case 2 cores are being used to perform parallel processing.
+
+
+## Program specific use of the orthologs() function
+
+In this section a small examples will illustrate the use
+of the `orthologs()` function for each orthology inference program
+for which an interface is implemented in `orthologr`.
+
+
+### BLAST brest reciprocal hit
+
+As demonstrated before a simple call of `orthologs()` using `ortho_detection = "RBH"`
+can be performed as follows:
+
+```{r}
+
+library(orthologr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "RBH")
+
+
+```
+
+
+### ProteinOrtho
+
+ProteinOrtho is a orthology inference program to detect orthologous genes within different species. For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs [source](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html).
+
+```{r}
+
+library(orthologr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "PO")
+
+
+```
+
+
+
+
+### OrthoMCL
+
+
+### InParanoid
+
+
+
