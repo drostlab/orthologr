@@ -206,6 +206,14 @@ You don't need to worry about downloading and installing __gestimator__ and __Ka
 
 ### CDS prediction pipeline
 
+It is also possible to run __Divergence Stratigraphy__ or any other
+orthology inference method starting with unannotated genomes.
+
+For this purpose `orthologr` provides a function `predict_cds()` that allows
+you to perform gene prediction (CDS prediction) based on the gene prediction programs
+[Augustus](http://bioinf.uni-greifswald.de/augustus/) and [GeneMark](http://exon.gatech.edu/GeneMark/)
+and also allows you to translate the predicted genes to amino acids:  genes -> cds -> amino acids that
+can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inference__.
 
 - [Augustus](http://bioinf.uni-greifswald.de/augustus/) : Prediction of regions within eukaryotic genomic sequences that can be denoted as "predicted genes"
 
@@ -217,7 +225,7 @@ You don't need to worry about downloading and installing __gestimator__ and __Ka
 
 ### Use Cases
 
-Learn `orthologr` by use cases you are interested in.
+Learn `orthologr` by use cases.
 
 - [Orthology Inference using two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
 - dNdS estimation for two or multiple species

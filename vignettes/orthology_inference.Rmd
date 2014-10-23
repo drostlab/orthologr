@@ -156,6 +156,22 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 ```
 
+Again the `comp_cores` argument can be used to run ProteinOrtho in parallel.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", comp_cores = 2,
+          ortho_detection = "PO", clean_folders = TRUE)
+
+
+```
+
 
 
 
