@@ -1,0 +1,94 @@
+---
+title: "dNdS estimation using orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dNdS estimation using orthologr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(orthologr)
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
+This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral
+with nonsynonymous substitution rates (dN), which are exposed to selection as they 
+change the amino acid composition of a protein ([Mugal et al., 2013](http://mbe.oxfordjournals.org/content/31/1/212)).
+
+The `orthologr` package provides a function named `dNdS()` to perform dNdS estimation on pairs of orthologous genes.
+The `dNdS()` function takes the CDS files of two organisms of interest (`query_file` and `subject_file`) 
+and computes the dNdS estimation values for orthologous gene pairs between these organisms.
+
+The following pipieline resembles the dNdS estimation process:
+
+ 1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
+ 2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
+ 3) Codon Alignment: e.g. pal2nal program
+ 4) dNdS estimation: e.g. [Yang, Z. and Nielsen, R. (2000)](http://mbe.oxfordjournals.org/content/17/1/32.short) (YN)
+
+
+The following example shall illustrate a dNdS estimation process.
+
+
+```{r}
+
+library(orthologr)
+
+# get a dNdS table using:
+# 1) reciprocal best hit for orthology inference (RBH)
+# 2) clustalw for pairwise amino acid alignments
+# 3) pal2nal for codon alignments
+# 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
+# 5) single core processing 'comp_cores = 1'
+dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+ortho_detection = "RBH", aa_aln_type = "multiple",
+aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
+dnds_est.method = "YN", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+
+
+```
+
+The output includes `NA` values. To filter for `NA` values or a specific `dnds.threshold`,
+you can use the `filter_dNdS()` function. The `filter_dNdS()` function takes the output data.table 
+returned by `dNdS()` and filters the output by the following criteria:
+
+1) all dN values having an NA value or omitted
+
+2) all dS values having an NA value or omitted
+
+3) all dNdS values >= the specified dnds.threshold are omitted
+
+
+```{r}
+
+library(orthologr)
+
+# get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
+
+Ath_Aly_dnds <- dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                     subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                     dnds_est.method = "YN", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+
+        
+# filter for:
+# 1) all dN values having an NA value or omitted
+# 2) all dS values having an NA value or omitted
+# 3) all dNdS values >= 2 are omitted
+
+filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
+
+
+```
+
+
+
+
+

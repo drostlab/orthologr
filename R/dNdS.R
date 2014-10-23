@@ -768,7 +768,7 @@ compute_dnds <- function(complete_tbl,
         
 
         if(clean_folders)
-                clean_all_folders(c("_alignment", "_blast_db"))
+                clean_all_folders(c("_alignment", "_blast_db","_calculation"))
 
         # returning the dNdS table as data.table object
         return(dNdS_tbl)
