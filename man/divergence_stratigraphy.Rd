@@ -66,12 +66,32 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 \examples{
 \dontrun{
 
+
  # performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval = "1E-5", ortho_detection = "RBH", comp_cores = 1,
+      quiet = TRUE, clean_folders = TRUE)
+
+
+
+ # performing standard divergence stratigraphy using the mafft_path argument to specify
+ # the path to the MAFFT program
  divergence_stratigraphy(
       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       eval = "1E-5", ortho_detection = "RBH",mafft_path = "path/to/mafft",
       comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+
+
+ # Divergence Stratigraphy can also be performed in parallel
+ # (on a multicore machine) using the 'comp_cores' argument
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval = "1E-5", ortho_detection = "RBH", comp_cores = 2,
+      quiet = TRUE, clean_folders = TRUE)
 
 
  }

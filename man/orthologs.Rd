@@ -5,7 +5,7 @@
 \usage{
 orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, format = "fasta", ortho_detection = "RBH",
-  path = NULL, comp_cores = 1, quiet = FALSE)
+  path = NULL, comp_cores = 1, quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -34,6 +34,9 @@ For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes

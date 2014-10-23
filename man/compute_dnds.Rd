@@ -6,7 +6,7 @@
 compute_dnds(complete_tbl, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
   codon_aln_tool = "pal2nal", dnds_est.method = "YN", quiet = FALSE,
-  comp_cores = 1)
+  comp_cores = 1, clean_folders = FALSE)
 }
 \arguments{
 \item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence),
@@ -28,6 +28,9 @@ Default is \code{aa_aln_type} = "multiple".}
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \description{
 This function takes a vector containing the

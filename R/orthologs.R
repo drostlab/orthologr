@@ -33,6 +33,8 @@
 #' "IP": path to InParanoid.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @details This function takes sequence files of a query organism and a subject organism and performs orthology inference
 #' using a defined orthology inference method to dectect orthologous genes.
 #' 
@@ -109,7 +111,7 @@
 orthologs <- function(query_file,subject_files, seq_type = "protein",
                       outgroup_file = NULL, format = "fasta",
                       ortho_detection = "RBH", path = NULL, 
-                      comp_cores = 1, quiet = FALSE){
+                      comp_cores = 1, quiet = FALSE, clean_folders = FALSE){
         
         if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -124,6 +126,9 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                   seq_type = seq_type, format = format))
                 
                 
+                if(clean_folders)
+                        clean_all_folders("_blast_db")
+                
         }
         
         
@@ -135,7 +140,9 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                      po_path = path, comp_cores = comp_cores,
                                      seq_type = seq_type, format = format))
                 
-                
+               
+                if(clean_folders)
+                        clean_all_folders("_ProteinOrtho")
                 
         }
         
@@ -149,6 +156,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                  seq_type = seq_type, format = format))
                 
                 
+                if(clean_folders)
+                        clean_all_folders("_OrthoMCL")
                 
         }
         
@@ -161,7 +170,13 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                    seq_type = seq_type, format = format)
                 
                 
+                if(clean_folders)
+                        clean_all_folders("_InParanoid")
+                
+                
         }
+        
+
         
         return(ortho_tbl)
         

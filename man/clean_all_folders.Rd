@@ -3,10 +3,13 @@
 \alias{clean_all_folders}
 \title{Function to delete the internal folder hierarchy}
 \usage{
-clean_all_folders()
+clean_all_folders(foldernames)
+}
+\arguments{
+\item{foldernames}{a character vector storing the folder names that shall be deleted.}
 }
 \value{
-Nothing is being returned.
+a void function.
 }
 \description{
 This function deletes all internal folders that have been created
@@ -14,13 +17,14 @@ during pipeline processing. Internally this function uses \code{\link{unlink}}
 to delete all folders created by the pipline.
 }
 \details{
-Following folders are being removed: "_alignment", "_blast_db", and "_calculation".
+This function takes a vector storing the names of the folders
+that shall be deleted, e.g.: \code{clean_all_folders( c("_alignment", "_blast_db", "_calculation") )}.
 }
 \examples{
 \dontrun{
 
 # in case internal folders exist, they are being removed
-clean_all_folders()
+clean_all_folders(c("_alignment", "_blast_db", "_calculation"))
 
 }
 }

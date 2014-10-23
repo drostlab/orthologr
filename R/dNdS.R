@@ -25,6 +25,8 @@
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine. 
 #' @param quiet a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
 #' Default is \code{quiet} = \code{FALSE}.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details 
 #' 
@@ -106,7 +108,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                  aa_aln_tool = "clustalw", aa_aln_path = NULL, 
                  aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
                  dnds_est.method = "YN", comp_cores = 1, 
-                 quiet = FALSE){
+                 quiet = FALSE, clean_folders = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -202,7 +204,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                        aa_aln_path = aa_aln_path,
                        codon_aln_tool = codon_aln_tool, 
                        dnds_est.method = dnds_est.method, quiet = quiet,
-                       comp_cores = comp_cores)
+                       comp_cores = comp_cores, clean_folders = clean_folders)
                        )   
 }
 
@@ -502,6 +504,8 @@ substitutionrate <- function(file, est.method, format = "fasta",
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function takes the amino acid and CDS sequences two orthologous genes
 #' and writes the corresponding amino acid and CDS sequences as fasta file into
@@ -522,7 +526,8 @@ substitutionrate <- function(file, est.method, format = "fasta",
 compute_dnds <- function(complete_tbl,
                          aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
                          aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-                         dnds_est.method = "YN", quiet = FALSE, comp_cores = 1){
+                         dnds_est.method = "YN", quiet = FALSE, comp_cores = 1,
+                         clean_folders = FALSE){
         
         if(comp_cores > parallel::detectCores())
                 stop("You assigned more cores to the comp_cores argument than are availible on your machine.")
@@ -761,6 +766,10 @@ compute_dnds <- function(complete_tbl,
 
         setkeyv(dNdS_tbl,c("query_id","subject_id"))
         
+
+        if(clean_folders)
+                clean_all_folders(c("_alignment", "_blast_db"))
+
         # returning the dNdS table as data.table object
         return(dNdS_tbl)
 

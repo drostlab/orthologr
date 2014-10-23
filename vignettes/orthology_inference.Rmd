@@ -56,7 +56,7 @@ library(orthologr)
 # and fasta sequence files storing protein sequences
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH")
+          seq_type = "protein", ortho_detection = "RBH", clean_folders = TRUE)
 
 
 ```
@@ -85,7 +85,8 @@ library(orthologr)
 # using an external execution path
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", path = "here/path/to/blastp")
+          seq_type = "protein", ortho_detection = "RBH", 
+          path = "here/path/to/blastp", clean_folders = TRUE)
 
 
 ```
@@ -102,13 +103,15 @@ library(orthologr)
 # running orthology inference in parallel using 2 cores
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)
+          seq_type = "protein", ortho_detection = "RBH", 
+          comp_cores = 2, clean_folders = TRUE)
 
 
 ```
 
-In this case 2 cores are being used to perform parallel processing.
-
+In this case 2 cores are being used to perform parallel processing. The `clean_folders` argument
+specifies that all files returned by the corresponding orthology inference method (and written to your hard drive)
+are removed after analyses.
 
 ## Program specific use of the orthologs() function
 
@@ -130,7 +133,7 @@ library(orthologr)
 # and fasta sequence files storing protein sequences
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH")
+          seq_type = "protein", ortho_detection = "RBH", clean_folders = TRUE)
 
 
 ```
@@ -148,7 +151,7 @@ library(orthologr)
 # and fasta sequence files storing protein sequences
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "PO")
+          seq_type = "protein", ortho_detection = "PO", clean_folders = TRUE)
 
 
 ```

@@ -7,7 +7,7 @@ dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
   ortho_detection = "RBH", blast_path = NULL, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
   codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1,
-  quiet = FALSE)
+  quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -47,6 +47,9 @@ Right now only "pal2nal" can be selected as codon alignment tool.}
 
 \item{quiet}{a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
 Default is \code{quiet} = \code{FALSE}.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 A data.table storing the dNdS values of the correspnding genes.

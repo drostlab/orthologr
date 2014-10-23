@@ -7,32 +7,42 @@ NULL
 #' @description This function deletes all internal folders that have been created
 #' during pipeline processing. Internally this function uses \code{\link{unlink}}
 #' to delete all folders created by the pipline.
+#' @param foldernames a character vector storing the folder names that shall be deleted.
 #' @author Hajk-Georg Drost
-#' @details Following folders are being removed: "_alignment", "_blast_db", and "_calculation".
-#' @return Nothing is being returned.
+#' @details This function takes a vector storing the names of the folders
+#' that shall be deleted, e.g.: \code{clean_all_folders( c("_alignment", "_blast_db", "_calculation") )}.
+#' @return a void function.
 #' @examples \dontrun{
 #' 
 #' # in case internal folders exist, they are being removed
-#' clean_all_folders() 
+#' clean_all_folders(c("_alignment", "_blast_db", "_calculation")) 
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
 #' @export
-clean_all_folders <- function(){
-        
-        if(file.exists("_alignment")){
-                unlink("_alignment",recursive = TRUE, force = TRUE)
-        }
-        
-        if(file.exists("_blast_db")){
-                unlink("_blast_db",recursive = TRUE, force = TRUE)
-        }
+clean_all_folders <- function(foldernames){
                 
-        
-        if(file.exists("_calculation")){
-                unlink("_calculation",recursive = TRUE, force = TRUE)
-        }
+        if(length(foldernames) > 1){
                 
+                for(i in 1:length(foldernames)){
+                        
+                        if(file.exists(foldernames[i])){
+                                
+                                unlink(foldernames[i],recursive = TRUE, force = TRUE)
+                        }
+                        
+                        
+                }
+                
+        } else {
+                
+                if(file.exists(foldernames)){
+                        
+                        unlink(foldernames,recursive = TRUE, force = TRUE)
+                }
+        
+        }
+        
 }
 
 

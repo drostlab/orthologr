@@ -219,7 +219,7 @@ You don't need to worry about downloading and installing __gestimator__ and __Ka
 
 Learn `orthologr` by use cases you are interested in.
 
-- Orthology Inference using two or multiple species
+- [Orthology Inference using two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
 - dNdS estimation for two or multiple species
 - [Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
 - Perform BLAST searches to find conserved regions in your set of subject organisms
