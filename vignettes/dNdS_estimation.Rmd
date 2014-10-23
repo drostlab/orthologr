@@ -34,6 +34,11 @@ The following pipieline resembles the dNdS estimation process:
  4) dNdS estimation: e.g. [Yang, Z. and Nielsen, R. (2000)](http://mbe.oxfordjournals.org/content/17/1/32.short) (YN)
 
 
+__Note:__ it is assumed that when using `dNdS()` all corresponding multiple sequence alignment programs you
+want to use are already installed on your machine and are executable via either
+the default execution PATH or you specifically define the location of the executable file
+via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`.
+
 The following example shall illustrate a dNdS estimation process.
 
 
@@ -89,6 +94,63 @@ filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
 ```
 
 
+Instead if using a multiple alignment tool for pairwise alignments you can also
+choose a global pairwise alignment of orthologous genes based on the Needleman-Wunsch algorithm.
+For this purpose the argument `aa_aln_type` must be set to `aa_aln_type = "pairwise"` and `aa_aln_tool = "NW"` 
+for Needleman-Wunsch.
 
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# get a dNdS table using:
+# 1) reciprocal best hit for orthology inference (RBH)
+# 2) pairwise amino acid alignments using Needleman-Wunsch
+# 3) pal2nal for codon alignments
+# 4) Comeron (1995) for dNdS estimation
+# 5) single core processing 'comp_cores = 1'
+dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+ortho_detection = "RBH", aa_aln_type = "pairwise",
+aa_aln_tool = "NW", codon_aln_tool = "pal2nal", 
+dnds_est.method = "Comeron", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+
+
+```
+
+The `dNdS()` function can be used choosing the folllowing options:
+
+* `ortho_detection` : `RBH` (BLAST best reciprocal hit), `BH` (BLAST best reciprocal hit), `PO` (ProteinOrtho), `OrthoMCL` (OrthoMCL), `IP` (InParanoid)
+* `aa_aln_type` : `multiple` or `pairwise`
+* `aa_aln_tool` : `clustalw`, `t_coffee`, `muscle`, `clustalo`, `mafft`, and `NW` (in case `aa_aln_type = "pairwise"`)
+* `codon_aln_tool` : `pal2nal`
+* `dnds_est.method` : `Li`, `Comeron`, `NG`, `LWL`, `LPB`, `MLWL`, `YN`, and `MYN`
+
+Please see `?dNdS` for details.
+
+In case your BLAST program, or multiple alignment program can not be executed from the default execution PATH
+you can specify the `aa_aln_path` or `blast_path` arguments.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# using the `aa_aln_path` or `blast_path` arguments
+dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+ortho_detection = "RBH",blast_path = "here/path/to/blastp",
+aa_aln_type = "multiple", aa_aln_tool = "clustalw", 
+aa_aln_path = "here/path/to/clustalw",
+codon_aln_tool = "pal2nal", dnds_est.method = "Comeron", 
+comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+
+
+```
+
+
+## Advanced options
+
+Several additional arguments that can be passed to `dNdS()` allow to use more advanced 
+options of several interface programs.
 
 

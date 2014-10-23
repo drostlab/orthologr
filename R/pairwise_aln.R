@@ -24,6 +24,7 @@
 #'                                                                                                                                                          
 #' }
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
+#' @import Biostrings
 #' @export
 pairwise_aln <- function(file, tool = "NW", seq_type = "protein", 
                          get_aln = FALSE, pairwise_aln_name = NULL,
@@ -41,11 +42,6 @@ pairwise_aln <- function(file, tool = "NW", seq_type = "protein",
            
         if(seq_type == "protein")
                 seqtype <- "AA"
-        
-        # due to the discussion of no visible binding for global variable for
-        # data.table objects see:
-        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        pattern <- subject <- NULL
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep

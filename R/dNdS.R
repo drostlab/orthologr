@@ -123,6 +123,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 if(!is.multiple_aln_tool(aa_aln_tool))
                         stop("Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type = 'pairwise'.")
         }
+        
         if(aa_aln_type == "pairwise"){
                 if(!is.pairwise_aln_tool(aa_aln_tool))
                         stop("Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type = 'multiple'.")
