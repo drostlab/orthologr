@@ -129,9 +129,16 @@ enabling orthology detection ([orthology inference](http://link.springer.com/pro
  
  - [__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) : An orthology inference tool for large-scale analysis
  
- - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus-all BLAST of all compared protein sequences
+ * `ProteinOrtho()`: Interface function to ProteinOrtho
+ 
+ - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus all BLAST of all compared protein sequences
+ 
+ * `OrthoMCL()`: Interface function to OrthoMCL
  
  - [__InParanoid__](http://inparanoid.sbc.su.se/cgi-bin/index.cgi) : An Orthology Inference tool determining ortholog groups with inparalogs
+
+* `InParanoid()`: Interface function to InParanoid
+
 
 ### Multiple Alignment Tools
 
@@ -179,7 +186,7 @@ the the dN, dS, and dNdS values of pairs of proteins.
 Based on implementations provided by [gestimator](http://molpopgen.org/software/libsequence.html), [ape](http://www.cran.r-project.org/web/packages/ape/index.html), and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
 the following dNdS Estimation Methods are available in `orthologr`:
 
- - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the ape package
+ - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the [ape package](http://cran.r-project.org/web/packages/ape/index.html)
 
  - [Comeron](http://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
 
@@ -202,6 +209,11 @@ You don't need to worry about downloading and installing __gestimator__ and __Ka
 
 - [Augustus](http://bioinf.uni-greifswald.de/augustus/) : Prediction of regions within eukaryotic genomic sequences that can be denoted as "predicted genes"
 
+* `augustus()`: Interface function for the gene prediction program augustus
+
+- [GeneMark](http://exon.gatech.edu/GeneMark/): A family of gene prediction programs for all kingdoms of life
+
+* `genemark()` : Interface function for the gene prediction program GeneMark
 
 ### Use Cases
 
@@ -209,7 +221,7 @@ Learn `orthologr` by use cases you are interested in.
 
 - Orthology Inference using two or multiple species
 - dNdS estimation for two or multiple species
-- Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy
+- [Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
 - Perform BLAST searches to find conserved regions in your set of subject organisms
 
 
