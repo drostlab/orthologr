@@ -42,7 +42,7 @@ via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`.
 The following example shall illustrate a dNdS estimation process.
 
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
@@ -72,15 +72,18 @@ returned by `dNdS()` and filters the output by the following criteria:
 3) all dNdS values >= the specified dnds.threshold are omitted
 
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
 # get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
 
-Ath_Aly_dnds <- dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-                     subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-                     dnds_est.method = "YN", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+Ath_Aly_dnds <- dNdS(
+                  query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                  dnds_est.method = "YN", comp_cores = 1, 
+                  clean_folders = TRUE, quiet = TRUE
+                  )
 
         
 # filter for:
@@ -150,7 +153,48 @@ comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
 
 ## Advanced options
 
-Several additional arguments that can be passed to `dNdS()` allow to use more advanced 
+Additional arguments that can be passed to `dNdS()` allow to use more advanced 
 options of several interface programs.
 
+To pass additional parameters to the interface programs, you can use the
+`blast_params` and `aa_aln_params`. The `aa_aln_params` argument assumes
+that when you chose e.g. `aa_aln_tool = "mafft"` you will pass the corresponding
+addtional paramers in MAFFT notation.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
+# using additional parameters:
+
+# get a dNdS table using:
+# 1) reciprocal best hit for orthology inference (RBH)
+# 2) multiple amino acid alignments using MAFFT
+# 3) pal2nal for codon alignments
+# 4) Comeron (1995) for dNdS estimation
+# 5) single core processing 'comp_cores = 1'
+Ath_Aly_dnds <- dNdS(
+                  query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                  ortho_detection = "RBH",blast_params = "-matrix BLOSUM80",
+                  aa_aln_tool = "mafft",aa_aln_params = "--maxiterate 1 --clustalout",
+                  dnds_est.method = "Comeron", comp_cores = 1, clean_folders = TRUE, quiet = TRUE
+                  )
+
+        
+# filter for:
+# 1) all dN values having an NA value or omitted
+# 2) all dS values having an NA value or omitted
+# 3) all dNdS values >= 0.1 are omitted
+
+filter_dNdS(Ath_Aly_dnds, dnds.threshold = 0.1)
+
+
+```
+
+Here `blast_params` and `aa_aln_params` take an character string specifying the parameters
+that shall passed to BLAST and MAFFT. The notation of these parameters must follow the 
+command line call of the stand alone versions of BLAST and MAFFT: e.g. `blast_params = "blast_params = -matrix BLOSUM80"`
+and `aa_aln_params = "--maxiterate 1 --clustalout"`.
 

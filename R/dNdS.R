@@ -12,6 +12,7 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
 #' Default is \code{aa_aln_type} = "multiple".
@@ -30,51 +31,92 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost 
 #' @details 
 #' 
-#' #' The dNdS estimation methods available in this function are:
 #' 
-#' - "Li" : Li's method (1993) -> provided by the ape package
+#' The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
+#' This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral
+#' with nonsynonymous substitution rates (dN), which are exposed to selection as they 
+#' change the amino acid composition of a protein (Mugal et al., 2013 \url{http://mbe.oxfordjournals.org/content/31/1/212}).
 #' 
-#' - "Comeron" : Comeron's method (1995)
+#' The \code{orthologr} package provides a function named \code{dNdS()} to perform dNdS estimation on pairs of orthologous genes.
+#' The \code{dNdS()} function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file}) 
+#' and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 #' 
-#' dNdS estimation methods provided by KaKs_Calculator 1.2 :
+#' The following pipieline resembles the dNdS estimation process:
+#'         
+#' 1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
 #' 
-#' Approximate Methods:
+#' 2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
 #' 
-#' "NG": Nei, M. and Gojobori, T. (1986)
+#' 3) Codon Alignment: e.g. pal2nal program
 #' 
-#' "LWL": Li, W.H., et al. (1985)
+#' 4) dNdS estimation: e.g. Yang, Z. and Nielsen, R. (2000) \url{http://mbe.oxfordjournals.org/content/17/1/32.short}
 #' 
-#' "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
 #' 
-#' "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' Note: it is assumed that when using \code{dNdS()} all corresponding multiple sequence alignment programs you
+#' want to use are already installed on your machine and are executable via either
+#' the default execution \code{PATH} or you specifically define the location of the executable file
+#' via the \code{aa_aln_path} or \code{blast_path} argument that can be passed to \code{dNdS()}.
 #' 
-#' "YN": Yang, Z. and Nielsen, R. (2000)
+#' The \code{dNdS()} function can be used choosing the folllowing options:
 #' 
-#' "MYN" (Modified YN): Zhang, Z., et al. (2006)
+#' \itemize{
+#' \item \code{ortho_detection} : 
+#'    \itemize{  
+#'    \item \code{"RBH"} (BLAST best reciprocal hit)
+#'     \item \code{"BH"} (BLAST best reciprocal hit) 
+#'     \item \code{"PO"} (ProteinOrtho) 
+#'     \item \code{"OrthoMCL"} (OrthoMCL)
+#'     \item \code{"IP"} (InParanoid)
+#'      }
+#'      
+#' \item \code{aa_aln_type} : 
+#'  \itemize{
+#'   \item \code{"multiple"}
+#'   \item \code{"pairwise"}
+#'  }
 #' 
-#' Maximum-Likelihood Methods:
+#' \item \code{aa_aln_tool} :
+#' \itemize{
+#'  \item \code{"clustalw"}
+#'  \item \code{"t_coffee"}
+#'  \item \code{"muscle"}
+#'  \item \code{"clustalo"}
+#'  \item \code{"mafft"}
+#'  \item \code{"NW"} (in case \code{aa_aln_type = "pairwise"})
+#' }
 #' 
-#' GY: Goldman, N. and Yang, Z. (1994)
+#' \item \code{codon_aln_tool} :
+#' \itemize{
+#'  \item \code{"pal2nal"}
+#'  }
+#' \item \code{dnds_est.method} : 
+#' \itemize{
+#' \item "Li" : Li's method (1993)
+#' \item "Comeron" : Comeron's method (1995)
+#' \item "NG": Nei, M. and Gojobori, T. (1986)
+#' \item "LWL": Li, W.H., et al. (1985)
+#' \item "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+#' \item "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' \item "YN": Yang, Z. and Nielsen, R. (2000)
+#' \item "MYN" (Modified YN): Zhang, Z., et al. (2006)
 #' 
-#' MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
+#' }
 #' 
-#' MS (Model Selection) and MA (Model Averaging) over:
+#' }
 #' 
-#' JC,
-#' F81,
-#' K2P, 
-#' HKY,
-#' TrNEF,
-#' TrN,
-#' K3P,
-#' K3PUF,
-#' TIMEF,
-#' TIM,
-#' TVMEF,
-#' TVM,
-#' SYM,
-#' GTR
+#' @references
 #' 
+#' seqinr: \url{http://seqinr.r-forge.r-project.org/}
+#' 
+#' Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator: Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263. 
+#' 
+#' KaKs_Calculator: \url{https://code.google.com/p/kaks-calculator/} [GNU GPL-3 license]
+#' 
+#' Paradis, E. (2012) Analysis of Phylogenetics and Evolution with R (Second Edition). New York: Springer.
+#'
+#' Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics and evolution in R language. Bioinformatics, 20, 289–290.
+#' 
+#' More information on \pkg{ape} can be found at \url{http://ape-package.ird.fr/}.
 #' 
 #' @return A data.table storing the dNdS values of the correspnding genes.
 #' @examples \dontrun{
@@ -100,11 +142,11 @@
 #' 
 #' }
 #' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
-#' \code{\link{blast_rec}}, \code{\link{read.cds}}
+#' \code{\link{blast_rec}}, \code{\link{read.cds}} 
 #' @export
 dNdS <- function(query_file, subject_file, seq_type = "protein",
                  format = "fasta", ortho_detection = "RBH", 
-                 blast_path = NULL, aa_aln_type = "multiple", 
+                 blast_params = NULL, blast_path = NULL, aa_aln_type = "multiple", 
                  aa_aln_tool = "clustalw", aa_aln_path = NULL, 
                  aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
                  dnds_est.method = "YN", comp_cores = 1, 
@@ -142,8 +184,9 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy( blast_best(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores,
-                                   seq_type = "cds", format = format))
+                                                          blast_params = blast_params, path = blast_path, 
+                                                          comp_cores = comp_cores,seq_type = "cds",
+                                                          format = format))
                                                 
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
@@ -161,8 +204,9 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_file, 
-                                   path = blast_path, comp_cores = comp_cores,
-                                   seq_type = "cds", format = format))
+                                  blast_params = blast_params, path = blast_path, 
+                                  comp_cores = comp_cores, seq_type = "cds", 
+                                  format = format))
                 
                 
                 q_cds <- read.cds(file = query_file, format = format)
