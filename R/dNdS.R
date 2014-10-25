@@ -14,6 +14,7 @@
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param ortho_path a character string specifying the path to the orthology inference program such as \code{\link{ProteinOrtho}}, etc. (in case you don't use the default path).
 #' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
 #' Default is \code{aa_aln_type} = "multiple".
 #' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
@@ -146,7 +147,8 @@
 #' @export
 dNdS <- function(query_file, subject_file, seq_type = "protein",
                  format = "fasta", ortho_detection = "RBH", 
-                 blast_params = NULL, blast_path = NULL, aa_aln_type = "multiple", 
+                 blast_params = NULL, blast_path = NULL, 
+                 ortho_path = NULL, aa_aln_type = "multiple", 
                  aa_aln_tool = "clustalw", aa_aln_path = NULL, 
                  aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
                  dnds_est.method = "YN", comp_cores = 1, 
@@ -180,6 +182,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
+        # use BLAST best hit as orthology inference method
         if(ortho_detection == "BH"){
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
@@ -199,6 +202,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
     
         }
         
+        # use BLAST best reciprocal hit as orthology inference method
         if(ortho_detection == "RBH"){
                            
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
@@ -225,7 +229,32 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 
                 
         }
-    
+        
+        # use ProteinOrtho as orthology inference method
+        if(ortho_detection == "PO"){
+                
+                # seq_type = "cds" -> dNdS() needs CDS files as input!
+                hit.table <- data.table::copy(
+                        orthologs(query_file = query_file, subject_files = subject_file, 
+                                  ortho_detection = "PO",path = ortho_path,
+                                  comp_cores = comp_cores, seq_type = "cds", 
+                                  format = format))
+                
+        }
+        
+        # use OrthoMCL as orthology inference method
+        if(ortho_detection == "OrthoMCL"){
+                
+                
+        }
+        
+        # use InParanoid as orthology inference method
+        if(ortho_detection == "IP"){
+         
+                
+                
+        }
+        
         data.table::setnames(q_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
         data.table::setnames(s_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
         data.table::setnames(q_aa, old=c("geneids", "seqs"), new = c("query_id","query_aa"))
