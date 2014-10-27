@@ -37,6 +37,18 @@ devtools::install_github("HajkD/orthologr", auth_token = "here your token")
 
 ```
 
+
+## Use Cases
+
+Learn `orthologr` by use cases provided by the following tutorials: 
+
+- [Orthology Inference using two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
+- [dNdS estimation for two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
+- [Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
+- [Perform BLAST searches to find conserved regions in your set of subject organisms](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd)
+
+
+
 ## Installing prerequisite tools
 
 Since many function have been implemented as interface functions between
@@ -223,14 +235,6 @@ can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inferenc
 
 * `genemark()` : Interface function for the gene prediction program GeneMark
 
-### Use Cases
-
-Learn `orthologr` by use cases.
-
-- [Orthology Inference using two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
-- [dNdS estimation for two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
-- [Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
-- Perform BLAST searches to find conserved regions in your set of subject organisms
 
 
 

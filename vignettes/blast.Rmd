@@ -1,0 +1,94 @@
+---
+title: "BLAST searches using orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BLAST searches  using orthologr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(orthologr)
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+
+A major part of __Divergence Statigraphy__ is orthologous gene detection based on
+BLAST best reciprocal hit. Hence the `orthologr` package provides a vast
+applicability and advanced BLAST interface functions to perform BLAST searches
+within the R language environment.
+
+Again it is assumed that when using the following functions implemented in `orthologr` 
+you have an executable BLAST+ stand-alone version installed on your system. 
+
+The following BLAST interface functions are implemented in `orthologr`:
+
+* set_blast() : a function preparing the parameters and databases for subsequent BLAST searches 
+* blast() : simple interface function to BLAST+
+* blast_best() : optimized function to perform BLAST best hit searches
+* blast_rec() : a function to perform a BLAST+ best reciprocal hit (BRH) searches
+* advanced_blast() : advanced interface function to BLAST+ (integrated SQLite connection to the output hit table)
+* advanced_makedb() : advanced interface function to makeblastdb
+
+All aforementioned functions are returned as data.table object to enable fast accessibility and
+very fast computations (data manipulations).
+
+
+
+## Performing BLAST searches
+
+The `orthologr` package stores 20 example genes (orthologs) between _Arabidopsis thaliana_
+and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a simple
+BLAST search with standard parameters provided by the `blast_best()` function.
+
+The default `e-value` of best hit searches in `1E-5` and the default `blast_algorithm`
+is `blastp`.
+
+```{r}
+
+# performing gene orthology inference using the best hit (BH) method
+blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+
+```
+
+
+So in detail the default search looks like this:
+
+```{r}
+
+blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+           seq_type = "cds", format = "fasta", blast_algorithm = "blastp", eval = "1E-5", 
+           path = NULL, comp_cores = 1, blast_params = NULL, detailed_output = FALSE)
+
+
+```
+
+The `query_file` and `subject_file` arguments specify the path to the corresponding 
+fasta files storing the `CDS` files, `amino acid` files, or `genome` files of the query organism and subject organism
+of interest. Make sure that when using `CDS`files, `amino acid` files, or `genome` files the 
+corresponding argument `seq_type` must be adapted accoring to the input data format.
+
+Use :
+
+* `CDS` files -> `seq_type = "cds"`
+* `amino acid` files -> `seq_type = "protein"`
+* `genome` files -> `seq_type = "dna"`
+
+The `format` argument specifies the input file format, e.g. "fasta" or "gbk".
+The `blast_algorithm` argument specifies the BLAST program (algorithm) that shall be
+used to perform BLAST searches, e.g. "blastp","blastn","tblastn",etc. Again, the `eval`
+argument defines the default e-value that shall be chosen as best hit threshold.
+
+
+
+
+
+
