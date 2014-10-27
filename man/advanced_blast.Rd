@@ -6,7 +6,8 @@
 advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", path = NULL, blast_params = NULL,
   makedb_type = "protein", taxonomy = FALSE, db_path = NULL,
-  sql_database = FALSE, session_name = NULL, write.only = FALSE)
+  sql_database = FALSE, session_name = NULL, write.only = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -44,6 +45,9 @@ This is only useful when the amount of data does not fit in-memory anymore.}
 
 \item{write.only}{a logical value specifying whether the resulting blast output should be returned as
 data.table or database connection. Default is \code{write.only} = \code{FALSE}.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 the \code{advanced_blast} function creates a folder named '_blast_db' and stores

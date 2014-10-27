@@ -5,7 +5,8 @@
 \usage{
 blast_best(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
-  comp_cores = 1, blast_params = NULL, detailed_output = FALSE)
+  comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -32,6 +33,9 @@ that a set of default parameters is used when running BLAST.}
 
 \item{detailed_output}{a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
 ortholog pairs.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 A data.table as returned by the \code{blast} function, storing the geneids

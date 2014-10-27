@@ -5,7 +5,7 @@
 \usage{
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
-  comp_cores = 1, blast_params = NULL)
+  comp_cores = 1, blast_params = NULL, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -30,6 +30,9 @@ used to run BLAST searches.}
 
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 A data.table storing the BLAST hit table returned by BLAST.

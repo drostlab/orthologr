@@ -14,6 +14,8 @@
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
 #' first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
@@ -76,7 +78,7 @@
 blast_rec <- function(query_file, subject_file, seq_type = "cds",
                       format = "fasta", blast_algorithm = "blastp", 
                       eval = "1E-5", path = NULL, comp_cores = 1, 
-                      blast_params = NULL){
+                      blast_params = NULL, clean_folders = FALSE){
         
         orthoA <- blast_best(query_file,subject_file, 
                              format = format, seq_type = seq_type,
@@ -86,7 +88,8 @@ blast_rec <- function(query_file, subject_file, seq_type = "cds",
         orthoB <- blast_best(subject_file,query_file,
                              seq_type = seq_type,
                              format = format,blast_algorithm = blast_algorithm,
-                             path = path, comp_cores = comp_cores, blast_params = blast_params)
+                             path = path, comp_cores = comp_cores, blast_params = blast_params,
+                             clean_folders = clean_folders)
         
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         

@@ -14,6 +14,8 @@
 #' used to run BLAST searches.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references 
 #' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
@@ -70,7 +72,7 @@
 blast <- function(query_file, subject_file, seq_type = "cds",
                   format = "fasta", blast_algorithm = "blastp",
                   eval = "1E-5", path = NULL, comp_cores = 1,
-                  blast_params = NULL){
+                  blast_params = NULL, clean_folders = FALSE){
         
         if(!is.element(blast_algorithm,c("blastp")))
                 stop("Please choose a valid BLAST mode.")
@@ -202,6 +204,9 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
                   
                   setwd(file.path(currwd))
+                  
+                  if(clean_folders)
+                          clean_all_folders("_blast_db")
                   
                   return(hit_table)
          }, error = function(){ stop(paste0("File ",output, "could not be read correctly.",

@@ -15,6 +15,8 @@
 #' that a set of default parameters is used when running BLAST.
 #' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
 #' ortholog pairs.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
 #' @references
@@ -81,7 +83,8 @@
 blast_best <- function(query_file, subject_file, seq_type = "cds",
                        format = "fasta", blast_algorithm = "blastp", 
                        eval = "1E-5", path = NULL, comp_cores = 1,
-                       blast_params = NULL, detailed_output = FALSE){
+                       blast_params = NULL, detailed_output = FALSE,
+                       clean_folders = FALSE){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -102,7 +105,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
                             comp_cores = comp_cores,blast_params = ifelse(!is.null(blast_params),
                                                                           paste0(blast_params,
                                                                                  " ",default_pars),
-                                                                          default_pars))
+                                                                          default_pars), clean_folders = clean_folders)
         
         if(!detailed_output){
                 
@@ -116,7 +119,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
         
         data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
         
-        
+   
         # return a data.table storing only the best hits from the resulting 
         # BLAST search
         return( besthit_tbl )

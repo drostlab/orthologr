@@ -23,6 +23,8 @@
 #' @param session_name a character string specifying the name of the BLAST output. Default is \code{session_name} = \code{NULL}.
 #' @param write.only a logical value specifying whether the resulting blast output should be returned as
 #' data.table or database connection. Default is \code{write.only} = \code{FALSE}.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @details
 #'  
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
@@ -149,7 +151,7 @@ advanced_blast <- function(query_file, subject_file,
                            blast_params = NULL, makedb_type = "protein",
                            taxonomy = FALSE, db_path = NULL,
                            sql_database = FALSE, session_name = NULL,
-                           write.only = FALSE){
+                           write.only = FALSE, clean_folders = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -387,6 +389,9 @@ if(!write.only){
                 # return to the global working directory
                 setwd(file.path(currwd))
                 
+                if(clean_folders)
+                        clean_all_folders("_blast_db")
+                
                 return(hit_table) 
                 
         }
@@ -404,6 +409,9 @@ if(!write.only){
                 blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
                 
                 # dplyr::rename(blast_sqlite,colNames)
+                
+                if(clean_folders)
+                        clean_all_folders("_blast_db")
                 
                 return(blast_sqlite)
                 

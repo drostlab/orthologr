@@ -53,7 +53,8 @@ is `blastp`.
 
 # performing gene orthology inference using the best hit (BH) method
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+           clean_folders = TRUE)
 
 
 ```
@@ -66,7 +67,8 @@ So in detail the default search looks like this:
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            seq_type = "cds", format = "fasta", blast_algorithm = "blastp", eval = "1E-5", 
-           path = NULL, comp_cores = 1, blast_params = NULL, detailed_output = FALSE)
+           path = NULL, comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
+           clean_folders = TRUE)
 
 
 ```
