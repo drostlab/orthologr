@@ -148,8 +148,17 @@ The \code{dNdS()} function can be used choosing the folllowing options:
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 ortho_detection = "RBH", aa_aln_type = "multiple",
+aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal",
+dnds_est.method = "YN", comp_cores = 1)
+
+
+# running dNdS using the 'aa_aln_path' argument to specify the path to
+# the corresponding alignment tool
+dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+ortho_detection = "RBH", aa_aln_type = "multiple",
 aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
+codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 
 # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),

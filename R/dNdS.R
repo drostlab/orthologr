@@ -131,8 +131,17 @@
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #' ortho_detection = "RBH", aa_aln_type = "multiple",
+#' aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
+#' dnds_est.method = "YN", comp_cores = 1)
+#' 
+#' 
+#' # running dNdS using the 'aa_aln_path' argument to specify the path to
+#' # the corresponding alignment tool
+#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' ortho_detection = "RBH", aa_aln_type = "multiple",
 #' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1)
+#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 #' 
 #' # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 #' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -189,7 +198,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 hit.table <- data.table::copy( blast_best(query_file = query_file, subject_file = subject_file, 
                                                           blast_params = blast_params, path = blast_path, 
                                                           comp_cores = comp_cores,seq_type = "cds",
-                                                          format = format))
+                                                          format = format, quiet = quiet))
                                                 
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
@@ -210,7 +219,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                         blast_rec(query_file = query_file, subject_file = subject_file, 
                                   blast_params = blast_params, path = blast_path, 
                                   comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format))
+                                  format = format, quiet = quiet))
                 
                 
                 q_cds <- read.cds(file = query_file, format = format)
@@ -238,7 +247,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                         orthologs(query_file = query_file, subject_files = subject_file, 
                                   ortho_detection = "PO",path = ortho_path,
                                   comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format))
+                                  format = format, quiet = quiet))
                 
         }
         
