@@ -1,4 +1,4 @@
-#' @title Function to perform divergence stratigraphy
+#' @title Function to perform Divergence Stratigraphy
 #' @description This function takes a query organism and performs
 #' divergence stratigraphy (Quint et al.,2012 ; Drost et al. 2014) against a
 #' closely related subject organism.
