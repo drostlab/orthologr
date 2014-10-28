@@ -51,7 +51,7 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 
  Following steps are performed to obtain a standard divergence map based on divergence_stratigraphy:
 
- 1) Orthology Inference using BLAST reciprocal best hit ("RBH")
+ 1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
 
  2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 
@@ -81,6 +81,7 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       eval = "1E-5", ortho_detection = "RBH",blast_path = "path/to/blastp",
       comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+
 
 
  # Divergence Stratigraphy can also be performed in parallel
