@@ -198,7 +198,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 hit.table <- data.table::copy( blast_best(query_file = query_file, subject_file = subject_file, 
                                                           blast_params = blast_params, path = blast_path, 
                                                           comp_cores = comp_cores,seq_type = "cds",
-                                                          format = format, quiet = quiet))
+                                                          format = format))
                                                 
                 q_cds <- read.cds(file = query_file, format = format)
                 s_cds <- read.cds(file = subject_file, format = format)
@@ -219,7 +219,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                         blast_rec(query_file = query_file, subject_file = subject_file, 
                                   blast_params = blast_params, path = blast_path, 
                                   comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format, quiet = quiet))
+                                  format = format))
                 
                 
                 q_cds <- read.cds(file = query_file, format = format)

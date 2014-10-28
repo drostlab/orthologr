@@ -14,10 +14,10 @@ CDS prediction, and divergence stratigraphy.
 
 # install the current version of orthologr on your system
 library(devtools)
-install_github("HajkD/orthologr")
+install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 # On Windows, this won't work - see ?build_github_devtools
-install_github("HajkD/orthologr")
+install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 # When working with Windows, first you need to install the
 # R package: rtools -> install.packages("rtools")
@@ -25,7 +25,7 @@ install_github("HajkD/orthologr")
 # Afterwards you can install devtools -> install.packages("devtools")
 # and then you can run:
 
-devtools::install_github("HajkD/orthologr")
+devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
@@ -33,7 +33,8 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 # when a github repo is set to 'private'
 # you need to generate a authentification token and then use it via the argument: 'auth_token'
 
-devtools::install_github("HajkD/orthologr", auth_token = "here your token")
+devtools::install_github("HajkD/orthologr", auth_token = "here your token", 
+                         build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 

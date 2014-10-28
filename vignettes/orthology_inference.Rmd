@@ -48,7 +48,7 @@ want to use are already installed on your machine and are executable via either
 the default execution PATH or you specifically define the location of the executable file
 via the `path` argument that can be passed to `orthologs()`.
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
@@ -60,6 +60,33 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 
 ```
+
+
+```
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 7e-166
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-160
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 1e-178
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 3e-150
+14 AT1G01160.1 918854|PACid:16044153  1e-93
+15 AT1G01170.2 311317|PACid:16052302  3e-54
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 3e-172
+19 AT1G01210.1 311313|PACid:16057125  7e-76
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
 
 This small example returns 20 orthologous genes between _Arabidopsis thaliana_ and _Arabidopsis lyrata_.
 As you can see, the `query_file` and `subject_files` arguments take the proteomes of_Arabidopsis thaliana_ (`query_file`) and _Arabidopsis lyrata_ (`subject_files`) stored in fasta files. The `seq_type` argument specifies that you will pass protein sequences (proteomes)
@@ -96,7 +123,7 @@ When you are working on a multicore machine, you can also specify the `comp_core
 argument that will allow you to run all analyses in parallel (to speed up computations).
 
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
@@ -108,6 +135,35 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 
 ```
+
+
+```
+
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 7e-166
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-160
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 1e-178
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 3e-150
+14 AT1G01160.1 918854|PACid:16044153  1e-93
+15 AT1G01170.2 311317|PACid:16052302  3e-54
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 3e-172
+19 AT1G01210.1 311313|PACid:16057125  7e-76
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
+
 
 In this case 2 cores are being used to perform parallel processing. The `clean_folders` argument
 specifies that all files returned by the corresponding orthology inference method (and written to your hard drive)
@@ -125,7 +181,7 @@ for which an interface is implemented in `orthologr`.
 As demonstrated before a simple call of `orthologs()` using `ortho_detection = "RBH"`
 can be performed as follows:
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
@@ -139,11 +195,37 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 ```
 
 
+```
+
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 7e-166
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-160
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 1e-178
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 3e-150
+14 AT1G01160.1 918854|PACid:16044153  1e-93
+15 AT1G01170.2 311317|PACid:16052302  3e-54
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 3e-172
+19 AT1G01210.1 311313|PACid:16057125  7e-76
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
 ### ProteinOrtho
 
-ProteinOrtho is a orthology inference program to detect orthologous genes within different species. For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs [source](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html).
+ProteinOrtho is a orthology inference program to detect orthologous genes within different species. For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs ([reference](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html)).
 
-```{r}
+```{r,eval=FALSE}
 
 library(orthologr)
 
@@ -156,13 +238,39 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 ```
 
+```
+
+      ortho_lyra_aa.fasta ortho_thal_aa.fasta evalue_ab bitscore_ab evalue_ba bitscore_ba
+ 1: 311313|PACid:16057125         AT1G01210.1     7e-76         215     7e-76         215
+ 2: 311315|PACid:16059488         AT1G01190.1     0e+00        1036     0e+00        1036
+ 3: 311317|PACid:16052302         AT1G01170.2     4e-54         158     3e-54         158
+ 4: 333544|PACid:16034284         AT1G01110.2     0e+00         978     0e+00         972
+ 5: 333551|PACid:16057793         AT1G01040.1     0e+00        3704     0e+00        3704
+ 6: 333554|PACid:16033839         AT1G01010.1     0e+00         615     0e+00         627
+ 7: 470155|PACid:16047984         AT1G01220.1     0e+00        2106     0e+00        2106
+ 8: 470156|PACid:16041002         AT1G01200.1    3e-172         470    3e-172         470
+ 9: 470161|PACid:16036015         AT1G01140.3     0e+00         918     0e+00         918
+10: 470171|PACid:16052860         AT1G01090.1     0e+00         859     0e+00         859
+11: 470177|PACid:16043374         AT1G01060.3     0e+00        1033     0e+00        1037
+12: 470180|PACid:16054974         AT1G01030.1     0e+00         698     0e+00         698
+13: 470181|PACid:16064328         AT1G01020.1    6e-158         434    7e-166         454
+14: 909860|PACid:16056125         AT1G01180.1     0e+00         599     0e+00         576
+15: 909871|PACid:16053217         AT1G01080.1    5e-169         466    1e-178         491
+16: 909874|PACid:16064489         AT1G01050.1    2e-160         437    2e-160         437
+17: 918854|PACid:16044153         AT1G01160.1     2e-86         249     1e-93         268
+18: 918855|PACid:16037307         AT1G01150.1    2e-150         421    3e-150         421
+19: 918858|PACid:16049140         AT1G01120.1     0e+00        1092     0e+00        1092
+20: 918864|PACid:16052578         AT1G01070.1     0e+00         696     0e+00         696
+
+```
+
 Again the `comp_cores` argument can be used to run ProteinOrtho in parallel.
 
 ```{r,eval=FALSE}
 
 library(orthologr)
 
-# perform orthology inference using BLAST reciprocal best hit
+# perform orthology inference using ProteinOrtho
 # and fasta sequence files storing protein sequences
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
@@ -178,7 +286,39 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 ### OrthoMCL
 
 
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using OrthoMCL
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "OrthoMCL", clean_folders = TRUE)
+
+
+```
+
 ### InParanoid
+
+[InParanoid](http://inparanoid.sbc.su.se/cgi-bin/index.cgi) is an orthology inference tool to detect
+ortholog groups with inparalogs. The standalone version provided by the InParanoid community resembles [InParanoid version 4.1](http://software.sbc.su.se/cgi-bin/request.cgi?project=inparanoid) and differs from the web based application InParanoid 8.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using InParanoid
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "IP", clean_folders = TRUE)
+
+
+```
+
+
+
 
 
 
