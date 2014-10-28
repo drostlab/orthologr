@@ -97,7 +97,7 @@ pairwise_aln <- function(file, tool = "NW", seq_type = "protein",
                 #write file -> comment Hajk: what does pattern() and subject() do in pattern(aln), subject(aln) ?
                 # pattern(aln) == get aligned sequence that was set as pattern input
                 # subject(aln) == get aligned sequence that was set as subject input
-                seqinr::write.fasta(sequences = list(pattern(aln), subject(aln)) , names = names,
+                seqinr::write.fasta(sequences = list(Biostrings::pattern(aln), IRanges::subject(aln)) , names = names,
                                     file.out = file.out)
                 
                 if(!quiet){ print(paste0("File successfully written to ",file.out)) }
