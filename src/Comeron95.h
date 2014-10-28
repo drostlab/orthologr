@@ -339,7 +339,10 @@ public:
             \note 999.0 is returned if dN cannot be calculated
           */
           {
-                  // if dN==999 || dS==999
+            /* if (Ka == 999. || Ks == 999. || fabs(Ks-0.) <= DBL_EPSILON)
+                    return 999.;
+                return Ka / Ks;  */
+                if( dN==999. || dS==999. || dS==0.) return 999;
                 return dN/dS;
           }
         
