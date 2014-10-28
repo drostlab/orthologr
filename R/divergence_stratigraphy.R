@@ -25,7 +25,7 @@
 #'  
 #'  Following steps are performed to obtain a standard divergence map based on divergence_stratigraphy:
 #'  
-#'  1) Orthology Inference using BLAST reciprocal best hit ("RBH")
+#'  1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
 #'  
 #'  2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 #'  
@@ -54,13 +54,14 @@
 #'       
 #'       
 #'       
-#'  # performing standard divergence stratigraphy using the mafft_path argument to specify
-#'  # the path to the MAFFT program
+#'  # performing standard divergence stratigraphy using the blast_path argument to specify
+#'  # the path to theblastp
 #'  divergence_stratigraphy(
 #'       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       eval = "1E-5", ortho_detection = "RBH",mafft_path = "path/to/mafft",
+#'       eval = "1E-5", ortho_detection = "RBH",blast_path = "path/to/blastp",
 #'       comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+#'  
 #'  
 #'  
 #'  # Divergence Stratigraphy can also be performed in parallel 

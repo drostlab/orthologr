@@ -74,12 +74,12 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 
 
 
- # performing standard divergence stratigraphy using the mafft_path argument to specify
- # the path to the MAFFT program
+ # performing standard divergence stratigraphy using the blast_path argument to specify
+ # the path to theblastp
  divergence_stratigraphy(
       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      eval = "1E-5", ortho_detection = "RBH",mafft_path = "path/to/mafft",
+      eval = "1E-5", ortho_detection = "RBH",blast_path = "path/to/blastp",
       comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
 
 
