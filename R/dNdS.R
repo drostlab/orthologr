@@ -115,7 +115,7 @@
 #' 
 #' Paradis, E. (2012) Analysis of Phylogenetics and Evolution with R (Second Edition). New York: Springer.
 #'
-#' Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics and evolution in R language. Bioinformatics, 20, 289–290.
+#' Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics and evolution in R language. Bioinformatics, 20, 289-290.
 #' 
 #' More information on \pkg{ape} can be found at \url{http://ape-package.ird.fr/}.
 #' 

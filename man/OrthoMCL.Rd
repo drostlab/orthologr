@@ -66,7 +66,7 @@ PLoS ONE 2007 2(4): e383.
 
 Fischer, S., Brunk, B. P., Chen, F., Gao, X., Harb, O. S., Iodice, J. B., Shanmugam, D., Roos, D. S. and Stoeckert, C. J.
 Using OrthoMCL to Assign Proteins to OrthoMCL-DB Groups or to Cluster Proteomes Into New Ortholog Groups
-Current Protocols in Bioinformatics. 2011 35:6.12.1–6.12.19.
+Current Protocols in Bioinformatics. 2011 35:6.12.1-6.12.19.
 
 \url{http://www.orthomcl.org/orthomcl/}
 }

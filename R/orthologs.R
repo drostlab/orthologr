@@ -72,13 +72,19 @@
 #' 
 #' 
 #' ### Orthology Inference using ProteinOrtho
-#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#' 
+#' # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
+#' subject_organisms <- c(system.file('seqs/example_alyra_aa', package = 'orthologr'),
+#'                        system.file('seqs/example_brapa_aa', package = 'orthologr'),
+#'                        system.file('seqs/example_thalo_aa', package = 'orthologr'))
+#' 
+#' orthologs(query_file = system.file('seqs/example_athal_aa', package = 'orthologr'),
+#'           subject_files = subject_organisms,
 #'           seq_type = "protein", ortho_detection = "PO")
 #'           
 #' # multicore version          
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_files = subject_organisms,
 #'           seq_type = "protein", ortho_detection = "PO", comp_cores = 2)  
 #'           
 #'                           
@@ -166,7 +172,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- InParanoid(query_file = query_file, subject_file = subject_files, 
-                                   outgroup_file = outgroup_file,ip_path = path, comp_cores = comp_cores,
+                                   outgroup_file = outgroup_file,ip_path = path,
                                    seq_type = seq_type, format = format)
                 
                 

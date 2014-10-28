@@ -26,14 +26,26 @@
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @details
-#'  
+#' 
+#' The \code{advanced_blast} function allows you to use the BLAST+ stand-alone specific notation
+#' within the R environment. The \code{blast_params} argument allows the user to specify BLAST+ specific command line
+#' parameters and the resulting hit table is then returned as \pkg{data.table} object.
+#' 
+#' Optionally the \code{sql_database = TRUE} argument allows you to store the hit table in an SQLite database
+#' using the flexible query notation provided by the \pkg{dplyr} (>= 0.3) package.
+#' 
+#' The \code{advanced_blast} function works very similar to the command line version of BLAST+,
+#' so when specifying a \code{blast_algorithm} such as \emph{blastp}, \emph{tblastn}, \emph{deltablast}, etc.
+#' the corresponding databases must be stored and accessible accoring to the BLAST stand-alone notation. 
+#' 
+#' 
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
 #' 
-#' "blastp", "blastn", "megablast","psi-blast", "phi-blast", "delta-blast", "blastx", "tblastn", "tblastx"
+#' "blastp", "blastn", "megablast","psiblast", "phiblast", "deltablast", "blastx", "tblastn", "tblastx"
 #' 
 #' 
 #' The intention of this function is to provide the user with an easy to use interface function
-#' to BLAST which uses the same notation as the original BLAST program.
+#' to BLAST+.
 #' 
 #' When using \code{taxonomy} =  \code{TRUE}, then the taxdb.btd and taxdb.bti must be stored
 #' in the same folder as BLAST-able database. In case you need to specify the path to your BLAST database,

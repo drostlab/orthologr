@@ -3,7 +3,7 @@
 \alias{InParanoid}
 \title{Interface function to InParanoid}
 \usage{
-InParanoid(query_file, subject_file, outgroup_file = NULL,
+InParanoid(query_file, subject_file, outgroup_file = NULL, ip_path = NULL,
   seq_type = "protein", format = "fasta", delete_files = FALSE)
 }
 \arguments{
@@ -14,8 +14,11 @@ InParanoid(query_file, subject_file, outgroup_file = NULL,
 \item{outgroup_file}{a character string specifying the path to the sequence file of interest (outgroup organism).
 Since the outgroup option in InParanoid is experimental, the default is \code{outgroup_file} = \code{NULL}.}
 
-\item{seq_type}{a character string specifying the sequence type stored in the input file.
+\item{ip_path}{a character string specifying the executable path of InParanoid. Default is \code{ip_path} = \code{NULL}
+assuming that InParanoid can be called from your default executable PATH.
 There is only the option: "protein". InParanoid can only handle protein sequences stored in fasta files.}
+
+\item{seq_type}{a character string specifying the sequence type stored in the input file.}
 
 \item{format}{when using InParanoid you can only specify \code{format} = \code{"fasta"}.}
 
