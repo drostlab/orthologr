@@ -4,9 +4,9 @@
 \title{Function to perform Divergence Stratigraphy}
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
-  ortho_detection = "RBH", blast_path = NULL, mafft_path = NULL,
-  comp_cores = 1, dnds.threshold = 2, quiet = FALSE,
-  clean_folders = FALSE, ds.values = TRUE)
+  ortho_detection = "RBH", blast_path = NULL, comp_cores = 1,
+  dnds.threshold = 2, quiet = FALSE, clean_folders = FALSE,
+  ds.values = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -20,8 +20,6 @@ to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST re
 Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).}
 
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
-
-\item{mafft_path}{a character string specifying the path to the multiple alignment program MAFFT (in case you don't use the default path).}
 
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to perform
 parallel computations on a multicore machine.}

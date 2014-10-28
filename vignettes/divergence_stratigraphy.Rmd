@@ -22,7 +22,7 @@ of interest. __Divergence Stratigraphy__ is the process of quantifying the selec
 
 Following steps are performed to obtain a standard divergence map based on the `divergence_stratigraphy()` function:
 
-1) Orthology Inference using BLAST reciprocal best hit ("RBH")
+1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
 
 2) Pairwise global amino acid alignments of orthologous genes using the [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574)
 
@@ -180,5 +180,47 @@ subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](https:/
 
 Please see [Introduction to the myTAI package](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd)
 for more details.
+
+
+In case you need to specify the PATH to your BLAST folder, you can use the `blast_path` argument:
+
+```{r,eval=FALSE}
+library(orthologr)
+
+# performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      blast_path = "here/the/path/to/blastp", eval = "1E-5", ortho_detection = "RBH", 
+      dnds.threshold = 1, comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+
+```
+
+
+```
+
+   divergence_strata    query_id
+1                 10 AT1G01010.1
+2                  9 AT1G01020.1
+3                  5 AT1G01030.1
+4                  4 AT1G01040.1
+5                  1 AT1G01050.1
+6                  9 AT1G01060.3
+7                  6 AT1G01070.1
+8                  8 AT1G01080.1
+9                  2 AT1G01090.1
+10                 7 AT1G01110.2
+11                 2 AT1G01120.1
+12                 3 AT1G01140.3
+13                10 AT1G01150.1
+14                 8 AT1G01160.1
+15                 1 AT1G01170.2
+16                 6 AT1G01180.1
+17                 7 AT1G01190.1
+18                 4 AT1G01200.1
+19                 5 AT1G01210.1
+20                 3 AT1G01220.1
+
+```
 
 

@@ -9,7 +9,6 @@
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
-#' @param mafft_path a character string specifying the path to the multiple alignment program MAFFT (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
 #'  @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
@@ -81,8 +80,8 @@
 #' @export
 divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
                                     ortho_detection = "RBH", blast_path = NULL, 
-                                    mafft_path = NULL, comp_cores = 1,dnds.threshold = 2,
-                                    quiet = FALSE, clean_folders = FALSE, ds.values = TRUE){
+                                    comp_cores = 1,dnds.threshold = 2, quiet = FALSE, 
+                                    clean_folders = FALSE, ds.values = TRUE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
