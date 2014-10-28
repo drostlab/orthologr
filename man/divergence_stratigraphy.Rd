@@ -55,7 +55,7 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 
  1) Orthology Inference using BLAST reciprocal best hit ("RBH")
 
- 2) Pairwise amino acid alignments of orthologous genes using the MAFFT program
+ 2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 
  3) Codon alignments of orthologous genes using PAL2NAL
 

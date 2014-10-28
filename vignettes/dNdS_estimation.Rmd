@@ -53,10 +53,10 @@ library(orthologr)
 # 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
 # 5) single core processing 'comp_cores = 1'
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH", aa_aln_type = "multiple",
-aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
-dnds_est.method = "YN", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+     subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH", aa_aln_type = "multiple",
+     aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
+     dnds_est.method = "YN", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
 
 
 ```
@@ -162,13 +162,41 @@ library(orthologr)
 # 4) Comeron (1995) for dNdS estimation
 # 5) single core processing 'comp_cores = 1'
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH", aa_aln_type = "pairwise",
-aa_aln_tool = "NW", codon_aln_tool = "pal2nal", 
-dnds_est.method = "Comeron", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+     subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH", aa_aln_type = "pairwise",
+     aa_aln_tool = "NW", codon_aln_tool = "pal2nal", 
+     dnds_est.method = "Comeron", comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
 
 
 ```
+
+
+```
+
+       query_id            subject_id       dN     dS    dNdS
+ 1: AT1G01010.1 333554|PACid:16033839 0.106400 0.2537 0.41950
+ 2: AT1G01020.1 470181|PACid:16064328 0.040230 0.1037 0.38790
+ 3: AT1G01030.1 470180|PACid:16054974 0.014990 0.1265 0.11850
+ 4: AT1G01040.1 333551|PACid:16057793 0.013470 0.1165 0.11560
+ 5: AT1G01050.1 909874|PACid:16064489 0.000000 0.1750 0.00000
+ 6: AT1G01060.3 470177|PACid:16043374 0.044950 0.1133 0.39670
+ 7: AT1G01070.1 918864|PACid:16052578 0.018300 0.1059 0.17280
+ 8: AT1G01080.1 909871|PACid:16053217 0.033980 0.1056 0.32170
+ 9: AT1G01090.1 470171|PACid:16052860 0.009104 0.2181 0.04174
+10: AT1G01110.2 333544|PACid:16034284 0.032480 0.1220 0.26620
+11: AT1G01120.1 918858|PACid:16049140 0.003072 0.1326 0.02317
+12: AT1G01140.3 470161|PACid:16036015 0.005672 0.1312 0.04324
+13: AT1G01150.1 918855|PACid:16037307 0.130000 0.2028 0.64120
+14: AT1G01160.1 918854|PACid:16044153 0.104600 0.2804 0.37310
+15: AT1G01170.2 311317|PACid:16052302 0.000000 0.3064 0.00000
+16: AT1G01180.1 909860|PACid:16056125 0.029680 0.1763 0.16830
+17: AT1G01190.1 311315|PACid:16059488 0.028690 0.1618 0.17730
+18: AT1G01200.1 470156|PACid:16041002 0.019050 0.1675 0.11370
+19: AT1G01210.1 311313|PACid:16057125 0.020670 0.1540 0.13420
+20: AT1G01220.1 470155|PACid:16047984 0.015690 0.1533 0.10230
+
+```
+
 
 The `dNdS()` function can be used choosing the folllowing options:
 
@@ -189,12 +217,12 @@ library(orthologr)
 
 # using the `aa_aln_path` or `blast_path` arguments
 dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH",blast_path = "here/path/to/blastp",
-aa_aln_type = "multiple", aa_aln_tool = "clustalw", 
-aa_aln_path = "here/path/to/clustalw",
-codon_aln_tool = "pal2nal", dnds_est.method = "Comeron", 
-comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
+     subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH",blast_path = "here/path/to/blastp",
+     aa_aln_type = "multiple", aa_aln_tool = "clustalw", 
+     aa_aln_path = "here/path/to/clustalw",
+     codon_aln_tool = "pal2nal", dnds_est.method = "Comeron", 
+     comp_cores = 1, clean_folders = TRUE, quiet = TRUE)
 
 
 ```
@@ -242,6 +270,18 @@ filter_dNdS(Ath_Aly_dnds, dnds.threshold = 0.1)
 
 ```
 
+
+```
+
+     query_id      subject_id       dN     dS    dNdS
+1 AT1G01050.1 909874|PACid:16 0.000000 0.1750 0.00000
+2 AT1G01090.1 470171|PACid:16 0.009843 0.2150 0.04579
+3 AT1G01120.1 918858|PACid:16 0.003072 0.1326 0.02317
+4 AT1G01140.3 470161|PACid:16 0.005672 0.1312 0.04324
+5 AT1G01170.2 311317|PACid:16 0.008750 0.2827 0.03095
+6 AT1G01220.1 470155|PACid:16 0.015210 0.1533 0.09919
+
+```
 Here `blast_params` and `aa_aln_params` take an character string specifying the parameters
 that shall passed to BLAST and MAFFT. The notation of these parameters must follow the 
 command line call of the stand alone versions of BLAST and MAFFT: e.g. `blast_params = "blast_params = -matrix BLOSUM80"`

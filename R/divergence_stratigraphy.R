@@ -28,7 +28,7 @@
 #'  
 #'  1) Orthology Inference using BLAST reciprocal best hit ("RBH")
 #'  
-#'  2) Pairwise amino acid alignments of orthologous genes using the MAFFT program
+#'  2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 #'  
 #'  3) Codon alignments of orthologous genes using PAL2NAL
 #'  
@@ -95,7 +95,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         dNdS_tbl <- filter_dNdS( dNdS(query_file = query_file,
                                       subject_file = subject_file,
                                       ortho_detection = ortho_detection,
-                                      aa_aln_type = "multiple", aa_aln_tool = "mafft",
+                                      aa_aln_type = "pairwise", aa_aln_tool = "NW",
                                       aa_aln_path = mafft_path, codon_aln_tool = "pal2nal", 
                                       dnds_est.method = "Comeron", comp_cores = comp_cores, 
                                       quiet = quiet) , dnds.threshold = dnds.threshold)
