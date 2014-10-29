@@ -4,11 +4,16 @@ Title: A package combining common gene orthology detection methods and dN/dS
     models for pipeline processing.
 Version: 0.0.1
 Date: 2014-06-08
-Author: Hajk-Georg Drost, Sarah Scharfenberg, Kristian Karsten Ullrich
+Authors@R: as.person(c(
+    "Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de> [aut, cre]",
+    "Sarah Scharfenberg [aut]",
+    "Kristian Karsten Ullrich [ctb]"
+    ))
 Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
 Description: The present collection of functions can be used to perform
     orthology detection and dN/dS computations for biological research.
 License: GPL-3
+SystemRequirements: C++, Perl
 Depends:
     R (>= 3.1.1),
     seqinr (>= 3.0-7),

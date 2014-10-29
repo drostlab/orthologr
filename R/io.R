@@ -149,9 +149,3 @@ transl <- function(sequence){
         return(seqinr::c2s(seqinr::translate(seqinr::s2c(sequence))))
 }
 
-
-test <- function(x){ print(paste0("Test ",x," passed.","\n"))}
-
-is.dnaSequence <-function(seq){
-        return((length(grep("[^(A|C|G|T|a|c|g|t)]", seq))==0))
-}

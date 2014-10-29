@@ -40,48 +40,34 @@ of the corresponding alignments using predefined dNdS estimation methods.
 
 The dNdS estimation methods available in this function are:
 
-- "Li" : Li's method (1993) -> provided by the ape package
+\itemize{
+\item "Li" : Li's method (1993) -> provided by the ape package
 
-- "Comeron" : Comeron's method (1995)
-
+\item "Comeron" : Comeron's method (1995)
+}
 dNdS estimation methods provided by KaKs_Calculator 1.2 :
 
 Approximate Methods:
 
-"NG": Nei, M. and Gojobori, T. (1986)
+\itemize{
+\item "NG": Nei, M. and Gojobori, T. (1986)
 
-"LWL": Li, W.H., et al. (1985)
+\item "LWL": Li, W.H., et al. (1985)
 
-"LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+\item "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
 
-"MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+\item "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
 
-"YN": Yang, Z. and Nielsen, R. (2000)
+\item "YN": Yang, Z. and Nielsen, R. (2000)
 
-"MYN" (Modified YN): Zhang, Z., et al. (2006)
+\item "MYN" (Modified YN): Zhang, Z., et al. (2006)
+
+}
 
 Maximum-Likelihood Methods:
-
-GY: Goldman, N. and Yang, Z. (1994)
-
-MS (Model Selection), MA (Model Averaging): based on a set of candidate models defined by Posada, D. (2003) as follows.
-
-MS (Model Selection) and MA (Model Averaging) over:
-
-JC,
-F81,
-K2P,
-HKY,
-TrNEF,
-TrN,
-K3P,
-K3PUF,
-TIMEF,
-TIM,
-TVMEF,
-TVM,
-SYM,
-GTR
+\itemize{
+\item GY: Goldman, N. and Yang, Z. (1994)
+}
 }
 \examples{
 \dontrun{
