@@ -74,11 +74,11 @@
 #' ### Orthology Inference using ProteinOrtho
 #' 
 #' # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
-#' subject_organisms <- c(system.file('seqs/example_alyra_aa', package = 'orthologr'),
-#'                        system.file('seqs/example_brapa_aa', package = 'orthologr'),
-#'                        system.file('seqs/example_thalo_aa', package = 'orthologr'))
+#' subject_organisms <- c(system.file('seqs/example_brapa_aa.fa', package = 'orthologr'),
+#'                        system.file('seqs/example_alyra_aa.fa', package = 'orthologr'),
+#'                        system.file('seqs/example_thalo_aa.fa', package = 'orthologr'))
 #' 
-#' orthologs(query_file = system.file('seqs/example_athal_aa', package = 'orthologr'),
+#' orthologs(query_file = system.file('seqs/example_athal_aa.fa', package = 'orthologr'),
 #'           subject_files = subject_organisms,
 #'           seq_type = "protein", ortho_detection = "PO")
 #'           
