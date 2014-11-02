@@ -81,12 +81,14 @@ blast_rec <- function(query_file, subject_file, seq_type = "cds",
                       blast_params = NULL, clean_folders = FALSE){
         
         orthoA <- blast_best(query_file,subject_file, 
+                             eval = eval,
                              format = format, seq_type = seq_type,
                              blast_algorithm = blast_algorithm,
                              path = path, comp_cores = comp_cores, blast_params = blast_params)
         
         orthoB <- blast_best(subject_file,query_file,
                              seq_type = seq_type,
+                             eval = eval,
                              format = format,blast_algorithm = blast_algorithm,
                              path = path, comp_cores = comp_cores, blast_params = blast_params,
                              clean_folders = clean_folders)

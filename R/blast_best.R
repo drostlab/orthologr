@@ -90,7 +90,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         evalue <- NULL
-        
+
         # default parameters for best hit filtering
         default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
         
@@ -99,6 +99,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
         # using the BLAST parameter: '-max_target_seqs 1' allows to retain
         # only the best hit result and therefore, speeds up the BLAST search process
         hit_tbl.dt <- blast(query_file = query_file, 
+                            eval = eval,
                             subject_file = subject_file,
                             seq_type = seq_type,
                             format = format, path = path, 
