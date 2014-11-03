@@ -4,8 +4,9 @@
 \title{Interface function to perform orthology inference for a set of organisms}
 \usage{
 orthologs(query_file, subject_files, seq_type = "protein",
-  outgroup_file = NULL, format = "fasta", ortho_detection = "RBH",
-  path = NULL, comp_cores = 1, quiet = FALSE, clean_folders = FALSE)
+  outgroup_file = NULL, eval = "1E-5", format = "fasta",
+  ortho_detection = "RBH", path = NULL, comp_cores = 1, quiet = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -20,6 +21,8 @@ translated to protein sequences. Default is \code{seq_type} = "protein".}
 
 \item{outgroup_file}{a character string specifying the paths to the sequence files of interest (outgroup organisms).
 This argument is only used by \code{\link{InParanoid}}.}
+
+\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
 

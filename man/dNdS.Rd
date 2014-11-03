@@ -5,10 +5,10 @@
 \usage{
 dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
   ortho_detection = "RBH", blast_params = NULL, blast_path = NULL,
-  ortho_path = NULL, aa_aln_type = "multiple", aa_aln_tool = "clustalw",
-  aa_aln_path = NULL, aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE,
-  clean_folders = FALSE)
+  eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple",
+  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
+  codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1,
+  quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -30,6 +30,8 @@ Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "
 \item{blast_params}{a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}.}
 
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
+
+\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
 \item{ortho_path}{a character string specifying the path to the orthology inference program such as \code{\link{ProteinOrtho}}, etc. (in case you don't use the default path).}
 
