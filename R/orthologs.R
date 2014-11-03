@@ -32,6 +32,8 @@
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
 #' "IP": path to InParanoid.
+#' @param add_params a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
+#' Default is \code{add_params} = \code{NULL}.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
@@ -117,8 +119,8 @@
 #' 
 orthologs <- function(query_file,subject_files, seq_type = "protein",
                       outgroup_file = NULL, eval = "1E-5", format = "fasta",
-                      ortho_detection = "RBH", path = NULL, comp_cores = 1, 
-                      quiet = FALSE, clean_folders = FALSE){
+                      ortho_detection = "RBH", path = NULL, add_params = NULL,
+                      comp_cores = 1, quiet = FALSE, clean_folders = FALSE){
         
         if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -130,7 +132,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 ortho_tbl <- data.table::copy(
                         blast_rec(query_file = query_file, subject_file = subject_files, 
                                   path = path, comp_cores = comp_cores, eval = eval,
-                                  seq_type = seq_type, format = format))
+                                  blast_params = add_params, seq_type = seq_type, 
+                                  format = format))
                 
                 
                 if(clean_folders)
@@ -145,7 +148,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 ortho_tbl <- data.table::copy(
                         ProteinOrtho(query_file = query_file, subject_files = subject_files, 
                                      po_path = path, eval = eval, comp_cores = comp_cores,
-                                     seq_type = seq_type, format = format))
+                                     po_params = add_params, seq_type = seq_type, 
+                                     format = format))
                 
                
                 if(clean_folders)
@@ -159,7 +163,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 ortho_tbl <- data.table::copy(
                         OrthoMCL(query_file = query_file, subject_files = subject_files, 
-                                 orthomcl_path = path, eval = eval, comp_cores = comp_cores,
+                                 orthomcl_path = path, orthomcl_params = add_params,
+                                 eval = eval, comp_cores = comp_cores,
                                  seq_type = seq_type, format = format))
                 
                 

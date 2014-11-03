@@ -5,8 +5,8 @@
 \usage{
 orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, eval = "1E-5", format = "fasta",
-  ortho_detection = "RBH", path = NULL, comp_cores = 1, quiet = FALSE,
-  clean_folders = FALSE)
+  ortho_detection = "RBH", path = NULL, add_params = NULL,
+  comp_cores = 1, quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -33,6 +33,9 @@ Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "Or
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
 For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
 "IP": path to InParanoid.}
+
+\item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
+Default is \code{add_params} = \code{NULL}.}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
