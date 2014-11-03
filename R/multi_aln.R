@@ -539,7 +539,11 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          if(is.null(mafft.params)){
                                 
                                 # use the default parameters when running mafft
-                                system(paste0("mafft --quiet --clustalout ",file," >",file.out))
+                                system(paste0("mafft --quiet --amino --anysymbol --clustalout ",file," >",file.out))
+                                
+                                # To avoid error with pal2nal when deleting * during multiple
+                                # alignment add --anysymbol
+                                # http://mbe.oxfordjournals.org/content/early/2013/02/08/molbev.mst010.full
                                 
                          } else {
                                 
