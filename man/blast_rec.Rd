@@ -46,6 +46,9 @@ Given a set of protein sequences A and a different set of protein sequences B,
 first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
 a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
 that were found to be best hits in both directions are retained and returned.
+
+
+This function can be used to perform orthology inference using BLAST+ best reciprocal hit methodology.
 }
 \examples{
 \dontrun{

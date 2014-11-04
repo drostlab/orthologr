@@ -22,6 +22,9 @@
 #' a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
 #' that were found to be best hits in both directions are retained and returned.
 #'
+#'
+#' This function can be used to perform orthology inference using BLAST+ best reciprocal hit methodology.
+#' 
 #' @references
 #' 
 #' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
@@ -84,14 +87,14 @@ blast_rec <- function(query_file, subject_file, seq_type = "cds",
                              eval = eval,
                              format = format, seq_type = seq_type,
                              blast_algorithm = blast_algorithm,
-                             path = path, comp_cores = comp_cores, blast_params = blast_params)
+                             path = path, comp_cores = comp_cores, 
+                             blast_params = blast_params)
         
         orthoB <- blast_best(subject_file,query_file,
-                             seq_type = seq_type,
-                             eval = eval,
+                             seq_type = seq_type, eval = eval,
                              format = format,blast_algorithm = blast_algorithm,
-                             path = path, comp_cores = comp_cores, blast_params = blast_params,
-                             clean_folders = clean_folders)
+                             path = path, comp_cores = comp_cores, 
+                             blast_params = blast_params, clean_folders = clean_folders)
         
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         

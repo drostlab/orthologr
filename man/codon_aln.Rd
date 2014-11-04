@@ -4,7 +4,7 @@
 \title{Function to compute a codon alignment.}
 \usage{
 codon_aln(file_aln, file_nuc, format = "clustal", tool = "pal2nal",
-  codon_aln_name = NULL, get_aln = FALSE, quiet = FALSE)
+  params = NULL, codon_aln_name = NULL, get_aln = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}
@@ -15,8 +15,12 @@ codon_aln(file_aln, file_nuc, format = "clustal", tool = "pal2nal",
 
 \item{tool}{a character string specifying the program that should be used e.g. "pal2nal".}
 
-\item{codon_aln_name}{a character string specifying the name of the stored alignment file.
+\item{params}{a character string specifying additional parameters that shall be passed to PAL2NAL. For example
+\code{params} = \code{"-codontable 2"} would specify a codon table: \emph{vertebrate mitochondrial code}
+instead if the \emph{universal code} (default). The default value is \code{params} = \code{NULL}.
 Default is \code{codon_aln_name} = \code{NULL} denoting a default name: 'tool_name.aln' .}
+
+\item{codon_aln_name}{a character string specifying the name of the stored alignment file.}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
@@ -27,23 +31,41 @@ In case \code{get_aln} = \code{TRUE} an seqinr alignment object is returned.
 }
 \description{
 This function takes a protein alignment and the corresponding coding sequences
-as sequence files and computes the corresponding codon alignment.
+as fasta files and computes the corresponding codon alignment based on the models specified in the PAL2NAL program.
 }
 \details{
 This function provides an interface between the R language and common codon alignment tools such as "PAL2NAL".
 Codon alignments can be used to quantify the evolutionary pressure acting on protein sequences based on dNdS estimation.
 
+The PAL2NAL program is used to convert a multiple sequence alignment or pairwise alignment of proteins and the corresponding DNA (or mRNA) sequences into
+a codon-based DNA alignment. The output codon-based DNA alignment can then be used for \code{\link{dNdS}} estimation.
+
 The popular codon alignment tool PAL2NAL is included in this package and is being called when choosing \code{tool} = \code{"pal2nal"}.
 }
-\examples{
-\dontrun{
+\note{
+The PAL2NAL program automatically checks
+\itemize{
+\item If you use the same IDs are used in the protein alignment file and DNA (or mRNA) file ->
+in this case the sequences don't have to be in the same order
 
+\item If you don't use the same IDs are used in the protein alignment file and DNA (or mRNA) file
+-> you have to rearrange the IDs or sequences so that sequences in the protein alignment file and DNA (or mRNA) file
+have the same order
+
+}
+}
+\examples{
 # performing a codon alignment using PAL2NAL
 codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'),
                        format = "clustal", tool = "pal2nal", get_aln = TRUE)
 
-}
+
+# running PAL2NAL with additional parameters (e.g. a different codon table)
+codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
+                       file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'),
+                       format = "clustal", tool = "pal2nal", get_aln = TRUE,
+                       params = "-codontable 2")
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
@@ -52,11 +74,14 @@ Sarah Scharfenberg and Hajk-Georg Drost
 Mikita Suyama, David Torrents, and Peer Bork (2006)
 PAL2NAL: robust conversion of protein sequence alignments into the corresponding codon alignments. Nucleic Acids Res. 34, W609-W612.
 
-http://www.bork.embl.de/pal2nal/
+\url{http://www.bork.embl.de/pal2nal/}
 
-http://abacus.gene.ucl.ac.uk/software/paml.html
+\url{http://www.genome.med.kyoto-u.ac.jp/cgi-bin/suyama/pal2nal/index.cgi}
+
+\url{http://abacus.gene.ucl.ac.uk/software/paml.html}
 }
 \seealso{
-\code{\link{multi_aln}}, \code{\link{substitutionrate}}
+\code{\link{pairwise_aln}}, \code{\link{multi_aln}}, \code{\link{substitutionrate}},
+ \code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}
 }
 

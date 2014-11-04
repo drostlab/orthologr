@@ -42,7 +42,7 @@ A data.table as returned by the \code{blast} function, storing the geneids
 of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
 }
 \description{
-This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
+This function performs a BLAST+ search (best hit) of a given set of protein sequences against a given database.
 }
 \details{
 Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.

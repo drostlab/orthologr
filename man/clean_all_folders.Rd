@@ -9,7 +9,7 @@ clean_all_folders(foldernames)
 \item{foldernames}{a character vector storing the folder names that shall be deleted.}
 }
 \value{
-a void function.
+This is a void function.
 }
 \description{
 This function deletes all internal folders that have been created
@@ -19,19 +19,29 @@ to delete all folders created by the pipline.
 \details{
 This function takes a vector storing the names of the folders
 that shall be deleted, e.g.: \code{clean_all_folders( c("_alignment", "_blast_db", "_calculation") )}.
+
+Since \pkg{orthologr} is a package for pipeline processing based on interface functions,
+many partial results need to be written to a hard drive to allow subsequent programs
+to access the output of previous computations. The R core conventions do not favour this
+behaviour of functions. This would indicate that the \code{clean_folders} argument had to be \code{TRUE}
+by default in all functions. Nevertheless, this would distract some pipeline functions and therefore
+\code{clean_folders} = \code{FALSE} by default leaving you with a folder environment that needs
+to be cleaned by hand, meaning that when using a specific function or pipeline function
+you must specify \code{clean_folders} = \code{TRUE} in case you want to remove all internal folders
+after pipeline processing.
 }
 \examples{
-\dontrun{
+# create a new directory
+dir.create("_alignment")
 
-# in case internal folders exist, they are being removed
-clean_all_folders(c("_alignment", "_blast_db", "_calculation"))
-
-}
+# in case internal folders exist, they are removed like this
+clean_all_folders("_alignment")
 }
 \author{
 Hajk-Georg Drost
 }
 \seealso{
-\code{\link{divergence_stratigraphy}}
+\code{\link{divergence_stratigraphy}}, \code{\link{blast}}, \code{\link{blast_best}},
+\code{\link{blast_rec}}, \code{\link{dNdS}}
 }
 
