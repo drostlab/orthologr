@@ -140,6 +140,6 @@ OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
 InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 }
 \seealso{
-\code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}
+\code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}, \code{\link{dNdS}}
 }
 

@@ -15,7 +15,17 @@ A character string specifying the corresponding amino acid sequence.
 This function takes CDS sequence as string as input an returns the
 corresponding amino acid sequence as string.
 }
+\examples{
+# an example DNA sequence
+DNA <- c("ACCGGTTTAAAGGCGTTA")
+
+# translating DNA to a protein sequence
+transl(DNA)
+}
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg
+}
+\references{
+\code{\link[seqinr]{translate}}
 }
 

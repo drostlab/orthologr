@@ -11,7 +11,13 @@
 #' @param path a character string specifying the path to the pairwise alignment program (in case you don't use the default path).
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
-#' @details This function provides an interface between R and common pairwise alignment programs.
+#' @details This function provides an interface between R and common pairwise alignment computation methods.
+#' 
+#' The current version of this function computes pairwise alignments based on the \code{\link[Biostrings]{pairwiseAlignment}}
+#' function implemented in the \pkg{Biostrings} package.
+#' 
+#' The default pairwise alignment method is based on the \emph{Needleman-Wunsch Algorithm}.
+#' 
 #' @examples \dontrun{        
 #'                                             
 #' # Needleman-Wunsch Example:  

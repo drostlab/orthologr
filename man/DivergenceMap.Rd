@@ -15,6 +15,15 @@ a data.table storing a standard divergence map.
 This function takes a data.table returned by dNdS
 and sorts the corresponding dNdS value into divergence strata (deciles).
 }
+\details{
+Divergence Strata are decile values of corresponding \code{\link{dNdS}} values.
+The \code{\link{dNdS}} function returns dNdS values for orthologous genes
+of a query species (versus subject species). These dNdS values are then
+sorted into deciles and each orthologous protein coding gene of the
+query species receives a corresponding decile value instead of the initial dNdS value.
+
+This allows a better comparison between Phylostrata and Divergence Strata (for more details see package: \pkg{myTAI}).
+}
 \examples{
 \dontrun{
 

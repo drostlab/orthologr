@@ -39,12 +39,18 @@ This function takes a query organism and a set of subject organisms
 and performs orthology inference using OrthoMCL as orthology detection program (methodology).
 }
 \details{
-This function...
+This function provides an interface to the prthology detection program OrthoMCL.
+
+To use this function \emph{OrthoMCL} needs to be installes and executable on your system.
 }
 \examples{
 \dontrun{
 
 # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "OrthoMCL")
+
 
 }
 }
@@ -71,6 +77,6 @@ Current Protocols in Bioinformatics. 2011 35:6.12.1-6.12.19.
 \url{http://www.orthomcl.org/orthomcl/}
 }
 \seealso{
-\code{\link{orthologs}}
+\code{\link{orthologs}}, \code{\link{dNdS}}
 }
 

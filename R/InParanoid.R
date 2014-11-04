@@ -55,7 +55,7 @@
 #'              
 #' }
 #' @return a list storing the ortholog groups returned by InParanoid.
-#' @seealso \code{\link{orthologs}}
+#' @seealso \code{\link{orthologs}}, \code{\link{dNdS}}
 #' @export
 InParanoid <- function(query_file, subject_file, 
                        outgroup_file = NULL,ip_path = NULL,

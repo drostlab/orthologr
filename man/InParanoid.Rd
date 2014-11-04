@@ -79,6 +79,6 @@ J. Mol. Biol. 314:1041-1052 (2001)
 \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 }
 \seealso{
-\code{\link{orthologs}}
+\code{\link{orthologs}}, \code{\link{dNdS}}
 }
 

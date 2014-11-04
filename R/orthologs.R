@@ -114,7 +114,7 @@
 #'           seq_type = "protein", ortho_detection = "IP", comp_cores = 2)  
 #'
 #' }
-#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}
+#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}, \code{\link{dNdS}}
 #' @export
 #' 
 orthologs <- function(query_file,subject_files, seq_type = "protein",

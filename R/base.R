@@ -88,7 +88,7 @@ set_path <- function(file, add.folder = NULL){
 }
 
 
-#' @title Function to filter the dNdS output of dNdS()
+#' @title Function to filter the dNdS values
 #' @description This function takes the output data.table returned by \code{\link{dNdS}} and
 #' filters the output by the following criteria:
 #' 

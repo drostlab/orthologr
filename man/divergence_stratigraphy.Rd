@@ -61,6 +61,13 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 
  5) Assigning dNdS values to divergence strata (deciles)
 }
+\note{
+Although this function has been heavily optimized and parallelized, performing
+Divergence Stratigraphy using two genomes will take some computation time.
+
+In our experience performing Divergence Stratigraphy using two genomes (one query and one subject genome)
+on an 8 core machine can take up to 1,5 - 2 hours.
+}
 \examples{
 \dontrun{
 
@@ -99,9 +106,9 @@ Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence s
 Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
-Quint M et al. (2012). "A transcriptomic hourglass in plant embryogenesis". Nature (490): 98-101.
+Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature (490): 98-101.
 
- Drost HG et al. (2014). "Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis".
+ Drost HG et al. (2014). Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis.
 }
 \seealso{
 \code{\link{dNdS}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}},

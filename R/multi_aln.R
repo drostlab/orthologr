@@ -1,5 +1,5 @@
 #' @title An interface function to common multiple alignment tools.
-#' @description This function takes a multiple FASTA file containing DNA or amino acid sequences
+#' @description This function takes a FASTA file containing DNA or amino acid sequences
 #' that shall be aligned and computes a multiple alignment using a defined multiple alignment tool.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
 #' @param tool a character string specifying the program that should be used: "clustalw", "t_coffee", "muscle", "clustalo", and "mafft". 
@@ -23,75 +23,93 @@
 #' @details This function provides an interface between R and common multiple alignment programs
 #' such as "clustalw", "t_coffee", "muscle", "clustalo", and "mafft".
 #' 
-#' CLUSTALW : 
+#' \itemize{
+#' 
+#' \item CLUSTALW : 
+#' 
 #' 
 #' Different operating systems perform different execution calls to the clustalw program:
 #' 
-#' MacOS: 'clustalw2', Linux: 'clustalw', Windows: 'clustalw2.exe'
+#' \itemize{
+#' \item MacOS: 'clustalw2' 
+#' \item Linux: 'clustalw'
+#' \item  Windows: 'clustalw2.exe'
+#' }
 #' 
 #' In case you use the default path to the clustalw program, depending on your operating system,
 #' the following calls to clustalw should work properly on your system:
 #' 
-#' MacOS: system("clustalw2 -help"), Linux: system("clustalw -help"), Windows: system("clustalw2.exe -help")
+#' \itemize{
+#' \item MacOS: \code{system("clustalw2 -help")}
+#' \item Linux: \code{system("clustalw -help")}
+#' \item Windows: \code{system("clustalw2.exe -help")}
+#' 
+#' }
 #' 
 #' In case these procedures don't work properly, please use the \code{path} argument
 #' to specify the 'clustalw' execution path on your system:
 #' 
+#' \itemize{
+#' \item MacOS: \code{system("path/to/clustalw/clustalw2 -help")}
+#' \item Linux: \code{system("path/to/clustalw/clustalw -help")}
+#' \item Windows: \code{system("path/to/clustalw/clustalw2.exe -help")}
 #' 
-#' MacOS: system("path/to/clustalw/clustalw2 -help"), Linux: system("path/to/clustalw/clustalw -help"), Windows: system("path/to/clustalw/clustalw2.exe -help")
+#' }
 #' 
-#' T_COFFEE :
+#' \item T_COFFEE :
 #' 
 #' In case you use the default path to the t_coffee program,
 #' the following calls to clustalw should work properly on your system:
 #' 
-#' system("t_coffee -version")
+#' \code{system("t_coffee -version")}
 #' 
 #' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 't_coffee' execution path on your system:
 #' 
-#' system("path/to/t_coffee/t_coffee -version")
+#' \code{system("path/to/t_coffee/t_coffee -version")}
 #' 
-#' 
-#' MUSCLE : 
+#'
+#'  
+#' \item MUSCLE : 
 #' 
 #' In case you use the default path to the muscle program,
 #' the following calls to muscle should work properly on your system:
 #' 
-#' system("muscle -help")
+#' \code{system("muscle -help")}
 #' 
 #' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 'muscle' execution path on your system:
 #' 
-#' system("path/to/muscle/muscle -help")
+#' \code{system("path/to/muscle/muscle -help")}
 #' 
 #' 
-#' #' CLUSTALO : 
+#' \item CLUSTALO : 
 #' 
 #' In case you use the default path to the clustalo program,
 #' the following calls to clustalo should work properly on your system:
 #' 
-#' system("clustalo --help")
+#' \code{system("clustalo --help")}
 #' 
 #' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 'clustalo' execution path on your system:
 #' 
-#' system("path/to/clustalo/clustalo --help")
+#' \code{system("path/to/clustalo/clustalo --help")}
 #' 
 #' 
-#' MAFFT : 
+#' \item MAFFT : 
 #' 
 #' In case you use the default path to the mafft program,
 #' the following calls to mafft should work properly on your system:
 #' 
-#' system("mafft -help")
+#' \code{system("mafft -help")}
 #' 
 #' In case this procedures doesn't work properly, please use the \code{path} argument
 #' to specify the 'mafft' execution path on your system:
 #' 
-#' system("path/to/mafft/mafft -help")
+#' \code{system("path/to/mafft/mafft -help")}
 #' 
-#' @note Note that when using the 'clustalw.params', ... parameters, make sure the corresponding alignment tool
+#' }
+#' @note Note that when using the \code{clustalw.params}, ... parameters, make sure the corresponding alignment tool
 #' returns a file in clustal format *.aln. This is only important when \code{get_aln} = \code{TRUE}.
 #' @examples \dontrun{
 #' 
@@ -184,7 +202,8 @@
 #' }
 #' @references 
 #' 
-#' CLUSTALW:
+#' \itemize{
+#' \item CLUSTALW:
 #' 
 #' Larkin MA, Blackshields G, Brown NP, Chenna R, McGettigan PA, McWilliam H, Valentin F,
 #' Wallace IM, Wilm A, Lopez R, Thompson JD, Gibson TJ, Higgins DG. (2007).
@@ -195,7 +214,7 @@
 #' \url{http://www.ebi.ac.uk/Tools/msa/clustalw2/help/}
 #' 
 #' 
-#' T_COFFEE
+#' \item T_COFFEE
 #' 
 #' T-Coffee: A novel method for multiple sequence alignments. 
 #' Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
@@ -205,7 +224,7 @@
 #' \url{http://www.tcoffee.org/Projects/tcoffee/documentation/t_coffee_tutorial.pdf}
 #' 
 #' 
-#' MUSCLE:
+#' \item MUSCLE:
 #' 
 #' Edgar, R.C. (2004) MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 32(5):1792-1797. 
 #' 
@@ -216,7 +235,7 @@
 #' \url{http://www.drive5.com/muscle/manual/}
 #' 
 #' 
-#' CLUSTALO:
+#' \item CLUSTALO:
 #' 
 #' Sievers F, Wilm A, Dineen DG, Gibson TJ, Karplus K, Li W, Lopez R, McWilliam H, Remmert M, Soeding J, Thompson JD, Higgins DG (2011). 
 #' Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. Molecular Systems Biology 7:539 doi:10.1038/msb.2011.75
@@ -225,7 +244,7 @@
 #' 
 #' \url{http://www.clustal.org/omega/README}
 #' 
-#' MAFFT : 
+#' \item MAFFT : 
 #' 
 #' Katoh, Standley 2013 (Molecular Biology and Evolution 30:772-780)  
 #' MAFFT multiple sequence alignment software version 7: improvements in performance and usability. 
@@ -236,6 +255,7 @@
 #' 
 #' \url{http://mafft.cbrc.jp/alignment/software/tips0.html}
 #' 
+#' }
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
 multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,

@@ -15,7 +15,9 @@
 #' used to run OrthoMCL.
 #' @param delete_files a boolean value specifying whether the folder '_OrthoMCL' that stored the
 #' OrthoMCL output files shall be removed after the analysis. Default is \code{delete_files} = \code{FALSE}.
-#' @details This function...
+#' @details This function provides an interface to the prthology detection program OrthoMCL.
+#' 
+#' To use this function \emph{OrthoMCL} needs to be installes and executable on your system.
 #' @author Hajk-Georg Drost
 #' @references
 #' Li Li, Christian J. Stoeckert, Jr., and David S. Roos
@@ -38,10 +40,14 @@
 #' @examples \dontrun{
 #' 
 #' # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
-#' 
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "OrthoMCL")
+#'           
+#'           
 #' }
 #' @return a data.frame storing the OrthoMCL output.
-#' @seealso \code{\link{orthologs}}
+#' @seealso \code{\link{orthologs}}, \code{\link{dNdS}}
 #' @export
 
 OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1E-5",
@@ -79,6 +85,7 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
         
         setwd(currwd)
         
-        
+        if(delete_files)
+                clean_all_folders("_OrthoMCL")
         
 }

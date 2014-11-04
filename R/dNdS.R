@@ -30,7 +30,7 @@
 #' Default is \code{quiet} = \code{FALSE}.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
-#' @author Sarah Scharfenberg and Hajk-Georg Drost 
+#' @author Hajk-Georg Drost and Sarah Scharfenberg 
 #' @details 
 #' 
 #' 
@@ -39,8 +39,8 @@
 #' with nonsynonymous substitution rates (dN), which are exposed to selection as they 
 #' change the amino acid composition of a protein (Mugal et al., 2013 \url{http://mbe.oxfordjournals.org/content/31/1/212}).
 #' 
-#' The \code{orthologr} package provides a function named \code{dNdS()} to perform dNdS estimation on pairs of orthologous genes.
-#' The \code{dNdS()} function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file}) 
+#' The \pkg{orthologr} package provides the \code{\link{dNdS}} function to perform dNdS estimation on pairs of orthologous genes.
+#' This function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file}) 
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 #' 
 #' The following pipieline resembles the dNdS estimation process:
@@ -152,7 +152,7 @@
 #' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 #' 
 #' }
-#' @seealso \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+#' @seealso \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}} 
 #' @export
 dNdS <- function(query_file, subject_file, seq_type = "protein",
@@ -255,13 +255,22 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         # use OrthoMCL as orthology inference method
         if(ortho_detection == "OrthoMCL"){
                 
+                hit.table <- data.table::copy(
+                        orthologs(query_file = query_file, subject_files = subject_file, 
+                                  ortho_detection = "OrthoMCL",eval = eval, path = ortho_path,
+                                  comp_cores = comp_cores, seq_type = "cds", 
+                                  format = format, quiet = quiet))
                 
         }
         
         # use InParanoid as orthology inference method
         if(ortho_detection == "IP"){
          
-                
+                hit.table <- data.table::copy(
+                        orthologs(query_file = query_file, subject_files = subject_file, 
+                                  ortho_detection = "IP",eval = eval, path = ortho_path,
+                                  comp_cores = comp_cores, seq_type = "cds", 
+                                  format = format, quiet = quiet))
                 
         }
         
@@ -332,7 +341,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
-#' @references http://www.r-bloggers.com/the-wonders-of-foreach/
+#' @references \url{http://www.r-bloggers.com/the-wonders-of-foreach/}
 #' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 #' @import foreach
 #' @import data.table

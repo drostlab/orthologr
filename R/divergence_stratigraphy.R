@@ -34,13 +34,19 @@
 #'  4) dNdS estimation using Comeron's method (1995)
 #'  
 #'  5) Assigning dNdS values to divergence strata (deciles)
-#'  
+#' 
+#' @note Although this function has been heavily optimized and parallelized, performing
+#' Divergence Stratigraphy using two genomes will take some computation time.
+#' 
+#' In our experience performing Divergence Stratigraphy using two genomes (one query and one subject genome)
+#' on an 8 core machine can take up to 1,5 - 2 hours.
+#'   
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references
 #'  
-#'  Quint M et al. (2012). "A transcriptomic hourglass in plant embryogenesis". Nature (490): 98-101.
+#'  Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature (490): 98-101.
 #'  
-#'  Drost HG et al. (2014). "Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis".
+#'  Drost HG et al. (2014). Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis.
 #'  
 #' @examples \dontrun{
 #'  
@@ -126,6 +132,17 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 #' @description This function takes a data.table returned by dNdS
 #' and sorts the corresponding dNdS value into divergence strata (deciles).
 #' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
+#' @details 
+#' 
+#' Divergence Strata are decile values of corresponding \code{\link{dNdS}} values.
+#' The \code{\link{dNdS}} function returns dNdS values for orthologous genes
+#' of a query species (versus subject species). These dNdS values are then
+#' sorted into deciles and each orthologous protein coding gene of the
+#' query species receives a corresponding decile value instead of the initial dNdS value.
+#' 
+#' This allows a better comparison between Phylostrata and Divergence Strata (for more details see package: \pkg{myTAI}).
+#' 
+#' 
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @examples \dontrun{
 #' 

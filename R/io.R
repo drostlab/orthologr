@@ -145,6 +145,16 @@ read.cds <- function(file, format, ...){
 #' @param sequence a character string specifying CDS sequence of interest.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @return A character string specifying the corresponding amino acid sequence.
+#' @references \code{\link[seqinr]{translate}}
+#' @examples
+#' 
+#' # an example DNA sequence
+#' DNA <- c("ACCGGTTTAAAGGCGTTA")
+#' 
+#' # translating DNA to a protein sequence
+#' transl(DNA)
+#' 
+#' @export
 transl <- function(sequence){
         return(seqinr::c2s(seqinr::translate(seqinr::s2c(sequence))))
 }

@@ -71,8 +71,8 @@ This selection pressure can be quantified by comparing synonymous substitution r
 with nonsynonymous substitution rates (dN), which are exposed to selection as they
 change the amino acid composition of a protein (Mugal et al., 2013 \url{http://mbe.oxfordjournals.org/content/31/1/212}).
 
-The \code{orthologr} package provides a function named \code{dNdS()} to perform dNdS estimation on pairs of orthologous genes.
-The \code{dNdS()} function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file})
+The \pkg{orthologr} package provides the \code{\link{dNdS}} function to perform dNdS estimation on pairs of orthologous genes.
+This function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file})
 and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 
 The following pipieline resembles the dNdS estimation process:
@@ -172,7 +172,7 @@ codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
 }
 }
 \author{
-Sarah Scharfenberg and Hajk-Georg Drost
+Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
 seqinr: \url{http://seqinr.r-forge.r-project.org/}
@@ -188,7 +188,7 @@ Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics a
 More information on \pkg{ape} can be found at \url{http://ape-package.ird.fr/}.
 }
 \seealso{
-\code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+\code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 \code{\link{blast_rec}}, \code{\link{read.cds}}
 }
 

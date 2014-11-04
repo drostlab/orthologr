@@ -60,7 +60,7 @@ the query_id and subject_id (file two). These fasta files are then used to pass 
 Hajk-Georg Drost and Sarah Scharfenberg
 }
 \references{
-http://www.r-bloggers.com/the-wonders-of-foreach/
+\url{http://www.r-bloggers.com/the-wonders-of-foreach/}
 }
 \seealso{
 \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
