@@ -40,6 +40,12 @@ A data.table storing the BLAST hit table returned by BLAST.
 \description{
 This function performs a BLAST+ search of a given set of sequences against a given database.
 }
+\details{
+This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
+such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
+
+Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
+}
 \examples{
 \dontrun{
 # performing a BLAST search using blastp (default)

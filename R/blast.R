@@ -16,6 +16,11 @@
 #' that a set of default parameters is used when running BLAST.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @details This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
+#' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
+#' 
+#' Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
+#' 
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references 
 #' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.

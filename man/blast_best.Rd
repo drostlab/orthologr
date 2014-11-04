@@ -45,7 +45,10 @@ of orthologous genes (best hit) in the first column and the amino acid sequences
 This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
 }
 \details{
-Given a set of protein sequences A, a best hit blast search is being performed from A to database.
+Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.
+
+Internally to perform best hit searches, the BLAST+ parameter settings: "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
+are used to speed up best hit computations.
 }
 \examples{
 \dontrun{

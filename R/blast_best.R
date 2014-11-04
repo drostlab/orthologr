@@ -1,5 +1,5 @@
 #' @title Function to perform a BLAST+ best hit search
-#' @description This function performs a blast+ search (best hit) of a given set of protein sequences against a given database.
+#' @description This function performs a BLAST+ search (best hit) of a given set of protein sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
 #' @param seq_type a character string specifying the sequence type stored in the input file.
@@ -18,7 +18,11 @@
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
-#' @details Given a set of protein sequences A, a best hit blast search is being performed from A to database.
+#' @details Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.
+#' 
+#' Internally to perform best hit searches, the BLAST+ parameter settings: "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
+#' are used to speed up best hit computations.
+#' 
 #' @references
 #' 
 #' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
