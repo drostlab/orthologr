@@ -46,10 +46,146 @@ The `orthologr` package stores 20 example genes (orthologs) between _Arabidopsis
 and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a simple
 BLAST search with standard parameters provided by the `blast_best()` function.
 
+When running the subsequent functions please make sure you can call BLAST+ from your
+console either in the standard `PATH` or in case you have BLAST+ installed in a seperate
+folder, please specify the `path` argument that can be passed to `blast()`.
+
+To check whether BLAST+ can be executed from the default `PATH` (`usr/bin/local` on UNIX systems),
+you can run:
+
+```{r,eval=FALSE}
+
+system("blastp -version")
+
+```
+
+This should return somethin like this:
+
+```
+blastp: 2.2.29+
+Package: blast 2.2.29, build Dec 10 2013 15:51:59
+
+```
+
+If everything works properly, you can get started with you first BLAST+ search.
+
+
+## The blast() function
+
+This is the easiest way to perform a first BLAST search.
+
+```{r,eval=FALSE}
+
+# performing a BLAST search using blastp (default)
+hit_tbl <- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+
+hit_tbl
+
+```
+
+```
+       query_id            subject_id perc_identity alig_length mismatches gap_openings q_start q_end s_start s_end evalue bit_score
+ 1: AT1G01010.1 333554|PACid:16033839         73.99         469         80            8       1   430       1   466  0e+00       627
+ 2: AT1G01020.1 470181|PACid:16064328         91.06         246         22            0       1   246       1   246 7e-166       454
+ 3: AT1G01030.1 470180|PACid:16054974         95.54         359         12            2       1   359       1   355  0e+00       698
+ 4: AT1G01040.1 333551|PACid:16057793         91.98        1970         85           10       6  1910       2  1963  0e+00      3704
+ 5: AT1G01050.1 909874|PACid:16064489        100.00         213          0            0       1   213       1   213 2e-160       437
+ 6: AT1G01060.3 470177|PACid:16043374         89.51         648         58            5       1   646       1   640  0e+00      1037
+ 7: AT1G01070.1 918864|PACid:16052578         95.08         366         14            2       1   366       1   362  0e+00       696
+ 8: AT1G01080.1 909871|PACid:16053217         90.33         300         22            2       1   294       1   299 1e-178       491
+ 9: AT1G01090.1 470171|PACid:16052860         96.77         434          8            3       1   429       1   433  0e+00       859
+10: AT1G01110.2 333544|PACid:16034284         93.56         528         34            0       1   528       1   528  0e+00       972
+11: AT1G01120.1 918858|PACid:16049140         99.24         529          4            0       1   529       1   529  0e+00      1092
+12: AT1G01140.3 470161|PACid:16036015         98.45         453          6            1       1   452       1   453  0e+00       918
+13: AT1G01150.1 918855|PACid:16037307         72.63         285         68            3       5   289      16   290 3e-150       421
+14: AT1G01160.1 918854|PACid:16044153         84.92         179         19            2       4   175       2   179  1e-93       268
+15: AT1G01170.2 311317|PACid:16052302         85.57          97          0            1       2    84       4   100  3e-54       158
+16: AT1G01180.1 909860|PACid:16056125         92.58         310         20            1       1   307       1   310  0e+00       576
+17: AT1G01190.1 311315|PACid:16059488         94.18         533         30            1       1   533       6   537  0e+00      1036
+18: AT1G01200.1 470156|PACid:16041002         95.80         238         10            0       1   238       1   238 3e-172       470
+19: AT1G01210.1 311313|PACid:16057125         95.33         107          5            0       1   107       1   107  7e-76       215
+20: AT1G01220.1 470155|PACid:16047984         96.69        1056         35            0       1  1056       1  1056  0e+00      2106
+
+```
+
+As you can see, the hit table returned by BLAST+ is returned. The `blast()` function
+runs `blastp` as default BLAST+ algorithm. Different BLAST+ algorithms can be selected by
+specifying the `blast_algorithm` argument, e.g. `blast_algorithm = "tblastn"`. See `?blast` for further details.
+The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `perc_identity`,
+`alig_length`, `mismatches`, `gap_openings`, `q_start`, `q_end`, `s_start`, `s_end`, `evalue`, and `bit_score`.
+
+Since `blast()` stores the hit table returned by BLAST in a data.table, you can access each column,
+using the [data.table notation](https://github.com/Rdatatable/data.table/wiki).
+
+
+In case you need to specify the `PATH` to BLAST+ please use the `path` argument:
+
+```{r,eval=FALSE}
+
+# performing a BLAST search using blastp (default)
+hit_tbl <- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                 path = "/path/to/blastp")
+
+
+hit_tbl
+
+```
+
+
+```{r,eval=FALSE}
+
+# access columns: query_id, subject_id, evalue, and bit_score
+hit_tbl[ , list(query_id, subject_id, evalue, bit_score)]
+
+```
+
+```
+
+       query_id            subject_id evalue bit_score
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00       627
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166       454
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00       698
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00      3704
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160       437
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00      1037
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00       696
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178       491
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00       859
+10: AT1G01110.2 333544|PACid:16034284  0e+00       972
+11: AT1G01120.1 918858|PACid:16049140  0e+00      1092
+12: AT1G01140.3 470161|PACid:16036015  0e+00       918
+13: AT1G01150.1 918855|PACid:16037307 3e-150       421
+14: AT1G01160.1 918854|PACid:16044153  1e-93       268
+15: AT1G01170.2 311317|PACid:16052302  3e-54       158
+16: AT1G01180.1 909860|PACid:16056125  0e+00       576
+17: AT1G01190.1 311315|PACid:16059488  0e+00      1036
+18: AT1G01200.1 470156|PACid:16041002 3e-172       470
+19: AT1G01210.1 311313|PACid:16057125  7e-76       215
+20: AT1G01220.1 470155|PACid:16047984  0e+00      2106
+
+```
+
+The `blast()` function also allows you to pass additional parameters to the BLAST+ search
+using the `blast_params` argument. In the following example, a remote BLAST+ search is
+performed.
+
+```
+
+blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                 blast_params = "-max_target_seqs 1")
+```
+
+
+
+
 The default `e-value` of best hit searches in `1E-5` and the default `blast_algorithm`
 is `blastp`.
 
-```{r}
+```{r,eval=FALSE}
 
 # performing gene orthology inference using the best hit (BH) method
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -59,10 +195,34 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
 
 ```
 
+```
+       query_id            subject_id evalue
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00
+10: AT1G01110.2 333544|PACid:16034284  0e+00
+11: AT1G01120.1 918858|PACid:16049140  0e+00
+12: AT1G01140.3 470161|PACid:16036015  0e+00
+13: AT1G01150.1 918855|PACid:16037307 3e-150
+14: AT1G01160.1 918854|PACid:16044153  1e-93
+15: AT1G01170.2 311317|PACid:16052302  3e-54
+16: AT1G01180.1 909860|PACid:16056125  0e+00
+17: AT1G01190.1 311315|PACid:16059488  0e+00
+18: AT1G01200.1 470156|PACid:16041002 3e-172
+19: AT1G01210.1 311313|PACid:16057125  7e-76
+20: AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
 
 So in detail the default search looks like this:
 
-```{r}
+```{r,eval=FALSE}
 
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
@@ -70,6 +230,31 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
            path = NULL, comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
            clean_folders = TRUE)
 
+
+```
+
+```
+       query_id            subject_id evalue
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00
+10: AT1G01110.2 333544|PACid:16034284  0e+00
+11: AT1G01120.1 918858|PACid:16049140  0e+00
+12: AT1G01140.3 470161|PACid:16036015  0e+00
+13: AT1G01150.1 918855|PACid:16037307 3e-150
+14: AT1G01160.1 918854|PACid:16044153  1e-93
+15: AT1G01170.2 311317|PACid:16052302  3e-54
+16: AT1G01180.1 909860|PACid:16056125  0e+00
+17: AT1G01190.1 311315|PACid:16059488  0e+00
+18: AT1G01200.1 470156|PACid:16041002 3e-172
+19: AT1G01210.1 311313|PACid:16057125  7e-76
+20: AT1G01220.1 470155|PACid:16047984  0e+00
 
 ```
 
@@ -91,6 +276,9 @@ argument defines the default e-value that shall be chosen as best hit threshold.
 
 
 
+```
+advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+               subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+               blast_params = "-remote")
 
-
-
+```
