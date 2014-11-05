@@ -7,8 +7,9 @@ dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
   ortho_detection = "RBH", blast_params = NULL, blast_path = NULL,
   eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
-  codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 1,
-  quiet = FALSE, clean_folders = FALSE)
+  codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
+  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -47,6 +48,9 @@ Default is \code{aa_aln_type} = "multiple".}
 
 \item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
 Right now only "pal2nal" can be selected as codon alignment tool.}
+
+\item{kaks_calc_path}{a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
+(meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 

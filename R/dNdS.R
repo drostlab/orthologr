@@ -24,6 +24,8 @@
 #' (no addintional parameters are passed to the selected alignment tool).
 #' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
 #' Right now only "pal2nal" can be selected as codon alignment tool.
+#' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
+#' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine. 
 #' @param quiet a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
@@ -161,8 +163,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                  eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple", 
                  aa_aln_tool = "clustalw", aa_aln_path = NULL, 
                  aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
-                 dnds_est.method = "YN", comp_cores = 1, 
-                 quiet = FALSE, clean_folders = FALSE){
+                 kaks_calc_path = NULL, dnds_est.method = "YN", 
+                 comp_cores = 1, quiet = FALSE, clean_folders = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -296,6 +298,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                        aa_aln_tool = aa_aln_tool,
                        aa_aln_path = aa_aln_path,
                        codon_aln_tool = codon_aln_tool, 
+                       kaks_calc_path = kaks_calc_path, 
                        dnds_est.method = dnds_est.method, quiet = quiet,
                        comp_cores = comp_cores, clean_folders = clean_folders)
                        )   
@@ -324,6 +327,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @param aa_aln_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
 #' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = "pal2nal".
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
+#' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
+#' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
@@ -348,8 +353,8 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 compute_dnds <- function(complete_tbl,
                          aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
                          aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-                         dnds_est.method = "YN", quiet = FALSE, comp_cores = 1,
-                         clean_folders = FALSE){
+                         dnds_est.method = "YN", kaks_calc_path = NULL, 
+                         quiet = FALSE, comp_cores = 1, clean_folders = FALSE){
         
         if(comp_cores > parallel::detectCores())
                 stop("You assigned more cores to the comp_cores argument than are availible on your machine.")

@@ -4,7 +4,7 @@
 \title{Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.}
 \usage{
 substitutionrate(file, est.method, format = "fasta", quiet = FALSE,
-  kaks_calc.params = NULL, subst_name = NULL)
+  kaks_calc.params = NULL, kaks_calc_path = NULL, subst_name = NULL)
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}
@@ -21,6 +21,9 @@ hence it is important to use format = "fasta" when choosing est.method = "Comero
 
 \item{kaks_calc.params}{a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
 \code{kaks_calc.params} = "-m NG -m YN".}
+
+\item{kaks_calc_path}{a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
+(meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).}
 
 \item{subst_name}{a character string specifying the substitution name that shall be added to the internal folder path naming.
 Default is \code{subst_name} = \code{NULL}.}

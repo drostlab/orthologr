@@ -12,6 +12,8 @@
 #' @param quiet a logical value specifying whether the output of the coresponding interface shall be printed out.
 #' @param kaks_calc.params a character string storing additional parameters for KaKs_Claculator 1.2 . Default is \code{NULL}. Example:
 #' \code{kaks_calc.params} = "-m NG -m YN". 
+#' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
+#' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
 #' @param subst_name a character string specifying the substitution name that shall be added to the internal folder path naming. 
 #' Default is \code{subst_name} = \code{NULL}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
@@ -93,7 +95,7 @@
 #' @export
 substitutionrate <- function(file, est.method, format = "fasta",
                              quiet = FALSE, kaks_calc.params = NULL,
-                             subst_name = NULL){
+                             kaks_calc_path = NULL, subst_name = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
         kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
@@ -196,9 +198,8 @@ if(is.element(est.method,kaks_calc_methods)){
         
         
         # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
-        fa2axt <- system.file(paste0("KaKs_Calculator1.2",f_sep,"parseFastaIntoAXT.pl"), package = "orthologr")
-        
+         f_sep <- .Platform$file.sep
+         fa2axt <- system.file(paste0("KaKs_Calc_parser",f_sep,"parseFastaIntoAXT.pl"), package = "orthologr")
         
         ### replace paths like this: path/to a folder/of_interest
         ### by: path/'to a folder'/of_interest
@@ -215,12 +216,23 @@ if(is.element(est.method,kaks_calc_methods)){
         ###
         
         tryCatch(
-                
-{        # converting to input file for KaKs_Calculator
-        system(paste0("perl ",fa2axt ," ",file," ",curr_wd,f_sep,"_calculation",f_sep,file_name))
-        # running KaKs_Calculator inside the orthologr package
-        KaKs_Calculator <- system.file(paste0("KaKs_Calculator1.2",f_sep,"bin",f_sep,os,f_sep,calc), package = "orthologr")
+                {
+                        
+        # converting to input file for KaKs_Calculator
+         system(paste0("perl ",fa2axt ," ",file," ",curr_wd,f_sep,"_calculation",f_sep,file_name))
         
+        
+         # running KaKs_Calculator inside the orthologr package
+#         KaKs_Calculator <- system.file(paste0("KaKs_Calculator1.2",f_sep,"bin",f_sep,os,f_sep,calc), package = "orthologr")
+          
+        if(is.null(kaks_calc_path))
+                KaKs_Calculator <- calc
+        
+
+        if(!is.null(kaks_calc_path))
+                KaKs_Calculator <- paste0(kaks_calc_path,f_sep,calc)
+        
+
         if(is.null(kaks_calc.params))
                 system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks"," -m ",est.method)))
         
