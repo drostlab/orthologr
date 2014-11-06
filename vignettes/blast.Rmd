@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 ```
 
 
+## Getting Started
+
 A major part of __Divergence Statigraphy__ is orthologous gene detection based on
 BLAST best reciprocal hit. Hence the `orthologr` package provides a vast
 applicability and advanced BLAST interface functions to perform BLAST searches
@@ -30,7 +32,7 @@ The following BLAST interface functions are implemented in `orthologr`:
 
 * set_blast() : a function preparing the parameters and databases for subsequent BLAST searches 
 * blast() : simple interface function to BLAST+
-* blast_best() : optimized function to perform BLAST best hit searches
+* blast_best() : optimized function to perform BLAST+ best hit searches
 * blast_rec() : a function to perform a BLAST+ best reciprocal hit (BRH) searches
 * advanced_blast() : advanced interface function to BLAST+ (integrated SQLite connection to the output hit table)
 * advanced_makedb() : advanced interface function to makeblastdb
@@ -44,7 +46,7 @@ very fast computations (data manipulations).
 
 The `orthologr` package stores 20 example genes (orthologs) between _Arabidopsis thaliana_
 and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a simple
-BLAST search with standard parameters provided by the `blast_best()` function.
+ search with standard parameters provided by the `blast()` function.
 
 When running the subsequent functions please make sure you can call BLAST+ from your
 console either in the standard `PATH` or in case you have BLAST+ installed in a seperate
@@ -72,7 +74,7 @@ If everything works properly, you can get started with you first BLAST+ search.
 
 ## The blast() function
 
-This is the easiest way to perform a first BLAST search.
+The `blast()` function provides the easiest way to perform a BLAST search.
 
 ```{r,eval=FALSE}
 
@@ -110,7 +112,7 @@ hit_tbl
 
 ```
 
-As you can see, the hit table returned by BLAST+ is returned. The `blast()` function
+As you can see, the hit table shows the output of the BLAST+ search. The `blast()` function
 runs `blastp` as default BLAST+ algorithm. Different BLAST+ algorithms can be selected by
 specifying the `blast_algorithm` argument, e.g. `blast_algorithm = "tblastn"`. See `?blast` for further details.
 The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `perc_identity`,
@@ -180,10 +182,46 @@ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr
 ```
 
 
+In all cases the default `e-value` BLAST+ searches is `1E-5` and the default `blast_algorithm`
+is `blastp`. 
 
 
-The default `e-value` of best hit searches in `1E-5` and the default `blast_algorithm`
-is `blastp`.
+Since BLAST+ searches can be computationally expensive, it is possible to specify the
+`comp_cores` argument when working with an multicore machine.
+
+
+```{r,eval=FALSE}
+
+# BLAST computations using the comp_cores parameter: here with 2 cores
+blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      comp_cores = 2)
+
+```
+
+The `query_file` and `subject_file` arguments specify the path to the corresponding 
+fasta files storing the `CDS` files, `amino acid` files, or `genome` files of the query organism and subject organism
+of interest. Make sure that when using `CDS`files, `amino acid` files, or `genome` files the 
+corresponding argument `seq_type` must be adapted accoring to the input data format.
+
+Use :
+
+* `CDS` files -> `seq_type = "cds"`
+* `amino acid` files -> `seq_type = "protein"`
+* `genome` files -> `seq_type = "dna"`
+
+The `format` argument specifies the input file format, e.g. "fasta" or "gbk".
+The `blast_algorithm` argument specifies the BLAST program (algorithm) that shall be
+used to perform BLAST searches, e.g. "blastp","blastn","tblastn",etc. Again, the `eval`
+argument defines the default e-value that shall be chosen as best hit threshold.
+
+## The blast_best() function
+
+For some analyses it is sufficient to perform BLAST best hit searches.
+The `blast_best()` function is optimized to perform BLAST best hit searches
+and returns the best hit when performing a BLAST+ search of a query organisms
+(or set of query genes) against a subject organism (or set of subject genes).
+
 
 ```{r,eval=FALSE}
 
@@ -220,59 +258,131 @@ blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orth
 
 ```
 
-So in detail the default search looks like this:
+The `blast_best()` function returns: `query_id`, `subject_id`, and `eval`.
+
+In case you need more parameters returned by a BLAST+ best hit search, you
+can specify the `detailed_output` argument (`detailed_output = TRUE`).
 
 ```{r,eval=FALSE}
 
+# BLAST+ best hit search
 blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-           seq_type = "cds", format = "fasta", blast_algorithm = "blastp", eval = "1E-5", 
-           path = NULL, comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
-           clean_folders = TRUE)
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      detailed_output = TRUE)
+
+```
+
+```
+
+       query_id            subject_id perc_identity alig_length mismatches gap_openings q_start q_end s_start s_end evalue bit_score
+ 1: AT1G01010.1 333554|PACid:16033839         73.99         469         80            8       1   430       1   466  0e+00       627
+ 2: AT1G01020.1 470181|PACid:16064328         91.06         246         22            0       1   246       1   246 7e-166       454
+ 3: AT1G01030.1 470180|PACid:16054974         95.54         359         12            2       1   359       1   355  0e+00       698
+ 4: AT1G01040.1 333551|PACid:16057793         91.98        1970         85           10       6  1910       2  1963  0e+00      3704
+ 5: AT1G01050.1 909874|PACid:16064489        100.00         213          0            0       1   213       1   213 2e-160       437
+ 6: AT1G01060.3 470177|PACid:16043374         89.51         648         58            5       1   646       1   640  0e+00      1037
+ 7: AT1G01070.1 918864|PACid:16052578         95.08         366         14            2       1   366       1   362  0e+00       696
+ 8: AT1G01080.1 909871|PACid:16053217         90.33         300         22            2       1   294       1   299 1e-178       491
+ 9: AT1G01090.1 470171|PACid:16052860         96.77         434          8            3       1   429       1   433  0e+00       859
+10: AT1G01110.2 333544|PACid:16034284         93.56         528         34            0       1   528       1   528  0e+00       972
+11: AT1G01120.1 918858|PACid:16049140         99.24         529          4            0       1   529       1   529  0e+00      1092
+12: AT1G01140.3 470161|PACid:16036015         98.45         453          6            1       1   452       1   453  0e+00       918
+13: AT1G01150.1 918855|PACid:16037307         72.63         285         68            3       5   289      16   290 3e-150       421
+14: AT1G01160.1 918854|PACid:16044153         84.92         179         19            2       4   175       2   179  1e-93       268
+15: AT1G01170.2 311317|PACid:16052302         85.57          97          0            1       2    84       4   100  3e-54       158
+16: AT1G01180.1 909860|PACid:16056125         92.58         310         20            1       1   307       1   310  0e+00       576
+17: AT1G01190.1 311315|PACid:16059488         94.18         533         30            1       1   533       6   537  0e+00      1036
+18: AT1G01200.1 470156|PACid:16041002         95.80         238         10            0       1   238       1   238 3e-172       470
+19: AT1G01210.1 311313|PACid:16057125         95.33         107          5            0       1   107       1   107  7e-76       215
+20: AT1G01220.1 470155|PACid:16047984         96.69        1056         35            0       1  1056       1  1056  0e+00      2106
+
+```
+
+
+## The blast_rec() function
+
+The `blast_rec()` function was implemented to optimize BLAST+ reciprocal best hit searches.
+BLAST+ reciprocal best hit searches are used to perform orthology inference. The following example shall
+illustrate this process.
+
+Running `blast_rec()` using default parameter settings:
+
+```{r,eval=FALSE}
+
+# performing gene orthology inference using the reciprocal best hit (RBH) method
+blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+
+```
+
+
+```
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 7e-166
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-160
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 1e-178
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 3e-150
+14 AT1G01160.1 918854|PACid:16044153  1e-93
+15 AT1G01170.2 311317|PACid:16052302  3e-54
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 3e-172
+19 AT1G01210.1 311313|PACid:16057125  7e-76
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
+Again you can specify the `detailed_output` argument to get more parameters
+returned by `blast_rec()`.
+
+
+```{r,eval=FALSE}
+
+# running blast_rec() using detailed_output = TRUE
+blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+          detailed_output = TRUE)
 
 
 ```
 
 ```
-       query_id            subject_id evalue
- 1: AT1G01010.1 333554|PACid:16033839  0e+00
- 2: AT1G01020.1 470181|PACid:16064328 7e-166
- 3: AT1G01030.1 470180|PACid:16054974  0e+00
- 4: AT1G01040.1 333551|PACid:16057793  0e+00
- 5: AT1G01050.1 909874|PACid:16064489 2e-160
- 6: AT1G01060.3 470177|PACid:16043374  0e+00
- 7: AT1G01070.1 918864|PACid:16052578  0e+00
- 8: AT1G01080.1 909871|PACid:16053217 1e-178
- 9: AT1G01090.1 470171|PACid:16052860  0e+00
-10: AT1G01110.2 333544|PACid:16034284  0e+00
-11: AT1G01120.1 918858|PACid:16049140  0e+00
-12: AT1G01140.3 470161|PACid:16036015  0e+00
-13: AT1G01150.1 918855|PACid:16037307 3e-150
-14: AT1G01160.1 918854|PACid:16044153  1e-93
-15: AT1G01170.2 311317|PACid:16052302  3e-54
-16: AT1G01180.1 909860|PACid:16056125  0e+00
-17: AT1G01190.1 311315|PACid:16059488  0e+00
-18: AT1G01200.1 470156|PACid:16041002 3e-172
-19: AT1G01210.1 311313|PACid:16057125  7e-76
-20: AT1G01220.1 470155|PACid:16047984  0e+00
+
+      query_id            subject_id perc_identity alig_length mismatches gap_openings q_start q_end s_start s_end evalue bit_score
+1  AT1G01010.1 333554|PACid:16033839         73.99         469         80            8       1   430       1   466  0e+00       627
+2  AT1G01020.1 470181|PACid:16064328         91.06         246         22            0       1   246       1   246 7e-166       454
+3  AT1G01030.1 470180|PACid:16054974         95.54         359         12            2       1   359       1   355  0e+00       698
+4  AT1G01040.1 333551|PACid:16057793         91.98        1970         85           10       6  1910       2  1963  0e+00      3704
+5  AT1G01050.1 909874|PACid:16064489        100.00         213          0            0       1   213       1   213 2e-160       437
+6  AT1G01060.3 470177|PACid:16043374         89.51         648         58            5       1   646       1   640  0e+00      1037
+7  AT1G01070.1 918864|PACid:16052578         95.08         366         14            2       1   366       1   362  0e+00       696
+8  AT1G01080.1 909871|PACid:16053217         90.33         300         22            2       1   294       1   299 1e-178       491
+9  AT1G01090.1 470171|PACid:16052860         96.77         434          8            3       1   429       1   433  0e+00       859
+10 AT1G01110.2 333544|PACid:16034284         93.56         528         34            0       1   528       1   528  0e+00       972
+11 AT1G01120.1 918858|PACid:16049140         99.24         529          4            0       1   529       1   529  0e+00      1092
+12 AT1G01140.3 470161|PACid:16036015         98.45         453          6            1       1   452       1   453  0e+00       918
+13 AT1G01150.1 918855|PACid:16037307         72.63         285         68            3       5   289      16   290 3e-150       421
+14 AT1G01160.1 918854|PACid:16044153         84.92         179         19            2       4   175       2   179  1e-93       268
+15 AT1G01170.2 311317|PACid:16052302         85.57          97          0            1       2    84       4   100  3e-54       158
+16 AT1G01180.1 909860|PACid:16056125         92.58         310         20            1       1   307       1   310  0e+00       576
+17 AT1G01190.1 311315|PACid:16059488         94.18         533         30            1       1   533       6   537  0e+00      1036
+18 AT1G01200.1 470156|PACid:16041002         95.80         238         10            0       1   238       1   238 3e-172       470
+19 AT1G01210.1 311313|PACid:16057125         95.33         107          5            0       1   107       1   107  7e-76       215
+20 AT1G01220.1 470155|PACid:16047984         96.69        1056         35            0       1  1056       1  1056  0e+00      2106
 
 ```
 
-The `query_file` and `subject_file` arguments specify the path to the corresponding 
-fasta files storing the `CDS` files, `amino acid` files, or `genome` files of the query organism and subject organism
-of interest. Make sure that when using `CDS`files, `amino acid` files, or `genome` files the 
-corresponding argument `seq_type` must be adapted accoring to the input data format.
-
-Use :
-
-* `CDS` files -> `seq_type = "cds"`
-* `amino acid` files -> `seq_type = "protein"`
-* `genome` files -> `seq_type = "dna"`
-
-The `format` argument specifies the input file format, e.g. "fasta" or "gbk".
-The `blast_algorithm` argument specifies the BLAST program (algorithm) that shall be
-used to perform BLAST searches, e.g. "blastp","blastn","tblastn",etc. Again, the `eval`
-argument defines the default e-value that shall be chosen as best hit threshold.
+## The advanced_blast() function
 
 
 
