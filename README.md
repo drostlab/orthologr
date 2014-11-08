@@ -213,7 +213,7 @@ the following dNdS Estimation Methods are available in `orthologr`:
 
  - [MYN](http://www.biomedcentral.com/1471-2148/6/44/) (Modified YN): Zhang, Z., et al. (2006)
 
-You don't need to worry about downloading and installing __gestimator__ and __KaKs_Calculator__, they are already included in the `orthologr` package.
+For this purpose you need to have __KaKs_Calculator__ installed on your system andexecutable from your default `PATH`, e,g, `/usr/local/bin/`.
 
 
 
