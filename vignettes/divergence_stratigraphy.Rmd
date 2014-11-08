@@ -175,9 +175,9 @@ On a 8 core machine with 3.4 GHz i7 processors the computation of an divergence 
 took 65 minutes.
 
 When your diverge map computations are done and you have a divergence map of your query organism,
-subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](https://github.com/HajkD/myTAI) package.
+subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package.
 
-Please see [Introduction to the myTAI package](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd)
+Please see [Introduction to the myTAI package](http://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
 for more details.
 
 
