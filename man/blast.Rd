@@ -4,8 +4,9 @@
 \title{Interface function to BLAST+}
 \usage{
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", eval = "1E-5", path = NULL,
-  comp_cores = 1, blast_params = NULL, clean_folders = FALSE)
+  blast_algorithm = "blastp", eval = "1E-5", remote = FALSE, db = NULL,
+  path = NULL, comp_cores = 1, blast_params = NULL,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -22,6 +23,12 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+
+\item{remote}{a boolean value specifying whether a remote BLAST search shall be performed.
+In case \code{remote} = \code{TRUE}, please specify the \code{db} argument.}
+
+\item{db}{a character string specifying the NCBI data base that shall be queried using remote BLAST.
+This parameter must be specified when \code{remote} = \code{TRUE} and is \code{NULL} by default.}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
@@ -45,6 +52,18 @@ This function provides a fast communication between R and BLAST+. It is mainly u
 such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
 
 Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
+
+When using \code{remote} = \code{TRUE}, make sure you specify the \code{db} argument.
+The following databases can be chosen:
+
+\code{db}
+\itemize{
+\item "nr"
+\item "plaza"
+}
+
+Note: When working with remote BLAST, make sure you don't submit too large jobs due to the
+BLAST query conventions!
 }
 \examples{
 \dontrun{

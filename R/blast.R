@@ -9,6 +9,10 @@
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
+#' @param remote a boolean value specifying whether a remote BLAST search shall be performed.
+#' In case \code{remote} = \code{TRUE}, please specify the \code{db} argument.
+#' @param db a character string specifying the NCBI data base that shall be queried using remote BLAST.
+#' This parameter must be specified when \code{remote} = \code{TRUE} and is \code{NULL} by default. 
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run BLAST searches.
@@ -20,6 +24,18 @@
 #' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
 #' 
 #' Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
+#' 
+#' When using \code{remote} = \code{TRUE}, make sure you specify the \code{db} argument.
+#' The following databases can be chosen:
+#' 
+#' \code{db}
+#' \itemize{
+#' \item "nr"
+#' \item "plaza"
+#' }
+#' 
+#' Note: When working with remote BLAST, make sure you don't submit too large jobs due to the
+#' BLAST query conventions!
 #' 
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @references 
@@ -76,12 +92,20 @@
 #' @export
 blast <- function(query_file, subject_file, seq_type = "cds",
                   format = "fasta", blast_algorithm = "blastp",
-                  eval = "1E-5", path = NULL, comp_cores = 1,
-                  blast_params = NULL, clean_folders = FALSE){
+                  eval = "1E-5", remote = FALSE, db = NULL, path = NULL,
+                  comp_cores = 1, blast_params = NULL, clean_folders = FALSE){
         
         if(!is.element(blast_algorithm,c("blastp")))
                 stop("Please choose a valid BLAST mode.")
         
+        if(remote & is.null(db))
+                stop("To use the remote option of blast() please specify the 'db' argument, e.g. db = 'nr'")
+        
+        if(!is.null(db)){
+                if(!is.element(db,c("nr","plaza")))
+                        stop("Please choose a database that is supported by remote BLAST.")
+        }
+                
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
@@ -92,6 +116,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         
         # initialize the BLAST search
         query.dt <- set_blast(file = query_file, seq_type = seq_type, format = format)[[1]]
+        
         # make a BLASTable databse of the subject
         database <- set_blast(file = subject_file, seq_type = seq_type, format = format, makedb = TRUE)[[2]]
         # create an internal folder structure for the BLAST process 
@@ -131,6 +156,18 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         # test whether the connection to BLAST+ works
         tryCatch(
         {      
+                
+           if(remote){
+                        
+                 # use the default parameters when running blastp
+                 system(
+                        paste0("blastp -db ",db," -query ",input,
+                               " -remote -evalue ",eval," -out ", output ," -outfmt 6")
+                        ) 
+                        
+            } else {
+                
+                
                 if(is.null(path)){
                         
                         if(blast_algorithm == "blastp"){
@@ -182,6 +219,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                                 }
                         }
                 }
+            }
         
         },error = function(){ stop(paste0("Please check the correct path to ",blast_algorithm,
                                            "... the interface call did not work properly.") ) }
