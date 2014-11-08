@@ -77,38 +77,31 @@ If everything works properly, you can get started with you first BLAST+ search.
 The `blast()` function provides the easiest way to perform a BLAST search.
 
 ```{r,eval=FALSE}
+library(dplyr)
 
 # performing a BLAST search using blastp (default)
 hit_tbl <- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
 
-hit_tbl
+glimpse(hit_tbl)
 
 ```
 
 ```
-       query_id            subject_id perc_identity alig_length mismatches gap_openings q_start q_end s_start s_end evalue bit_score
- 1: AT1G01010.1 333554|PACid:16033839         73.99         469         80            8       1   430       1   466  0e+00       627
- 2: AT1G01020.1 470181|PACid:16064328         91.06         246         22            0       1   246       1   246 7e-166       454
- 3: AT1G01030.1 470180|PACid:16054974         95.54         359         12            2       1   359       1   355  0e+00       698
- 4: AT1G01040.1 333551|PACid:16057793         91.98        1970         85           10       6  1910       2  1963  0e+00      3704
- 5: AT1G01050.1 909874|PACid:16064489        100.00         213          0            0       1   213       1   213 2e-160       437
- 6: AT1G01060.3 470177|PACid:16043374         89.51         648         58            5       1   646       1   640  0e+00      1037
- 7: AT1G01070.1 918864|PACid:16052578         95.08         366         14            2       1   366       1   362  0e+00       696
- 8: AT1G01080.1 909871|PACid:16053217         90.33         300         22            2       1   294       1   299 1e-178       491
- 9: AT1G01090.1 470171|PACid:16052860         96.77         434          8            3       1   429       1   433  0e+00       859
-10: AT1G01110.2 333544|PACid:16034284         93.56         528         34            0       1   528       1   528  0e+00       972
-11: AT1G01120.1 918858|PACid:16049140         99.24         529          4            0       1   529       1   529  0e+00      1092
-12: AT1G01140.3 470161|PACid:16036015         98.45         453          6            1       1   452       1   453  0e+00       918
-13: AT1G01150.1 918855|PACid:16037307         72.63         285         68            3       5   289      16   290 3e-150       421
-14: AT1G01160.1 918854|PACid:16044153         84.92         179         19            2       4   175       2   179  1e-93       268
-15: AT1G01170.2 311317|PACid:16052302         85.57          97          0            1       2    84       4   100  3e-54       158
-16: AT1G01180.1 909860|PACid:16056125         92.58         310         20            1       1   307       1   310  0e+00       576
-17: AT1G01190.1 311315|PACid:16059488         94.18         533         30            1       1   533       6   537  0e+00      1036
-18: AT1G01200.1 470156|PACid:16041002         95.80         238         10            0       1   238       1   238 3e-172       470
-19: AT1G01210.1 311313|PACid:16057125         95.33         107          5            0       1   107       1   107  7e-76       215
-20: AT1G01220.1 470155|PACid:16047984         96.69        1056         35            0       1  1056       1  1056  0e+00      2106
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
 
 ```
 
@@ -118,7 +111,7 @@ specifying the `blast_algorithm` argument, e.g. `blast_algorithm = "tblastn"`. S
 The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `perc_identity`,
 `alig_length`, `mismatches`, `gap_openings`, `q_start`, `q_end`, `s_start`, `s_end`, `evalue`, and `bit_score`.
 
-Since `blast()` stores the hit table returned by BLAST in a data.table, you can access each column,
+Since `blast()` stores the hit table returned by BLAST in a data.table object, you can access each column,
 using the [data.table notation](https://github.com/Rdatatable/data.table/wiki).
 
 
@@ -215,6 +208,182 @@ The `blast_algorithm` argument specifies the BLAST program (algorithm) that shal
 used to perform BLAST searches, e.g. "blastp","blastn","tblastn",etc. Again, the `eval`
 argument defines the default e-value that shall be chosen as best hit threshold.
 
+
+### Using the split-apply-combine strategy to a BLAST hit table
+
+All `blast` functions implemented in `orthologr` can easily be processed using the
+[split-apply-combine strategy](http://www.jstatsoft.org/v40/i01/paper) to detect 
+for example `one-to-one`, `one-to-many`, and `many-to-many` gene homology relationships.
+
+Here a simple example:
+
+```{r,eval=FALSE}
+
+# install.packages(c("plyr","dplyr"), dependencies = TRUE)
+library(plyr)
+library(dplyr)
+
+# perform a blastp search of 20 A. thaliana genes against 1000 A. lyrata genes
+hit_tbl <- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'))
+
+# determine 'one-to-many' and 'one-to-one' gene relationships
+rel_hit_tbl <- ddply(.data = hit_tbl, .variables = "query_id", .fun = nrow)
+colnames(rel_hit_tbl)[2] <- "n_genes"
+
+rel_hit_tbl
+
+```
+
+```
+      query_id n_genes
+1  AT1G01010.1       4
+2  AT1G01020.1       1
+3  AT1G01030.1       1
+4  AT1G01040.1       1
+5  AT1G01050.1       1
+6  AT1G01060.3       2
+7  AT1G01070.1       3
+8  AT1G01080.1       4
+9  AT1G01090.1       1
+10 AT1G01110.2       1
+11 AT1G01120.1       3
+12 AT1G01140.3      36
+13 AT1G01150.1       1
+14 AT1G01160.1       1
+15 AT1G01170.2       1
+16 AT1G01180.1       1
+17 AT1G01190.1       6
+18 AT1G01200.1       8
+19 AT1G01210.1       1
+20 AT1G01220.1       1
+
+```
+
+Now you can sort genes into classes: `one-to-one` and `one-to-many`.
+
+```{r,eval=FALSE}
+
+# classify into 'one-to-one' relationships
+one_to_one <- filter(rel_hit_tbl,n_genes == 1)
+
+# classify into 'one-to-many' relationships
+one_to_many <- filter(rel_hit_tbl,n_genes > 1)
+
+```
+
+```{r,eval=FALSE}
+# look at one_to_one
+one_to_one 
+
+```
+
+```
+      query_id n_genes
+1  AT1G01020.1       1
+2  AT1G01030.1       1
+3  AT1G01040.1       1
+4  AT1G01050.1       1
+5  AT1G01090.1       1
+6  AT1G01110.2       1
+7  AT1G01150.1       1
+8  AT1G01160.1       1
+9  AT1G01170.2       1
+10 AT1G01180.1       1
+11 AT1G01210.1       1
+12 AT1G01220.1       1
+
+```
+
+```{r,eval=FALSE}
+# look at one_to_many
+one_to_many
+
+```
+
+```
+     query_id n_genes
+1 AT1G01010.1       4
+2 AT1G01060.3       2
+3 AT1G01070.1       3
+4 AT1G01080.1       4
+5 AT1G01120.1       3
+6 AT1G01140.3      36
+7 AT1G01190.1       6
+8 AT1G01200.1       8
+
+```
+
+Now we can treat classes: `one_to_one` and `one_to_many` differently:
+
+### one-to-one genes
+
+```{r,eval=FALSE}
+# look at the evalue, perc_identity, and alig_length of one_to_one genes
+oo_genes <- dplyr::filter(hit_tbl,query_id %in% one_to_one[ , "query_id"])
+
+oo_genes[ , list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1  AT1G01020.1 470181|PACid:16064328 3e-164         91.06         246
+2  AT1G01030.1 470180|PACid:16054974  0e+00         95.54         359
+3  AT1G01040.1 333551|PACid:16057793  0e+00         91.98        1970
+4  AT1G01050.1 909874|PACid:16064489 1e-158        100.00         213
+5  AT1G01090.1 470171|PACid:16052860  0e+00         96.77         434
+6  AT1G01110.2 333544|PACid:16034284  0e+00         93.56         528
+7  AT1G01150.1 918855|PACid:16037307 1e-148         72.63         285
+8  AT1G01160.1 918854|PACid:16044153  5e-92         84.92         179
+9  AT1G01170.2 311317|PACid:16052302  1e-52         85.57          97
+10 AT1G01180.1 909860|PACid:16056125  0e+00         92.58         310
+11 AT1G01210.1 311313|PACid:16057125  3e-74         95.33         107
+12 AT1G01220.1 470155|PACid:16047984  0e+00         96.69        1056
+
+```
+
+Now you could filter for additional criteria to define a first set of true orthologs.
+In this example we define true orthologs as `one_to_one` genes having a minimum protein
+sequence length of 300, a perc_identity of > 80 percent and an e-value < 1E-5. 
+
+```{r,eval=FALSE}
+# look at the evalue, perc_identity, and alig_length of one_to_one genes
+oo_genes <- dplyr::filter(hit_tbl,query_id %in% one_to_one[ , "query_id"])
+
+true_orthologs <- dplyr::filter(oo_genes,evalue < 1e-5, perc_identity > 80, alig_length > 300)
+
+true_orthologs[ , list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1: AT1G01030.1 470180|PACid:16054974      0         95.54         359
+2: AT1G01040.1 333551|PACid:16057793      0         91.98        1970
+3: AT1G01090.1 470171|PACid:16052860      0         96.77         434
+4: AT1G01110.2 333544|PACid:16034284      0         93.56         528
+5: AT1G01180.1 909860|PACid:16056125      0         92.58         310
+6: AT1G01220.1 470155|PACid:16047984      0         96.69        1056
+
+```
+
+This way we could filter out a high confidence set of orthologous genes from the
+`one_to_one` class of genes. Now we continue with the `one_to_many` class of genes.
+
+In reality most orthology inference programs and methods perform way more
+complicated and sofisticated analyses to distinguish true orthologs from true paralogs
+(in-paralogs, out-paralogs, etc.). These subsequent analyses can also be performed using
+the above introduced split-apply-combine strategy. 
+
+Note, that you can perform self-BLAST searches `blast(query,query)` and `blast(subject,subject)` to distinguish between orthologous and paralogous genes.
+
+### one-to-many genes
+
+
+
+
+
 ## The blast_best() function
 
 For some analyses it is sufficient to perform BLAST best hit searches.
@@ -264,37 +433,30 @@ In case you need more parameters returned by a BLAST+ best hit search, you
 can specify the `detailed_output` argument (`detailed_output = TRUE`).
 
 ```{r,eval=FALSE}
-
+library(dplyr)
 # BLAST+ best hit search
-blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+best_hit_tbl <- blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       detailed_output = TRUE)
 
-```
+glimpse(best_hit_tbl)
 
 ```
 
-       query_id            subject_id perc_identity alig_length mismatches gap_openings q_start q_end s_start s_end evalue bit_score
- 1: AT1G01010.1 333554|PACid:16033839         73.99         469         80            8       1   430       1   466  0e+00       627
- 2: AT1G01020.1 470181|PACid:16064328         91.06         246         22            0       1   246       1   246 7e-166       454
- 3: AT1G01030.1 470180|PACid:16054974         95.54         359         12            2       1   359       1   355  0e+00       698
- 4: AT1G01040.1 333551|PACid:16057793         91.98        1970         85           10       6  1910       2  1963  0e+00      3704
- 5: AT1G01050.1 909874|PACid:16064489        100.00         213          0            0       1   213       1   213 2e-160       437
- 6: AT1G01060.3 470177|PACid:16043374         89.51         648         58            5       1   646       1   640  0e+00      1037
- 7: AT1G01070.1 918864|PACid:16052578         95.08         366         14            2       1   366       1   362  0e+00       696
- 8: AT1G01080.1 909871|PACid:16053217         90.33         300         22            2       1   294       1   299 1e-178       491
- 9: AT1G01090.1 470171|PACid:16052860         96.77         434          8            3       1   429       1   433  0e+00       859
-10: AT1G01110.2 333544|PACid:16034284         93.56         528         34            0       1   528       1   528  0e+00       972
-11: AT1G01120.1 918858|PACid:16049140         99.24         529          4            0       1   529       1   529  0e+00      1092
-12: AT1G01140.3 470161|PACid:16036015         98.45         453          6            1       1   452       1   453  0e+00       918
-13: AT1G01150.1 918855|PACid:16037307         72.63         285         68            3       5   289      16   290 3e-150       421
-14: AT1G01160.1 918854|PACid:16044153         84.92         179         19            2       4   175       2   179  1e-93       268
-15: AT1G01170.2 311317|PACid:16052302         85.57          97          0            1       2    84       4   100  3e-54       158
-16: AT1G01180.1 909860|PACid:16056125         92.58         310         20            1       1   307       1   310  0e+00       576
-17: AT1G01190.1 311315|PACid:16059488         94.18         533         30            1       1   533       6   537  0e+00      1036
-18: AT1G01200.1 470156|PACid:16041002         95.80         238         10            0       1   238       1   238 3e-172       470
-19: AT1G01210.1 311313|PACid:16057125         95.33         107          5            0       1   107       1   107  7e-76       215
-20: AT1G01220.1 470155|PACid:16047984         96.69        1056         35            0       1  1056       1  1056  0e+00      2106
+```
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
 
 ```
 
