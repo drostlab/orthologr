@@ -643,13 +643,13 @@ In case you need more parameters returned by a BLAST+ best hit search, you
 can specify the `detailed_output` argument (`detailed_output = TRUE`).
 
 ```{r,eval=FALSE}
-library(dplyr)
+
 # BLAST+ best hit search
 best_hit_tbl <- blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
                            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
                            detailed_output = TRUE)
 
-glimpse(best_hit_tbl)
+dplyr::glimpse(best_hit_tbl)
 
 ```
 
