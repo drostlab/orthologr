@@ -41,8 +41,19 @@
 #' 
 #' Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
 #' 
-#' "blastp", "blastn", "megablast","psiblast", "phiblast", "deltablast", "blastx", "tblastn", "tblastx"
+#' \itemize{
 #' 
+#' \item "blastp"
+#' \item "blastn"
+#' \item "megablast"
+#' \item "psiblast"
+#' \item "phiblast"
+#' \item "deltablast"
+#' \item "blastx"
+#' \item "tblastn"
+#' \item "tblastx"
+#' 
+#' }
 #' 
 #' The intention of this function is to provide the user with an easy to use interface function
 #' to BLAST+.
@@ -51,7 +62,7 @@
 #' in the same folder as BLAST-able database. In case you need to specify the path to your BLAST database,
 #' use the \code{db_path} argument.
 #' 
-#' The \code{advanced_blast} function can also store the BLAST output CSV file in an SQLite database.
+#' The \code{advanced_blast} function can also store the BLAST output CSV file in a SQLite database.
 #' This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
 #' to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument. 
 #' 
@@ -65,6 +76,12 @@
 #' 
 #' In case you want to use the taxonomy option, set \code{taxonomy} = \code{TRUE}.
 #' @references 
+#' 
+#' BLAST Command Line Applications User Manual: \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/}
+#' 
+#' Blast Program Selection Guide: \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide}
+#' 
+#' BLAST web interface: \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
 #' 
 #' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 #' Gish, W. and States, D.J. (1993) "Identification of protein coding regions by database similarity search." Nature Genet. 3:266-272.
@@ -81,9 +98,7 @@
 #'
 #' Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., and Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 #' 
-#' \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide}
 #' 
-#' \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
 #' @examples \dontrun{
 #' 
 #' 
@@ -387,7 +402,7 @@ if(!write.only){
         
         
         tryCatch(
-{
+       {
         if(!sql_database){
                 
                 hit_table <- data.table::fread(input = output, sep = "\t", 
@@ -410,20 +425,25 @@ if(!write.only){
         
         if(sql_database){
                 
+                blast_sql_db <- dplyr::src_sqlite("blast_sql_db.sqlite3", create = TRUE)
                 
-                blast_sql_db <- dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"), create = TRUE)
-                
-                connect_db <- RSQLite::dbConnect("SQLite", dbname = paste0("_blast_db",f_sep,"blast_sql_db.sqlite3"))
+                connect_db <- RSQLite::dbConnect("SQLite", dbname = "blast_sql_db.sqlite3")
                 
                 RSQLite::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
                                       header = FALSE, sep = "\t", overwrite = TRUE)
                 
-                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite(paste0("_blast_db",f_sep,"blast_sql_db.sqlite3")),"hit_tbl")
+                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite("blast_sql_db.sqlite3"),"hit_tbl")
                 
                 # dplyr::rename(blast_sqlite,colNames)
                 
-                if(clean_folders)
+                # return to the global working directory
+                setwd(file.path(currwd))
+                
+                if(clean_folders){
+                        warnings("Are you sure you want to clean all folders? The SQLite database
+                                 you want to connect with will be deleted as well.")
                         clean_all_folders("_blast_db")
+                }
                 
                 return(blast_sqlite)
                 
@@ -433,6 +453,12 @@ if(!write.only){
 }, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
                                    "correctly wrote a resulting BLAST hit table to ",output," ."))}
         )
+} 
+
+if(write.only){
+        
+        stop("Not implemented yet.")
+        
 }
 
 

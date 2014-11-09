@@ -71,8 +71,19 @@ the corresponding databases must be stored and accessible accoring to the BLAST 
 
 Following BLAST programs and algorithms can be assigned to \code{blast_algorithm}:
 
-"blastp", "blastn", "megablast","psiblast", "phiblast", "deltablast", "blastx", "tblastn", "tblastx"
+\itemize{
 
+\item "blastp"
+\item "blastn"
+\item "megablast"
+\item "psiblast"
+\item "phiblast"
+\item "deltablast"
+\item "blastx"
+\item "tblastn"
+\item "tblastx"
+
+}
 
 The intention of this function is to provide the user with an easy to use interface function
 to BLAST+.
@@ -81,7 +92,7 @@ When using \code{taxonomy} =  \code{TRUE}, then the taxdb.btd and taxdb.bti must
 in the same folder as BLAST-able database. In case you need to specify the path to your BLAST database,
 use the \code{db_path} argument.
 
-The \code{advanced_blast} function can also store the BLAST output CSV file in an SQLite database.
+The \code{advanced_blast} function can also store the BLAST output CSV file in a SQLite database.
 This works only with dplyr version >= 0.3 . To store the BLAST output in an SQLite database and
 to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument.
 
@@ -170,6 +181,12 @@ advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = '
 Hajk-Georg Drost
 }
 \references{
+BLAST Command Line Applications User Manual: \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/}
+
+Blast Program Selection Guide: \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide}
+
+BLAST web interface: \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
+
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 Gish, W. and States, D.J. (1993) "Identification of protein coding regions by database similarity search." Nature Genet. 3:266-272.
 
@@ -184,10 +201,6 @@ Zhang, J. and Madden, T.L. (1997) "PowerBLAST: A new network BLAST application f
 Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., and Schaeffer A.A. (2008) "Database indexing for production MegaBLAST searches." Bioinformatics 15:1757-1764.
 
 Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., and Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
-
-\url{http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=ProgSelectionGuide}
-
-\url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
 }
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}

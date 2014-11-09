@@ -758,7 +758,7 @@ hit table in a SQLite database and access it via the [dplyr database notation](h
 ```
 ab <- advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-                 blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
+                 blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 1")
 
 
 dplyr::glimpse(ab)
@@ -786,6 +786,175 @@ $ query_coverage_per_subj (dbl) 100, 100, 100, 99, 100, 100, 100, ...
 
 ```
 
-As you can see, the `advanced_blast()` function returns more parameters than all other `blast()`
-functions.
+As you can see, the `advanced_blast()` function returns more parameters than all other `blast()` functions.
+
+
+### Selecting the best hit using advanced_blast()
+
+The flexibility of `advanced_blast()` enables you to perform all previously introduced analyses (`blast()`, `blast_best()`, `blast_rec()`, etc.) as well as a variety of addtional analyses. The following example shall illustrate how to perform BLAST best hit searches using `advanced_blast()`
+
+
+```{r,eval=FALSE}
+# when performing an advanced BLAST search, you can easily select the best hit
+library(dplyr)
+
+advB <- advanced_blast(
+           query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+           seq_type = "cds",blast_algorithm = "blastp",
+           blast_params = "-evalue 1E-5 -num_threads 1")
+
+best_hit <- advB %>% group_by(query_id) %>% summarise(min(evalue))
+
+
+best_hit
+
+```
+
+```
+
+      query_id min(evalue)
+1  AT1G01010.1       0e+00
+2  AT1G01020.1      3e-164
+3  AT1G01030.1       0e+00
+4  AT1G01040.1       0e+00
+5  AT1G01050.1      1e-158
+6  AT1G01060.3       0e+00
+7  AT1G01070.1       0e+00
+8  AT1G01080.1      5e-177
+9  AT1G01090.1       0e+00
+10 AT1G01110.2       0e+00
+11 AT1G01120.1       0e+00
+12 AT1G01140.3       0e+00
+13 AT1G01150.1      1e-148
+14 AT1G01160.1       5e-92
+15 AT1G01170.2       1e-52
+16 AT1G01180.1       0e+00
+17 AT1G01190.1       0e+00
+18 AT1G01200.1      2e-170
+19 AT1G01210.1       3e-74
+20 AT1G01220.1       0e+00
+
+```
+
+The `blast_params` argument allows you to specify all parameters that shall
+be passed to the corresponding `blast_algorithm` based on the [NCBI blast stand-alone notation](http://www.ncbi.nlm.nih.gov/books/NBK1763/).
+
+
+### Using DELTA-BLAST in advanced_blast()
+
+ [Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
+ 
+More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the corresponding `cdd_deltablast.* files` need to be stored
+in a folder named `_blast_db` that is accessible from your working directory with `setwd("_blast_db")`. Otherwise the DELTA-BLAST option will not work properly.
+ 
+```{r,eval=FALSE}
+
+# DELTA-BLAST
+#
+# you can also use deltablast to perform BLAST searches
+# make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"
+advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+               subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+               blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")
+
+
+```
+
+```
+Adding sequences from FASTA; added 20 sequences in 0.010026 seconds.
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches
+ 1: AT1G01010.1 333554|PACid:16033839         73.77               346         469         81
+ 2: AT1G01020.1 470181|PACid:16064328         91.06               224         246         22
+ 3: AT1G01030.1 470180|PACid:16054974         95.26               342         359         13
+ 4: AT1G01040.1 333551|PACid:16057793         91.57              1803        1969         95
+ 5: AT1G01050.1 909874|PACid:16064489        100.00               213         213          0
+ 6: AT1G01060.3 470177|PACid:16043374         89.51               580         648         58
+ 7: AT1G01070.1 918864|PACid:16052578         93.44               342         366         20
+ 8: AT1G01080.1 909871|PACid:16053217         78.60               235         299         59
+ 9: AT1G01090.1 470171|PACid:16052860         96.77               420         434          8
+10: AT1G01110.2 333544|PACid:16034284         93.56               494         528         34
+11: AT1G01120.1 918858|PACid:16049140         99.24               525         529          4
+12: AT1G01140.3 470161|PACid:16036015         98.45               446         453          6
+13: AT1G01150.1 470177|PACid:16043374         13.33                10          75         51
+14: AT1G01150.1 918855|PACid:16037307         71.88               207         288         71
+15: AT1G01160.1 918854|PACid:16044153         78.65               140         178         32
+16: AT1G01170.2 311317|PACid:16052302         85.57                83          97          0
+17: AT1G01180.1 909860|PACid:16056125         92.58               287         310         20
+18: AT1G01190.1 311315|PACid:16059488         94.00               501         533         31
+19: AT1G01200.1 470156|PACid:16041002         95.80               228         238         10
+20: AT1G01210.1 311313|PACid:16057125         95.33               102         107          5
+21: AT1G01220.1 470155|PACid:16047984         96.69              1021        1056         35
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches
+    gap_openings q_start q_end s_start s_end evalue bit_score score_raw query_coverage_per_subj
+ 1:            9       1   430       1   466  0e+00       637      1643                     100
+ 2:            0       1   246       1   246  3e-88       257       657                     100
+ 3:            2       1   359       1   355  0e+00       502      1294                     100
+ 4:            8       6  1910       2  1963  0e+00      2362      6123                      99
+ 5:            0       1   213       1   213 2e-128       357       917                     100
+ 6:            5       1   646       1   640  0e+00      1003      2592                     100
+ 7:            2       1   366       1   362  2e-68       214       544                     100
+ 8:            1       1   294       1   299  4e-77       232       592                     100
+ 9:            3       1   429       1   433  0e+00       658      1698                     100
+10:            0       1   528       1   528  0e+00       763      1971                     100
+11:            0       1   529       1   529  0e+00       747      1928                     100
+12:            1       1   452       1   453 9e-179       504      1298                     100
+13:            3     215   289       8    68  1e-07        43       100                      22
+14:            3       5   292      16   293 3e-120       344       883                      83
+15:            1       4   175       2   179  4e-45       143       361                      88
+16:            1       2    84       4   100  5e-54       158       399                      99
+17:            1       1   307       1   310 8e-156       441      1135                      64
+18:            1       1   533       6   537  0e+00       522      1345                      99
+19:            0       1   238       1   238 2e-114       323       828                     100
+20:            0       1   107       1   107  2e-40       124       313                     100
+21:            0       1  1056       1  1056  0e+00      1765      4571                     100
+    gap_openings q_start q_end s_start s_end evalue bit_score score_raw query_coverage_per_subj
+
+```
+
+### Storing very large hit tables in a SQLite database with advanced_blast()
+
+The `advanced_blast()` function can also store the BLAST output CSV file in a SQLite database. This works only with [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html) version >= 0.3 . To store the BLAST output in an SQLite database and to receive an SQLite connection as specified by [tbl()](http://cran.r-project.org/web/packages/dplyr/vignettes/databases.html) in dplyr please use the `sql_database = TRUE` argument.
+
+
+```{r,eval=FALSE}
+
+# using a SQLite database to store the BLAST output and
+# select some example data
+
+library(dplyr)
+
+sqlE <- advanced_blast(
+             query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+             subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+             seq_type = "cds",blast_algorithm = "blastp",
+             blast_params = "-evalue 1E-5 -num_threads 1", sql_database = TRUE)
+
+head(sqlE)
+
+```
+
+```{r,eval=FALSE}
+
+# look at the structure of sqlE
+glimpse(sqlE)
+
+```
+
+```{r,eval=FALSE}
+# select all rows that have an evalue of zero
+filter(sqlE,evalue == 0)
+
+# select the best hit using the evalue criterion
+sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
+
+
+
+```
+
+
+
+
+
+
 

@@ -25,7 +25,9 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
 \item{remote}{a boolean value specifying whether a remote BLAST search shall be performed.
-In case \code{remote} = \code{TRUE}, please specify the \code{db} argument.}
+In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
+since a query of only a few genes against NCBI nr database, can consume a lot of time and might cause
+response delay crashes in R.}
 
 \item{db}{a character string specifying the NCBI data base that shall be queried using remote BLAST.
 This parameter must be specified when \code{remote} = \code{TRUE} and is \code{NULL} by default.}
