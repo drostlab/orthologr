@@ -55,6 +55,8 @@ have the same order
 }
 }
 \examples{
+\dontrun{
+
 # performing a codon alignment using PAL2NAL
 codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'),
@@ -66,6 +68,8 @@ codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'ort
                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'),
                        format = "clustal", tool = "pal2nal", get_aln = TRUE,
                        params = "-codontable 2")
+
+}
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
