@@ -94,6 +94,9 @@
 #' 
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
 #' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
+#' If the dNdS value cannot be calculated NA is returned. This can happen because of constraints
+#' of the used model where each of the programs throws different exception values. Be careful as the
+#' dN and dS values stay as calculated by the program.
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @export
@@ -152,6 +155,12 @@ substitutionrate <- function(file, est.method, format = "fasta",
         data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
                              new = c("query_id","subject_id","dN","dS","dNdS"))
         data.table::setkey(hit.table, query_id)
+
+        # for consistent output format we set the default value of gestimator 999
+        # to NA for output
+        # Therefor the user cannot make a mistake if using the dNdS results without 
+        # filtering for some value. 
+        hit.table[which(hit.table[,dNdS==999]),dNdS:=NA]
         
         if(!quiet){print("Substitutionrate successfully calculated by gestimator")}
         
@@ -169,6 +178,19 @@ if(est.method == "Li" ){
         res_list <- seqinr::kaks(aln)
         
         res <- data.table::data.table(t(c(unlist(aln$nam),  res_list$ka, res_list$ks, (res_list$ka/res_list$ks))))
+
+        # seqinr::kaks documentation:
+        # When the alignment does not contain enough information (i.e we approach saturation), 
+        # the Ka and Ks values take the value 10. Negative values indicate that Ka and Ks can
+        # not be computed.
+        # we set both of them to NA
+        
+        res[which(res[,dN<0]),dNdS:=NA]
+        res[which(res[,dS<0]),dNdS:=NA]
+        
+        res[which(res[,dN>9.9]),dNdS:=NA]
+        res[which(res[,dS>9.9]),dNdS:=NA]
+        
         data.table::setnames(res, old = paste0("V",1:5), 
                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
         data.table::setkey(res,query_id)
