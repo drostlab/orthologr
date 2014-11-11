@@ -95,8 +95,7 @@
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
 #' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
 #' If the dNdS value cannot be calculated NA is returned. This can happen because of constraints
-#' of the used model where each of the programs throws different exception values. Be careful as the
-#' dN and dS values stay as calculated by the program.
+#' of the used model. As each program throws different exception values we set all of them to NA instead. 
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @export
@@ -160,6 +159,8 @@ substitutionrate <- function(file, est.method, format = "fasta",
         # to NA for output
         # Therefor the user cannot make a mistake if using the dNdS results without 
         # filtering for some value. 
+        hit.table[which(hit.table[,dS==999]),dS:=NA]
+        hit.table[which(hit.table[,dN==999]),dN:=NA]
         hit.table[which(hit.table[,dNdS==999]),dNdS:=NA]
         
         if(!quiet){print("Substitutionrate successfully calculated by gestimator")}
@@ -186,10 +187,16 @@ if(est.method == "Li" ){
         # we set both of them to NA
         
         res[which(res[,dN<0]),dNdS:=NA]
+        res[which(res[,dN<0]),dN:=NA]
+        
         res[which(res[,dS<0]),dNdS:=NA]
+        res[which(res[,dS<0]),dS:=NA]
         
         res[which(res[,dN>9.9]),dNdS:=NA]
+        res[which(res[,dN>9.9]),dN:=NA]
+        
         res[which(res[,dS>9.9]),dNdS:=NA]
+        res[which(res[,dS>9.9]),dS:=NA]
         
         data.table::setnames(res, old = paste0("V",1:5), 
                              new = c("query_id","subject_id", "dN", "dS","dNdS"))
