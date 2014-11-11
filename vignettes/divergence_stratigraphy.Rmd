@@ -169,7 +169,7 @@ library(orthologr)
 ```
 
 
-Please note that performing __Divergence Stratigraphy__ using two large geneomes might take
+Please note that performing __Divergence Stratigraphy__ using two large genomes might take
 (even on a multicore machine) up to several minutes or hours (depending on the number of available computing cores).
 On a 8 core machine with 3.4 GHz i7 processors the computation of an divergence map between _A. thaliana_ and _A. lyrata_
 took 65 minutes.
@@ -222,4 +222,46 @@ library(orthologr)
 
 ```
 
+### divergence_stratigraphy() and dNdS-maps
 
+In case you are interested in the dNdS values of corresponding proteome comparisons returned by `divergence_stratigraphy`, you can either use the `dNdS()` function to obtain dNdS values for all protein coding genes of a given query and subject proteome or you can specify the `ds.values` argument: `ds.values = FALSE`.
+
+```{r,eval=FALSE}
+library(orthologr)
+
+# performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval = "1E-5", ortho_detection = "RBH",ds.values = FALSE, dnds.threshold = 1,
+      comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+
+```
+
+
+```
+      dNdS    query_id
+1  0.41950 AT1G01010.1
+2  0.38790 AT1G01020.1
+3  0.11850 AT1G01030.1
+4  0.11560 AT1G01040.1
+5  0.00000 AT1G01050.1
+6  0.39670 AT1G01060.3
+7  0.17280 AT1G01070.1
+8  0.32170 AT1G01080.1
+9  0.04174 AT1G01090.1
+10 0.26620 AT1G01110.2
+11 0.02317 AT1G01120.1
+12 0.04324 AT1G01140.3
+13 0.64120 AT1G01150.1
+14 0.37310 AT1G01160.1
+15 0.00000 AT1G01170.2
+16 0.16830 AT1G01180.1
+17 0.17730 AT1G01190.1
+18 0.11370 AT1G01200.1
+19 0.13420 AT1G01210.1
+20 0.10230 AT1G01220.1
+
+```
+
+The corresponding output is denoted as `dNdS-map`.

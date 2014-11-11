@@ -31,6 +31,8 @@ Default is \code{subst_name} = \code{NULL}.}
 \value{
 A data.table storing the query_id, subject_id, dN, dS, and dNdS values or
 a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.
+If the dNdS value cannot be calculated NA is returned. This can happen because of constraints
+of the used model. As each program throws different exception values we set all of them to NA instead.
 }
 \description{
 This function takes a pairwise alignment as input file and estimates the
@@ -76,10 +78,14 @@ Maximum-Likelihood Methods:
 \dontrun{
 
 # estimate the dNdS rate using Li's method
-substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
-                 est.method = "Li", format = "clustal")
+substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+                 est.method = "Li", format = "fasta")
 
- # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
+# estimate the dNdS rate using Comeron's method
+substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+                 est.method = "Comeron", format = "fasta")
+
+# estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
                   est.method = "MA", format = "fasta")
 
