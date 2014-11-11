@@ -239,7 +239,7 @@ if(is.element(est.method,kaks_calc_methods)){
         if(!is.null(kaks_calc.params))
                 system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks ",kaks_calc.params)))
         
-},error = function(){ stop(paste0("KaKs_Calculator 1.2 couln't run properly, please check your input files."))}
+},error = function(){ stop(paste0("KaKs_Calculator 1.2 couldn't run properly, please check your input files."))}
 
         )
 
