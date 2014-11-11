@@ -483,7 +483,7 @@ compute_dnds <- function(complete_tbl,
                 
                 # compute kaks
                 dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
-                                               subst_name = aa_aln_name,
+                                               subst_name = aa_aln_name, kaks_calc_path=kaks_calc_path,
                                                est.method = dnds_est.method, quiet = quiet)
                 
                 return(dNdS.table)
@@ -575,8 +575,8 @@ compute_dnds <- function(complete_tbl,
                 
                 # compute kaks
                 dNdS.table <- substitutionrate(file = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
-                                               subst_name = aa_aln_name,
-                                               est.method = dnds_est.method, quiet = quiet)
+                                               subst_name = aa_aln_name, kaks_calc_path=kaks_calc_path,
+                                               est.method = dnds_est.method, quiet = quiet )
                 
                 return(dNdS.table)
                 

@@ -54,10 +54,14 @@
 #' @examples \dontrun{
 #' 
 #' # estimate the dNdS rate using Li's method
-#' substitutionrate(system.file("seqs/aa_seqs.aln", package = "orthologr"),
-#'                  est.method = "Li", format = "clustal")
+#' substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                  est.method = "Li", format = "fasta")
 #'  
-#'  # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
+#' # estimate the dNdS rate using Comeron's method
+#' substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                  est.method = "Comeron", format = "fasta")
+#'                  
+#' # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
 #'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
 #'                   est.method = "MA", format = "fasta") 
 #'                   
