@@ -3,7 +3,7 @@ title: "BLAST searches using orthologr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{BLAST searches  using orthologr}
+  %\VignetteIndexEntry{BLAST Searches}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---

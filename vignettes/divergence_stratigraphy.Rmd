@@ -3,7 +3,7 @@ title: "Divergence Stratigraphy using orthologr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Divergence Stratigraphy using orthologr}
+  %\VignetteIndexEntry{Performing Divergence Stratigraphy}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---

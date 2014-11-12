@@ -3,7 +3,7 @@ title: "dNdS estimation using orthologr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{dNdS estimation using orthologr}
+  %\VignetteIndexEntry{Estimating dNdS}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---

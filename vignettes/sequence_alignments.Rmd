@@ -1,0 +1,92 @@
+---
+title: "Sequence alignments with orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Sequence Alignments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+
+The `orthologr` package provides multiple functions to perform pairwise and multiple sequence alignments. The following functions are implmented in `orthologr`:
+
+
+* `multi_aln()` : An interface function to common multiple alignment tools
+* `pairwise_aln()` : An interface function to common pairwise alignment tools
+* `codon_aln()` : Function to compute a codon alignment
+
+## Getting Started
+
+Prior to be able to use all sequence alignment functions implemented in `orthologr`
+you need to install the corresponding alignment tool of interest.
+The above mentioned functions provide interfaces to the following alignment programs:
+
+### The `multi_aln()` function
+
+* [__ClustalW__](http://www.clustal.org/clustal2/) : Advanced multiple alignment tool of nucleic acid and protein sequences
+ 
+* [__T_Coffee__](http://www.tcoffee.org/Projects/tcoffee/) : A collection of tools for processing multiple sequence alignments
+ of nucleic acids and proteins as well as their 3D structure
+ 
+* [__MUSCLE__](http://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
+ 
+* [__ClustalO__](http://www.clustal.org/omega/) : Fast and scalable multiple alignment tool for nucleic acid and protein sequences that is also
+ capable of performing HMM alignments
+ 
+* [__MAFFT__](http://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
+
+The easiest way to use the `multi_aln()` function is to store the corresponding multiple sequence alignment tools in the default execution `PATH` of you system (e.g. `/usr/local/bin` on UNIX machines).
+
+You can test whether the orresponding multiple sequence alignment tool can be executed from the default `PATH` by running:
+
+#### ClustalW
+
+* MacOS: `system("clustalw2 -help")`
+
+* Linux: `system("clustalw -help")`
+
+* Windows: `system("clustalw2.exe -help")`
+
+In case everything is installed approriately, you should see:
+
+
+```
+CLUSTAL 2.1 Multiple Sequence Alignments
+
+
+                DATA (sequences)
+
+-INFILE=file.ext                             :input sequences.
+-PROFILE1=file.ext  and  -PROFILE2=file.ext  :profiles (old alignment).
+
+
+                VERBS (do things)
+
+-OPTIONS            :list the command line parameters
+-HELP  or -CHECK    :outline the command line params.
+-FULLHELP           :output full help content.
+-ALIGN              :do full multiple alignment.
+
+```
+
+#### T_COFFEE
+
+```r
+
+system("t_coffee -version")
+
+```
+
+In case everything is installed approriately, you should see:
+
+```
+
+
+```
+
+
+
+
+
+
