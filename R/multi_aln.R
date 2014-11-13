@@ -262,7 +262,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                       multi_aln_name = NULL, clustalw.params = NULL, 
                       t_coffee.params = NULL, muscle.params = NULL, 
                       clustalo.params = NULL, mafft.params = NULL, 
-                      quiet = FALSE){
+                      quiet = FALSE, clean_folders = FALSE){
         
         if(!is.multiple_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
@@ -608,19 +608,25 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                #                  (.bash_profile, .profile, .cshrc, etc) in your home directory
                #                  to delete the MAFFT_BINARIES line.
                
-
+        
                 if(get_aln){
                         
                         tryCatch(
                                 {
                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
+                                        
+                                        if(clean_folders)
+                                                clean_all_folders("_alignment")
+                                        
                                         return(aln)
                                 }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
                                                                    file.out, " could not be read properly."))}
                         )
                 }
         }
-
+        
+      if(clean_folders)
+          clean_all_folders("_alignment")
 }
 
 

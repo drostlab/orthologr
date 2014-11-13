@@ -5,7 +5,8 @@
 \usage{
 multi_aln(file, tool, get_aln = FALSE, path = NULL, multi_aln_name = NULL,
   clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
-  clustalo.params = NULL, mafft.params = NULL, quiet = FALSE)
+  clustalo.params = NULL, mafft.params = NULL, quiet = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
@@ -36,6 +37,9 @@ that a set of default parameters is used when running mafft. Example: mafft.para
 
 \item{quiet}{a logical value specifying whether the output of the corresponding multiple alignment tool shall be printed out to the console.
 Default is \code{quiet} = \code{FALSE}.}
+
+\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.

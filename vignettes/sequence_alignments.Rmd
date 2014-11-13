@@ -175,4 +175,156 @@ If unsure which option to use:
 
 ```
 
+## The `multi_aln()` function
+
+```{r,eval=FALSE}
+
+multi_aln(system.file('seqs/multi_aln_example.fasta', package = 'orthologr'),
+          tool = "clustalw", get_aln = TRUE)
+
+```
+
+```
+
+
+ CLUSTAL 2.1 Multiple Sequence Alignments
+
+
+
+$nb
+[1] 4
+
+$nam
+[1] "AT1G01010.1|PACid_19656964"     "Thhalv10006531m|PACid_20187082"
+[3] "Bra032623|PACid_22715924"       "311315|PACid_16059488"         
+
+$seq
+$seq[[1]]
+[1] "-----------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+-----------------------------------------medqvgfg------------------frp
+ndeelvghylrnkiegntsr----------dvevaisevnicsydp---------wnlrfqskyksrd--
+-------amwyffsrre------------nnkgnrqsrttvsgkwkltgesvevkdqwgfcseg------
+--frgkig-------------------------------------------hkrvlvfldgrypdktksd
+wvihefhydllpehqr-----------------tyvicr--leykgddadilsayaidptpafvpnmtss
+agsvvnqsrqrnsgsyntyseydsanhgqqfnensn-imqqqplqgsfnplleydfanhg-------gqw
+l----------------------------sdyidlqqqvpylapye------------------------
+-----------------------------------nesemiwkhvieenfeflvdertsmqqhysdhrpk
+kpvsgvlp----------------ddssdtetgsmifedtssstds------------------------
+---------------------------------vgssdepghtriddipslniieplhnykaqeqpkqqs
+kekvissqksecewkmaeds---------ikippstntvkqswivlenaqwnylknmiigvllfisvisw
+iilvg-------------------------------"
+
+$seq[[2]]
+[1] "mvmederrgdikppsywldacediscdliddlvsdfdpssvavaesvdengvnndffggidhild
+siknggglpnrahingvsetnsqringnsevseaaqliagettvsvkgnvlqkcggkrdevskeegeknr
+krarvcsyqrersnlsgrgqansregdrfmnrkrtrnwdeaghnkrrdgynyrrdgrdreargywerdkv
+gsnelvyrsgtweadherdlkkesgrnresdekaeenkskpeehkekvveeqarryqldvleqakaknti
+afletgagktliailliksihkdltsqnrkmlsvflvpkvplvyqqaevirnqtcfqvghycgemgqdfw
+darrwqrefeskqvlvmtaqillnilrhsiirmeainllildechhavkkhpyslvmsefyhttpkdkrp
+aifgmtaspvnlkgvssqvdcaikirnletkldstvctikdrkelekhvpmpseivveydkaatmwslhe
+kikqmiaaveeaaqassrkskwqfmgardagakdelrqvygvsertesdgaanlihklrainytlaelgq
+wcaykvaqsfltalqsdervnfqvdvkfqesylsevvsllqcellegaaaekavaelskpengnandeie
+egelpddhvvsggehvdkvigaavadgkvtpkvqsliklllkyqhtadfraivfvervvaalvlpkvfae
+lpslgfircasmighnnsqemkssqmqdtiskfrdgqvtllvatsvaeegldirqcnvvmrfdlaktvla
+yiqsrgrarkpgsdyilmverenvshaaflrnarnseetlrkeaiertdlshlkdssrlisidavpgtvy
+kveatgamvslnsavglihfycsqlpgdryailrpefsmvkhekpgghteyscrlqlpcnapfeilegpv
+cssmrlaqqavclagckklhemgaftdmllpdkgsgqdaekadqddegepipgtarhrefypegvadvlk
+gewilsgkeicessklfhlymysvrcvdsgvskdpfltevsefavlfgneldaevlsmsmdlyvaramit
+kaslafrgslditesqlssikkfhvrlmsivldvdvepsttpwdpakaylfvpvadnssaepikginwel
+vekitkttvwdnplqrarpdvylgtnertlggdrreygfgklrhnigfgqkshptygirgavasfdvvra
+sgllpvrdalekevegdlsqgklmmadgcmvaenllgkivtaahsgkrfyvdsicydmsaetsfprkegy
+lgpleyntyadyykqkygvdlsckqqplikgrgvsycknllsprfeqsgesetildktyyvflppelcvv
+hplsgslvrgaqrlpsimrrvesmllavqlknlisypiptskilealtaascqetfcyeraellgdaylk
+wivsrflflkypqkhegqltrmrqqmvsnlvlyqyalvkglqsyiqadrfapsrwsapgvppvydedtkd
+ggssffdeeekpegnkdvfedgemedgelegdlssyrvlssktladvvealigvyyveggktaanhlmkw
+igihveddpeetegsvkpvynvpesvlksidfvgleralkyeftekgllveaithasrpssgvscyqrle
+fvgdavldhlitrhlfftytslppgrltdlraaavnnenfarvavkhklhlylrhgssalekqirdfvke
+vltesskpgfnsfglgdckapkvlgdivesiagaifldsgkdttaawkvfqpllqpmvtpetlpmhpvre
+lqercqqqaegleykasrsgntatvevfidgvqvgaaqnpqkkmaqklaarnalaalkekeaeeskkkqa
+ngnaagenqddnengnkkngnqtftrqtlndiclrknwpmpsyrcvkeggpahakrftfgvrvntsdrgw
+tdecigepmpsvkkakdsaailllellnktys----"
+
+$seq[[3]]
+[1] "-----------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+-----------------------------------------------mqqppqmfpmapsmpptnitteq
+iqkyleenkklimaimenqnlgklaecaqyqallqknlmylaaiadaqpppstagatppp----------
+---------------------------------amasqmgaphpg-------------------------
+---------------------------------------------mqppsyfmqhp------qasgmaqq
+appagifp----------------------prgplqfgsphqlqdp------------------------
+-----------------------------------qqqhmhqqamqghmgmrpmginnnngmqhqmqqqp
+etslggsaanvgirggkqdg-------------------------adgqgkddgk---------------
+------------------------------------"
+
+$seq[[4]]
+[1] "-----------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+--------------------------------------------------------mlslnmrteienlw
+vfalaskfnifmqehfaslllaiaitwctltivfwstpggpawg--------------------------
+--------------------------kyfftrrfsslghnrksknlipgprgfplvgsmslrsshvahqr
+iasvaemsnakrlmafslgdtkvvvtchpdvakeilnssvfadrpvdetayg---lmfnramgfapngty
+wrtlrrlssnhlfnpkqikrseeqrrviatqmvnafarnaksafavrdllktaslcnmmglvfg------
+-----------------------------------------------------reyelesnnnveseclk
+glveegydllg-----------------------tlnwtdhlpwlagldfqqirfrcsqlvpkvnlllsr
+iihehyatgnfldvllslqrseklsdsdivavlwemifrgtdtvavliewvlarialhpk----------
+----------------------------------vqstvhdeldr-------------------------
+---------------------------------------------vvgrsrtvdesdlpsltyltamike
+vlr--lhp-----------------------pgpllswarlsitdt------------------------
+------------------------------------tvdgyhvpagttamvnmwaiardphvwedplefk
+perfvakdgeaefsvfgsdlr---------------lapfgsgkrvcpgknlglttvsfwvatllhefew
+lpsveanppdlsevlrlscemacplivnvsprrksv"
+
+
+$com
+[1] NA
+
+attr(,"class")
+[1] "alignment"
+
+```
 
