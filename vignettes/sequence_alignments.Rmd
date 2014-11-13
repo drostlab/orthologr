@@ -40,7 +40,7 @@ The easiest way to use the `multi_aln()` function is to store the corresponding 
 
 You can test whether the orresponding multiple sequence alignment tool can be executed from the default `PATH` by running:
 
-#### ClustalW
+### ClustalW
 
 * MacOS: `system("clustalw2 -help")`
 
@@ -70,7 +70,7 @@ CLUSTAL 2.1 Multiple Sequence Alignments
 
 ```
 
-#### T_COFFEE
+### T_COFFEE
 
 ```r
 
@@ -82,11 +82,97 @@ In case everything is installed approriately, you should see:
 
 ```
 
+PROGRAM: T-COFFEE Version_11.00.8cbe486 (2014-08-12 21:55:14 - Revision 8cbe486 - Build 470)
 
 ```
 
+### MUSCLE
+
+```r
+
+system("muscle -help")
+
+```
+
+In case everything is installed approriately, you should see:
+
+```
+MUSCLE v3.8.31 by Robert C. Edgar
+
+http://www.drive5.com/muscle
+This software is donated to the public domain.
+Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
 
 
+Basic usage
 
+    muscle -in <inputfile> -out <outputfile>
+
+Common options (for a complete list please see the User Guide):
+
+    -in <inputfile>    Input file in FASTA format (default stdin)
+    -out <outputfile>  Output alignment in FASTA format (default stdout)
+    -diags             Find diagonals (faster for similar sequences)
+    -maxiters <n>      Maximum number of iterations (integer, default 16)
+    -maxhours <h>      Maximum time to iterate in hours (default no limit)
+    -html              Write output in HTML format (default FASTA)
+    -msf               Write output in GCG MSF format (default FASTA)
+    -clw               Write output in CLUSTALW format (default FASTA)
+    -clwstrict         As -clw, with 'CLUSTAL W (1.81)' header
+    -log[a] <logfile>  Log to file (append if -loga, overwrite if -log)
+    -quiet             Do not write progress messages to stderr
+    -version           Display version information and exit
+
+Without refinement (very fast, avg accuracy similar to T-Coffee): -maxiters 2
+Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
+Fastest possible (nucleotides): -maxiters 1 -diags
+
+```
+
+### ClustalO
+
+```r
+
+system("clustalo --help")
+
+```
+
+### MAFFT
+
+
+```r
+
+```
+
+In case everything is installed approriately, you should see:
+
+```
+
+------------------------------------------------------------------------------
+  MAFFT v7.187 (2014/10/02)
+  http://mafft.cbrc.jp/alignment/software/
+  MBE 30:772-780 (2013), NAR 30:3059-3066 (2002)
+------------------------------------------------------------------------------
+High speed:
+  % mafft in > out
+  % mafft --retree 1 in > out (fast)
+
+High accuracy (for <~200 sequences x <~2,000 aa/nt):
+  % mafft --maxiterate 1000 --localpair  in > out (% linsi in > out is also ok)
+  % mafft --maxiterate 1000 --genafpair  in > out (% einsi in > out)
+  % mafft --maxiterate 1000 --globalpair in > out (% ginsi in > out)
+
+If unsure which option to use:
+  % mafft --auto in > out
+
+--op # :         Gap opening penalty, default: 1.53
+--ep # :         Offset (works like gap extension penalty), default: 0.0
+--maxiterate # : Maximum number of iterative refinement, default: 0
+--clustalout :   Output: clustal format, default: fasta
+--reorder :      Outorder: aligned, default: input order
+--quiet :        Do not report progress
+--thread # :     Number of threads (if unsure, --thread -1)
+
+```
 
 

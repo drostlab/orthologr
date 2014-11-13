@@ -588,6 +588,8 @@ score: 486.462
 
 ```
 
+__Note__: To ontain the score value, you need to specify the `scoreOnly = TRUE` in the `pairwiseAlignment` function.
+
 As you can see, subject gene `918864|PACid:16052578` also has the highest global alignment score `1768.965` based on the Needleman-Wunsch algorithm. This strategy might help you to differentiate between border line cases.
 
 The examples shown above shall demonstrate the use cases that can be performed using the
