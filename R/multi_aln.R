@@ -18,7 +18,9 @@
 #' @param mafft.params a character string listing the input paramters that shall be passed to the executing mafft program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running mafft. Example: mafft.params = "--maxiterate 1 --thread 2 --clustalout".
 #' @param quiet a logical value specifying whether the output of the corresponding multiple alignment tool shall be printed out to the console.
-#' Default is \code{quiet} = \code{FALSE}. 
+#' Default is \code{quiet} = \code{FALSE}.
+#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' shall be removed. Default is \code{clean_folders} = \code{FALSE}. 
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details This function provides an interface between R and common multiple alignment programs
 #' such as "clustalw", "t_coffee", "muscle", "clustalo", and "mafft".
