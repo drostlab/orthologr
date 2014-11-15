@@ -4,9 +4,7 @@
 \title{An interface function to common multiple alignment tools.}
 \usage{
 multi_aln(file, tool, get_aln = FALSE, path = NULL, multi_aln_name = NULL,
-  clustalw.params = NULL, t_coffee.params = NULL, muscle.params = NULL,
-  clustalo.params = NULL, mafft.params = NULL, quiet = FALSE,
-  clean_folders = FALSE)
+  params = NULL, quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
@@ -20,20 +18,9 @@ multi_aln(file, tool, get_aln = FALSE, path = NULL, multi_aln_name = NULL,
 \item{multi_aln_name}{a character string specifying the name of the stored alignment file.
 Default is \code{multi_aln_name} = \code{NULL} denoting a default name: 'toolname.aln' .}
 
-\item{clustalw.params}{a character string listing the input paramters that shall be passed to the executing clustalw program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running clustalw. Example: clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN".}
-
-\item{t_coffee.params}{a character string listing the input paramters that shall be passed to the executing t_coffee program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running t_coffee. Here the default '-mode' is 'accurate' (only works with protein sequences). Example: t_coffee.params = "-mode expresso".}
-
-\item{muscle.params}{a character string listing the input paramters that shall be passed to the executing muscle program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running muscle. Example: muscle.params = "-diags -clwstrict".}
-
-\item{clustalo.params}{a character string listing the input paramters that shall be passed to the executing clustalo program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running clustalo. Example: clustalo.params = "--threads 2 --outfmt clu"}
-
-\item{mafft.params}{a character string listing the input paramters that shall be passed to the executing mafft program. Default is \code{NULL}, implicating
-that a set of default parameters is used when running mafft. Example: mafft.params = "--maxiterate 1 --thread 2 --clustalout".}
+\item{params}{a character string listing the input paramters that shall be passed to corresponding alignment tool specified in the \code{tool} argument.
+Default is \code{NULL}, implicating that a set of default parameters is used when running the correponding tool, e.g. clustalw.
+Example: \code{params} = "-PWMATRIX=BLOSUM -TYPE=PROTEIN" for \code{tool} = "clustalw.}
 
 \item{quiet}{a logical value specifying whether the output of the corresponding multiple alignment tool shall be printed out to the console.
 Default is \code{quiet} = \code{FALSE}.}
@@ -160,7 +147,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # details: system("clustalw2 -help")
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "clustalw", get_aln = TRUE,
-          clustalw.params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
+          params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
 
 
 # T_COFFEE Example:
@@ -177,7 +164,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # details: http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "t_coffee", get_aln = TRUE,
-          t_coffee.params = "-mode expresso")
+          params = "-mode expresso")
 
 
 
@@ -195,7 +182,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # details: http://www.drive5.com/muscle/manual/
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "muscle", get_aln = TRUE,
-          muscle.params = "-diags -clwstrict")
+          params = "-diags -clwstrict")
 
 
 # CLUSTALO Example:
@@ -211,7 +198,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # running clustalo using additional parameters
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "clustalo", get_aln = TRUE,
-          clustalo.params = "--outfmt clu")
+          params = "--outfmt clu")
 
 
 
@@ -229,7 +216,7 @@ multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 # details: http://www.drive5.com/mafft/manual/
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "mafft", get_aln = TRUE,
-          mafft.params = "--maxiterate 1 --clustalout")
+          params = "--maxiterate 1 --clustalout")
 
 
 }
