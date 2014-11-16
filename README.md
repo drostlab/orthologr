@@ -238,5 +238,11 @@ can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inferenc
 
 
 
+## Licenses
+
+The `orthologr` package inlcudes source code that has been published under following liceses:
+
+
+
 
 
