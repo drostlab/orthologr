@@ -115,7 +115,7 @@ substitutionrate <- function(file, est.method, format = "fasta",
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        query_id <- NULL
+        query_id <- dN <- dS <- NULL
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep

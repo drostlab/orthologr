@@ -154,6 +154,7 @@ read.cds <- function(file, format, ...){
 #' # translating DNA to a protein sequence
 #' transl(DNA)
 #' 
+#' @import seqinr
 #' @export
 transl <- function(sequence){
         return(seqinr::c2s(seqinr::translate(seqinr::s2c(sequence))))
