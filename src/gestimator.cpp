@@ -43,16 +43,17 @@ using namespace std;
 
 // @export
 // [[Rcpp::export]]
-void gestimator(std::string file, std::string file_out = "", int maxHits = 3, 
+void gestimator(string file, string file_out = "", int maxHits = 3, 
                 bool verbose = false, bool remove_all_gaps = false) {
-
-   // check parameter
-   if(! file.exists(file.path(file))){
-	 Rcpp::stop(paste("Input File not found at ", file, " .\n", sep=""));
-   }
 
    // read codon file -> GetData()
    ifstream in_stream (file.c_str());
+   
+   // check parameter
+   if(!in_stream){
+            Rcpp::stop(paste0("Input File not found at ", file, " .\n"));
+   }
+   
    string line;
    vector<pair<string,string> > data;
    string sequence = "";

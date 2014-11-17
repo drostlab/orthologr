@@ -385,7 +385,7 @@ void FillThirdPositionCounts ()
   }
   
 
-  public: R
+  public: 
 
   RedundancyCom95 ()
   {
