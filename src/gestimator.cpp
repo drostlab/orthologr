@@ -41,7 +41,7 @@ version 3 of the License, or any later version.
 using namespace Rcpp;
 using namespace std;
 
-//' @export
+// @export
 // [[Rcpp::export]]
 void gestimator(std::string file, std::string file_out = "", int maxHits = 3, 
                 bool verbose = false, bool remove_all_gaps = false) {
