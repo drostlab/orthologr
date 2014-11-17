@@ -41,9 +41,9 @@ version 3 of the License, or any later version.
 using namespace Rcpp;
 using namespace std;
 
-// @export
+//' @export
 // [[Rcpp::export]]
-void gestimator(string file, string file_out = "", int maxHits = 3, 
+void gestimator(std::string file, std::string file_out = "", int maxHits = 3, 
                 bool verbose = false, bool remove_all_gaps = false) {
 
    // read codon file -> GetData()
@@ -51,7 +51,7 @@ void gestimator(string file, string file_out = "", int maxHits = 3,
    
    // check parameter
    if(!in_stream){
-            Rcpp::stop(paste0("Input File not found at ", file, " .\n"));
+            Rcpp::stop("Input File not found!");
    }
    
    string line;

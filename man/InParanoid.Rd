@@ -52,7 +52,7 @@ provided by this function (\code{InParanoid}). Otherwise you can only specify \c
 
 # finding orthologs between Arabidopsis thaliana and Arabidopsis lyrata genes
 InParanoid(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-             subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+             subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
              seq_type = "protein",format = "fasta")
 
 
