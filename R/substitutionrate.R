@@ -186,6 +186,12 @@ if(est.method == "Li" ){
         # not be computed.
         # we set both of them to NA
         
+        
+        data.table::setnames(res, old = paste0("V",1:5), 
+                             new = c("query_id","subject_id", "dN", "dS","dNdS"))
+        data.table::setkey(res,query_id)
+        
+
         res[which(res[,dN<0]),dNdS:=NA]
         res[which(res[,dN<0]),dN:=NA]
         
@@ -198,9 +204,6 @@ if(est.method == "Li" ){
         res[which(res[,dS>9.9]),dNdS:=NA]
         res[which(res[,dS>9.9]),dS:=NA]
         
-        data.table::setnames(res, old = paste0("V",1:5), 
-                             new = c("query_id","subject_id", "dN", "dS","dNdS"))
-        data.table::setkey(res,query_id)
         
         if(!quiet){print("Substitutionrate successfully calculated using Li's method.")}
         
