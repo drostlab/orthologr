@@ -1,3 +1,33 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 #include <assert.h>     /* assert */
 #include <math.h> 
@@ -5,41 +35,26 @@
 using namespace Rcpp;
 using namespace std;
 
-//#include <Comparisons.cpp>
-//#include <Sequence.cpp>
-//#include <RedundancyCom95.cpp>
-
 #include "Sites.h"
-//#include <GranthamWeights.cpp>
-//#include <SingleSub.cpp>
-
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
-
 
 class Comeron95{
 
-
 private:
 
-        double Qs, Bs, Qa, Ba, A2S, A4, As, A2V, A0, Aa;
-        double p0, p2V, p2S, p4, q0, q2V, q2S, q4;
+      double Qs, Bs, Qa, Ba, A2S, A4, As, A2V, A0, Aa;
+      double p0, p2V, p2S, p4, q0, q2V, q2S, q4;
       Sites *sites;
-     const  RedundancyCom95 *sitesObj;
-        double dN;
-        double dS;
-        int maxhits;
+      const  RedundancyCom95 *sitesObj;
+      double dN;
+      double dS;
+      int maxhits;
         
-
-
         
-void diverge(const pair<string,string> *seq1, const pair<std::string,std::string> *seq2,
-           GranthamWeights2 *_weights2 = NULL, GranthamWeights3 *_weights3 = NULL
-                     ){
-               /*
+void diverge(const pair<string,string> *seq1, 
+	     const pair<std::string,std::string> *seq2,
+             GranthamWeights2 *_weights2 = NULL, 
+             GranthamWeights3 *_weights3 = NULL){
+  /*
     go through every aligned, ungapped codon,
     and calculate divergence.  maintains a running sum of divergence
     statistics stored a private data to the class
@@ -62,17 +77,16 @@ void diverge(const pair<string,string> *seq1, const pair<std::string,std::string
           }
 
       if ( !ambigousNucleotides(codon1) && !ambigousNucleotides(codon2) )
-//                std::find_if(codon1.begin(),codon1.end(),ambiguousNucleotide()) == codon1.end() &&
-//              std::find_if(codon2.begin(),codon2.end(),ambiguousNucleotide()) == codon2.end() )
-          {
+      {
             //find out if codons are different
             if (Different(codon1, codon2))
               {
                 //find out how many changes there are between the codons
                 ndiff = NumDiffs (codon1, codon2);
  
-                if (ndiff == 1)	//if there is just one difference, use the rules for
-                  //codons that only differ at 1 site
+                if (ndiff == 1)	
+		//if there is just one difference, use the rules for
+                //codons that only differ at 1 site
                   {
                     SingleSub Single;
                     Single(sitesObj, codon1, codon2);
@@ -87,13 +101,13 @@ void diverge(const pair<string,string> *seq1, const pair<std::string,std::string
                   }
 
                 if (maxhits > 1)
-                  {	//if codons with >1 difference are allowed
-                    //iterate over codons, as above
-
-// redundant
-//                if (Different(codon1, codon2))
-//                      {
-//                              ndiff = NumDiffs(codon1,codon2);
+               	//if codons with >1 difference are allowed
+                //iterate over codons, as above
+		{
+		// redundant
+                //  if (Different(codon1, codon2))
+                //        {
+                //              ndiff = NumDiffs(codon1,codon2);
 
                         //Rcpp::Rcout << "CHECK:NDIFF="<<ndiff<<endl;
                         if (ndiff == 2
@@ -130,9 +144,26 @@ void diverge(const pair<string,string> *seq1, const pair<std::string,std::string
           }
       }
       
+    if (!isfinite (p0))
+      p0 = 0.0;
+    if (!isfinite (p2S) )
+      p2S = 0.0;
+    if (!isfinite (p2V) )
+      p2V = 0.0;
+    if (!isfinite (p4) )
+      p4 = 0.0;
+    if (!isfinite (q0) )
+      q0 = 0.0;
+    if (!isfinite (q2S) )
+      q2S = 0.0;
+    if (!isfinite (q2V) )
+      q2V = 0.0;
+    if (!isfinite (q4) )
+      q4 = 0.0;
 }
         
-void omega(const pair<string,string> *seq1, const pair<std::string,std::string> *seq2){
+void omega(const pair<string,string> *seq1, 
+           const pair<string,string> *seq2){
 /*
     calculate values needed to obtain dN and dS.
     formulae are from Comeron '95 and use the identical notation
@@ -141,7 +172,7 @@ void omega(const pair<string,string> *seq1, const pair<std::string,std::string> 
     but these calculations require careful checking, becuase when you
     have a lot of changes, or very few, you can take logs of negative
     numbers, or divide by zero, hence calls to isnan() and isinf()
-  */
+*/
   
     double log1, log2;
 
@@ -152,17 +183,17 @@ void omega(const pair<string,string> *seq1, const pair<std::string,std::string> 
 
     Bs = (-0.5) * log (1.0 - (2.0 * Qs));
 
-         if (isnan (Bs))
-           {
-             Kimura80 *K80 = new Kimura80 (seq1, seq2);
-     	//if sites aren't saturated in general (i.e. Kimura's distance < 1.0)
-     	//it is likely that Bs is nan due to too few changes, and thus Bs should equal 0.0
-     	//otherwise it is due to too many changes.
-     	//NOTE--this is an ad-hoc treatment of the analysis!!!
-     	if (K80->K () < 1.0)
-     	  Bs = 0.0;
-     	//delete (K80);
-           }
+//         if (isnan (Bs))
+//           {
+//             Kimura80 *K80 = new Kimura80 (seq1, seq2);
+//    	//if sites aren't saturated in general (i.e. Kimura's distance < 1.0)
+//     	//it is likely that Bs is nan due to too few changes, and thus Bs should equal 0.0
+//     	//otherwise it is due to too many changes.
+//     	//NOTE--this is an ad-hoc treatment of the analysis!!!
+//     	if (K80->K () < 1.0)
+//     	  Bs = 0.0;
+//     	//delete (K80);
+//           }
 
     Qa = (q0 + q2S) / (sites->L0() + sites->L2S());
 
@@ -179,7 +210,6 @@ void omega(const pair<string,string> *seq1, const pair<std::string,std::string> 
         Kimura80 *K80 = new Kimura80 (seq1, seq2);
         if (K80->K () < 1.0)
           Ba = 0.0;
-        //delete (K80);
       }
 
     //calculate numbers of mutation per site type
@@ -251,228 +281,235 @@ void omega(const pair<string,string> *seq1, const pair<std::string,std::string> 
       dS = 999;
     if (!isfinite (dN))
       dN = 999;
-  }
+}
 
 
 public:
-        Comeron95(const pair<string,string> *seq1, const pair<string,string> *seq2, int max, 
-                 const RedundancyCom95 *genetic_code_redundancy){
-                
-                // max in 1-3
-                assert(max>=1 && max <=3);
-                maxhits = max;
-                
-                // proof if seqs have same length
-                if( seq1->second.length() != seq2->second.length() ){
-                        Rcpp::Rcout << "Sequences of unequal length.\n";
-                }
-                
-                // proof if seqs are multiple of 3
-                if(! ( (seq1->second.length()%3 == 0) && (seq2->second.length()%3 == 0)) ){
-                        Rcpp::Rcout << "Sequence lengths are not multiples of 3. ";
-                        Rcpp::Rcout << seq1->second.length() << " and " << seq2->second.length() <<endl;
-                }
-                
-                // set weighting schemes
-                
-//            if(_weights2==NULL)
-//              {
-//                __2wasNULL=true;
-//               GranthamWeights2 * weights2 = new GranthamWeights2();
-//              }
-        
-//            if( _weights3 == NULL)
-//              {
-//                __3wasNULL=true;
-//                GranthamWeights3 * weights3 = new GranthamWeights3();
-//              }
-        
-                
-                
-                // prepare calculation building a Redundancy95 Object storing the number of 
-                // mutations that can occur and how to be count
-                
-                 //If no weighting schemes are passed to the constructor,
-    //then we default to using Grantham's distances
 
-    if (genetic_code_redundancy == NULL)
-      {
-        sitesObj = new RedundancyCom95();
-        //__red_was_NULL = true;
-      }
-    else
-      sitesObj = genetic_code_redundancy;                     
-     
-
+/*
+    Initialize and calculate synonymous and nonsynonymous distances between 
+    two sequence objects
+    \param seqa an object of type or derived from type const pair<string,string>
+    \param seqb an object of type or derived from type const pair<string,string>
+    \param max maximum number of substitutions per codon to allow in the analysis
+*/
+Comeron95(const pair<string,string> *seq1, 
+	const pair<string,string> *seq2, int max, 
+	const RedundancyCom95 *genetic_code_redundancy){
+                
+	//check that data are sane
+	assert(max>=1 && max <=3);
+	maxhits = max;
+                
+	//proof if seqs have same length
+	if( seq1->second.length() != seq2->second.length() ){
+		Rcpp::Rcout << "Sequences of unequal length.\n";
+	}
+                
+	// proof if seqs are multiple of 3
+	if(! ((seq1->second.length()%3 == 0)&&(seq2->second.length()%3 == 0))){
+		Rcpp::Rcout << "Sequence lengths are not multiples of 3. ";
+		Rcpp::Rcout << seq1->second.length() << " and ";
+		Rcpp::Rcout << seq2->second.length() << endl;
+	}
+                
+	// weighting schemes are sourced out to where they are needed, using the
+	// default scheme by Grantham
+		        
+	//            if(_weights2==NULL)
+	//              {
+	//                __2wasNULL=true;
+	//               GranthamWeights2 * weights2 = new GranthamWeights2();
+	//              }
+		
+	//            if( _weights3 == NULL)
+	//              {
+	//                __3wasNULL=true;
+	//                GranthamWeights3 * weights3 = new GranthamWeights3();
+	//              }
+        
     
-                // new Sites Object counting L0-L4 of the sequence
-      sites = new Sites(sitesObj, seq1, seq2, maxhits);
-
-                q0=q2S=q2V=q4=p0=p2S=p2V=p4=0.0;
-                
-                diverge(seq1, seq2
-                        //weights2 &3
-                        );
-                        
-                omega( seq1, seq2);
+	// prepare calculation building a Redundancy95 Object storing the number
+	// of mutations that can occur and how to be count    
+	if (genetic_code_redundancy == NULL)
+	{
+		//sitesObj = new RedundancyCom95(code);
+		// code used directly where needed
+		sitesObj = new RedundancyCom95();
+	}
+	else sitesObj = genetic_code_redundancy;                     
+     
+	// new Sites Object counting L0-L4 of the sequence
+	sites = new Sites(sitesObj, seq1, seq2, maxhits);
+	q0=q2S=q2V=q4=p0=p2S=p2V=p4=0.0;
+	
+	diverge(seq1, seq2);
+	omega( seq1, seq2);
 }
 
-        double dn (void) const
-           /*
-            \return the nonsynonymous distance
-            \note 999.0 is returned if dN cannot be calculated
-          */
-          {
-                return dN;
-          }
-        double ds (void) const
-           /*
-            \return the nonsynonymous distance
-            \note 999.0 is returned if dN cannot be calculated
-          */
-          {
-                return dS;
-          }
-        double ratio (void) const
-           /*
-            \return the nonsynonymous distance
-            \note 999.0 is returned if dN cannot be calculated
-          */
-          {
-            /* if (Ka == 999. || Ks == 999. || fabs(Ks-0.) <= DBL_EPSILON)
-                    return 999.;
-                return Ka / Ks;  */
-                if( dN==999. || dS==999. || dS==0.) return 999;
-                return dN/dS;
-          }
-        
-        
-        
-        
-          double P0 (void) const
-          /*
-            \return number of transitions at nondegenerate sites
-          */
-          {
-            return p0;
-          }
-          double P2S (void) const
-          /*
-            \return number of transitions at 2-fold, transitional degenerate sites
-          */
-          {
-            return p2S;
-          }
-          double P2V (void) const
-          /*
-            \return number of transitions at  2-fold, transversional degenerate sites
-          */
-          {
-            return p2V;
-          }
-          double P4 (void) const
-          /*
-            \return number of transitions at 4-fold degenerate sites
-          */
-          {
-            return p4;
-          }
-          double Q0 (void) const
-          /*
-            \return number of transversion at nondegenerate sites
-          */
-          {
-            return q0;
-          }
-          double Q2S (void) const
-          /*
-            \return number of transversion at 2-fold, transitional degenerate sites
-          */
-          {
-            return q2S;
-          }
-          double Q2V (void) const
-          /*
-            \return number of transversion at 2-fold, transversional sites
-          */
-          {
-            return q2V;
-          }
-          double Q4 (void) const
-          /*
-            \return number of transversion at 4-fold degenerate sites
-          */
-          {
-            return q4;
-          }
-          
-          
-          
-            double L0 (void) const
-          /*
-            \return the number of nondegenerate sites compared
-          */
-          {
-            return sites->L0();
-          }
-          double L2S (void) const
-          /*
-            \return the number of twofold, transitional-degenerate sites compared
-          */
-          {
-            return sites->L2S();
-          }
-          double L2V (void) const
-          /*
-            \return the number of twofold, transversional-degenerate sites compared
-          */
-          {
-            return sites->L2V();
-          }
-          double L4 (void) const
-          /*
-            \return the number of 4-fold degenerate sites compared
-          */
-          {
-            return sites->L4();
-          }
-        
-          
-  double as (void) const
+double dn (void) const
+ /*
+  \return the nonsynonymous distance
+  \note 999.0 is returned if dN cannot be calculated
+*/
+{
+      return dN;
+}
+
+double ds (void) const
+ /*
+  \return the nonsynonymous distance
+  \note 999.0 is returned if dN cannot be calculated
+*/
+{
+      return dS;
+}
+
+double ratio (void) const
+ /*
+  \return the nonsynonymous distance
+  \note 999.0 is returned if dN cannot be calculated
+*/
+{
+      if( dN==999. || dS==999. || dS==0.) return 999;
+      return dN/dS;
+}
+ 
+double P0 (void) const
+/*
+  \return number of transitions at nondegenerate sites
+*/
+{
+  return p0;
+}
+
+double P2S (void) const
+/*
+  \return number of transitions at 2-fold, transitional degenerate sites
+*/
+{
+  return p2S;
+}
+
+double P2V (void) const
+/*
+  \return number of transitions at  2-fold, transversional degenerate sites
+*/
+{
+  return p2V;
+}
+
+double P4 (void) const
+/*
+  \return number of transitions at 4-fold degenerate sites
+*/
+{
+  return p4;
+}
+
+double Q0 (void) const
+/*
+  \return number of transversion at nondegenerate sites
+*/
+{
+  return q0;
+}
+
+double Q2S (void) const
+/*
+  \return number of transversion at 2-fold, transitional degenerate sites
+*/
+{
+  return q2S;
+}
+
+double Q2V (void) const
+/*
+  \return number of transversion at 2-fold, transversional sites
+*/
+{
+  return q2V;
+}
+
+double Q4 (void) const
+/*
+  \return number of transversion at 4-fold degenerate sites
+*/
+{
+  return q4;
+}
+ 
+double L0 (void) const
+/*
+  \return the number of nondegenerate sites compared
+*/
+{
+  return sites->L0();
+}
+
+double L2S (void) const
+/*
+  \return the number of twofold, transitional-degenerate sites compared
+*/
+{
+  return sites->L2S();
+}
+
+double L2V (void) const
+/*
+  \return the number of twofold, transversional-degenerate sites compared
+*/
+{
+  return sites->L2V();
+}
+
+double L4 (void) const
+/*
+  \return the number of 4-fold degenerate sites compared
+*/
+{
+  return sites->L4();
+}
+  
+double as (void) const
   /*
     \return corrected synonymous divergence at transitional-degenerate sites
   */
-  {
+{
     if (!isfinite (As))
       return 999.;
     return As;
-  }
-  double aa (void) const
+}
+
+double aa (void) const
   /*
     \return corrected nonsynonymous divergence at tranversioal- and non- degenerate sites
   */
-  {
+{
     if (!isfinite (Aa))
       return 999.;
     return Aa;
-  }
-  double bs (void) const
+}
+
+double bs (void) const
   /*
     \return corrected synonymous divergence at transversional- and fourfold-  degenerate sites
   */
-  {
+{
     if (!isfinite (Bs))
       return 999.;
     return Bs;
-  }
-  double ba (void) const
+}
+
+double ba (void) const
   /*
     \return corrected nonsynonymous divergence at transitional- and non- degenerate sites
   */
-  {
+{
     if (!isfinite (Ba))
       return 999.;
     return Ba;
-  }
+}
+
 };
 

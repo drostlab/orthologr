@@ -1,20 +1,45 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 using namespace Rcpp;
-
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
 
 #include "TwoSubs.h"
 
 class ThreeSubs{
-        private:
-      double p0, p2S, p2V, p4, q0, q2S, q2V, q4;
+ 
 
-  void
-  Calculate (const RedundancyCom95 * sitesObj,
+ private:
+  double p0, p2S, p2V, p4, q0, q2S, q2V, q4;
+
+  void Calculate (const RedundancyCom95 * sitesObj,
                         const std::string *intermediates,
                         const std::string & codon1, const std::string & codon2,
                         double w_path1, double w_path2, double w_path3,
@@ -165,10 +190,12 @@ class ThreeSubs{
          +  (q4_b[10] + q4_b[13] + q4_b[14]) * w_path6;
   }
   
-        public:
-      void operator()(const RedundancyCom95 * sitesObj,
-                              const std::string &codon1, const std::string &codon2,
-                               GranthamWeights3 *weights3)
+
+  public:
+
+  void operator()(const RedundancyCom95 * sitesObj,
+                  const std::string &codon1, const std::string &codon2,
+                  GranthamWeights3 *weights3)
   /*
     \param sitesObj an object of type Sequence::RedundancyCom95
     \param code see Sequence::GeneticCodes for valid values
@@ -179,7 +206,6 @@ class ThreeSubs{
    */
   {
       
-               
     assert(codon1.length() == 3 && codon2.length() == 3);
     string intermediates[9];
     weights3->Intermediates3(intermediates,codon1,codon2);
@@ -187,91 +213,71 @@ class ThreeSubs{
 
     double weights[6];
     weights3->Calculate(weights, codon1,codon2);
-   // double *weights = weights3->weights();
     Calculate (sitesObj, intermediates, codon1, codon2, weights[0],
                weights[1], weights[2], weights[3], weights[4], weights[5]);
-               
-//       Rcpp::Rcout << "q0  "<<q0<<endl;
-//      Rcpp::Rcout << "q2S  "<<q2S<<endl;
-//      Rcpp::Rcout << "q2V  " << q2V<<endl;
-//      Rcpp::Rcout << "q4  " << q4 <<endl;
-//  
-//      Rcpp::Rcout << "p0  " << p0<<endl;
-//      Rcpp::Rcout << "p2S  " << p2S<<endl;
-//      Rcpp::Rcout << "p2V  " << p2V<<endl;
-//      Rcpp::Rcout << "p4  " << p4<<endl;
   }
 
-
-        double
-      P0 (void) const
-      /*
-        \return number of transitions at non-degenerate sites in the codon
-      */
-      {
-        return p0;
-      }
-
-      double
-      P2S (void) const
-      /*
-        \return number of transitions at transitional-degenerate sites in the codon
-      */
-      {
-        return p2S;
-      }
-
-      double
-      P2V (void) const
-      /*
-        \return number of transitions at transversional-degenerate sites in the codon
-      */
-      {
-        return p2V;
-      }
-
-      double
-      P4 (void) const
-      /*
-        \return number of transitions at fourfold-degenerate sites in the codon
-      */
-      {
-        return p4;
-      }
-
-      double
-      Q0 (void) const
-      /*
-        \return number of transversions at non-degenerate sites in the codon
-      */
-      {
-        return q0;
-      }
-
-      double
-      Q2S (void) const
-      /*
-        \return number of transversions at transitional-degenerate sites in the codon
-      */
-      {
-        return q2S;
-      }
-
-      double
-      Q2V (void) const
-      /*
-        \return number of transversions at transversional-degenerate sites in the codon
-      */
-      {
-        return q2V;
-      }
-
-      double
-      Q4 (void) const
-      /*
-        \return number of transversions at fourfold-degenerate sites in the codon
-      */
-      {
-        return q4;
-      }
+  double P0 (void) const
+  /*
+    \return number of transitions at non-degenerate sites in the codon
+  */
+  {
+    return p0;
+  }
+  
+  double P2S (void) const
+  /*
+    \return number of transitions at transitional-degenerate sites in the codon
+  */
+  {
+    return p2S;
+  }
+  
+  double P2V (void) const
+  /*
+    \return number of transitions at transversional-degenerate sites in the codon
+  */
+  {
+    return p2V;
+  }
+  
+  double P4 (void) const
+  /*
+    \return number of transitions at fourfold-degenerate sites in the codon
+  */
+  {
+    return p4;
+  }
+  
+  double Q0 (void) const
+  /*
+    \return number of transversions at non-degenerate sites in the codon
+  */
+  {
+    return q0;
+  }
+  
+  double Q2S (void) const
+  /*
+    \return number of transversions at transitional-degenerate sites in the codon
+  */
+  {
+    return q2S;
+  }
+  
+  double Q2V (void) const
+  /*
+    \return number of transversions at transversional-degenerate sites in the codon
+  */
+  {
+    return q2V;
+  }
+  
+  double Q4 (void) const
+  /*
+    \return number of transversions at fourfold-degenerate sites in the codon
+  */
+  {
+    return q4;
+  }
 };

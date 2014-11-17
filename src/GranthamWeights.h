@@ -1,41 +1,52 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace std;
 #include "Grantham.h"
-//#include "Sequence.h"
 #include "Kimura80.h"
 
+class GranthamWeights2
+{
+  public:  
 
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
-
-    
-
-class GranthamWeights2{
-      
-//    mutable double __weights[2];//logical const
-
-    public:  
-        GranthamWeights2()
-      /*
+  GranthamWeights2()
+  /*
         \param genetic_code the code used to TranslateCodon the codons
-      */
-        {
-        }
+  */
+  {
+  }
   
   void Intermediates2( string *intermediates, string codon1, string codon2)
-  {
-            /*
-    \param intermediates a string[2] in which we will place the intermediate codons
-    \param codon1 a codon
-    \param codon2 a codon
-    \short Calculate the intermediate codons between a pair of codons diverged at 2 positions
-    \ingroup CodonPaths
-  */
-  
+  {  
     intermediates[0].resize(3);
     intermediates[1].resize(3);
 
@@ -119,7 +130,6 @@ class GranthamWeights2{
       //double w_path1 = 0., w_path2 = 0.,
       double w_tot = 0.;
  
- 
       __weights[0] = 0.;
       __weights[1]= 0.;
 
@@ -139,43 +149,23 @@ class GranthamWeights2{
       __weights[1] /= w_tot;
 
     }
-  
-//    double * weights(void) const
-//  /*
-//    \return a double * of size 2 (1 value for each branch)
-//  */
-//    {
-//      return __weights;
-//    }
-
-
  
 };
 
 class GranthamWeights3{
-        
-//              mutable double __weights[6];//logical const
-              
-public:
-GranthamWeights3()
-      /*
-        \param genetic_code the code used to TranslateCodon the codons
-      */
-         {
-        }
+                    
+   public:
 
+   GranthamWeights3()
+   /*
+        \param genetic_code the code used to TranslateCodon the codons
+   */
+   {
+   }
 
   void Intermediates3( string *intermediates, string codon1,  string codon2)
   {
           
-            /*
-    \param intermediates a string[9] in which we will place the intermediate codons
-    \param codon1 a codon
-    \param codon2 a codon
-    \note the storage of the intermediate codons follows the illustration in the documentation of Sequence::ThreeSubs
-    \short Calculate the intermediate codons between a pair of codons diverged at 3 positions
-    \ingroup CodonPaths
-  */
     for(int i = 0 ; i < 9 ;++i)
       intermediates[i].resize(3);
 
@@ -236,12 +226,10 @@ void Calculate(double *__weights, const string &codon1, const string &codon2) {
       dist = gdist ((t1)[0],(t2)[0]);
       len_path_1 += dist;
 
-
       t1 = TranslateCodon (intermediates[0]);
       t2 = TranslateCodon (intermediates[1]);
       dist = gdist ((t1)[0],(t2)[0]);
       len_path_1 += dist;
-
 
       t1 = TranslateCodon (intermediates[1]);
       t2 = TranslateCodon (codon2);
@@ -337,25 +325,13 @@ void Calculate(double *__weights, const string &codon1, const string &codon2) {
       __weights[5] = 1./ len_path_6;
 
       //scale weights to sum to 1
-      double w_tot =
-        __weights[0] + __weights[1] + __weights[2] + __weights[3] + __weights[4] + __weights[5];
+      double w_tot = __weights[0] + __weights[1] + __weights[2] + __weights[3] + __weights[4] + __weights[5];
       __weights[0] /= w_tot;
       __weights[1] /= w_tot;
       __weights[2] /= w_tot;
       __weights[3] /= w_tot;
       __weights[4] /= w_tot;
       __weights[5] /= w_tot;
-    }
-
-
-
-//    double * weights(void) const
-//  /*
-//    \return a double * of size 6 (1 value for each branch)
-//  */
-//    {
-//      return __weights;
-//    }
-    
+    }  
 
 };

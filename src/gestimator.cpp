@@ -1,3 +1,33 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 #include <iostream>
 #include <fstream>
@@ -11,17 +41,17 @@
 using namespace Rcpp;
 using namespace std;
 
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
 // @export
 // [[Rcpp::export]]
 void gestimator(std::string file, std::string file_out = "", int maxHits = 3, 
                 bool verbose = false, bool remove_all_gaps = false) {
 
-   // read codon file
+   // check parameter
+   if(! file.exists(file.path(file))){
+	 Rcpp::stop(paste("Input File not found at ", file, " .\n", sep=""));
+   }
+
+   // read codon file -> GetData()
    ifstream in_stream (file.c_str());
    string line;
    vector<pair<string,string> > data;
@@ -85,7 +115,53 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
  
    // delete gaps
    if(remove_all_gaps){
-           
+
+		// if (Gapped(&data))
+		bool gaps=false;
+	    for(int i=0;i<data.size();i++){
+			if( data[i].second.find("-") != std::string::npos){
+				    gaps=true;
+			}
+	    }
+		if(gaps){
+		// RemoveGaps(data);
+
+			/*
+			  Modifies the data vector to remove all positions that
+			  contain the gap character'-'.
+			  \param data vector<T> to modify
+			*/
+
+		   int i, j,datasize=data.size();
+		   int length = data[0].second.length ();
+		   vector<string> ungapped_sequences(data.size());
+		   bool site_is_gapped;
+
+		  for (i = 0; i < length; ++i)
+		    {        //iterate over sites
+		      for ( j = 0, site_is_gapped = 0;
+		            j < datasize;  ++j)
+		        {
+		          if (data[j].second[i] == '-')
+		            {
+		              site_is_gapped = 1;
+		              j = datasize;
+		            }
+		        }
+		      if (!(site_is_gapped))
+		        {
+		          for ( j = 0 ; j != data.size();  ++j)
+		            ungapped_sequences[j] += data[j].second[i];
+		        }
+		    }
+
+		  //redo the data
+		  for (j = 0; j != datasize ; ++j)
+		    {
+		      data[j].second = ungapped_sequences[j];
+		    }
+        
+		}
    }
    
    // process ()
@@ -95,6 +171,7 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
    // foreach sequence pair in data
    for(int i=0;i<data.size();i++){
            for(int j=i+1;j<data.size();j++){
+
                    Comeron95 *C = new Comeron95(&data[i], &data[j], maxHits,&code_degeneracy);
                    if (file_out == "")
                         {
@@ -153,58 +230,3 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
            
            out_stream.close();
 } // end fun
-  
-   
-
-   
-
-   
-
-
-
-
-
-/* IN: infile, outfile, verbose (if output should be written), maxhits, remove_all_gaps
-
-analysis: gestimator
-libsequence: comeron95, Alignment
-
-
-gestimator.cc/Main:
-- parse & set args -> args
-- call gestimator.cc/process()
- 
- gestimator.cc/process():
- In: pointer to filenames?, args, outstream
- - read infile
- - remove gaps with Alignment.cc/RemoveGaps()
- foreach pairs of input file:
-        - call Comeron95.cc/Comeron95 Konstructor
-        - read results from Comeron95-Object -> Names, ka, ks, ratio
-        - print if verbose, print to file else
- 
- Comeron95.cc/Comeron95 (Konstructor)
- In: 2 sequences, maxHits Value, ??/RedundancyCom95 pointer
- In optional: ??/GeneticsCode object, 2 weighting schemes
- - check input params (same length, max in 1-3)
- - assign default weighting scheme ??/GranthamWeights2/3(code), code without default
- - assign new sites object, init q0 to p4 with 0.0
- - call Comeron95/diverge(seqa,seqb,weights)
- - call ?/omega(seqa,seqb)
- 
- Comeron95/diverge()
- In: 2 sequence Pointer, 2 weighting scheme pointer
- - loop overall codon pairs
-        if(?/Different(codons))
-                switch
-                diff=1 : ?/SingleSub(sitesObj) -> Add predictedt changes to q0-p4
-                diff=2 & maxhits >=2 : ?/TwoSubs(sitesObj, weight2) -> Add predictedt changes to q0-p4
-                diff=3 & maxhits >2 : ?/ThreeSubs(sitesObj, weight3) -> Add predictedt changes to q0-p4
-                if(some of q0-p4 is infinity) set 0.0
-                
- Comeron95/omega()
- In: 2 seqs, from somewhere a site object
- - implements all equations given in the paper
- 
-
-*/

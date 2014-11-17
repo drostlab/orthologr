@@ -1,3 +1,33 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace std;
@@ -5,16 +35,9 @@ using namespace std;
 #include <algorithm>
 #include <cctype>
 
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
-
 // [[Rcpp::export]]
 bool ambigousNucleotides(const std::string & codon){
         for(int i=0;i<3;i++){
-//                Rcpp::Rcout << codon[i] << endl;
                 if(! ((codon)[i] == 'A' 
                 || (codon)[i] == 'C' 
                 || (codon)[i] == 'G' 
@@ -24,47 +47,25 @@ bool ambigousNucleotides(const std::string & codon){
         return false;
 }
 
-//struct ambiguousNucleotide : public std::unary_function<char,bool>
-//                               /*! \struct ambiguousNucleotide Sequence/SeqProperties.hpp
-//				*/
-//  {
-//    inline bool operator()(const char & c) const
-//    /*!
-//      \return true if c is not A,G,C, or T, false otherwise
-//      \note Case-insensitive
-//    */
-//    {
-//      const char ch = char(std::toupper(c));
-//      return (ch != 'A' &&
-//	      ch != 'G' &&
-//	      ch != 'T' &&
-//	      ch != 'C' );
-//    }
-//  };
   
-  
+// [[Rcpp::export]]
+bool codonPrecondition(const std::string & codon)
   /*
     Checks to see if this class can handle the codon.
     A valid codon is:
     1.) of length 3, 
     2.) contains only characters in the set {A,G,C,T} (case sensitive)
-  */  
-// [[Rcpp::export]]
-bool codonPrecondition(const std::string & codon)
-  {
-  //  Rcpp::Rcout << "Precondition length = " << codon.length() << endl;
-     
-    
+  */
+{
     if ( codon.length() != 3 || !ambigousNucleotides(codon) )
-     //    std::find_if(codon.begin(),codon.end(),ambiguousNucleotide()) != codon.end() )
          return true;
-        return false;
-  }
+    return false;
+}
  
 
-  
 // [[Rcpp::export]]
-char intToNuc(int i){
+char intToNuc(int i)
+{
           switch (i){
                   case 0: return 'A';break;
                   case 1: return 'T';break;
@@ -72,11 +73,13 @@ char intToNuc(int i){
                   case 3: return 'C';break;
           }
           return 'X';
-  }
+}
   
-    //the map is case-insensitive...
+
 // [[Rcpp::export]]
-int nucToInt(char c){
+int nucToInt(char c)
+{
+//the map is case-insensitive...
           switch (c){
                   case 'A': return 0;break;
                   case 'T': return 1;break;
@@ -89,7 +92,7 @@ int nucToInt(char c){
 		  //default: return -1;
           }
           return -1;
-  }
+}
  
 
 // [[Rcpp::export]]
@@ -285,22 +288,19 @@ char Universal(string codon)
 
  
 // [[Rcpp::export]]
-std::string TranslateCodon(string codon)
+string TranslateCodon(string codon)
   {
-//             Rcpp::Rcout << "Translate "<<codon;
-
-    if (codon.length() != 3) //if the range is less than 3 in length (1 codon), return an empty string
-      return std::string();
+    //if the range is less than 3 in length (1 codon), return an empty string
+    if (codon.length() != 3) 
+        return std::string();
 
     string translation;
 
         codon[0] = char(std::toupper(codon[0]));
         codon[1] = char(std::toupper(codon[1]));
         codon[2] = char(std::toupper(codon[2]));
-//                Rcpp::Rcout << "  Universal of  "<<codon<<endl;
 
-            translation += Universal (codon);
+        translation += Universal (codon);
 
- 
     return translation;
   }

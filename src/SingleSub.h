@@ -1,12 +1,37 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 using namespace Rcpp;
 
 #include "RedundancyCom95.h"
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
 
 class SingleSub{
         
@@ -14,8 +39,7 @@ class SingleSub{
       double q0i, q2Si, q2Vi, q4i, q0j, q2Sj, q2Vj, q4j, p0i, p2Si, p2Vi,
       p4i, p0j, p2Sj, p2Vj, p4j;
       
-
-        
+   
  void Calculate (const RedundancyCom95 * sitesObj, const std::string & codon1,
                         const std::string & codon2)
   /*
@@ -272,22 +296,6 @@ class SingleSub{
       p2Vi = p4i = p0j = p2Sj = p2Vj = p4j = 0.0;
     Calculate (sitesObj, cod1, cod2);
     
-//      Rcpp::Rcout << "q0i  "<<q0i<<endl;
-//      Rcpp::Rcout << "q2Si  "<<q2Si<<endl;
-//      Rcpp::Rcout << "q2Vi  " << q2Vi<<endl;
-//      Rcpp::Rcout << "q4i  " << q4i <<endl;
-//      Rcpp::Rcout << "q0j  " << q0j<<endl;
-//      Rcpp::Rcout << "q2Sj  " << q2Sj<<endl;
-//      Rcpp::Rcout << "q2Vj  " << q2Vj<<endl;
-//      Rcpp::Rcout << "q4j  " << q4j<<endl;
-//      Rcpp::Rcout << "p0i  " << p0i<<endl;
-//      Rcpp::Rcout << "p2Si  " << p2Si<<endl;
-//      Rcpp::Rcout << "p2Vi  " << p2Vi<<endl;
-//      Rcpp::Rcout << "p4i  " << p4i<<endl;
-//      Rcpp::Rcout << "p0j  " << p0j<<endl;
-//      Rcpp::Rcout << "p2Sj  " << p2Sj<<endl;
-//      Rcpp::Rcout << "p2Vj  " << p2Vj<<endl;
-//      Rcpp::Rcout << "p4j  " << p4j<<endl;
   }
    double P0(void) const
   /*

@@ -1,12 +1,42 @@
+/*
+
+Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+
+Remove the brackets to email me.
+
+This file is part of libsequence.
+
+libsequence is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+libsequence is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+
+
+Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+in orthologr without using external libraries from libsequence.
+
+All changes are also free under the terms of GNU General Public License
+version 3 of the License, or any later version.
+
+*/
+
 #include <Rcpp.h>
 using namespace Rcpp;
 
-  class Grantham
-    {
-    private:
+class Grantham
+{
+  private:
       double D[60][60];
-    public:
-        Grantham (void)
+  public:
+  Grantham (void)
   {
     D['T'-38]['M'-38]=81.03969279;
     D['T'-38]['N'-38]=64.77428784;
@@ -452,7 +482,7 @@ using namespace Rcpp;
   }
       
       
-      double operator() (char aa1, char aa2) const
+  double operator() (char aa1, char aa2) const
   /*
     Returns the distance between two amino acids.
     A distance of 999.0 is used if one of the amino
@@ -461,7 +491,5 @@ using namespace Rcpp;
   {
     return D[std::toupper(aa1) - 38][std::toupper(aa2) - 38];
   }
-  };
-  
-  
-  
+
+};  
