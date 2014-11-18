@@ -1,4 +1,12 @@
 #!/usr/local/perl
+
+#### Licence #####
+# This script is freely available under GNU GPL v3 
+# Licence and included in the KaKs_Calculcator 
+# project that can be found at 
+# https://code.google.com/p/kaks-calculator/
+################## 
+
 if(@ARGV<1) {
 	die ("Usage: [Fasta file with aligned pairwise sequences]\n");
 }
