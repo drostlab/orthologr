@@ -321,6 +321,9 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                # then use the default parameters
                                if(is.null(params)){
                                        
+                                       # There is an error with pal2nal as clustalw deletes * during alignment what results in 
+                                       # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
+                                       
                                         # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
                                         system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
                                } else {
@@ -379,6 +382,9 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 
                                 if(is.null(params)){
                                         
+                                        # There is an error with pal2nal as t_coffee deletes * during alignment what results in 
+                                        # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
+                                        
                                         # use the default parameters when running t_coffee
                                         # perform an accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
@@ -433,6 +439,10 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  {        
                           if(is.null(path)){
                                   if(is.null(params)){
+                                          
+                                          # There is an error with pal2nal as muscle deletes * during alignment what results in 
+                                          # muscle: *** WARNING *** Invalid character '*' in FASTA sequence data, ignored
+                                          # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
                                           
                                           # use the default parameters when running muscle
                                           # write output into clustalw format using the -clwstrict argument
@@ -494,7 +504,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                          if(is.null(path)){
                                  
                                  if(is.null(params)){
-                                         
+                                                                                  
                                          # use the default parameters when running clustalo
                                          system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu --force"))
                                  
@@ -571,7 +581,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 
                                 # use the default parameters when running mafft
                                 system(
-                                        paste0("export PATH=$PATH:",path,"; ","mafft --quiet --clustalout ",
+                                        paste0("export PATH=$PATH:",path,"; ","mafft --quiet --anysymbol --clustalout ",
                                                file," >",file.out)
                                        )
                          } else {
