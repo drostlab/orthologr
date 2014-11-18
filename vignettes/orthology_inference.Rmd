@@ -88,7 +88,7 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 
 This small example returns 20 orthologous genes between _Arabidopsis thaliana_ and _Arabidopsis lyrata_.
-As you can see, the `query_file` and `subject_files` arguments take the proteomes of_Arabidopsis thaliana_ (`query_file`) and _Arabidopsis lyrata_ (`subject_files`) stored in fasta files. The `seq_type` argument specifies that you will pass protein sequences (proteomes)
+As you can see, the `query_file` and `subject_files` arguments take the proteomes of _Arabidopsis thaliana_ (`query_file`) and _Arabidopsis lyrata_ (`subject_files`) stored in fasta files. The `seq_type` argument specifies that you will pass protein sequences (proteomes)
 to the `orthologs()` function. In case you only have either genomes (DNA sequences) or CDS files, you can
 modify the `seq_type` argument to `seq_type = "dna"` (when working with only genome data) or `seq_type = "cds"` (when working with CDS files).
 Internally the `orthologs()` function will perform a CDS prediction using `predict_cds()` and will furthermore translate the predicted
