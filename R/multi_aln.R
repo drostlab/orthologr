@@ -351,7 +351,7 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                 }
                         }
                        
-                       #if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
+                       if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                        
 #                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
 #                                                    "... the interface call did not work properly.") )}
