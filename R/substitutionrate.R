@@ -269,7 +269,7 @@ if(is.element(est.method,kaks_calc_methods)){
                 KaKs_Calculator <- paste0(kaks_calc_path,f_sep,calc)
         
         #test if KaKsCalculator can be found
-        if(!file.exists(KaKs_Calculator)){
+        if(!file.exists(file.path(KaKs_Calculator))){
                 stop(paste0("KaKs_Calculator not found at ",KaKs_Calculator,". Please add the path of 
                             the executable into your global environment or add parameter kaks_calc_path."))
         }
