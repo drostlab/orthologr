@@ -30,11 +30,6 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 
-# when a github repo is set to 'private'
-# you need to generate a authentification token and then use it via the argument: 'auth_token'
-
-devtools::install_github("HajkD/orthologr", auth_token = "here your token", 
-                         build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 
@@ -272,8 +267,12 @@ version 3 of the License, or any later version.
 
 ### KaKs_Calculator
 
-```
+In `orthologr` the file `parseFastaIntoAXT.pl` is stored in `/inst/KaKs_Calc_parser`.
 
+```
+The parseFastaIntoAXT.pl script is freely available under GNU GPL v3 
+Licence and included in the KaKs_Calculcator project that can be found at 
+https://code.google.com/p/kaks-calculator/
 
 ```
 
