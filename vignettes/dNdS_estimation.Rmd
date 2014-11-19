@@ -25,7 +25,25 @@ The `orthologr` package provides a function named `dNdS()` to perform dNdS estim
 The `dNdS()` function takes the CDS files of two organisms of interest (`query_file` and `subject_file`) 
 and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 
-The following pipieline resembles the dNdS estimation process:
+__Note:__ the following dNdS estimation methods are based on KaKs_Calculator:
+
+* "NG": Nei, M. and Gojobori, T. (1986)
+
+* "LWL": Li, W.H., et al. (1985)
+
+* "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+
+* "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+
+* "YN": Yang, Z. and Nielsen, R. (2000)
+
+* "MYN" (Modified YN): Zhang, Z., et al. (2006)
+
+It is assumed that when you choose one of these dNdS estimation methods you have
+KaKs_Calculator installed on your machine and it can be executed from the
+default execution `PATH`.
+
+The following pipieline resembles and example dNdS estimation procedure:
 
  1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
  2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
