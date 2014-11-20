@@ -142,6 +142,8 @@ system("clustalo --help")
 
 ```r
 
+system("mafft -help")
+
 ```
 
 In case everything is installed approriately, you should see:
