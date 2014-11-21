@@ -93,7 +93,7 @@ to the `orthologs()` function. In case you only have either genomes (DNA sequenc
 modify the `seq_type` argument to `seq_type = "dna"` (when working with only genome data) or `seq_type = "cds"` (when working with CDS files).
 Internally the `orthologs()` function will perform a CDS prediction using `predict_cds()` and will furthermore translate the predicted
 CDS sequences into protein sequences. Analogously when `seq_type = "cds"` is specified, internally the `orthologs()` function will
-translate all CDS sequences into protein sequences to run orthologx inference based on protein sequences.
+translate all CDS sequences into protein sequences to run orthology inference based on protein sequences.
 
 __Note__: future versions of `orthologr` will allow to perform orthology inference using DNA sequences.
 Nevertheless, since most orthology inference methods or paradigms rely on protein sequences, the first version
