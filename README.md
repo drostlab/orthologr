@@ -124,7 +124,7 @@ biocLite("Biostrings")
 The `orthologr` package provides interfaces to the following bioinformatics tools 
 enabling orthology detection ([orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9)):
 
- - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigma of most fast orthology inference methods.
+ - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
  
  There are several interface functions to BLAST+ implemented in `orthologr`
  
@@ -173,7 +173,7 @@ as well as an pairwise alignment interface to the [Biostrings](http://www.biocon
 ### Codon Alignment Tools
 
 The codon alignment tool [Pal2Nal](http://www.bork.embl.de/pal2nal/) is already integrated in the `orthologr` package
-and doens't need to be installed.
+and doesn't need to be installed.
 
  - [__Pal2Nal__](http://www.bork.embl.de/pal2nal/)
 
@@ -208,14 +208,14 @@ the following dNdS Estimation Methods are available in `orthologr`:
 
  - [MYN](http://www.biomedcentral.com/1471-2148/6/44/) (Modified YN): Zhang, Z., et al. (2006)
 
-For this purpose you need to have __KaKs_Calculator__ installed on your system andexecutable from your default `PATH`, e,g, `/usr/local/bin/`.
+For this purpose you need to have __KaKs_Calculator__ installed on your system and executable from your default `PATH`, e,g, `/usr/local/bin/`.
 
 
 
 ### CDS prediction pipeline
 
 It is also possible to run __Divergence Stratigraphy__ or any other
-orthology inference method starting with unannotated genomes.
+orthology inference method starting with non-annotated genomes.
 
 For this purpose `orthologr` provides a function `predict_cds()` that allows
 you to perform gene prediction (CDS prediction) based on the gene prediction programs
@@ -235,7 +235,7 @@ can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inferenc
 
 ## Licenses
 
-The `orthologr` package inlcudes source code that has been published under following liceses:
+The `orthologr` package includes source code that has been published under following licenses:
 
 ### genevestigator
 
@@ -271,7 +271,7 @@ In `orthologr` the file `parseFastaIntoAXT.pl` is stored in `/inst/KaKs_Calc_par
 
 ```
 The parseFastaIntoAXT.pl script is freely available under GNU GPL v3 
-Licence and included in the KaKs_Calculcator project that can be found at 
+Licence and included in the KaKs_Calculator project that can be found at 
 https://code.google.com/p/kaks-calculator/
 
 ```
