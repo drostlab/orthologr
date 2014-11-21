@@ -43,7 +43,7 @@ It is assumed that when you choose one of these dNdS estimation methods you have
 KaKs_Calculator installed on your machine and it can be executed from the
 default execution `PATH`.
 
-The following pipieline resembles and example dNdS estimation procedure:
+The following pipeline resembles and example dNdS estimation procedure:
 
  1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
  2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
@@ -215,7 +215,7 @@ dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'
 ```
 
 
-The `dNdS()` function can be used choosing the folllowing options:
+The `dNdS()` function can be used choosing the following options:
 
 * `ortho_detection` : `RBH` (BLAST best reciprocal hit), `BH` (BLAST best reciprocal hit), `PO` (ProteinOrtho), `OrthoMCL` (OrthoMCL), `IP` (InParanoid)
 * `aa_aln_type` : `multiple` or `pairwise`
@@ -253,7 +253,7 @@ options of several interface programs.
 To pass additional parameters to the interface programs, you can use the
 `blast_params` and `aa_aln_params`. The `aa_aln_params` argument assumes
 that when you chose e.g. `aa_aln_tool = "mafft"` you will pass the corresponding
-addtional paramers in MAFFT notation.
+additional parameters in MAFFT notation.
 
 ```{r,eval=FALSE}
 
