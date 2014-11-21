@@ -9,7 +9,7 @@ vignette: >
 ---
 
 
-The `orthologr` package provides multiple functions to perform pairwise and multiple sequence alignments. The following functions are implmented in `orthologr`:
+The `orthologr` package provides multiple functions to perform pairwise and multiple sequence alignments. The following functions are implemented in `orthologr`:
 
 
 * `multi_aln()` : An interface function to common multiple alignment tools
@@ -38,7 +38,7 @@ The above mentioned functions provide interfaces to the following alignment prog
 
 The easiest way to use the `multi_aln()` function is to store the corresponding multiple sequence alignment tools in the default execution `PATH` of you system (e.g. `/usr/local/bin` on UNIX machines).
 
-You can test whether the orresponding multiple sequence alignment tool can be executed from the default `PATH` by running:
+You can test whether the corresponding multiple sequence alignment tool can be executed from the default `PATH` by running:
 
 ### ClustalW
 
@@ -48,7 +48,7 @@ You can test whether the orresponding multiple sequence alignment tool can be ex
 
 * Windows: `system("clustalw2.exe -help")`
 
-In case everything is installed approriately, you should see:
+In case everything is installed appropriately, you should see:
 
 
 ```
@@ -78,7 +78,7 @@ system("t_coffee -version")
 
 ```
 
-In case everything is installed approriately, you should see:
+In case everything is installed appropriately, you should see:
 
 ```
 
@@ -94,7 +94,7 @@ system("muscle -help")
 
 ```
 
-In case everything is installed approriately, you should see:
+In case everything is installed appropriately, you should see:
 
 ```
 MUSCLE v3.8.31 by Robert C. Edgar
@@ -146,7 +146,7 @@ system("mafft -help")
 
 ```
 
-In case everything is installed approriately, you should see:
+In case everything is installed appropriately, you should see:
 
 ```
 
