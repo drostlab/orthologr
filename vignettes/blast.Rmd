@@ -48,7 +48,7 @@ and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a 
  search with standard parameters provided by the `blast()` function.
 
 When running the subsequent functions please make sure you can call BLAST+ from your
-console either in the standard `PATH` or in case you have BLAST+ installed in a seperate
+console either in the standard `PATH` or in case you have BLAST+ installed in a separate
 folder, please specify the `path` argument that can be passed to `blast()`.
 
 To check whether BLAST+ can be executed from the default `PATH` (`usr/bin/local` on UNIX systems),
@@ -60,7 +60,7 @@ system("blastp -version")
 
 ```
 
-This should return somethin like this:
+This should return something like this:
 
 ```
 blastp: 2.2.29+
@@ -194,7 +194,7 @@ blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr
 The `query_file` and `subject_file` arguments specify the path to the corresponding 
 fasta files storing the `CDS` files, `amino acid` files, or `genome` files of the query organism and subject organism
 of interest. Make sure that when using `CDS`files, `amino acid` files, or `genome` files the 
-corresponding argument `seq_type` must be adapted accoring to the input data format.
+corresponding argument `seq_type` must be adapted according to the input data format.
 
 Use :
 
@@ -370,7 +370,7 @@ This way we could filter out a high confidence set of orthologous genes from the
 `one_to_one` class of genes.
 
 In reality most orthology inference programs and methods perform way more
-complicated and sofisticated analyses to distinguish true orthologs from true paralogs
+complicated and sophisticated analyses to distinguish true orthologs from true paralogs
 (in-paralogs, out-paralogs, etc.). These subsequent analyses can also be performed using
 the above introduced split-apply-combine strategy. 
 
@@ -426,7 +426,7 @@ hit_tbl["AT1G01200.1", list(query_id,subject_id,evalue,perc_identity,alig_length
 
 ```
 
-Now we have to decide which hit shall be cosidered as potential _ortholog_.
+Now we have to decide which hit shall be considered as potential _ortholog_.
 In this example `subject_id` `470156|PACid:16041002` has the highest `perc_identity` as well
 as the lowest e-value `2e-170`. So a straightforward approach would be to choose subject gene `470156|PACid:16041002` as potential ortholog of query gene `AT1G01200.1`.
 
@@ -515,7 +515,7 @@ rbh_hit_tbl["AT1G01070.1" , ]
 
 ```
 
-But since the `blast_rec()` function was implemented to choose the bidirectional best hit based on the e-value, in border line cases a different gene as expected coud be chosen.
+But since the `blast_rec()` function was implemented to choose the bidirectional best hit based on the e-value, in border line cases a different gene as expected could be chosen.
 
 An alternative analysis that can be performed with these three candidate subject genes is the following:
 
@@ -588,7 +588,7 @@ score: 486.462
 
 ```
 
-__Note__: To ontain the score value, you need to specify the `scoreOnly = TRUE` in the `pairwiseAlignment` function.
+__Note__: To obtain the score value, you need to specify the `scoreOnly = TRUE` in the `pairwiseAlignment` function.
 
 As you can see, subject gene `918864|PACid:16052578` also has the highest global alignment score `1768.965` based on the Needleman-Wunsch algorithm. This strategy might help you to differentiate between border line cases.
 
