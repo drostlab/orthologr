@@ -76,6 +76,16 @@ ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'ort
 
 
 
+ # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
+  subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'orthologr'),
+                         system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
+                         system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
+
+  ProteinOrtho(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
+            subject_files = subject_organisms,
+            seq_type = "protein")
+
+
 
 # in case you need to specify the BLAST path or want to add
 # additional parameters to the BLAST run, please use the 'po_params' argument
