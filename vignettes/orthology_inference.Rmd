@@ -162,10 +162,8 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 ```
 
-
-
-In this case 2 cores are being used to perform parallel processing. The `clean_folders` argument
-specifies that all files returned by the corresponding orthology inference method (and written to your hard drive)
+In this case 2 cores are being used to perform parallel processing, the `clean_folders` argument
+specifies that all files returned by the corresponding orthology inference method
 are removed after analyses.
 
 ## Program specific use of the orthologs() function
@@ -175,7 +173,20 @@ of the `orthologs()` function for each orthology inference program
 for which an interface is implemented in `orthologr`.
 
 
-### BLAST brest reciprocal hit
+### BLAST best reciprocal hit
+
+The BLAST best reciprocal hit is a bi-directional BLAST best hit search of a `query organism A` 
+against a `subject organism B` based on the `e-value`.
+
+The Algorithm for BLAST best reciprocal hit runs as follows:
+
+1) `bh_A <- best_hit(A,B)`
+2) `bh_B <- best_hit(B,A)`
+3) `join(bh_A,bh_B)` by tupel `(query_id, subject_id)`
+
+In other words, only in case the tuple `(query_id, subject_id)` is returned as best hit
+based on the `e-value` in both BLAST directions, the corresponding tupel `(query_id, subject_id)`
+is retained as orthologous gene pair.
 
 As demonstrated before a simple call of `orthologs()` using `ortho_detection = "RBH"`
 can be performed as follows:
@@ -220,9 +231,136 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 ```
 
+When you need more parameters returned by `RBH`, you can specify the `detailed_output = TRUE`
+argument to obtain all BLAST parameters.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+library(dplyr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+RBH <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "RBH",
+          detailed_output = TRUE, clean_folders = TRUE)
+
+
+glimpse(RBH)
+
+```
+
+```
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1"...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 95.08, 90.33, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 529, 45...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0, 20,...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0, 0, 0
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1, 1, 1
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 529, 45...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1, 1, 1
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 529, 45...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, 0e+00, 1e-178,...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, ...
+```
+
+In case you would like to store the corresponding `hit tables` returned by BLAST for
+subsequent analyses, you can specify the `clean_folders = FALSE` argument.
+When `clean_folders` is set to `FALSE`, a folder named `_blast_db` will be created 
+inside the current working directory of your R session storing the corresponding BLAST output.
+
+
 ### ProteinOrtho
 
-ProteinOrtho is a orthology inference program to detect orthologous genes within different species. For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs ([reference](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html)).
+ProteinOrtho is a orthology inference program to detect orthologous genes within different species. For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs ([Lechner et al., 2011](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html)).
+
+#### Installing ProteinOrtho for use in orthologr
+
+Please follow the [installation instructions](https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html) from the ProteinOrtho web page.
+
+When you have ProteinOrtho installed on your machine, make sure that you can
+execute the file `proteinortho5.pl` from your default execution `PATH`, e.g. `/usr/local/bin/` (MacOS, Linux).
+
+You can test whether ProteinOrtho can be executed properly by typing the following
+command in your R session:
+
+```{r,eval=FALSE}
+
+system("proteinortho5.pl -h")
+
+```
+
+This way you should see the following output:
+
+```
+Usage: proteinortho5.pl [OPTIONS] FASTA1 FASTA2 [FASTA...]
+Options: -e=          E-value for blast [default: 1e-05]
+         -p=          blast program {blastn|blastp|blastn+|blastp+}
+                      [default: blastp+]
+         -project=    prefix for all result file names [default: myproject]
+         -synteny     activate PoFF extension to separate similar sequences
+                      by contextual adjacencies (requires .gff for each .fasta)
+         -dups=       PoFF: number of reiterations for adjacencies heuristic,
+                      to determine duplicated regions (default: 0)
+         -cs=         PoFF: Size of a maximum common substring (MCS) for
+                      adjacency matches (default: 3)
+         -alpha=      PoFF: weight of adjacencies vs. sequence similarity
+                      (default: 0.5)
+         -keep        stores temporary blast results for reuse
+         -force       forces recalculation of blast results in any case
+         -cpus=       number of processors to use [default: auto]
+         -selfblast   apply selfblast, detects paralogs without orthologs
+         -singles     report singleton genes without any hit
+         -identity=   min. percent identity of best blast hits [default: 25]
+         -cov=        min. coverage of best blast alignments in % [default: 50]
+         -conn=       min. algebraic connectivity [default: 0.1]
+         -sim=        min. similarity for additional hits (0..1) [default: 0.95]
+         -step=       1 -> generate indices
+                      2 -> run blast (and ff-adj, if -synteny is set)
+                      3 -> clustering
+                      0 -> all (default)
+         -blastpath=  path to your local blast (if not installed globally)
+         -verbose     keeps you informed about the progress
+         -clean       remove all unnecessary files after processing
+         -graph       generate .graph files (pairwise orthology relations)
+         -debug       gives detailed information for bug tracking
+
+         More specific blast parameters can be defined by
+         -blastParameters='[parameters]' (e.g. -blastParameters='-seg no')
+
+         In case jobs should be distributed onto several machines, use
+         -startat=    File number to start with (default: 0)
+         -stopat=     File number to end with (default: -1)
+ 
+Invalid command line option: '-h'!
+
+```
+
+#### In case you have problems with ProteinOrtho 
+
+If you cannot reproduce the previous result, then `proteinortho5.pl` cannot be executed properly 
+from your default execution `PATH` (e.g. `/usr/local/bin/`). 
+
+In this case first you can try to store all files within the `proteinortho_v5.07`
+folder in `/usr/local/bin/` (MacOS and Linux) or your default `Program Files` folder path (Windows).
+
+Furthermore, you can also try the following steps:
+
+* specify the `path` argument inside the `orthologs()` function to pass 
+the path to your `proteinortho_v5.07` folder
+* read the documentation of the `ProteinOrtho()` function: `?ProteinOrtho`
+* formulate a bug report
+
+__Note:__ when using the synteny option of ProteinOrtho, we noticed that the
+necessary file `proteinortho5_clustering.cpp` stored in the `proteinortho_v5.07` folder
+needs to be stored in `/usr/local/bin/` and in our case also needed to be recompiled with
+`g++ proteinortho5_clustering.cpp -o proteinortho5_clustering` inside the `Terminal`.
+
+
+#### Running orthologs() with ProteinOrtho
 
 ```{r,eval=FALSE}
 
@@ -280,6 +418,42 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 ```
 
 
+You can run ProteinOrtho with multiple subject organisms.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
+subject_organisms <- c(system.file('seqs/example_brapa_aa.fa', package = 'orthologr'),
+                       system.file('seqs/example_alyra_aa.fa', package = 'orthologr'),
+                       system.file('seqs/example_thalo_aa.fa', package = 'orthologr'))
+
+orthologs(query_file = system.file('seqs/example_athal_aa.fa', package = 'orthologr'),
+          subject_files = subject_organisms,
+          seq_type = "protein", ortho_detection = "PO")
+
+
+```
+
+
+In case you would like to use the `synteny` option of ProteinOrtho, we refer
+to the `ProteinOrtho()` function. When performing synteny, a *.gff file needs
+to be stored in a folder named `_ProteinOrtho` that needs to be created inside the
+current working directory of your R session (`dir.create("_ProteinOrtho")`).
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# it is also possible to run ProteinOrtho using the synteny option
+# make sure you can provide a *.gff file
+# see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details
+ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+             subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+             seq_type = "protein",format = "fasta",po_params = "-synteny")
+
+```
 
 
 ### OrthoMCL

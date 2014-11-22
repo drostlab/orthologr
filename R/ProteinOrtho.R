@@ -134,7 +134,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                         
                                 system(paste0("proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
                                               " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
-                                              paste0(subject_files," ")))
+                                              paste0(subject_files,collapse=" ")))
                         
                         
                 }
@@ -144,7 +144,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                   
                                 system(paste0("proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
                                               " -project=ProteinOrtho ","-e=",eval," ",po_params," ",
-                                              query_file," ",paste0(subject_files," ")))
+                                              query_file," ",paste0(subject_files,collapse=" ")))
                                 
                         
                 }
@@ -157,7 +157,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                                 
                                 system(paste0(po_path,f_sep,"proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
                                               " -project=ProteinOrtho ","-e=",eval," ",query_file," ",
-                                              paste0(subject_files," ")))
+                                              paste0(subject_files,collapse=" ")))
                                 
                                   
                        
@@ -168,7 +168,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                         
                         system(paste0(po_path,f_sep,"proteinortho5.pl -p=",blast_program," -cpus=",comp_cores,
                                       " -project=ProteinOrtho ","-e=",eval," ",po_params," ",
-                                      query_file," ",paste0(subject_files," ")))
+                                      query_file," ",paste0(subject_files,collapse=" ")))
                 }
                 
                 

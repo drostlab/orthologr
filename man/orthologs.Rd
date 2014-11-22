@@ -6,7 +6,8 @@
 orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, eval = "1E-5", format = "fasta",
   ortho_detection = "RBH", path = NULL, add_params = NULL,
-  comp_cores = 1, quiet = FALSE, clean_folders = FALSE)
+  detailed_output = FALSE, comp_cores = 1, quiet = FALSE,
+  clean_folders = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -37,12 +38,15 @@ For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": 
 \item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 Default is \code{add_params} = \code{NULL}.}
 
+\item{detailed_output}{a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs.
+Default is \code{detailed_output} = \code{FALSE}.}
+
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
-shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
+shall be removed. Default is \code{clean_folders} = \code{TRUE}.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
@@ -89,11 +93,11 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 ### Orthology Inference using ProteinOrtho
 
 # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
-subject_organisms <- c(system.file('seqs/example_brapa_aa.fa', package = 'orthologr'),
-                       system.file('seqs/example_alyra_aa.fa', package = 'orthologr'),
-                       system.file('seqs/example_thalo_aa.fa', package = 'orthologr'))
+subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'orthologr'),
+                       system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
+                       system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
 
-orthologs(query_file = system.file('seqs/example_athal_aa.fa', package = 'orthologr'),
+orthologs(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
           subject_files = subject_organisms,
           seq_type = "protein", ortho_detection = "PO")
 

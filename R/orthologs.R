@@ -34,10 +34,12 @@
 #' "IP": path to InParanoid.
 #' @param add_params a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 #' Default is \code{add_params} = \code{NULL}.
+#' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs. 
+#' Default is \code{detailed_output} = \code{FALSE}.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
-#' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' shall be removed. Default is \code{clean_folders} = \code{TRUE}.
 #' @details This function takes sequence files of a query organism and a subject organism and performs orthology inference
 #' using a defined orthology inference method to dectect orthologous genes.
 #' 
@@ -77,11 +79,11 @@
 #' ### Orthology Inference using ProteinOrtho
 #' 
 #' # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
-#' subject_organisms <- c(system.file('seqs/example_brapa_aa.fa', package = 'orthologr'),
-#'                        system.file('seqs/example_alyra_aa.fa', package = 'orthologr'),
-#'                        system.file('seqs/example_thalo_aa.fa', package = 'orthologr'))
+#' subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'orthologr'),
+#'                        system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
+#'                        system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
 #' 
-#' orthologs(query_file = system.file('seqs/example_athal_aa.fa', package = 'orthologr'),
+#' orthologs(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
 #'           subject_files = subject_organisms,
 #'           seq_type = "protein", ortho_detection = "PO")
 #'           
@@ -120,7 +122,8 @@
 orthologs <- function(query_file,subject_files, seq_type = "protein",
                       outgroup_file = NULL, eval = "1E-5", format = "fasta",
                       ortho_detection = "RBH", path = NULL, add_params = NULL,
-                      comp_cores = 1, quiet = FALSE, clean_folders = FALSE){
+                      detailed_output = FALSE, comp_cores = 1,
+                      quiet = FALSE, clean_folders = TRUE){
         
         if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -133,7 +136,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                         blast_rec(query_file = query_file, subject_file = subject_files, 
                                   path = path, comp_cores = comp_cores, eval = eval,
                                   blast_params = add_params, seq_type = seq_type, 
-                                  format = format))
+                                  detailed_output = detailed_output, format = format))
                 
                 
                 if(clean_folders)
