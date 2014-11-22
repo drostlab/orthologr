@@ -425,16 +425,206 @@ You can run ProteinOrtho with multiple subject organisms.
 library(orthologr)
 
 # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
-subject_organisms <- c(system.file('seqs/example_brapa_aa.fa', package = 'orthologr'),
-                       system.file('seqs/example_alyra_aa.fa', package = 'orthologr'),
-                       system.file('seqs/example_thalo_aa.fa', package = 'orthologr'))
+subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'orthologr'),
+                       system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
+                       system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
 
-orthologs(query_file = system.file('seqs/example_athal_aa.fa', package = 'orthologr'),
+ProteinOrtho(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
           subject_files = subject_organisms,
-          seq_type = "protein", ortho_detection = "PO")
+          seq_type = "protein")
 
 
 ```
+
+```
+
+$comparison_1
+       # example_athal_aa.faa  example_alyra_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  AT1G01010.1|PACid:19656964 333554|PACid:16033839       0.0         627       0.0         615
+2  AT1G01020.1|PACid:19655142 470181|PACid:16064328    7e-166         454    6e-158         434
+3  AT1G01030.1|PACid:19649747 470180|PACid:16054974       0.0         698       0.0         698
+4  AT1G01040.1|PACid:19652432 333551|PACid:16057793       0.0        3704       0.0        3704
+5  AT1G01050.1|PACid:19652974 909874|PACid:16064489    2e-160         437    2e-160         437
+6  AT1G01070.1|PACid:19650807 918864|PACid:16052578       0.0         696       0.0         696
+7  AT1G01080.1|PACid:19651136 909871|PACid:16053217    1e-178         491    5e-169         466
+8  AT1G01090.1|PACid:19650207 470171|PACid:16052860       0.0         859       0.0         859
+9  AT1G01110.2|PACid:19658169 333544|PACid:16034284       0.0         972       0.0         978
+10 AT1G01120.1|PACid:19655257 918858|PACid:16049140       0.0        1092       0.0        1092
+11 AT1G01160.1|PACid:19654307 918854|PACid:16044153     1e-93         268     2e-86         249
+12 AT1G01180.1|PACid:19654493 909860|PACid:16056125       0.0         572       0.0         594
+13 AT1G01190.1|PACid:19654322 311315|PACid:16059488       0.0        1036       0.0        1036
+14 AT1G01200.1|PACid:19649914 470156|PACid:16041002    3e-172         470    3e-172         470
+15 AT1G01220.1|PACid:19652890 470155|PACid:16047984       0.0        2106       0.0        2106
+16 AT1G01225.1|PACid:19656715 470154|PACid:16066159    6e-168         461    1e-163         450
+17 AT1G01230.1|PACid:19650274 470153|PACid:16038331    3e-117         324    3e-117         324
+18 AT1G01240.3|PACid:19650438 470152|PACid:16047967       0.0         568       0.0         545
+19 AT1G01250.1|PACid:19649318 470149|PACid:16044741    1e-124         345    1e-124         345
+20 AT1G01260.3|PACid:19651080 470147|PACid:16058975       0.0        1108       0.0        1117
+
+$comparison_2
+     # example_brapa_aa.faa  example_alyra_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  Bra032623|PACid:22715924 918854|PACid:16044153     1e-93         268     2e-98         281
+2  Bra032626|PACid:22713115 470155|PACid:16047984       0.0        1946       0.0        1946
+3  Bra032627|PACid:22713604 470154|PACid:16066159    1e-159         439    1e-160         442
+4  Bra032629|PACid:22714275 470152|PACid:16047967    3e-152         427    8e-136         385
+5  Bra032630|PACid:22715365 470149|PACid:16044741    2e-106         298    4e-106         298
+6  Bra033273|PACid:22692002 470147|PACid:16058975       0.0         846       0.0         858
+7  Bra033276|PACid:22693754 470153|PACid:16038331    3e-111         310    3e-111         310
+8  Bra033277|PACid:22693004 470156|PACid:16041002    5e-160         439    5e-160         439
+9  Bra033278|PACid:22692201 311315|PACid:16059488       0.0         992       0.0         992
+10 Bra033279|PACid:22694360 909860|PACid:16056125       0.0         508       0.0         516
+11 Bra033283|PACid:22693298 918858|PACid:16049140       0.0        1015       0.0        1015
+12 Bra033284|PACid:22692650 333544|PACid:16034284       0.0         842       0.0         807
+13 Bra033286|PACid:22694322 470171|PACid:16052860       0.0         818       0.0         818
+14 Bra033287|PACid:22693868 909871|PACid:16053217    3e-128         358    2e-128         360
+15 Bra033290|PACid:22692027 918864|PACid:16052578       0.0         621       0.0         621
+16 Bra033292|PACid:22694379 909874|PACid:16064489    4e-158         432    4e-158         432
+17 Bra033293|PACid:22692618 333551|PACid:16057793       0.0        3257       0.0        3334
+18 Bra033294|PACid:22691990 470180|PACid:16054974       0.0         528       0.0         574
+19 Bra033295|PACid:22694612 470181|PACid:16064328    4e-147         407    1e-139         387
+20 Bra033296|PACid:22693237 333554|PACid:16033839    7e-137         398    1e-131         385
+
+$comparison_3
+           # example_thalo_aa.faa  example_alyra_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  Thhalv10006531m|PACid:20187082 333551|PACid:16057793       0.0        3484       0.0        3514
+2  Thhalv10006637m|PACid:20187150 470155|PACid:16047984       0.0        2022       0.0        2022
+3  Thhalv10007139m|PACid:20185859 470147|PACid:16058975       0.0        1032       0.0         992
+4  Thhalv10007299m|PACid:20188214 333544|PACid:16034284       0.0         872       0.0         844
+5  Thhalv10007320m|PACid:20187751 311315|PACid:16059488       0.0         959       0.0         959
+6  Thhalv10007351m|PACid:20187717 918858|PACid:16049140       0.0        1055       0.0        1055
+7  Thhalv10007665m|PACid:20186865 333554|PACid:16033839       0.0         538       0.0         532
+8  Thhalv10007695m|PACid:20187891 470171|PACid:16052860       0.0         844       0.0         844
+9  Thhalv10008068m|PACid:20187490 470180|PACid:16054974       0.0         566       0.0         596
+10 Thhalv10008123m|PACid:20187436 470152|PACid:16047967       0.0         530       0.0         523
+11 Thhalv10008287m|PACid:20186971 909860|PACid:16056125       0.0         546       0.0         557
+12 Thhalv10008355m|PACid:20185661 909871|PACid:16053217    2e-163         452    5e-170         469
+13 Thhalv10008482m|PACid:20185881 918854|PACid:16044153    4e-100         288    2e-100         288
+14 Thhalv10008506m|PACid:20187047 470154|PACid:16066159    1e-160         442    4e-162         446
+15 Thhalv10008618m|PACid:20186467 470181|PACid:16064328    1e-153         423    6e-146         404
+16 Thhalv10008767m|PACid:20187619 909874|PACid:16064489    1e-158         433    1e-158         433
+17 Thhalv10008983m|PACid:20187021 470153|PACid:16038331    6e-116         320    6e-116         320
+18 Thhalv10009311m|PACid:20187590 470156|PACid:16041002    2e-163         447    2e-163         447
+19 Thhalv10009402m|PACid:20186843 470149|PACid:16044741    2e-119         332    2e-119         332
+20 Thhalv10009501m|PACid:20185805 918864|PACid:16052578       0.0         639       0.0         630
+
+$comparison_4
+     # example_brapa_aa.faa       example_athal_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  Bra032623|PACid:22715924 AT1G01160.1|PACid:19654307     3e-88         254     7e-97         275
+2  Bra032626|PACid:22713115 AT1G01220.1|PACid:19652890       0.0        1953       0.0        1953
+3  Bra032627|PACid:22713604 AT1G01225.1|PACid:19656715    1e-157         435    3e-162         446
+4  Bra032629|PACid:22714275 AT1G01240.3|PACid:19650438    3e-155         435    4e-142         401
+5  Bra032630|PACid:22715365 AT1G01250.1|PACid:19649318    5e-103         290    6e-103         290
+6  Bra033273|PACid:22692002 AT1G01260.3|PACid:19651080       0.0         870       0.0         856
+7  Bra033276|PACid:22693754 AT1G01230.1|PACid:19650274    1e-110         308    8e-111         308
+8  Bra033277|PACid:22693004 AT1G01200.1|PACid:19649914    8e-158         433    8e-158         433
+9  Bra033278|PACid:22692201 AT1G01190.1|PACid:19654322       0.0         986       0.0         986
+10 Bra033279|PACid:22694360 AT1G01180.1|PACid:19654493       0.0         509       0.0         509
+11 Bra033283|PACid:22693298 AT1G01120.1|PACid:19655257       0.0        1014       0.0        1014
+12 Bra033284|PACid:22692650 AT1G01110.2|PACid:19658169       0.0         843       0.0         803
+13 Bra033286|PACid:22694322 AT1G01090.1|PACid:19650207       0.0         811       0.0         811
+14 Bra033287|PACid:22693868 AT1G01080.1|PACid:19651136    1e-125         352    4e-126         353
+15 Bra033290|PACid:22692027 AT1G01070.1|PACid:19650807       0.0         610       0.0         610
+16 Bra033292|PACid:22694379 AT1G01050.1|PACid:19652974    4e-158         432    4e-158         432
+17 Bra033293|PACid:22692618 AT1G01040.1|PACid:19652432       0.0        3408       0.0        3430
+18 Bra033294|PACid:22691990 AT1G01030.1|PACid:19649747       0.0         533       0.0         573
+19 Bra033295|PACid:22694612 AT1G01020.1|PACid:19655142    2e-138         385    9e-135         375
+20 Bra033296|PACid:22693237 AT1G01010.1|PACid:19656964    1e-139         404    6e-135         392
+
+$comparison_5
+           # example_thalo_aa.faa       example_athal_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  Thhalv10006531m|PACid:20187082 AT1G01040.1|PACid:19652432       0.0        3628       0.0        3603
+2  Thhalv10006637m|PACid:20187150 AT1G01220.1|PACid:19652890       0.0        2026       0.0        2026
+3  Thhalv10007139m|PACid:20185859 AT1G01260.3|PACid:19651080       0.0        1036       0.0         987
+4  Thhalv10007299m|PACid:20188214 AT1G01110.2|PACid:19658169       0.0         875       0.0         840
+5  Thhalv10007320m|PACid:20187751 AT1G01190.1|PACid:19654322       0.0         951       0.0         951
+6  Thhalv10007351m|PACid:20187717 AT1G01120.1|PACid:19655257       0.0        1055       0.0        1055
+7  Thhalv10007665m|PACid:20186865 AT1G01010.1|PACid:19656964       0.0         515       0.0         521
+8  Thhalv10007695m|PACid:20187891 AT1G01090.1|PACid:19650207       0.0         842       0.0         842
+9  Thhalv10008068m|PACid:20187490 AT1G01030.1|PACid:19649747       0.0         584       0.0         608
+10 Thhalv10008123m|PACid:20187436 AT1G01240.3|PACid:19650438       0.0         515       0.0         530
+11 Thhalv10008287m|PACid:20186971 AT1G01180.1|PACid:19654493       0.0         549       0.0         549
+12 Thhalv10008355m|PACid:20185661 AT1G01080.1|PACid:19651136    9e-157         435    1e-172         476
+13 Thhalv10008482m|PACid:20185881 AT1G01160.1|PACid:19654307     5e-90         261     2e-99         284
+14 Thhalv10008506m|PACid:20187047 AT1G01225.1|PACid:19656715    1e-159         440    1e-164         452
+15 Thhalv10008618m|PACid:20186467 AT1G01020.1|PACid:19655142    6e-141         391    1e-141         393
+16 Thhalv10008767m|PACid:20187619 AT1G01050.1|PACid:19652974    1e-158         433    1e-158         433
+17 Thhalv10008983m|PACid:20187021 AT1G01230.1|PACid:19650274    2e-115         319    2e-115         319
+18 Thhalv10009311m|PACid:20187590 AT1G01200.1|PACid:19649914    2e-161         442    2e-161         442
+19 Thhalv10009402m|PACid:20186843 AT1G01250.1|PACid:19649318    4e-119         331    6e-119         331
+20 Thhalv10009501m|PACid:20185805 AT1G01070.1|PACid:19650807       0.0         633       0.0         625
+
+$comparison_6
+           # example_thalo_aa.faa     example_brapa_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
+1  Thhalv10006531m|PACid:20187082 Bra033293|PACid:22692618       0.0        3495       0.0        3449
+2  Thhalv10006637m|PACid:20187150 Bra032626|PACid:22713115       0.0        1963       0.0        1963
+3  Thhalv10007139m|PACid:20185859 Bra033273|PACid:22692002       0.0         872       0.0         850
+4  Thhalv10007299m|PACid:20188214 Bra033284|PACid:22692650       0.0         848       0.0         849
+5  Thhalv10007320m|PACid:20187751 Bra033278|PACid:22692201       0.0         968       0.0         968
+6  Thhalv10007351m|PACid:20187717 Bra033283|PACid:22693298       0.0        1036       0.0        1036
+7  Thhalv10007665m|PACid:20186865 Bra033296|PACid:22693237    2e-150         432    1e-147         425
+8  Thhalv10007695m|PACid:20187891 Bra033286|PACid:22694322       0.0         830       0.0         830
+9  Thhalv10008068m|PACid:20187490 Bra033294|PACid:22691990       0.0         587       0.0         570
+10 Thhalv10008123m|PACid:20187436 Bra032629|PACid:22714275    6e-140         396    2e-153         431
+11 Thhalv10008287m|PACid:20186971 Bra033279|PACid:22694360       0.0         508       0.0         508
+12 Thhalv10008355m|PACid:20185661 Bra033287|PACid:22693868    3e-129         361    7e-129         360
+13 Thhalv10008482m|PACid:20185881 Bra032623|PACid:22715924    3e-115         325    2e-114         323
+14 Thhalv10008506m|PACid:20187047 Bra032627|PACid:22713604    6e-167         459    2e-169         465
+15 Thhalv10008618m|PACid:20186467 Bra033295|PACid:22694612    2e-141         392    3e-141         392
+16 Thhalv10008767m|PACid:20187619 Bra033292|PACid:22694379    2e-158         432    2e-158         432
+17 Thhalv10008983m|PACid:20187021 Bra033276|PACid:22693754    9e-111         308    1e-110         308
+18 Thhalv10009311m|PACid:20187590 Bra033277|PACid:22693004    2e-159         437    2e-159         437
+19 Thhalv10009402m|PACid:20186843 Bra032630|PACid:22715365    1e-106         299    9e-107         300
+20 Thhalv10009501m|PACid:20185805 Bra033290|PACid:22692027       0.0         667       0.0         665
+
+$proteinortho_tbl
+   X..Species Genes Alg..Conn.       example_athal_aa.faa  example_alyra_aa.faa     example_brapa_aa.faa
+1           4     4          1 AT1G01010.1|PACid:19656964 333554|PACid:16033839 Bra033296|PACid:22693237
+2           4     4          1 AT1G01020.1|PACid:19655142 470181|PACid:16064328 Bra033295|PACid:22694612
+3           4     4          1 AT1G01030.1|PACid:19649747 470180|PACid:16054974 Bra033294|PACid:22691990
+4           4     4          1 AT1G01040.1|PACid:19652432 333551|PACid:16057793 Bra033293|PACid:22692618
+5           4     4          1 AT1G01050.1|PACid:19652974 909874|PACid:16064489 Bra033292|PACid:22694379
+6           4     4          1 AT1G01070.1|PACid:19650807 918864|PACid:16052578 Bra033290|PACid:22692027
+7           4     4          1 AT1G01080.1|PACid:19651136 909871|PACid:16053217 Bra033287|PACid:22693868
+8           4     4          1 AT1G01090.1|PACid:19650207 470171|PACid:16052860 Bra033286|PACid:22694322
+9           4     4          1 AT1G01110.2|PACid:19658169 333544|PACid:16034284 Bra033284|PACid:22692650
+10          4     4          1 AT1G01120.1|PACid:19655257 918858|PACid:16049140 Bra033283|PACid:22693298
+11          4     4          1 AT1G01160.1|PACid:19654307 918854|PACid:16044153 Bra032623|PACid:22715924
+12          4     4          1 AT1G01180.1|PACid:19654493 909860|PACid:16056125 Bra033279|PACid:22694360
+13          4     4          1 AT1G01190.1|PACid:19654322 311315|PACid:16059488 Bra033278|PACid:22692201
+14          4     4          1 AT1G01200.1|PACid:19649914 470156|PACid:16041002 Bra033277|PACid:22693004
+15          4     4          1 AT1G01220.1|PACid:19652890 470155|PACid:16047984 Bra032626|PACid:22713115
+16          4     4          1 AT1G01225.1|PACid:19656715 470154|PACid:16066159 Bra032627|PACid:22713604
+17          4     4          1 AT1G01230.1|PACid:19650274 470153|PACid:16038331 Bra033276|PACid:22693754
+18          4     4          1 AT1G01240.3|PACid:19650438 470152|PACid:16047967 Bra032629|PACid:22714275
+19          4     4          1 AT1G01250.1|PACid:19649318 470149|PACid:16044741 Bra032630|PACid:22715365
+20          4     4          1 AT1G01260.3|PACid:19651080 470147|PACid:16058975 Bra033273|PACid:22692002
+             example_thalo_aa.faa
+1  Thhalv10007665m|PACid:20186865
+2  Thhalv10008618m|PACid:20186467
+3  Thhalv10008068m|PACid:20187490
+4  Thhalv10006531m|PACid:20187082
+5  Thhalv10008767m|PACid:20187619
+6  Thhalv10009501m|PACid:20185805
+7  Thhalv10008355m|PACid:20185661
+8  Thhalv10007695m|PACid:20187891
+9  Thhalv10007299m|PACid:20188214
+10 Thhalv10007351m|PACid:20187717
+11 Thhalv10008482m|PACid:20185881
+12 Thhalv10008287m|PACid:20186971
+13 Thhalv10007320m|PACid:20187751
+14 Thhalv10009311m|PACid:20187590
+15 Thhalv10006637m|PACid:20187150
+16 Thhalv10008506m|PACid:20187047
+17 Thhalv10008983m|PACid:20187021
+18 Thhalv10008123m|PACid:20187436
+19 Thhalv10009402m|PACid:20186843
+20 Thhalv10007139m|PACid:20185859
+
+```
+
+The resulting output is a list storing all combinations of pairwise comparisons
+as data frames inside each list element. The last list element defines the gene relationships
+in terms of gene ids.
 
 
 In case you would like to use the `synteny` option of ProteinOrtho, we refer

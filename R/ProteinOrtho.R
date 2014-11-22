@@ -193,15 +193,41 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         
                         } else {
                                 
+                                # read the header of the ProteinOrtho output file
+                                PO_tbl <- strsplit(readLines(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph")),"\t")
+                                hash_tag <- which(lapply(PO_tbl,function(x) stringr::str_detect(x[[1]][1],"#")) == TRUE)
+                                hash_tag <- hash_tag[-c(1,2)]
                                 
-                                stop("Here the *.blast-graph file for multiple species needs to be read!")
+                                ProteinOrtho_tbl <- vector(mode = "list", length = length(hash_tag) + 1)
+                                n_numCols <- length(PO_tbl[[2]][-c(1:length(PO_tbl[[3]]))])
                                 
+                                for(i in 1:(length(hash_tag)-1)){
+                                        
+                                        tmp_df <- as.data.frame(do.call(rbind,PO_tbl[(hash_tag[i] + 1) : (hash_tag[i+1] - 1)]),
+                                                                colClasses=c(rep("caracter",2),rep("numeric",n_numCols)),
+                                                                stringsAsFactors = FALSE) 
+                                        
+                                        colnames(tmp_df) <- c(unlist(PO_tbl[hash_tag[i]]),"evalue_ab","bitscore_ab","evalue_ba","bitscore_ba")
+                                                
+                                        ProteinOrtho_tbl[i] <- list(tmp_df)
+                
+                                } 
                                 
+                                tmp_df <- as.data.frame(do.call(rbind,PO_tbl[(hash_tag[length(hash_tag)] + 1) : length(PO_tbl)]),
+                                                        colClasses=c(rep("caracter",2),rep("numeric",n_numCols)),
+                                                        stringsAsFactors = FALSE) 
+                                
+                                colnames(tmp_df) <- c(unlist(PO_tbl[hash_tag[length(hash_tag)]]),PO_tbl[[2]][-c(1:length(PO_tbl[[3]]))])
+                                
+                                ProteinOrtho_tbl[length(hash_tag)] <- list(tmp_df)
+                                
+                                ProteinOrtho_tbl[length(hash_tag) + 1] <- list(read.csv(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
                         }
                         
         if(delete_files)
                 unlink("_ProteinOrtho",recursive = TRUE, force = TRUE)
         
+        names(ProteinOrtho_tbl) <- c(paste0("comparison_",1:length(hash_tag)),"proteinortho_tbl")
         
         return(ProteinOrtho_tbl)
         
