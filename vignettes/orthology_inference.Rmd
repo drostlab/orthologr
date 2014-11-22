@@ -181,7 +181,9 @@ against a `subject organism B` based on the `e-value`.
 The Algorithm for BLAST best reciprocal hit runs as follows:
 
 1) `bh_A <- best_hit(A,B)`
+
 2) `bh_B <- best_hit(B,A)`
+
 3) `join(bh_A,bh_B)` by tupel `(query_id, subject_id)`
 
 In other words, only in case the tuple `(query_id, subject_id)` is returned as best hit
