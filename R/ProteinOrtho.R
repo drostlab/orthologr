@@ -178,23 +178,36 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         
         tryCatch(
                 {
-        # read the header of the ProteinOrtho output file
-        PO_tbl_header <- strsplit(readLines(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),n=3),"\t")
-        PO_tbl_header <-  lapply(PO_tbl_header,stringr::str_replace_all,"#","")
         
-        # store the output table of ProteinOrtho
-        ProteinOrtho_tbl <- data.table::fread(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),sep = "\t",skip = 3)
-        data.table::setnames(ProteinOrtho_tbl,old = paste0("V",1:dim(ProteinOrtho_tbl)[2]),
-                             new = c(PO_tbl_header[[3]],PO_tbl_header[[2]][-c(1:length(PO_tbl_header[[3]]))]))
-        data.table::setkeyv(ProteinOrtho_tbl,PO_tbl_header[[3]])
+                        if(length(subject_files) == 1){
+                                
+                                # read the header of the ProteinOrtho output file
+                                PO_tbl_header <- strsplit(readLines(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),n=3),"\t")
+                                PO_tbl_header <-  lapply(PO_tbl_header,stringr::str_replace_all,"#","")
         
+                                # store the output table of ProteinOrtho
+                                ProteinOrtho_tbl <- data.table::fread(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),sep = "\t",skip = 3)
+                                data.table::setnames(ProteinOrtho_tbl,old = paste0("V",1:dim(ProteinOrtho_tbl)[2]),
+                                                    new = c(PO_tbl_header[[3]],PO_tbl_header[[2]][-c(1:length(PO_tbl_header[[3]]))]))
+                                data.table::setkeyv(ProteinOrtho_tbl,PO_tbl_header[[3]])
+        
+                        } else {
+                                
+                                
+                                stop("Here the *.blast-graph file for multiple species needs to be read!")
+                                
+                                
+                        }
+                        
         if(delete_files)
                 unlink("_ProteinOrtho",recursive = TRUE, force = TRUE)
         
         
         return(ProteinOrtho_tbl)
         
-                }, error = function() stop(paste("The ProteinOrtho interface call did not terminate properly.",
+        
+        
+                }, error = function(e) stop(paste("The ProteinOrtho interface call did not terminate properly.",
                                             "Please make sure you passed all parameters correctly to ProteinOrtho.",
                                             "Did you provide a *.gff file in case you used the synteny option?",sep="\n"))
         )
