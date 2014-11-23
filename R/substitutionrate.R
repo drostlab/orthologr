@@ -1,4 +1,4 @@
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment.
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrate for a codon alignment
 #' @description This function takes a pairwise alignment as input file and estimates the
 #' dNdS ratio of the corresponding alignment. Nevertheless, this function is a helper function for
 #' \code{\link{dNdS}}. For dNdS computations you should use the function: \code{\link{dNdS}}.

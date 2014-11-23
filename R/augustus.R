@@ -1,5 +1,5 @@
-#' @title Interface function for the gene prediction program augustus.
-#' @description This function provides an interface to the gene prediction tool augustus.
+#' @title Interface function for the gene prediction program augustus
+#' @description This function provides an interface to the gene prediction tool augustus
 #' 
 #' @param file a character string specifying the path to the fasta file storing query genome.
 #' @param species a character string specifying the species.

@@ -1,4 +1,4 @@
-#' @title Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms.
+#' @title Function to calculate the synonymous vs nonsynonymous substitutionrates for two organisms
 #' @description This function takes the CDS files of two organisms of interest (query_file and subject_file)
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms. 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
@@ -307,7 +307,7 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 
 
 
-#' @title This function computes the dNdS value of one given pairwise alignment.
+#' @title This function computes the dNdS value of one given pairwise alignment
 #' @description This function takes a vector containing the
 #' query amino acid sequence, subject amino acid sequence, query CDS sequence, and subject CDS sequence
 #' and then runs the following pipieline:

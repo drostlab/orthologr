@@ -1,4 +1,4 @@
-#' @title Function to compute a codon alignment.
+#' @title Function to compute a codon alignment
 #' @description This function takes a protein alignment and the corresponding coding sequences 
 #' as fasta files and computes the corresponding codon alignment based on the models specified in the PAL2NAL program.
 #' @param file_aln a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.
