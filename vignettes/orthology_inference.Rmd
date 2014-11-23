@@ -36,8 +36,6 @@ The following interfaces are (yet) implemented in the `orthologs()` function:
 
 - OrthoMCL
 
-- InParanoid
-
 
 Using a simple example stored in the package environment of `orthologr` you
 can get an impression on how to use the `orthologs()` function.
@@ -663,27 +661,6 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 
 ```
-
-### InParanoid
-
-[InParanoid](http://inparanoid.sbc.su.se/cgi-bin/index.cgi) is an orthology inference tool to detect
-ortholog groups with inparalogs. The standalone version provided by the InParanoid community resembles [InParanoid version 4.1](http://software.sbc.su.se/cgi-bin/request.cgi?project=inparanoid) and differs from the web based application InParanoid 8.
-
-```{r,eval=FALSE}
-
-library(orthologr)
-
-# perform orthology inference using InParanoid
-# and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "IP", clean_folders = TRUE)
-
-
-```
-
-
-
 
 
 

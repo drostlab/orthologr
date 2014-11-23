@@ -124,6 +124,9 @@ biocLite("Biostrings")
 The `orthologr` package provides interfaces to the following bioinformatics tools 
 enabling orthology detection ([orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9)):
 
+The main function to perform orthology inference is `orthologs()` and internally this function relies
+on the following interface functions implemented in `orthologr`.
+
  - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
  
  There are several interface functions to BLAST+ implemented in `orthologr`
@@ -143,11 +146,7 @@ enabling orthology detection ([orthology inference](http://link.springer.com/pro
  
  * `OrthoMCL()`: Interface function to OrthoMCL
  
- - [__InParanoid__](http://inparanoid.sbc.su.se/cgi-bin/index.cgi) : An Orthology Inference tool determining ortholog groups with inparalogs
-
-* `InParanoid()`: Interface function to InParanoid
-
-
+ 
 ### Multiple Alignment Tools
 
 The `orthologr` package also provides interfaces to the following Multiple Alignment Tools.

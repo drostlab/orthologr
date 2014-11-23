@@ -28,10 +28,9 @@
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-#' Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
-#' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
-#' "IP": path to InParanoid.
+#' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
 #' @param add_params a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 #' Default is \code{add_params} = \code{NULL}.
 #' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs. 
@@ -57,7 +56,6 @@
 #' 
 #' OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
 #' 
-#' InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 #' 
 #' @examples \dontrun{
 #' 
@@ -116,7 +114,7 @@
 #'           seq_type = "protein", ortho_detection = "IP", comp_cores = 2)  
 #'
 #' }
-#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}, \code{\link{dNdS}}
+#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}
 #' @export
 #' 
 orthologs <- function(query_file,subject_files, seq_type = "protein",
@@ -125,7 +123,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                       detailed_output = FALSE, comp_cores = 1,
                       quiet = FALSE, clean_folders = TRUE){
         
-        if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","IP")))
+        if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         
@@ -177,20 +175,20 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
         }
         
         
-        if(ortho_detection == "IP"){
-                
-                
-                ortho_tbl <- InParanoid(query_file = query_file, subject_file = subject_files, 
-                                   outgroup_file = outgroup_file,ip_path = path,
-                                   seq_type = seq_type, format = format)
-                
-                
-                if(clean_folders)
-                        clean_all_folders("_InParanoid")
-                
-                
-        }
-        
+#         if(ortho_detection == "IP"){
+#                 
+#                 
+#                 ortho_tbl <- InParanoid(query_file = query_file, subject_file = subject_files, 
+#                                    outgroup_file = outgroup_file,ip_path = path,
+#                                    seq_type = seq_type, format = format)
+#                 
+#                 
+#                 if(clean_folders)
+#                         clean_all_folders("_InParanoid")
+#                 
+#                 
+#         }
+#         
 
         
         return(ortho_tbl)

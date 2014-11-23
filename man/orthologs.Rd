@@ -29,11 +29,10 @@ This argument is only used by \code{\link{InParanoid}}.}
 
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL,
-"IP": path to InParanoid.}
+For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
 
 \item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 Default is \code{add_params} = \code{NULL}.}
@@ -140,10 +139,8 @@ BLAST: \url{http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml}
 ProteinOrtho: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/}
 
 OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
-
-InParanoid: \url{http://inparanoid.sbc.su.se/cgi-bin/index.cgi}
 }
 \seealso{
-\code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{InParanoid}}, \code{\link{dNdS}}
+\code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}
 }
 
