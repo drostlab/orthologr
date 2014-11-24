@@ -272,6 +272,8 @@ subsequent analyses, you can specify the `clean_folders = FALSE` argument.
 When `clean_folders` is set to `FALSE`, a folder named `_blast_db` will be created 
 inside the current working directory of your R session storing the corresponding BLAST output.
 
+A detailed overview of further analyses that can be done with the corresponding BLAST output
+can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
 
 ### ProteinOrtho
 
