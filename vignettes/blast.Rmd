@@ -19,13 +19,11 @@ knitr::opts_chunk$set(
 
 ## Getting Started
 
-A major part of __Divergence Statigraphy__ is orthologous gene detection based on
-BLAST best reciprocal hit. Hence the `orthologr` package provides a vast
-applicability and advanced BLAST interface functions to perform BLAST searches
-within the R language environment.
+The `orthologr` package provides several interface functions to perform
+BLAST searches.
 
-Again it is assumed that when using the following functions implemented in `orthologr` 
-you have an executable BLAST+ stand-alone version installed on your system. 
+First, make sure you have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on your machine. 
+
 
 The following BLAST interface functions are implemented in `orthologr`:
 
@@ -595,6 +593,46 @@ As you can see, subject gene `918864|PACid:16052578` also has the highest global
 The examples shown above shall demonstrate the use cases that can be performed using the
 `blast` functions implemented in `orthologr`.
 
+
+Another useful analysis can be to take the length of the initial query genes
+into account using the `nchar()` function:
+
+``````{r,eval=FALSE}
+# show the length distribution of all genes
+# stored in "Ath.cds"
+Ath.cds[ , nchar(seqs)]
+
+```
+
+```
+
+[1] 1290  738 1077 5730  639 1938 1098  882 1287 1584 1587 1356 1038  588  252 1437 1608  714  321 3168
+
+```
+
+Or the length of a specific gene:
+
+``````{r,eval=FALSE}
+
+Ath.cds["AT1G01070.1" , nchar(seqs)]
+
+```
+
+```
+[1] 1098
+```
+
+This way you can easily visualize the length distribution of genes stored
+in your query organism file.
+
+```{r,eval=FALSE}
+Ath.cds <- read.cds(system.file('seqs/ortho_thal_cds_1000.fasta', package = 'orthologr'),
+                    format = "fasta")
+                    
+                    
+hist(Ath.cds[ , nchar(seqs)], breaks = 100)
+
+```
 
 ## The blast_best() function
 
