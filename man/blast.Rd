@@ -65,7 +65,8 @@ The following databases can be chosen:
 }
 
 Note: When working with remote BLAST, make sure you don't submit too large jobs due to the
-BLAST query conventions!
+BLAST query conventions! All in all this functionality is still very experimental and can cause
+problems due to time out errors when submitting too large queries!
 }
 \examples{
 \dontrun{
