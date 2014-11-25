@@ -40,7 +40,7 @@ __Note:__ the following dNdS estimation methods are based on KaKs_Calculator:
 * "MYN" (Modified YN): Zhang, Z., et al. (2006)
 
 It is assumed that when you choose one of these dNdS estimation methods you have
-KaKs_Calculator installed on your machine and it can be executed from the
+[KaKs_Calculator](https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator) installed on your machine and it can be executed from the
 default execution `PATH`.
 
 The following pipeline resembles and example dNdS estimation procedure:
@@ -54,7 +54,8 @@ The following pipeline resembles and example dNdS estimation procedure:
 __Note:__ it is assumed that when using `dNdS()` all corresponding multiple sequence alignment programs you
 want to use are already installed on your machine and are executable via either
 the default execution PATH or you specifically define the location of the executable file
-via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`.
+via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`. See the [Sequence Alignments vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
+for details.
 
 The following example shall illustrate a dNdS estimation process.
 
@@ -107,9 +108,9 @@ The output includes `NA` values. To filter for `NA` values or a specific `dnds.t
 you can use the `filter_dNdS()` function. The `filter_dNdS()` function takes the output data.table 
 returned by `dNdS()` and filters the output by the following criteria:
 
-1) all dN values having an NA value or omitted
+1) all dN values having an NA value are omitted
 
-2) all dS values having an NA value or omitted
+2) all dS values having an NA value are omitted
 
 3) all dNdS values >= the specified dnds.threshold are omitted
 
@@ -129,8 +130,8 @@ Ath_Aly_dnds <- dNdS(
 
         
 # filter for:
-# 1) all dN values having an NA value or omitted
-# 2) all dS values having an NA value or omitted
+# 1) all dN values having an NA value are omitted
+# 2) all dS values having an NA value are omitted
 # 3) all dNdS values >= 2 are omitted
 
 filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
@@ -217,7 +218,7 @@ dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'
 
 The `dNdS()` function can be used choosing the following options:
 
-* `ortho_detection` : `RBH` (BLAST best reciprocal hit), `BH` (BLAST best reciprocal hit), `PO` (ProteinOrtho), `OrthoMCL` (OrthoMCL), `IP` (InParanoid)
+* `ortho_detection` : `RBH` (BLAST best reciprocal hit), `BH` (BLAST best reciprocal hit), `PO` (ProteinOrtho), and `OrthoMCL` (OrthoMCL)
 * `aa_aln_type` : `multiple` or `pairwise`
 * `aa_aln_tool` : `clustalw`, `t_coffee`, `muscle`, `clustalo`, `mafft`, and `NW` (in case `aa_aln_type = "pairwise"`)
 * `codon_aln_tool` : `pal2nal`
@@ -225,7 +226,7 @@ The `dNdS()` function can be used choosing the following options:
 
 Please see `?dNdS` for details.
 
-In case your BLAST program, or multiple alignment program can not be executed from the default execution PATH
+In case your BLAST program, or multiple alignment program can not be executed from the default execution `PATH`
 you can specify the `aa_aln_path` or `blast_path` arguments.
 
 ```{r,eval=FALSE}
@@ -247,11 +248,11 @@ dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'
 
 ## Advanced options
 
-Additional arguments that can be passed to `dNdS()` allow to use more advanced 
+Additional arguments that can be passed to `dNdS()`. This allows you to use more advanced 
 options of several interface programs.
 
 To pass additional parameters to the interface programs, you can use the
-`blast_params` and `aa_aln_params`. The `aa_aln_params` argument assumes
+`blast_params` and `aa_aln_params` arguments. The `aa_aln_params` argument assumes
 that when you chose e.g. `aa_aln_tool = "mafft"` you will pass the corresponding
 additional parameters in MAFFT notation.
 
@@ -278,8 +279,8 @@ Ath_Aly_dnds <- dNdS(
 
         
 # filter for:
-# 1) all dN values having an NA value or omitted
-# 2) all dS values having an NA value or omitted
+# 1) all dN values having an NA value are omitted
+# 2) all dS values having an NA value are omitted
 # 3) all dNdS values >= 0.1 are omitted
 
 filter_dNdS(Ath_Aly_dnds, dnds.threshold = 0.1)
@@ -300,7 +301,7 @@ filter_dNdS(Ath_Aly_dnds, dnds.threshold = 0.1)
 
 ```
 Here `blast_params` and `aa_aln_params` take an character string specifying the parameters
-that shall passed to BLAST and MAFFT. The notation of these parameters must follow the 
+that shall be passed to BLAST and MAFFT. The notation of these parameters must follow the 
 command line call of the stand alone versions of BLAST and MAFFT: e.g. `blast_params = "blast_params = -matrix BLOSUM80"`
 and `aa_aln_params = "--maxiterate 1 --clustalout"`.
 

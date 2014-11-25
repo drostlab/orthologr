@@ -70,7 +70,6 @@
 #'     \item \code{"BH"} (BLAST best reciprocal hit) 
 #'     \item \code{"PO"} (ProteinOrtho) 
 #'     \item \code{"OrthoMCL"} (OrthoMCL)
-#'     \item \code{"IP"} (InParanoid)
 #'      }
 #'      
 #' \item \code{aa_aln_type} : 
@@ -121,6 +120,9 @@
 #' Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics and evolution in R language. Bioinformatics, 20, 289-290.
 #' 
 #' More information on \pkg{ape} can be found at \url{http://ape-package.ird.fr/}.
+#' 
+#' Pages H, Aboyoun P, Gentleman R and DebRoy S. Biostrings: String objects representing biological sequences, and
+#' matching algorithms. R package version 2.32.1.
 #' 
 #' @return A data.table storing the dNdS values of the correspnding genes.
 #' @examples \dontrun{

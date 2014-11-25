@@ -92,9 +92,9 @@ set_path <- function(file, add.folder = NULL){
 #' @description This function takes the output data.table returned by \code{\link{dNdS}} and
 #' filters the output by the following criteria:
 #' 
-#' 1) all dN values having an NA value or omitted
+#' 1) all dN values having an NA value are omitted
 #' 
-#' 2) all dS values having an NA value or omitted
+#' 2) all dS values having an NA value are omitted
 #' 
 #' 3) all dNdS values >= the specified \code{dnds.threshold} are omitted
 #' 
