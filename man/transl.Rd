@@ -21,6 +21,8 @@ DNA <- c("ACCGGTTTAAAGGCGTTA")
 
 # translating DNA to a protein sequence
 transl(DNA)
+
+#
 }
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg
