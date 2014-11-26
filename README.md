@@ -127,7 +127,7 @@ enabling orthology detection ([orthology inference](http://link.springer.com/pro
 The main function to perform orthology inference is `orthologs()` and internally this function relies
 on the following interface functions implemented in `orthologr`.
 
- - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
+ - [__BLAST__](http://blast.ncbi.nlm.nih.gov/Blast.cgi]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
  
  There are several interface functions to BLAST+ implemented in `orthologr`
  
