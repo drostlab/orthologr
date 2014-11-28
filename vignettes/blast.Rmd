@@ -561,7 +561,7 @@ library(Biostrings)
 # 919693|PACid:16048878, 919961|PACid:16062329
 sapply(Aly.cds[ hit_tbl[ "AT1G01070.1", subject_id], seqs ], pairwiseAlignment, 
        pattern = Ath.cds["AT1G01070.1" , seqs],
-                  type = "global" )
+       type = "global" )
 
 ```
 
@@ -974,6 +974,18 @@ head(sqlE)
 
 ```
 
+```
+           V1                    V2    V3  V4  V5  V6 V7 V8  V9 V10 V11    V12   V13  V14 V15
+1 AT1G01010.1 333554|PACid:16033839 73.99 347 469  80  8  1 430   1 466  0e+00 627.0 1617 100
+2 AT1G01010.1 909883|PACid:16051052 34.46 122 354 162 12  1 343   1 295  7e-43 152.0  384  80
+3 AT1G01010.1 311334|PACid:16035114 43.64  72 165  81  4  1 162   1 156  1e-32 123.0  309  38
+4 AT1G01010.1 918785|PACid:16057277 33.75  54 160  80  6  6 153  10 155  8e-21  87.8  216  34
+5 AT1G01020.1 470181|PACid:16064328 91.06 224 246  22  0  1 246   1 246 3e-164 454.0 1169 100
+6 AT1G01030.1 470180|PACid:16054974 95.54 343 359  12  2  1 359   1 355  0e+00 698.0 1801 100
+
+
+```
+
 ```{r,eval=FALSE}
 
 # look at the structure of sqlE
@@ -981,16 +993,86 @@ glimpse(sqlE)
 
 ```
 
-```{r,eval=FALSE}
-# select all rows that have an evalue of zero
-filter(sqlE,evalue == 0)
-
-# select the best hit using the evalue criterion
-sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
-
-
+```
+Variables:
+$ V1  (chr) "AT1G01010.1", "AT1G01010.1", "AT1G01010.1", "AT1G01010.1", "AT1G01020.1...
+$ V2  (chr) "333554|PACid:16033839", "909883|PACid:16051052", "311334|PACid:16035114...
+$ V3  (dbl) 73.99, 34.46, 43.64, 33.75, 91.06, 95.54, 91.98, 100.00, 89.51, 64.52, 9...
+$ V4  (int) 347, 122, 72, 54, 224, 343, 1812, 213, 580, 40, 348, 268, 117, 271, 29, ...
+$ V5  (int) 469, 354, 165, 160, 246, 359, 1970, 213, 648, 62, 366, 338, 356, 300, 95...
+$ V6  (int) 80, 162, 81, 80, 22, 12, 85, 0, 58, 22, 14, 68, 232, 22, 66, 91, 47, 8, ...
+$ V7  (int) 8, 12, 4, 6, 0, 2, 10, 0, 5, 0, 2, 1, 3, 2, 0, 3, 0, 3, 0, 0, 5, 5, 1, 6...
+$ V8  (int) 1, 1, 1, 6, 1, 1, 6, 1, 1, 13, 1, 1, 16, 1, 105, 109, 110, 1, 1, 1, 32, ...
+$ V9  (int) 430, 343, 162, 153, 246, 359, 1910, 213, 646, 74, 366, 338, 365, 294, 19...
+$ V10 (int) 1, 1, 1, 10, 1, 1, 2, 1, 1, 1048, 1, 1, 8, 1, 336, 13, 76, 1, 1, 1, 20, ...
+$ V11 (int) 466, 295, 156, 155, 246, 355, 1963, 213, 640, 1109, 362, 336, 362, 299, ...
+$ V12 (dbl) 0e+00, 7e-43, 1e-32, 8e-21, 3e-164, 0e+00, 0e+00, 1e-158, 0e+00, 2e-22, ...
+$ V13 (dbl) 627.0, 152.0, 123.0, 87.8, 454.0, 698.0, 3704.0, 437.0, 1037.0, 98.2, 69...
+$ V14 (int) 1617, 384, 309, 216, 1169, 1801, 9604, 1125, 2681, 243, 1797, 1409, 551,...
+$ V15 (int) 100, 80, 38, 34, 100, 100, 99, 100, 100, 10, 100, 92, 96, 100, 48, 48, 2...
 
 ```
+
+This way you can perfom filtering steps on very large tables.
+
+```{r,eval=FALSE}
+# select all rows that have an evalue of zero
+filter(sqlE,V12 == 0)
+
+```
+
+```
+Source: sqlite 3.8.6 [blast_sql_db.sqlite3]
+From: hit_tbl [14 x 15]
+Filter: V12 == 0 
+
+            V1                    V2    V3   V4   V5  V6 V7 V8   V9 V10  V11 V12  V13  V14 V15
+1  AT1G01010.1 333554|PACid:16033839 73.99  347  469  80  8  1  430   1  466   0  627 1617 100
+2  AT1G01030.1 470180|PACid:16054974 95.54  343  359  12  2  1  359   1  355   0  698 1801 100
+3  AT1G01040.1 333551|PACid:16057793 91.98 1812 1970  85 10  6 1910   2 1963   0 3704 9604  99
+4  AT1G01060.3 470177|PACid:16043374 89.51  580  648  58  5  1  646   1  640   0 1037 2681 100
+5  AT1G01070.1 918864|PACid:16052578 95.08  348  366  14  2  1  366   1  362   0  696 1797 100
+6  AT1G01070.1 919961|PACid:16062329 79.29  268  338  68  1  1  338   1  336   0  547 1409  92
+7  AT1G01090.1 470171|PACid:16052860 96.77  420  434   8  3  1  429   1  433   0  859 2220 100
+8  AT1G01110.2 333544|PACid:16034284 93.56  494  528  34  0  1  528   1  528   0  972 2512 100
+9  AT1G01120.1 918858|PACid:16049140 99.24  525  529   4  0  1  529   1  529   0 1092 2825 100
+10 AT1G01120.1 470398|PACid:16043772 60.92  304  499 184  5 32  526  20  511   0  642 1655  94
+11 AT1G01140.3 470161|PACid:16036015 98.45  446  453   6  1  1  452   1  453   0  918 2372 100
+12 AT1G01180.1 909860|PACid:16056125 92.58  287  310  20  1  1  307   1  310   0  576 1484  64
+13 AT1G01190.1 311315|PACid:16059488 94.18  502  533  30  1  1  533   6  537   0 1036 2679  99
+14 AT1G01220.1 470155|PACid:16047984 96.69 1021 1056  35  0  1 1056   1 1056   0 2106 5456 100
+```
+
+```{r,eval=FALSE}
+
+# select the best hit using the evalue criterion
+sqlE %>% group_by(V1) %>% summarise(best_hit_eval = min(V12))
+
+```
+
+```
+Source: sqlite 3.8.6 [blast_sql_db.sqlite3]
+From: <derived table> [?? x 2]
+
+            V1 best_hit_eval
+1  AT1G01010.1         0e+00
+2  AT1G01020.1        3e-164
+3  AT1G01030.1         0e+00
+4  AT1G01040.1         0e+00
+5  AT1G01050.1        1e-158
+6  AT1G01060.3         0e+00
+7  AT1G01070.1         0e+00
+8  AT1G01080.1        5e-177
+9  AT1G01090.1         0e+00
+10 AT1G01110.2         0e+00
+..         ...           ...
+```
+
+Since the BLAST output does not return a CSV header, the corresponding SQLite table 
+the BLAST output in columns named V1 - V15. In SQLite, renaming the columns can only be done
+by creating a new table which is very time consuming. The dplyr::rename() function doesn't support
+to rename multiple columns and therefore this not so elegent way is implemented in the current version of
+`orthologr`. Future versions will tackle this issue.
 
 ### The set_blast() function
 

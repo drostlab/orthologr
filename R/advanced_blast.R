@@ -425,17 +425,24 @@ if(!write.only){
         
         if(sql_database){
                 
- 
+                
                 blast_sql_db <- dplyr::src_sqlite("blast_sql_db.sqlite3", create = TRUE)
                 
                 connect_db <- DBI::dbConnect(RSQLite::SQLite(), dbname = "blast_sql_db.sqlite3")
                 
+                
                 DBI::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
                                       header = FALSE, sep = "\t", overwrite = TRUE)
                 
+                on.exit({
+                        
+                        DBI::dbDisconnect(connect_db)
+                        
+                })
+                
                 blast_sqlite <- dplyr::tbl(dplyr::src_sqlite("blast_sql_db.sqlite3"),"hit_tbl")
                 
-#                 dplyr::rename(blast_sqlite,noquote(paste(paste0("V",1:length(colNames)),"=",colNames)))
+#               dplyr::rename(blast_sqlite,)
 
                 # return to the global working directory
                 setwd(file.path(currwd))
