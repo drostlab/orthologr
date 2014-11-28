@@ -1070,8 +1070,8 @@ From: <derived table> [?? x 2]
 
 Since the BLAST output does not return a CSV header, the corresponding SQLite table 
 the BLAST output in columns named V1 - V15. In SQLite, renaming the columns can only be done
-by creating a new table which is very time consuming. The dplyr::rename() function doesn't support
-to rename multiple columns and therefore this not so elegent way is implemented in the current version of
+by creating a new table which is very time consuming. The dplyr::rename() function does not support
+to rename multiple columns and therefore this "not so elegent way" is implemented in the current version of
 `orthologr`. Future versions will tackle this issue.
 
 ### The set_blast() function
