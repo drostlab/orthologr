@@ -425,17 +425,18 @@ if(!write.only){
         
         if(sql_database){
                 
+ 
                 blast_sql_db <- dplyr::src_sqlite("blast_sql_db.sqlite3", create = TRUE)
                 
-                connect_db <- RSQLite::dbConnect("SQLite", dbname = "blast_sql_db.sqlite3")
+                connect_db <- DBI::dbConnect(RSQLite::SQLite(), dbname = "blast_sql_db.sqlite3")
                 
-                RSQLite::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
+                DBI::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
                                       header = FALSE, sep = "\t", overwrite = TRUE)
                 
                 blast_sqlite <- dplyr::tbl(dplyr::src_sqlite("blast_sql_db.sqlite3"),"hit_tbl")
                 
-                # dplyr::rename(blast_sqlite,colNames)
-                
+#                 dplyr::rename(blast_sqlite,noquote(paste(paste0("V",1:length(colNames)),"=",colNames)))
+
                 # return to the global working directory
                 setwd(file.path(currwd))
                 
@@ -443,6 +444,9 @@ if(!write.only){
                         warnings("Are you sure you want to clean all folders? The SQLite database
                                  you want to connect with will be deleted as well.")
                         clean_all_folders("_blast_db")
+                        
+                        cat("\n")
+                        warnings("Database has been deleted.")
                 }
                 
                 return(blast_sqlite)
