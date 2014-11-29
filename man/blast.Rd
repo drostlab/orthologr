@@ -40,7 +40,7 @@ used to run BLAST searches.}
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
 
-\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+\item{clean_folders}{a boolean value specifying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{

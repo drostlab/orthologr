@@ -20,7 +20,7 @@
 #' used to run BLAST searches.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
+#' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @details This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
 #' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
@@ -150,7 +150,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                 seqinr::write.fasta(write_AA, names = name,
                                     nbchar = 80,open = "w",
                                     file.out = input)
-         },error = function(){ stop(paste0("File ",input,
+         },error = function(e){ stop(paste0("File ",input,
                                             " could not be written properly to the internal folder environment.",
                                             " Please check the path to ",input,".") ) }
          
@@ -224,7 +224,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                 }
             }
         
-        },error = function(){ stop(paste0("Please check the correct path to ",blast_algorithm,
+        },error = function(e){ stop(paste0("Please check the correct path to ",blast_algorithm,
                                            "... the interface call did not work properly.") ) }
         )
         
@@ -255,7 +255,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                           clean_all_folders("_blast_db")
                   
                   return(hit_table)
-         }, error = function(){ stop(paste0("File ",output, "could not be read correctly.",
+         }, error = function(e){ stop(paste0("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") ) }
         )
