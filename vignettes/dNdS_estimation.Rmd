@@ -43,17 +43,20 @@ It is assumed that when you choose one of these dNdS estimation methods you have
 [KaKs_Calculator](https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator) installed on your machine and it can be executed from the
 default execution `PATH`.
 
-The following pipeline resembles and example dNdS estimation procedure:
+The following pipeline resembles an example dNdS estimation procedure:
 
  1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
+ 
  2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
+ 
  3) Codon Alignment: e.g. pal2nal program
+ 
  4) dNdS estimation: e.g. [Yang, Z. and Nielsen, R. (2000)](http://mbe.oxfordjournals.org/content/17/1/32.short) (YN)
 
 
 __Note:__ it is assumed that when using `dNdS()` all corresponding multiple sequence alignment programs you
 want to use are already installed on your machine and are executable via either
-the default execution PATH or you specifically define the location of the executable file
+the default execution PATH or you specifically define the location of the executable program
 via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`. See the [Sequence Alignments vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
 for details.
 
@@ -112,7 +115,7 @@ returned by `dNdS()` and filters the output by the following criteria:
 
 2) all dS values having an NA value are omitted
 
-3) all dNdS values >= the specified dnds.threshold are omitted
+3) all dNdS values >= the specified `dnds.threshold` are omitted
 
 
 ```{r,eval=FALSE}
@@ -164,7 +167,7 @@ filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
 
 ```
 
-Instead if using a multiple alignment tool for pairwise alignments you can also
+Instead of using a multiple alignment tool for pairwise alignments you can also
 choose a global pairwise alignment of orthologous genes based on the Needleman-Wunsch algorithm.
 For this purpose the argument `aa_aln_type` must be set to `aa_aln_type = "pairwise"` and `aa_aln_tool = "NW"` 
 for Needleman-Wunsch.
@@ -248,7 +251,7 @@ dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'
 
 ## Advanced options
 
-Additional arguments that can be passed to `dNdS()`. This allows you to use more advanced 
+Additional arguments can be passed to `dNdS()`. This allows you to use more advanced 
 options of several interface programs.
 
 To pass additional parameters to the interface programs, you can use the
