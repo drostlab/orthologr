@@ -368,7 +368,7 @@ needs to be stored in `/usr/local/bin/` and in our case also needed to be recomp
 
 library(orthologr)
 
-# perform orthology inference using BLAST reciprocal best hit
+# perform orthology inference using Protein Ortho
 # and fasta sequence files storing protein sequences
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
