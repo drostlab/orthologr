@@ -78,6 +78,18 @@ is.dnds_est_method <- function(method = NULL){
         return(is.element(method, provided))
 }
 
+is.alignment_search_tool <- function(tool = NULL){
+        
+        provided <-  c("ggsearch","ssearch")
+        
+        if(is.null(tool)){
+                print("The followig methods are provided: ")
+                print(provided)
+                return(FALSE)
+        }
+        
+        return(is.element(tool, provided))
+}
 
 
 #         
