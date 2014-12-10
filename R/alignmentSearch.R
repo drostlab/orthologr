@@ -39,8 +39,7 @@
 #' # performing a search between two protein fastas getting the most detailed output
 #' alignmentSearch( query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'                  subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'                  path="/home/sarah/Programs/fasta-36.3.7/bin/", details=TRUE,
-#'                  statistics=TRUE )
+#'                  details=TRUE, statistics=TRUE )
 #'    }
 #'@return a data.table containing query id and subject id as well as a series of score values.
 #'@export 
