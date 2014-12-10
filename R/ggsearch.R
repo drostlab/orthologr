@@ -19,7 +19,7 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @references ggsearch is part of the fasta36 package that can be found here 
 #' http://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
-#' @examples 
+#' @examples \dontrun{
 #' # performing ggsearch on two protein files
 #' ggsearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           library_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'))
@@ -29,6 +29,8 @@
 #'           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           seqtype="cds", parse_output_to = "ggsearch.out")
 #'               
+#' }
+#' @export
 ggsearch <- function(file, library_file, options="", lib_format="fasta",
                      seq_type = "protein",
                      path=NULL, parse_output_to=NULL){

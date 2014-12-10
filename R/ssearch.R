@@ -19,7 +19,7 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @references ssearch is part of the fasta36 package that can be found here 
 #' http://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml
-#' @examples 
+#' @examples \dontrun{
 #' # performing ssearch on two protein files
 #' ssearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           library_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'))
@@ -28,7 +28,9 @@
 #' ssearch( file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           seqtype="cds", parse_output_to = "ssearch.out")
-#'               
+#'     
+#'}
+#'@export          
 ssearch <- function(file, library_file, options="", lib_format="fasta",
                      seq_type = "protein",
                      path=NULL, parse_output_to=NULL){

@@ -1,7 +1,8 @@
 #' @title Function to perform a global alignment search for orthologous genes.
 #' @description This function performs a protein alignment for each sequences
-#' from the query_file to each of sequence of the subject file and returns
-#' a hit table containing the id of the best global alignment hit.
+#' from the query_file to each of sequence of the subject_file and returns
+#' a data.table containing the ids of the best global alignment pair and the corresponding
+#' score parameter.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
 #' @param seq_type a character string specifying the sequence type stored in the input file.
@@ -11,11 +12,12 @@
 #' @param tool a character string specifying the global alignment tool that shall be used, e.g. "ggsearch","ssearch".
 #' @param path a character string specifying the path to the tool executable (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for.
-#' @param print_statistics a boolean value specifying whether the statistics should be printed and appear in the hit table.
-#' @param detailed_output a boolean value specifying whether a detailed hit table shall be returned or only the evalue of the corresponding
+#' @param statistics a boolean value specifying whether the statistics should be printed and appear in the hit table.
+#' @param details a boolean value specifying whether a detailed hit table shall be returned or only the evalue of the corresponding
 #' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @param quiet a boolean value suppressing any output if true
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @examples \dontrun{
 #' 
@@ -34,11 +36,18 @@
 #'                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'), 
 #'                  tool="ssearch",comp_cores=1, seq_type = "cds")
 #'  
+#' # performing a search between two protein fastas getting the most detailed output
+#' alignmentSearch( query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'                  subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'                  path="/home/sarah/Programs/fasta-36.3.7/bin/", details=TRUE,
+#'                  statistics=TRUE )
 #'    }
+#'@return a data.table containing query id and subject id as well as a series of score values.
+#'@export 
 alignmentSearch <- function(query_file, subject_file, seq_type = "prot",
                             format = "fasta", tool = "ggsearch",
-                            path = NULL, comp_cores = 1, 
-                            print_statistics = FALSE, clean_folders = FALSE){      
+                            path = NULL, comp_cores = 1, details=FALSE,
+                            statistics = FALSE, clean_folders = FALSE, quiet=TRUE){      
         
         if(!is.alignment_search_tool(tool)){
                 stop("Please choose a global alignment tool that is supported by this function.")
@@ -133,6 +142,7 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "prot",
         # parse output file
         con  <- file("_global_orthologs/search.out", open = "r")
         collect <- list()
+        new_names <- c("query_id","subject_id","e_value")
         current.line <- 1
         while(length(line <- readLines(con, n = 1, warn = FALSE)) > 0) {
                 
@@ -145,21 +155,54 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "prot",
                         end=FALSE
                         while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0 && !end){
                         
-                                if(print_statistics && grepl("^Statistics:",line)){
-                                        print(query_id)
-                                        for(i in c(1:5)){
-                                                print(line)
-                                                line <- readLines(con, n = 1, warn = FALSE)
-                                        }                                
+                                if(statistics && grepl("^Statistics:",line)){
+                                        splits <- strsplit(line, " |=")
+                                        mu <- splits[[1]][9]
+                                        var <- splits[[1]][12]
+                                        if(!quiet){
+                                                print(query_id)
+                                                for(i in c(1:5)){
+                                                        print(line)
+                                                        line <- readLines(con, n = 1, warn = FALSE)
+                                                }                                
+                                        }
                                 }
                                 
-                                if(grepl("The best scores are:",line)){
+                                if(grepl(">>",line)){
+#                                 if(grepl("The best scores are:",line)){
+#                                         line <- readLines(con, n = 1, warn = FALSE)
+#                                         splits <- strsplit(line, " ")
+#                                         subject_id <- splits[[1]][1]
+#                                         e_val <- splits[[1]][length(splits[[1]])]
+                                        splits <- strsplit(line,">>| ")
+                                        subject_id <- splits[[1]][2]
                                         line <- readLines(con, n = 1, warn = FALSE)
-                                        splits <- strsplit(line, " ")
-                                        subject_id <- splits[[1]][1]
-                                        e_val <- splits[[1]][length(splits[[1]])]
-                       
-                                        collect[[current.line]] <- c(query_id,subject_id, e_val)
+                                        splits <- strsplit(line,":")
+                                        z_score <- strsplit(splits[[1]][3],"( )+")[[1]][2]
+                                        bit_score <- strsplit(splits[[1]][4],"( )+")[[1]][2]
+                                        e_val <- strsplit(splits[[1]][5],"( )+")[[1]][2]
+                                        
+                                        if(details){
+                                                if(statistics){
+                                                        collect[[current.line]] <- c(query_id,subject_id, e_val, bit_score, z_score, mu, var)
+                                                        new_names <- c("query_id","subject_id","e_value","bit_score","Z_Score","mu","var")
+                                                }
+                                                else{
+                                                        collect[[current.line]] <- c(query_id,subject_id, e_val, bit_score, z_score)
+                                                        new_names <- c("query_id","subject_id","e_value","bit_score","Z_Score")
+                                                }
+                                        }
+                                        else{
+                                                if(statistics){
+                                                        collect[[current.line]] <- c(query_id,subject_id, e_val, mu, var)
+                                                        new_names <- c("query_id","subject_id","e_value","mu","var")
+                                                }
+                                                else{
+                                                        collect[[current.line]] <- c(query_id,subject_id, e_val)
+                                                        new_names <- c("query_id","subject_id","e_value")
+                                                }
+                                                
+                                        }
                                         
                                         current.line <- current.line + 1
                                         query_id <- NULL
@@ -172,7 +215,8 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "prot",
         close(con)
         
         hit.table <- data.table(do.call(rbind,collect))
-        setnames(hit.table, old=c("V1","V2", "V3"), new = c("query_id","subject_id","e_value"))
+        old_names <- names(hit.table)
+        setnames(hit.table, old=old_names, new = new_names )
         
         if(clean_folders){
                 clean_all_folders("_global_orthologs")
