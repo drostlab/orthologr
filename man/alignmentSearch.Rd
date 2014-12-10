@@ -5,7 +5,8 @@
 \usage{
 alignmentSearch(query_file, subject_file, seq_type = "prot",
   format = "fasta", tool = "ggsearch", path = NULL, comp_cores = 1,
-  print_statistics = FALSE, clean_folders = FALSE)
+  details = FALSE, statistics = FALSE, clean_folders = FALSE,
+  quiet = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -24,18 +25,24 @@ Default is \code{seq_type} = "protein".}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for.}
 
-\item{print_statistics}{a boolean value specifying whether the statistics should be printed and appear in the hit table.}
+\item{details}{a boolean value specifying whether a detailed hit table shall be returned or only the evalue of the corresponding
+ortholog pairs.}
+
+\item{statistics}{a boolean value specifying whether the statistics should be printed and appear in the hit table.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 
-\item{detailed_output}{a boolean value specifying whether a detailed hit table shall be returned or only the evalue of the corresponding
-ortholog pairs.}
+\item{quiet}{a boolean value suppressing any output if true}
+}
+\value{
+a data.table containing query id and subject id as well as a series of score values.
 }
 \description{
 This function performs a protein alignment for each sequences
-from the query_file to each of sequence of the subject file and returns
-a hit table containing the id of the best global alignment hit.
+from the query_file to each of sequence of the subject_file and returns
+a data.table containing the ids of the best global alignment pair and the corresponding
+score parameter.
 }
 \examples{
 \dontrun{
@@ -55,6 +62,11 @@ alignmentSearch( query_file = system.file('seqs/ortho_thal_cds.fasta', package =
                  subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
                  tool="ssearch",comp_cores=1, seq_type = "cds")
 
+# performing a search between two protein fastas getting the most detailed output
+alignmentSearch( query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+                 path="/home/sarah/Programs/fasta-36.3.7/bin/", details=TRUE,
+                 statistics=TRUE )
    }
 }
 \author{

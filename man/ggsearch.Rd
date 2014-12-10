@@ -36,6 +36,7 @@ penalties are used. GLSEARCH is most appropriate for global searches with a
 domain, which require local alignments within proteins.
 }
 \examples{
+\dontrun{
 # performing ggsearch on two protein files
 ggsearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           library_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'))
@@ -44,6 +45,8 @@ ggsearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 ggsearch( file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
           seqtype="cds", parse_output_to = "ggsearch.out")
+
+}
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost

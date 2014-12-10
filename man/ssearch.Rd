@@ -36,6 +36,7 @@ algorithm. ssearch36 uses SSE2 acceleration, and is only 2 - 5X slower than
 fasta36
 }
 \examples{
+\dontrun{
 # performing ssearch on two protein files
 ssearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           library_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'))
@@ -44,6 +45,8 @@ ssearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 ssearch( file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
           seqtype="cds", parse_output_to = "ssearch.out")
+
+}
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
