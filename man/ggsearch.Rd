@@ -29,7 +29,8 @@ of protein sequences or alignments between a protein sequence against a
 protein database based on the GGSeach program implemented in FASTA framework.
 }
 \details{
-This function takes two fasta files representing query and subject (library) sequences.
+This function takes two fasta files representing query and subject (library) sequences and computes
+Global Pairwise Alignments.
 
 As a result, this function returns the alignment score and additional parameters
 computed by GGSearch. GGSearch implements a Needleman-Wunsch like alignment, except that affine gap
@@ -56,5 +57,9 @@ Sarah Scharfenberg and Hajk-Georg Drost
 GGSearch is part of the fasta36 package that can be downloaded here
 
 \url{http://fasta.bioch.virginia.edu/fasta_www2/fasta_down.shtml}
+
+Pearson WR and Lipman DJ. 1988. Improved tools for biological sequence comparison. PNAS 85: 2444-2448.
+
+ \url{http://www.pnas.org/content/85/8/2444.long}
 }
 
