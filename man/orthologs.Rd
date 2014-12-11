@@ -55,6 +55,10 @@ in the second column and the amino acid sequences in the third column.
 This function takes nucleotide or protein sequences for a set of organisms
 and performs orthology inference to detect orthologous genes within the given organisms
 based on selected orthology inference programs.
+}
+\details{
+This function takes sequence files of a query organism and a subject organism and performs orthology inference
+using a defined orthology inference method to dectect orthologous genes.
 
 The following interfaces are implemented in the \code{orthologs} function:
 
@@ -62,19 +66,22 @@ BLAST based methods:
 
 \itemize{
   \item BLAST reciprocal best hit (RBH)
-  \item ProteinOrtho
-  \item OrthoMCL
-  \item InParanoid
+  \item DELTA-BLAST reciprocal best hit (DELTA)
+  \item ProteinOrtho (PO)
+  \item OrthoMCL (OrthoMCL)
 }
+
+Alignment based methods:
+
+\itemize{
+  \item Best Global Alignment (GGSEARCH)
+  \item Best Local Alignment (SSEARCH)
 }
-\details{
-This function takes sequence files of a query organism and a subject organism and performs orthology inference
-using a defined orthology inference method to dectect orthologous genes.
 }
 \examples{
 \dontrun{
 
-### Reciprocal Best Hit
+### BLAST Reciprocal Best Hit
 
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
@@ -86,6 +93,22 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)
+
+
+
+### DELTA-BLAST Reciprocal Best Hit
+
+# perform orthology inference using DELTA-BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "DELTA")
+
+# multicore version
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "DELTA", comp_cores = 2)
+
 
 
 
@@ -118,15 +141,27 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 
 
-### Orthology Inference using InParanoid
+### Orthology Inference using GGSearch
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "IP")
+          seq_type = "protein", ortho_detection = "GGSEARCH")
 
 # multicore version
 orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "IP", comp_cores = 2)
+          seq_type = "protein", ortho_detection = "GGSEARCH", comp_cores = 2)
+
+
+
+### Orthology Inference using SSearch
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "SSEARCH")
+
+# multicore version
+orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type = "protein", ortho_detection = "SSEARCH", comp_cores = 2)
 
 }
 }
@@ -139,6 +174,8 @@ BLAST: \url{http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml}
 ProteinOrtho: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/}
 
 OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
+
+GGSearch and SSearch: \url{http://fasta.bioch.virginia.edu/fasta_www2/fasta_intro.shtml}
 }
 \seealso{
 \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}

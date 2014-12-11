@@ -2,19 +2,6 @@
 #' @description This function takes nucleotide or protein sequences for a set of organisms 
 #' and performs orthology inference to detect orthologous genes within the given organisms
 #' based on selected orthology inference programs.
-#' 
-#' The following interfaces are implemented in the \code{orthologs} function:
-#'  
-#' BLAST based methods:
-#' 
-#' \itemize{
-#'   \item BLAST reciprocal best hit (RBH)
-#'   \item ProteinOrtho 
-#'   \item OrthoMCL
-#'   \item InParanoid
-#' }
-#' 
-#' 
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
 #' Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).
@@ -39,11 +26,27 @@
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{TRUE}.
-#' @details This function takes sequence files of a query organism and a subject organism and performs orthology inference
+#' @details 
+#' This function takes sequence files of a query organism and a subject organism and performs orthology inference
 #' using a defined orthology inference method to dectect orthologous genes.
 #' 
+#' The following interfaces are implemented in the \code{orthologs} function:
+#'  
+#' BLAST based methods:
 #' 
+#' \itemize{
+#'   \item BLAST reciprocal best hit (RBH)
+#'   \item DELTA-BLAST reciprocal best hit (DELTA)
+#'   \item ProteinOrtho (PO)
+#'   \item OrthoMCL (OrthoMCL)
+#' }
 #' 
+#' Alignment based methods:
+#' 
+#' \itemize{
+#'   \item Best Global Alignment (GGSEARCH)
+#'   \item Best Local Alignment (SSEARCH)
+#' }
 #' 
 #' @author Hajk-Georg Drost
 #' @return A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
@@ -56,10 +59,10 @@
 #' 
 #' OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
 #' 
-#' 
+#' GGSearch and SSearch: \url{http://fasta.bioch.virginia.edu/fasta_www2/fasta_intro.shtml}
 #' @examples \dontrun{
 #' 
-#' ### Reciprocal Best Hit
+#' ### BLAST Reciprocal Best Hit
 #' 
 #' # perform orthology inference using BLAST reciprocal best hit
 #' # and fasta sequence files storing protein sequences
@@ -71,6 +74,22 @@
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)          
+#'           
+#'           
+#'           
+#' ### DELTA-BLAST Reciprocal Best Hit
+#' 
+#' # perform orthology inference using DELTA-BLAST reciprocal best hit
+#' # and fasta sequence files storing protein sequences
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "DELTA")
+#'           
+#' # multicore version          
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "DELTA", comp_cores = 2)          
+#'                      
 #'           
 #' 
 #' 
@@ -103,27 +122,39 @@
 #'
 #' 
 #' 
-#' ### Orthology Inference using InParanoid
+#' ### Orthology Inference using GGSearch
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type = "protein", ortho_detection = "IP")
+#'           seq_type = "protein", ortho_detection = "GGSEARCH")
 #'           
 #' # multicore version          
 #' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type = "protein", ortho_detection = "IP", comp_cores = 2)  
+#'           seq_type = "protein", ortho_detection = "GGSEARCH", comp_cores = 2)  
+#' 
+#'           
+#'                               
+#' ### Orthology Inference using SSearch
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "SSEARCH")
+#'           
+#' # multicore version          
+#' orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type = "protein", ortho_detection = "SSEARCH", comp_cores = 2)  
 #'
 #' }
 #' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}
 #' @export
-#' 
+ 
 orthologs <- function(query_file,subject_files, seq_type = "protein",
                       outgroup_file = NULL, eval = "1E-5", format = "fasta",
                       ortho_detection = "RBH", path = NULL, add_params = NULL,
                       detailed_output = FALSE, comp_cores = 1,
                       quiet = FALSE, clean_folders = TRUE){
         
-        if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL")))
+        if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","GGSEARCH","SSEARCH","DELTA")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         
@@ -131,10 +162,18 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        blast_rec(query_file = query_file, subject_file = subject_files, 
-                                  path = path, comp_cores = comp_cores, eval = eval,
-                                  blast_params = add_params, seq_type = seq_type, 
-                                  detailed_output = detailed_output, format = format))
+                        
+                        blast_rec( query_file      = query_file, 
+                                   subject_file    = subject_files, 
+                                   path            = path, 
+                                   comp_cores      = comp_cores, 
+                                   eval            = eval,
+                                   blast_params    = add_params, 
+                                   seq_type        = seq_type, 
+                                   detailed_output = detailed_output, 
+                                   format          = format )
+                        
+                        )
                 
                 
                 if(clean_folders)
@@ -143,14 +182,45 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
         }
         
         
+        if(ortho_detection == "DELTA"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        
+                        blast_rec( query_file      = query_file, 
+                                   subject_file    = subject_files,
+                                   blast_algorithm = "deltablast",
+                                   path            = path, 
+                                   comp_cores      = comp_cores, 
+                                   eval            = eval,
+                                   blast_params    = add_params, 
+                                   seq_type        = seq_type, 
+                                   detailed_output = detailed_output, 
+                                   format          = format )
+                        
+                )
+                
+                
+                if(clean_folders)
+                        clean_all_folders("_blast_db")
+                
+        }
+        
         if(ortho_detection == "PO"){
                 
                 
                 ortho_tbl <- data.table::copy(
-                        ProteinOrtho(query_file = query_file, subject_files = subject_files, 
-                                     po_path = path, eval = eval, comp_cores = comp_cores,
-                                     po_params = add_params, seq_type = seq_type, 
-                                     format = format))
+                        
+                        ProteinOrtho( query_file    = query_file,
+                                      subject_files = subject_files, 
+                                      po_path       = path, 
+                                      eval          = eval, 
+                                      comp_cores    = comp_cores,
+                                      po_params     = add_params, 
+                                      seq_type      = seq_type, 
+                                      format        = format )
+                        
+                        )
                 
                
                 if(clean_folders)
@@ -163,10 +233,17 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
                 
                 ortho_tbl <- data.table::copy(
-                        OrthoMCL(query_file = query_file, subject_files = subject_files, 
-                                 orthomcl_path = path, orthomcl_params = add_params,
-                                 eval = eval, comp_cores = comp_cores,
-                                 seq_type = seq_type, format = format))
+                        
+                        OrthoMCL( query_file      = query_file, 
+                                  subject_files   = subject_files, 
+                                  orthomcl_path   = path, 
+                                  orthomcl_params = add_params,
+                                  eval            = eval, 
+                                  comp_cores      = comp_cores,
+                                  seq_type        = seq_type, 
+                                  format          = format )
+                        
+                        )
                 
                 
                 if(clean_folders)
@@ -174,6 +251,47 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 
         }
         
+        
+        if(ortho_detection == "GGSEARCH"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        
+                        alignmentSearch( query_file      = query_file, 
+                                         subject_files   = subject_files,
+                                         seq_type        = seq_type,
+                                         format          = format,
+                                         tool            = "ggsearch",
+                                         path            = path, 
+                                         comp_cores      = comp_cores,
+                                         details         = detailed_output,
+                                         clean_folders   = clean_folders,
+                                         eval            = eval )
+                        
+                )
+                
+        }
+        
+        
+        if(ortho_detection == "SSEARCH"){
+                
+                
+                ortho_tbl <- data.table::copy(
+                        
+                        alignmentSearch( query_file      = query_file, 
+                                         subject_files   = subject_files,
+                                         seq_type        = seq_type,
+                                         format          = format,
+                                         tool            = "ssearch",
+                                         path            = path, 
+                                         comp_cores      = comp_cores,
+                                         details         = detailed_output,
+                                         clean_folders   = clean_folders,
+                                         eval            = eval )
+                        
+                )
+                
+        }
         
 #         if(ortho_detection == "IP"){
 #                 
@@ -190,7 +308,6 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
 #         }
 #         
 
-        
         return(ortho_tbl)
         
 }

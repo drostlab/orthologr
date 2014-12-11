@@ -47,16 +47,18 @@
 #'@return a data.table containing query id and subject id as well as a series of score values.
 #'@export 
 
-alignmentSearch <- function(query_file, subject_file, seq_type = "prot",
+alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                             format = "fasta", tool = "ggsearch",
                             path = NULL, comp_cores = 1, details = FALSE,
                             statistics = FALSE, clean_folders = FALSE, quiet = TRUE){      
         
         if(!is.alignment_search_tool(tool)){
                 
-                stop("Please choose a alignment tool that is supported by this function: 'ggsearch' or 'ssearch'".)
+                stop("Please choose a alignment tool that is supported by this function: 'ggsearch' or 'ssearch'.")
         }
         
+        if(!is.element(seq_type,c("cds","protein")))
+                stop("Please specify a seq_type that is supported by this function: 'cds' or 'protein'.")
         
         f_sep <- .Platform$file.sep
         options <- ""
