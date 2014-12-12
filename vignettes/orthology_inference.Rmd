@@ -32,9 +32,17 @@ The following interfaces are (yet) implemented in the `orthologs()` function:
 
 - BLAST reciprocal best hit (RBH)
 
-- ProteinOrtho
+- DELTA-BLAST reciprocal best hit (DELTA)
 
-- OrthoMCL
+- ProteinOrtho (PO)
+
+- OrthoMCL (OrthoMCL)
+
+### Alignment based methods:
+
+- GGSearch (GGSEARCH)
+
+- SSearch (SSEARCH) 
 
 
 Using a simple example stored in the package environment of `orthologr` you
@@ -51,9 +59,11 @@ library(orthologr)
 
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          clean_folders   = TRUE)
 
 
 ```
@@ -107,10 +117,12 @@ you can use the `path` argument as follows:
 library(orthologr)
 
 # using an external execution path
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", 
-          path = "here/path/to/blastp", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          path            = "here/path/to/blastp", 
+          clean_folders   = TRUE)
 
 
 ```
@@ -125,10 +137,12 @@ argument that will allow you to run all analyses in parallel (to speed up comput
 library(orthologr)
 
 # running orthology inference in parallel using 2 cores
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", 
-          comp_cores = 2, clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          comp_cores      = 2, 
+          clean_folders   = TRUE)
 
 
 ```
@@ -197,9 +211,11 @@ library(orthologr)
 
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          clean_folders   = TRUE)
 
 
 ```
@@ -242,9 +258,11 @@ library(dplyr)
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
 RBH <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH",
-          detailed_output = TRUE, clean_folders = TRUE)
+          subject_files     = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type          = "protein", 
+          ortho_detection   = "RBH",
+          detailed_output   = TRUE, 
+          clean_folders     = TRUE)
 
 
 glimpse(RBH)
@@ -274,6 +292,122 @@ inside the current working directory of your R session storing the corresponding
 
 A detailed overview of further analyses that can be done with the corresponding BLAST output
 can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
+
+
+### DELTA-BLAST best reciprocal hit
+
+[Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
+ 
+More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the corresponding `cdd_deltablast.* files` need to be stored
+in a folder named `_blast_db` that is accessible from your working directory with `setwd("_blast_db")`. Otherwise the DELTA-BLAST option will not work properly.
+
+The DELTA-BLAST best reciprocal hit is a bi-directional DELTA-BLAST best hit search of a `query organism A` 
+against a `subject organism B` based on the `e-value`.
+
+The Algorithm for DELTA-BLAST best reciprocal hit runs as follows:
+
+1) `bh_A <- advanced_blast(A,B)`
+
+2) `bh_B <- advanced_blast(B,A)`
+
+3) `join(bh_A,bh_B)` by tupel `(query_id, subject_id)`
+
+In other words, only in case the tuple `(query_id, subject_id)` is returned as best hit
+based on the `e-value` in both DELTA-BLAST directions, the corresponding tupel `(query_id, subject_id)`
+is retained as orthologous gene pair.
+
+As demonstrated before a simple call of `orthologs()` using `ortho_detection = "DELTA"`
+can be performed as follows:
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using DELTA-BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "DELTA", 
+          clean_folders   = TRUE)
+
+
+```
+
+
+```
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328  3e-88
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-128
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  2e-68
+8  AT1G01080.1 909871|PACid:16053217  4e-77
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015 9e-179
+13 AT1G01150.1 918855|PACid:16037307 3e-120
+14 AT1G01160.1 918854|PACid:16044153  4e-45
+15 AT1G01170.2 311317|PACid:16052302  5e-54
+16 AT1G01180.1 909860|PACid:16056125 8e-156
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 2e-114
+19 AT1G01210.1 311313|PACid:16057125  2e-40
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+```
+
+When you need more parameters returned by `DELTA`, you can specify the `detailed_output = TRUE`
+argument to obtain all DELTA-BLAST parameters.
+
+```{r,eval=FALSE}
+
+library(orthologr)
+library(dplyr)
+
+# perform orthology inference using DELTA-BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+DELTA <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files     = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type          = "protein", 
+          ortho_detection   = "DELTA",
+          detailed_output   = TRUE, 
+          clean_folders     = TRUE)
+
+
+glimpse(DELTA)
+
+```
+
+```
+Variables:
+$ query_id                (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1", "...
+$ subject_id              (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|PAC...
+$ perc_identity           (dbl) 73.77, 91.06, 95.26, 91.57, 100.00, 89.51, 93.44, 78.60, 96.7...
+$ num_ident_matches       (dbl) 346, 224, 342, 1803, 213, 580, 342, 235, 420, 494, 525, 446, ...
+$ alig_length             (dbl) 469, 246, 359, 1969, 213, 648, 366, 299, 434, 528, 529, 453, ...
+$ mismatches              (dbl) 81, 22, 13, 95, 0, 58, 20, 59, 8, 34, 4, 6, 71, 32, 0, 20, 31...
+$ gap_openings            (dbl) 9, 0, 2, 8, 0, 5, 2, 1, 3, 0, 0, 1, 3, 1, 1, 1, 1, 0, 0, 0
+$ q_start                 (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1, 1, 1
+$ q_end                   (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 529, 452, ...
+$ s_start                 (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1, 1, 1
+$ s_end                   (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 529, 453, ...
+$ evalue                  (dbl) 0e+00, 3e-88, 0e+00, 0e+00, 2e-128, 0e+00, 2e-68, 4e-77, 0e+0...
+$ bit_score               (dbl) 637, 257, 502, 2362, 357, 1003, 214, 232, 658, 763, 747, 504,...
+$ score_raw               (dbl) 1643, 657, 1294, 6123, 917, 2592, 544, 592, 1698, 1971, 1928,...
+$ query_coverage_per_subj (dbl) 100, 100, 100, 99, 100, 100, 100, 100, 100, 100, 100, 100, 83...
+```
+
+In case you would like to store the corresponding `hit tables` returned by DELTA-BLAST for
+subsequent analyses, you can specify the `clean_folders = FALSE` argument.
+When `clean_folders` is set to `FALSE`, a folder named `_blast_db` will be created 
+inside the current working directory of your R session storing the corresponding DELTA-BLAST output.
+
+A detailed overview of further analyses that can be done with the corresponding DELTA-BLAST output
+can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
+
 
 ### ProteinOrtho
 
@@ -370,9 +504,11 @@ library(orthologr)
 
 # perform orthology inference using ProteinOrtho
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "PO", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "PO", 
+          clean_folders   = TRUE)
 
 
 ```
@@ -411,10 +547,12 @@ library(orthologr)
 
 # perform orthology inference using ProteinOrtho
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", comp_cores = 2,
-          ortho_detection = "PO", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          comp_cores      = 2,
+          ortho_detection = "PO", 
+          clean_folders   = TRUE)
 
 
 ```
@@ -433,7 +571,7 @@ subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'ortho
 
 ProteinOrtho(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
           subject_files = subject_organisms,
-          seq_type = "protein")
+          seq_type      = "protein")
 
 
 ```
@@ -641,9 +779,11 @@ library(orthologr)
 # it is also possible to run ProteinOrtho using the synteny option
 # make sure you can provide a *.gff file
 # see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details
-ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+ProteinOrtho(query_file    = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
              subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-             seq_type = "protein",format = "fasta",po_params = "-synteny")
+             seq_type      = "protein",
+             format        = "fasta",
+             po_params     = "-synteny")
 
 ```
 
@@ -657,9 +797,11 @@ library(orthologr)
 
 # perform orthology inference using OrthoMCL
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "OrthoMCL", clean_folders = TRUE)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "OrthoMCL", 
+          clean_folders   = TRUE)
 
 
 ```
