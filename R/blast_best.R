@@ -132,8 +132,9 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
                         # return a data.table storing only the best hits from the resulting 
                        # BLAST search
                        return( besthit_tbl )
-                }, error = function(e) {stop("The BLAST output couldn't be read properly, maybe a problem occured when 
-                                       selecting best hits from the resulting BLAST hit table.")} 
+                       
+                }, error = function(e) { stop("The BLAST output couldn't be read properly, maybe a problem occured when 
+                                       selecting best hits from the resulting BLAST hit table.") } 
                 )
 
         } else {

@@ -259,13 +259,13 @@ advanced_blast <- function(query_file, subject_file,
         
         tryCatch({
                 
-                seqinr::write.fasta( x        = write_AA, 
-                                     names    = name,
-                                     nbchar   = 80,
-                                     open     = "w",
-                                     file.out = input )
+                seqinr::write.fasta( sequences = write_AA, 
+                                     names     = name,
+                                     nbchar    = 80,
+                                     open      = "w",
+                                     file.out  = input )
         
-        }, error = function(e){ stop("File ",input," could not be written properly to the internal folder environment.\n",
+        }, error = function(e){ stop("File ",input," could not be written properly to the internal folder environment.","\n",
                                    "Please check: ",query_file, " and ",subject_file,".")}
         )
 
@@ -298,7 +298,7 @@ advanced_blast <- function(query_file, subject_file,
                 }
                 
                 }
-                }, error = function(){ stop(paste0("taxdb could not be included to the BLAST search. \n",
+                }, error = function(e){ stop(paste0("taxdb could not be included to the BLAST search. \n",
                                                    "Please check the validity of the path: ",db_path," .\n",
                                                    "Additionally, check the validity of: ",database,", ",input,
                                                    ", ",output,", and blast_params: ",blast_params," ."))}
@@ -317,7 +317,7 @@ advanced_blast <- function(query_file, subject_file,
                 
         }
 
-        }, error = function(e){stop("The advanced BLAST search did not work properly.\n",
+        }, error = function(e){stop("The advanced BLAST search did not work properly.","\n",
                                   "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
         )
 
@@ -376,7 +376,7 @@ advanced_blast <- function(query_file, subject_file,
                 
         }
         
-        }, error = function(e){stop("The advanced BLAST search did not work properly.\n",
+        }, error = function(e){stop("The advanced BLAST search did not work properly.","\n",
                                   "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
        )
        }
