@@ -1,22 +1,26 @@
-#' @title Advanced interface function to BLAST+
+#' @title Perform an advanced BLAST+ search
 #' @description This function performs a BLAST+ search of a given set of sequences and a given set of parameters against a BLAST database.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the path to the sequence file of interest (subject organism).
-#' In case a NCBI database is used, it is possible to specify \code{subject_file} = "nr", "plaza", "cdd_delta". Other databases
+#' In case a NCBI database is used, it is possible to specify \code{subject_file} = \code{"nr"}, \code{"plaza"}, \code{"cdd_delta"}. Other databases
 #' will be added in future versions of \pkg{orthologr}. When specifying \code{subject_file} = "nr", "plaza", ...
-#' make sure the corresponding database ("nr", "plaza","cdd_delta" ...) is stored in the blast working directory "blast_db".
+#' make sure the corresponding database ("nr", "plaza","cdd_delta" ...) is stored in the blast working directory \code{"_blast_db"}.
 #' @param seq_type a character string specifying the sequence type stored in the input file.
-#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-#' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk".
-#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn","deltablast",... .
+#' Options are are: \code{seq_type} = \code{"cds"}, \code{seq_type} = \code{"protein"}, or \code{seq_type} = \code{"dna"}.
+#' In case of \code{seq_type} = \code{"cds"}, sequence are translated to protein sequences,
+#' in case of \code{seq_type} = \code{"dna"}, cds prediction is performed on the corresponding sequences which subsequently are
+#' translated to protein sequences. Default is \code{seq_type} = \code{"cds"}.
+#' @param format a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}, \code{format} = \code{"gbk"}.
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, 
+#' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"},
+#' \code{blast_algorithm} = \code{"deltablast"}.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
 #' @param makedb_type a character string specifying the sequence type stored in the BLAST database
-#' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
-#' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. Default is \code{FALSE}.
+#' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = \code{"protein"}.
+#' @param taxonomy a logical value specifying whether the subject taxonomy shall be returned based on NCBI Taxonomy queries. 
+#' Default is \code{taxonomy} = \code{FALSE}.
 #' @param db_path a character string specidying the path to the local BLAST database.
 #' @param sql_database a logical value specifying whether an SQL database shall be created to store the BLAST output.
 #' This is only useful when the amount of data does not fit in-memory anymore.
@@ -189,9 +193,11 @@ advanced_blast <- function(query_file, subject_file,
         if(is.element(subject_file,c("nr","plaza","cdd_delta"))){
                 
                 use_ncbi_database <- TRUE
+                
         } else {
                 
                 use_ncbi_database <- FALSE
+                
         }
         
         # due to the discussion of no visible binding for global variable for
@@ -204,13 +210,18 @@ advanced_blast <- function(query_file, subject_file,
         
         # initialize the BLAST search
         
-        query.dt <- set_blast(file = query_file, format = format, 
-                              seq_type = seq_type)[[1]]
+        query.dt <- set_blast( file     = query_file, 
+                               format   = format, 
+                               seq_type = seq_type )[[1]]
+        
         if(!use_ncbi_database){
                 
                 # make a BLASTable databse of the subject
-                database <- set_blast(file = subject_file, format = format, seq_type = seq_type, 
-                                      makedb = TRUE, makedb_type = makedb_type)[[2]]
+                database <- set_blast( file        = subject_file, 
+                                       format      = format, 
+                                       seq_type    = seq_type, 
+                                       makedb      = TRUE, 
+                                       makedb_type = makedb_type )[[2]]
         }
         
         if(use_ncbi_database){
@@ -246,23 +257,26 @@ advanced_blast <- function(query_file, subject_file,
         write_AA <- as.list(query.dt[ ,aa])
         name <- query.dt[ , geneids]      
         
-        tryCatch(
-{
-        seqinr::write.fasta(write_AA, names = name,
-                            nbchar = 80,open = "w",
-                            file.out = input)
+        tryCatch({
+                
+                seqinr::write.fasta( x        = write_AA, 
+                                     names    = name,
+                                     nbchar   = 80,
+                                     open     = "w",
+                                     file.out = input )
         
-}, error = function(){ stop(paste0("File ",input," could not be written properly to the internal folder environment.\n",
-                                   "Please check: ",query_file, " and ",subject_file,"."))}
+        }, error = function(e){ stop("File ",input," could not be written properly to the internal folder environment.\n",
+                                   "Please check: ",query_file, " and ",subject_file,".")}
         )
 
-if(is.null(path)){
+        if(is.null(path)){
         
         # here: http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
         # in column -outfmt additional output columns can be selected: ' 6 qseqid sseqid staxids sskingdoms' .. or ' 6 std'
         # which is the default value and the same as: ' 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore'
         tryCatch(
-{
+                {
+                        
         if(taxonomy == TRUE){
                 
                 if(!is.null(db_path)){
@@ -290,8 +304,9 @@ if(is.null(path)){
                                                    ", ",output,", and blast_params: ",blast_params," ."))}
         )
 
-tryCatch(
-{      
+        tryCatch(
+                {
+                        
         if(taxonomy == FALSE){
                 
                 system( paste0(blast_algorithm," -db ",database," -query ",input,
@@ -301,14 +316,16 @@ tryCatch(
                 )
                 
         }
-}, error = function(){stop(paste0("The advanced BLAST search did not work properly.\n",
-                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
-)
 
-} else {
+        }, error = function(e){stop("The advanced BLAST search did not work properly.\n",
+                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
+        )
+
+       } else {
         
         tryCatch(
-{
+                {
+                        
         if(taxonomy == TRUE){
                 
                 if(!is.null(db_path)){     
@@ -337,14 +354,16 @@ tryCatch(
                 }
                 
                 }
-        }, error = function(){stop(paste0("taxdb could not be included to the BLAST search. \n",
+        
+        }, error = function(e){stop("taxdb could not be included to the BLAST search. \n",
                                           "Please check the validity of the path: ",db_path," .\n",
                                           "Additionally, check the validity of: ",database,", ",input,",
-                                          ",output,", and blast_params: ",blast_params," ."))}
+                                          ",output,", and blast_params: ",blast_params," .")}
         )
 
-tryCatch(
-{
+        tryCatch(
+                {
+                        
         if(taxonomy == FALSE){
                 
                 system(
@@ -356,13 +375,14 @@ tryCatch(
                         )
                 
         }
-}, error = function(){stop(paste0("The advanced BLAST search did not work properly.\n",
-                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," ."))}
-)
-}
+        
+        }, error = function(e){stop("The advanced BLAST search did not work properly.\n",
+                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
+       )
+       }
 
 
-if(!write.only){
+       if(!write.only){
         
         # default parameters that are not returned in the hit table
         # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
@@ -402,7 +422,8 @@ if(!write.only){
         
         
         tryCatch(
-       {
+                {
+                        
         if(!sql_database){
                 
                 hit_table <- data.table::fread(input = output, sep = "\t", 
@@ -461,8 +482,8 @@ if(!write.only){
         }
         
         
-}, error = function(){ stop(paste0("File ",output," could not be read properly, please check whether BLAST ",
-                                   "correctly wrote a resulting BLAST hit table to ",output," ."))}
+        }, error = function(e){ stop("File ",output," could not be read properly, please check whether BLAST ",
+                                   "correctly wrote a resulting BLAST hit table to ",output," .")}
         )
 } 
 

@@ -1,4 +1,4 @@
-#' @title Interface function to BLAST+
+#' @title Perform a BLAST+ search
 #' @description This function performs a BLAST+ search of a given set of sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
@@ -6,8 +6,10 @@
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.
-#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param format a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}.
+#' Default is \code{format} = \code{"fasta"}.
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, 
+#' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param remote a boolean value specifying whether a remote BLAST search shall be performed.
 #' In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
@@ -98,7 +100,7 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                   eval = "1E-5", remote = FALSE, db = NULL, path = NULL,
                   comp_cores = 1, blast_params = NULL, clean_folders = FALSE){
         
-        if(!is.element(blast_algorithm,c("blastp")))
+        if(!is.element(blast_algorithm,c("blastp","deltablast","tblastn","blastn")))
                 stop("Please choose a valid BLAST mode.")
         
         if(remote & is.null(db))
@@ -147,12 +149,15 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         
         tryCatch(
          {
-                seqinr::write.fasta(write_AA, names = name,
-                                    nbchar = 80,open = "w",
-                                    file.out = input)
-         },error = function(e){ stop(paste0("File ",input,
+                seqinr::write.fasta( sequences = write_AA, 
+                                     names     = name,
+                                     nbchar    = 80,
+                                     open      = "w",
+                                     file.out  = input )
+                
+         },error = function(e){ stop("File ",input,
                                             " could not be written properly to the internal folder environment.",
-                                            " Please check the path to ",input,".") ) }
+                                            " Please check the path to ",input,".") }
          
         )
         
@@ -224,8 +229,8 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                 }
             }
         
-        },error = function(e){ stop(paste0("Please check the correct path to ",blast_algorithm,
-                                           "... the interface call did not work properly.") ) }
+        },error = function(e){ stop("Please check the correct path to ",blast_algorithm,
+                                           "... the interface call did not work properly.") }
         )
         
         # additional blast parameters can be found here:
@@ -241,11 +246,14 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         
         tryCatch(
          {
-                  hit_table <- data.table::fread(input = output, sep = "\t", 
-                                                 header = FALSE, colClasses = col_Classes)
+                  hit_table <- data.table::fread( input      = output, 
+                                                  sep        = "\t", 
+                                                  header     = FALSE, 
+                                                  colClasses = col_Classes )
         
-                  data.table::setnames(hit_table, old = paste0("V",1:length(blast_table_names)),
-                                       new = blast_table_names)
+                  data.table::setnames( x   = hit_table, 
+                                        old = paste0("V",1:length(blast_table_names)),
+                                        new = blast_table_names)
         
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
                   
@@ -255,9 +263,9 @@ blast <- function(query_file, subject_file, seq_type = "cds",
                           clean_all_folders("_blast_db")
                   
                   return(hit_table)
-         }, error = function(e){ stop(paste0("File ",output, "could not be read correctly.",
+         }, error = function(e){ stop("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
-                                             " or whether BLAST did write the resulting hit table correctly.") ) }
+                                             " or whether BLAST did write the resulting hit table correctly.") }
         )
 
 }

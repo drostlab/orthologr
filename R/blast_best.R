@@ -1,4 +1,4 @@
-#' @title Function to perform a BLAST+ best hit search
+#' @title Perform a BLAST+ best hit search
 #' @description This function performs a BLAST+ search (best hit) of a given set of protein sequences against a given database.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
@@ -6,8 +6,10 @@
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
 #' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is \code{format} = \code{"fasta"}.
-#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param format a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}.
+#' Default is \code{format} = \code{"fasta"}.
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. 
+#' \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"} .
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
@@ -20,7 +22,10 @@
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.
 #' 
-#' Internally to perform best hit searches, the BLAST+ parameter settings: "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
+#' Internally to perform best hit searches, the BLAST+ parameter settings:
+#' 
+#' \code{"-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"}
+#' 
 #' are used to speed up best hit computations.
 #' 
 #' @references
@@ -102,34 +107,33 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
         # performing a BLAST search from query against subject: blast(query,subject)
         # using the BLAST parameter: '-max_target_seqs 1' allows to retain
         # only the best hit result and therefore, speeds up the BLAST search process
-        hit_tbl.dt <- blast(query_file = query_file, 
-                            eval = eval,
-                            subject_file = subject_file,
-                            seq_type = seq_type,
-                            format = format, path = path, 
-                            comp_cores = comp_cores,blast_params = ifelse(!is.null(blast_params),
-                                                                          paste0(blast_params,
-                                                                                 " ",default_pars),
-                                                                          default_pars), clean_folders = clean_folders)
+        hit_tbl.dt <- blast( query_file    = query_file,
+                             subject_file  = subject_file,
+                             eval          = eval,
+                             seq_type      = seq_type,
+                             format        = format, 
+                             path          = path, 
+                             comp_cores    = comp_cores,
+                             blast_params  = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), default_pars),
+                             clean_folders = clean_folders )
         
         if(!detailed_output){
                 
-                tryCatch(
-{
-        besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
+                tryCatch({
+                        besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
                                   by = key(hit_tbl.dt)]
         
-        #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
-        data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
+                        #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
+                        data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
         
-        data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
+                        data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
         
    
-        # return a data.table storing only the best hits from the resulting 
-        # BLAST search
-        return( besthit_tbl )
-}, error = function() {stop(paste0("The BLAST output couldn't be read properly, maybe a problem occured when 
-                                       selecting best hits from the resulting BLAST hit table."))} 
+                        # return a data.table storing only the best hits from the resulting 
+                       # BLAST search
+                       return( besthit_tbl )
+                }, error = function(e) {stop("The BLAST output couldn't be read properly, maybe a problem occured when 
+                                       selecting best hits from the resulting BLAST hit table.")} 
                 )
 
         } else {

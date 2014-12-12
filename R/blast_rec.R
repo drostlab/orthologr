@@ -1,4 +1,4 @@
-#' @title Function to perform a BLAST+ reciprocal best hit (RBH) search
+#' @title Perform a BLAST+ reciprocal best hit (RBH) search
 #' @description This function performs a blast+ search (reciprocal best hit) of a given set of protein sequences against a second
 #' set of protein sequences and vice versa.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
@@ -76,7 +76,7 @@
 #'           
 #' }
 #'
-#' @return A data.table as returned by the blast() function, storing the geneids
+#' @return A data.table as returned by the \code{\link{blast}} function, storing the geneids
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
 #' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @export
@@ -86,33 +86,39 @@ blast_rec <- function(query_file, subject_file, seq_type = "cds",
                       blast_params = NULL, detailed_output = FALSE, 
                       clean_folders = FALSE){
         
-        orthoA <- blast_best(query_file,subject_file, 
-                             eval = eval,
-                             format = format, seq_type = seq_type,
-                             blast_algorithm = blast_algorithm,
-                             path = path, comp_cores = comp_cores, 
-                             blast_params = blast_params,
-                             detailed_output = detailed_output)
+        orthoA <- blast_best( query_file      = query_file,
+                              subject_file    = subject_file, 
+                              eval            = eval,
+                              format          = format, 
+                              seq_type        = seq_type,
+                              blast_algorithm = blast_algorithm,
+                              path            = path, 
+                              comp_cores      = comp_cores, 
+                              blast_params    = blast_params,
+                              detailed_output = detailed_output )
         
-        orthoB <- blast_best(subject_file,query_file,
-                             seq_type = seq_type, eval = eval,
-                             format = format,blast_algorithm = blast_algorithm,
-                             path = path, comp_cores = comp_cores, 
-                             blast_params = blast_params,
-                             detailed_output = detailed_output,
-                             clean_folders = clean_folders)
+        orthoB <- blast_best( query_file      = subject_file,
+                              subject_file    = query_file,
+                              seq_type        = seq_type,
+                              eval            = eval,
+                              format          = format,
+                              blast_algorithm = blast_algorithm,
+                              path            = path, 
+                              comp_cores      = comp_cores, 
+                              blast_params    = blast_params,
+                              detailed_output = detailed_output,
+                              clean_folders   = clean_folders )
         
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         
-        tryCatch(
-{       
+        tryCatch({       
         
         return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
                                   by = c("query_id","subject_id")) )
         
         
-}, error = function(){ stop(paste0("The BLAST tables resulting from ",query_file, " and ",
-                                   subject_file," could not be joined properly to select only the reciprocal best hits."))}
+        }, error = function(e){ stop("The BLAST tables resulting from ",query_file, " and ",
+                                   subject_file," could not be joined properly to select only the reciprocal best hits.")}
         )
 }
 
