@@ -1,4 +1,4 @@
-#' @title Interface function to the Exonerate program
+#' @title Sequence Comparison with Exonerate
 #' @description This function provides an interface to the Exonerate program: a generic tool for sequence alignment.
 #' @param query_files a character vector specifying the paths to the fasta files of interest (query organism(s)).
 #' @param subject_files a character vector specifying the paths to the fasta files of interest (subject organism(s)).

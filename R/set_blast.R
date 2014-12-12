@@ -1,4 +1,4 @@
-#' @title Function preparing the parameters and databases for subsequent BLAST searches
+#' @title Create a BLASTable database with makeblastdb
 #' @description This function reads a file storing a specific sequence type, such as "cds", "protein", or
 #' "dna" in a standard sequence file format such as "fasta", etc. and depending of the \code{makedb}
 #'  parameter either creates a blast-able database, or returns the corresponding protein sequences

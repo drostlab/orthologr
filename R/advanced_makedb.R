@@ -1,4 +1,4 @@
-#' @title Advanced interface function to makeblastdb
+#' @title Create a BLASTable database with makeblastdb (advanced options)
 #' @description This function provides a simple, but powerful interface
 #' between the R language and 'makeblastdb'.
 #' @param database_file a character string specifying the path to the input file

@@ -1,4 +1,4 @@
-#' @title An interface function to common multiple alignment tools
+#' @title Compute Multiple Sequence Alignments
 #' @description This function takes a FASTA file containing DNA or amino acid sequences
 #' that shall be aligned and computes a multiple alignment using a defined multiple alignment tool.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.

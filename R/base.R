@@ -3,7 +3,7 @@
 NULL
 
 
-#' @title Function to delete the internal folder hierarchy
+#' @title Delete the internal folder hierarchy
 #' @description This function deletes all internal folders that have been created
 #' during pipeline processing. Internally this function uses \code{\link{unlink}}
 #' to delete all folders created by the pipline.
@@ -88,7 +88,7 @@ set_path <- function(file, add.folder = NULL){
 }
 
 
-#' @title Function to filter dNdS values
+#' @title Filter dNdS values
 #' @description This function takes the output data.table returned by \code{\link{dNdS}} and
 #' filters the output by the following criteria:
 #' 

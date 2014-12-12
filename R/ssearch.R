@@ -1,4 +1,4 @@
-#' @title Perform Local Alignments with SSearch 
+#' @title Compute Local Alignments with SSearch 
 #' @description This function allows you to perform local alignments between pairs
 #' of protein sequences or alignments between a protein sequence against a 
 #' protein database based on the SSeach program implemented in FASTA framework. 

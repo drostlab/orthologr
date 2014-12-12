@@ -1,4 +1,4 @@
-#' @title Function to perform Divergence Stratigraphy
+#' @title Perform Divergence Stratigraphy
 #' @description This function takes a query organism and performs
 #' divergence stratigraphy (Quint et al.,2012 ; Drost et al. 2014) against a
 #' closely related subject organism.
@@ -128,7 +128,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
 
 
 
-#' @title Function to sort dNdS values into divergence strata
+#' @title Sort dNdS values into divergence strata
 #' @description This function takes a data.table returned by dNdS
 #' and sorts the corresponding dNdS value into divergence strata (deciles).
 #' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.

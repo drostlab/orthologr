@@ -1,4 +1,4 @@
-#' @title An interface function to common pairwise alignment tools
+#' @title Compute Pairwise Alignments
 #' @description This function takes a FASTA file containing two DNA or amino acid sequences
 #' that shall be aligned and computes a paiwise alignment using a defined alignment method.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.

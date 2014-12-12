@@ -1,4 +1,4 @@
-#' @title Function to read a genome of a given organism
+#' @title Read the genome of a given organism
 #' @description This function reads an organism specific genome stored in a defined file format.
 #' @param file a character string specifying the path to the file storing the genome.
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
@@ -19,6 +19,7 @@
 #' @return A data.table storing the gene id in the first column and the corresponding
 #' sequence as string in the second column.
 #' @export
+
 read.genome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -36,15 +37,16 @@ read.genome <- function(file, format, ...){
                                                                      seqs = unlist(lapply(genome, seqinr::c2s)))
                                  data.table::setkey(genome.dt,geneids)
                                  
-                        }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
-                        "Please make sure that ",file," contains only DNA sequences and is in ",format," format."))}
+                        }, error = function(e){ stop("File ",file, " could not be read properly. \n",
+                        "Please make sure that ",file," contains only DNA sequences and is in ",format," format.")}
                 )
         }
+        
         return(genome.dt)
 }
 
 
-#' @title Function to read a proteome of a given organism
+#' @title Read the proteome of a given organism
 #' @description This function reads an organism specific proteome stored in a defined file format.
 #' @param file a character string specifying the path to the file storing the proteome.
 #' @param format a character string specifying the file format used to store the proteome, e.g. "fasta", "gbk".
@@ -66,6 +68,7 @@ read.genome <- function(file, format, ...){
 #' @return A data.table storing the gene id in the first column and the corresponding
 #' sequence as string in the second column.
 #' @export
+
 read.proteome <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -83,15 +86,16 @@ read.proteome <- function(file, format, ...){
                                                                        seqs = unlist(lapply(proteome, seqinr::c2s)))
                                  data.table::setkey(proteome.dt,geneids)
                                  
-                         }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
-                                                             "Please make sure that ",file," contains only amino acid sequences and is in ",format," format."))}
+                         }, error = function(e){ stop("File ",file, " could not be read properly. \n",
+                                                             "Please make sure that ",file," contains only amino acid sequences and is in ",format," format.")}
                 )
         }
+        
         return(proteome.dt)
 }
 
 
-#' @title Function to read the CDS of a given organism
+#' @title Read the CDS of a given organism
 #' @description This function reads an organism specific CDS stored in a defined file format.
 #' @param file a character string specifying the path to the file storing the CDS.
 #' @param format a character string specifying the file format used to store the CDS, e.g. "fasta", "gbk".
@@ -113,6 +117,7 @@ read.proteome <- function(file, format, ...){
 #' @return A data.table storing the gene id in the first column and the corresponding
 #' sequence as string in the second column.
 #' @export
+
 read.cds <- function(file, format, ...){
         if(!is.element(format,c("fasta","gbk")))
                 stop("Please choose a file format that is supported by this function.")
@@ -130,16 +135,17 @@ read.cds <- function(file, format, ...){
                                                  seqs = unlist(lapply(cds, seqinr::c2s)))
                                 data.table::setkey(cds.dt,geneids)
                 
-                        }, error = function(){ stop(paste0("File ",file, " could not be read properly. \n",
-                                                            "Please make sure that ",file," contains only CDS sequences and is in ",format," format."))}
+                        }, error = function(e){ stop("File ",file, " could not be read properly. \n",
+                                                            "Please make sure that ",file," contains only CDS sequences and is in ",format," format.")}
                 )
         }
+        
         return(cds.dt)
 }
 
 
 
-#' @title Function to translate an CDS sequence in string format to AA in string format
+#' @title Translate DNA to Amino Acids
 #' @description This function takes CDS sequence as string as input an returns the
 #' corresponding amino acid sequence as string. 
 #' @param sequence a character string specifying CDS sequence of interest.

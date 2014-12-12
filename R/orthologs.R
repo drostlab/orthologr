@@ -1,4 +1,4 @@
-#' @title Interface function to perform orthology inference for a set of organisms
+#' @title Main Orthology Inference Function
 #' @description This function takes nucleotide or protein sequences for a set of organisms 
 #' and performs orthology inference to detect orthologous genes within the given organisms
 #' based on selected orthology inference programs.

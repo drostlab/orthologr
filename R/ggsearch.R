@@ -1,4 +1,4 @@
-#' @title Perform Global Alignments with GGSearch 
+#' @title Compute Global Alignments with GGSearch 
 #' @description This function allows you to perform global alignments between pairs
 #' of protein sequences or alignments between a protein sequence against a 
 #' protein database based on the GGSeach program implemented in FASTA framework. 

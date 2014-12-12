@@ -1,4 +1,4 @@
-#' @title Interface function to InParanoid
+#' @title Orthology Inference with InParanoid
 #' @description This function takes a query organism and a set of subject organisms 
 #' and performs orthology inference using InParanoid as orthology detection program (methodology).
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
