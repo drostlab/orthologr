@@ -1,7 +1,7 @@
 orthologr
 =========
 
-### A framework combining common gene orthology detection methods and dNdS estimation models for pipeline processing 
+### A Framework for Orthology Inference, Sequence Alignments, and Population Genomics.
 
 The `orthologr` package provides interfaces between R and common bioinformatics tools
 used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
@@ -30,7 +30,14 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 
+# install all Bioconductor packages orthologr depends on
 
+# install Bioconductor base packages
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+
+# install package: Biostrings
+biocLite("Biostrings")
 ```
 
 
@@ -93,31 +100,6 @@ Check the current [Python](https://www.python.org) version installed with
 python --version
 
 ```
-
-
-
-### Install additional R packages imported by orthologr
-
-The `orthologr` package depends on a series of add ons (__R__ packages) that can
-be downloaded as follows
-
-
-```r
-# install all CRAN packages on which orthologr depends on
-install.packages(c("Rcpp","data.table","dplyr","doMC","foreach","ape"))
-
-# install all Bioconductor packages orthologr depends on
-
-# install Bioconductor base packages
-source("http://bioconductor.org/biocLite.R")
-biocLite()
-
-# install package: Biostrings
-biocLite("Biostrings")
-
-
-```
-
 
 ### Orthology Inference Tools
 
