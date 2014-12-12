@@ -9,10 +9,11 @@ pairwise_aln(file, tool = "NW", seq_type = "protein", get_aln = FALSE,
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
 
-\item{tool}{a character string specifying the program/algorithm that should be used: "NW".}
+\item{tool}{a character string specifying the program/algorithm that should be used: \code{tool} = \code{"NW"}.}
 
 \item{seq_type}{a character string specifying the sequence type stored within the given FASTA file. Options are
-\code{seq_type} = "protein", "cds", "dna". Default is \code{seq_type} = "protein".}
+\code{seq_type} = \code{"protein"}, \code{seq_type} = \code{"cds"}, \code{seq_type} = \code{"dna"}.
+ Default is \code{seq_type} = \code{"protein"}.}
 
 \item{get_aln}{a logical value indicating whether the produced alignment should be returned.}
 
@@ -44,8 +45,10 @@ The default pairwise alignment method is based on the \emph{Needleman-Wunsch Alg
 # Needleman-Wunsch Example:
 
 # in case Biostrings works properly
-pairwise_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-             tool = "NW", get_aln = TRUE, seq_type = "protein")
+pairwise_aln( file     = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+              tool     = "NW",
+              get_aln  = TRUE,
+              seq_type = "protein")
 
 
 

@@ -2,9 +2,10 @@
 #' @description This function takes a FASTA file containing two DNA or amino acid sequences
 #' that shall be aligned and computes a paiwise alignment using a defined alignment method.
 #' @param file a character string specifying the path to the file storing the sequences in FASTA format.
-#' @param tool a character string specifying the program/algorithm that should be used: "NW".
+#' @param tool a character string specifying the program/algorithm that should be used: \code{tool} = \code{"NW"}.
 #' @param seq_type a character string specifying the sequence type stored within the given FASTA file. Options are
-#' \code{seq_type} = "protein", "cds", "dna". Default is \code{seq_type} = "protein". 
+#' \code{seq_type} = \code{"protein"}, \code{seq_type} = \code{"cds"}, \code{seq_type} = \code{"dna"}.
+#'  Default is \code{seq_type} = \code{"protein"}. 
 #' @param get_aln a logical value indicating whether the produced alignment should be returned.
 #' @param pairwise_aln_name a character string specifying the name of the stored alignment file. 
 #' Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .
@@ -23,8 +24,10 @@
 #' # Needleman-Wunsch Example:  
 #' 
 #' # in case Biostrings works properly
-#' pairwise_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-#'              tool = "NW", get_aln = TRUE, seq_type = "protein")
+#' pairwise_aln( file     = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+#'               tool     = "NW", 
+#'               get_aln  = TRUE, 
+#'               seq_type = "protein")
 #' 
 #'                                                    
 #'                                                                                                                                                          
@@ -82,7 +85,9 @@ pairwise_aln <- function(file, tool = "NW", seq_type = "protein",
 #                         names <- dt[,geneids] 
 #                         seqs <- sapply(dt[,seqs] , Biostrings::DNAString)
                         
-                        input <- seqinr::read.fasta(file=file, seqtype = seqtype)
+                        input <- seqinr::read.fasta( file    = file,
+                                                     seqtype = seqtype )
+                        
                         names <- names(input) 
                         seqs <- lapply(input, function(x){return (Biostrings::DNAString(seqinr::c2s(x)))})      
                 }
@@ -91,24 +96,29 @@ pairwise_aln <- function(file, tool = "NW", seq_type = "protein",
 #                         names <- dt[,geneids] 
 #                         seqs <- sapply(dt[,seqs] , Biostrings::AAString)
 
-                        input <- seqinr::read.fasta(file=file, seqtype = seqtype)
+                        input <- seqinr::read.fasta( file    = file, 
+                                                     seqtype = seqtype )
+                        
                         names <- names(input) 
                         seqs <- lapply(input, function(x){return (Biostrings::AAString(seqinr::c2s(x)))})      
                 }
                 
                 # align
-                aln  <- Biostrings::pairwiseAlignment(pattern = seqs[[1]], subject = seqs[[2]],
-                                                      type = "global")
+                aln  <- Biostrings::pairwiseAlignment( pattern = seqs[[1]], 
+                                                       subject = seqs[[2]],
+                                                       type    = "global" )
                  
                 #write file -> comment Hajk: what does pattern() and subject() do in pattern(aln), subject(aln) ?
                 # pattern(aln) == get aligned sequence that was set as pattern input
                 # subject(aln) == get aligned sequence that was set as subject input
-                seqinr::write.fasta(sequences = list(Biostrings::pattern(aln), IRanges::subject(aln)) , names = names,
-                                    file.out = file.out)
+                seqinr::write.fasta( sequences = list(Biostrings::pattern(aln),IRanges::subject(aln)), 
+                                     names     = names,
+                                     file.out  = file.out)
                 
                 if(!quiet){ print(paste0("File successfully written to ",file.out)) }
                 
-                if(get_aln) return(aln)
+                if(get_aln) 
+                        return(aln)
         }
 }
 

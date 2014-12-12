@@ -167,8 +167,8 @@ InParanoid <- function(query_file, subject_file,
                   return(InParanoid_list)
         
  
-                  }, error = function() stop(paste("The InParanoid_tbl interface call did not terminate properly.",
-                                             "Please make sure you passed all parameters correctly to InParanoid_tbl.",sep="\n"))
+                  }, error = function(e) { stop("The InParanoid_tbl interface call did not terminate properly.",
+                                             "Please make sure you passed all parameters correctly to InParanoid_tbl.") }
         )
 
         

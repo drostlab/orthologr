@@ -80,9 +80,6 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
                 stop("You chose more cores than are available on your machine.")
         
         
-        
-        
-        
         setwd(currwd)
         
         if(delete_files)

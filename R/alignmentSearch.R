@@ -95,11 +95,12 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                 filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
                 queries <- paste0("_global_orthologs",f_sep,"out_",filename,"_translate.fasta")
-                seqinr::write.fasta(as.list(q_dt[ , aa]),
-                                    names = q_dt[ , geneids],
-                                    nbchar = 80, open = "w",
-                                    file.out = queries 
-                )
+                
+                seqinr::write.fasta( sequences = as.list(q_dt[ , aa]),
+                                     names     = q_dt[ , geneids],
+                                     nbchar    = 80, 
+                                     open      = "w",
+                                     file.out  = queries )
                 
                 n_seq <- nrow(q_dt)
                 
@@ -110,22 +111,26 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                 s_dt <- s_dt[,.SD[sapply(seqs,function(x){return((nchar(x) %% 3) == 0)})]]
                 # omit sequences consisting of others than ACGT
                 s_dt <- s_dt[,.SD[sapply(seqs,is.dnaSequence)]]
+                
                 # translate subject
                 tryCatch(
-                { s_dt[ , aa := transl(seqs), by = geneids]
+                { 
+                        s_dt[ , aa := transl(seqs), by = geneids]
+                        
                 }, error = function(e) {stop("The input coding sequences could not be translated properly to amino acid sequences.",
                                                    ,"\n"," Please check whether ",file, " stores valid coding sequences.")}
-                                )
+                )
                 
                 # write protein sequences to library
                 filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
                 dbname <- paste0("_global_orthologs",f_sep,"out_",filename,"_translate.fasta")
-                seqinr::write.fasta(as.list(s_dt[ , aa]),
-                                    names = s_dt[ , geneids],
-                                    nbchar = 80, open = "w",
-                                    file.out = dbname 
-                )
+                
+                seqinr::write.fasta( sequences = as.list(s_dt[ , aa]),
+                                     names     = s_dt[ , geneids],
+                                     nbchar    = 80, 
+                                     open      = "w",
+                                     file.out  = dbname )
                 
         }
              

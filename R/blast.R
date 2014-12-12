@@ -120,10 +120,16 @@ blast <- function(query_file, subject_file, seq_type = "cds",
         f_sep <- .Platform$file.sep
         
         # initialize the BLAST search
-        query.dt <- set_blast(file = query_file, seq_type = seq_type, format = format)[[1]]
+        query.dt <- set_blast( file     = query_file, 
+                               seq_type = seq_type, 
+                               format   = format )[[1]]
         
         # make a BLASTable databse of the subject
-        database <- set_blast(file = subject_file, seq_type = seq_type, format = format, makedb = TRUE)[[2]]
+        database <- set_blast( file     = subject_file, 
+                               seq_type = seq_type, 
+                               format   = format, 
+                               makedb   = TRUE )[[2]]
+        
         # create an internal folder structure for the BLAST process 
         input = "blastinput.fasta"
         output = "blastresult.csv"

@@ -147,62 +147,69 @@ substitutionrate <- function(file, est.method, format = "fasta",
         # To use gestimator a file in fasta format is required    
         
         # include this line instead of the following, to use internal gestimator
-        gestimator(file = file, file_out=file.out) 
+        gestimator( file     = file, 
+                    file_out = file.out ) 
+        
         #system(paste0("gestimator -i ",file," -o ",file.out))
         
         hit.table <-data.table::fread(file.out)
-        data.table::setnames(hit.table, old=c("V1","V2","V3","V4","V5"), 
-                             new = c("query_id","subject_id","dN","dS","dNdS"))
+        
+        data.table::setnames( x   = hit.table, 
+                              old = c("V1","V2","V3","V4","V5"), 
+                              new = c("query_id","subject_id","dN","dS","dNdS") )
+        
         data.table::setkey(hit.table, query_id)
 
         # for consistent output format we set the default value of gestimator 999
         # to NA for output
         # Therefor the user cannot make a mistake if using the dNdS results without 
         # filtering for some value. 
-        hit.table[which(hit.table[,dS==999]),dS:=NA]
-        hit.table[which(hit.table[,dN==999]),dN:=NA]
-        hit.table[which(hit.table[,dNdS==999]),dNdS:=NA]
+        hit.table[which(hit.table[ ,dS == 999]), dS := NA]
+        hit.table[which(hit.table[ ,dN == 999]), dN := NA]
+        hit.table[which(hit.table[ ,dNdS == 999]), dNdS := NA]
         
         if(!quiet){print("Substitutionrate successfully calculated by gestimator")}
         
         return(hit.table)
-},error = function(){ stop(paste0("Please check the correct path to ",est.method,
-                                  "... the interface call did not work properly.") ) }
+        },error = function(e){ stop("Please check the correct path to ",est.method,
+                                  "... the interface call did not work properly.") }
 
-                )
+        )
         }
 
-if(est.method == "Li" ){
+        if(est.method == "Li" ){
+                
+                aln <- seqinr::read.alignment( file   = file,
+                                               format = format )
         
-        aln <- seqinr::read.alignment(file = file, format = format)
+                res_list <- seqinr::kaks(aln)
         
-        res_list <- seqinr::kaks(aln)
-        
-        res <- data.table::data.table(t(c(unlist(aln$nam),  res_list$ka, res_list$ks, (res_list$ka/res_list$ks))))
+                res <- data.table::data.table(t(c(unlist(aln$nam),  res_list$ka, res_list$ks, (res_list$ka/res_list$ks))))
 
-        # seqinr::kaks documentation:
-        # When the alignment does not contain enough information (i.e we approach saturation), 
-        # the Ka and Ks values take the value 10. Negative values indicate that Ka and Ks can
-        # not be computed.
-        # we set both of them to NA
-        
-        
-        data.table::setnames(res, old = paste0("V",1:5), 
-                             new = c("query_id","subject_id", "dN", "dS","dNdS"))
-        data.table::setkey(res,query_id)
+                # seqinr::kaks documentation:
+                # When the alignment does not contain enough information (i.e we approach saturation), 
+                # the Ka and Ks values take the value 10. Negative values indicate that Ka and Ks can
+                # not be computed.
+                # we set both of them to NA
+
+                data.table::setnames( x   = res,
+                                      old = paste0("V",1:5), 
+                                      new = c("query_id","subject_id", "dN", "dS","dNdS") )
+                
+                data.table::setkey(res,query_id)
         
 
-        res[which(res[,dN<0]),dNdS:=NA]
-        res[which(res[,dN<0]),dN:=NA]
+                res[which(res[ ,dN < 0]),dNdS := NA]
+                res[which(res[ ,dN < 0]),dN := NA]
         
-        res[which(res[,dS<0]),dNdS:=NA]
-        res[which(res[,dS<0]),dS:=NA]
+                res[which(res[ ,dS < 0]),dNdS := NA]
+                res[which(res[ ,dS < 0]),dS := NA]
         
-        res[which(res[,dN>9.9]),dNdS:=NA]
-        res[which(res[,dN>9.9]),dN:=NA]
+                res[which(res[ ,dN > 9.9]),dNdS := NA]
+                res[which(res[ ,dN > 9.9]),dN := NA]
         
-        res[which(res[,dS>9.9]),dNdS:=NA]
-        res[which(res[,dS>9.9]),dS:=NA]
+                res[which(res[ ,dS > 9.9]),dNdS := NA]
+                res[which(res[ ,dS > 9.9]),dS := NA]
         
         
         if(!quiet){print("Substitutionrate successfully calculated using Li's method.")}
@@ -210,9 +217,9 @@ if(est.method == "Li" ){
         return(res)
         
         
-}
+       }
 
-if(is.element(est.method,kaks_calc_methods)){
+       if(is.element(est.method,kaks_calc_methods)){
         
         
         operating_sys <- Sys.info()[1]
@@ -245,8 +252,11 @@ if(is.element(est.method,kaks_calc_methods)){
         wdir <- grepl(" ",curr_wd)
         
         if(any(wdir)){
-                curr_wd[wdir] <- stringr::str_replace(string = curr_wd[wdir],replacement = paste0("'",curr_wd[wdir],"'"), pattern = curr_wd[wdir])
+                curr_wd[wdir] <- stringr::str_replace( string     = curr_wd[wdir],
+                                                      replacement = paste0("'",curr_wd[wdir],"'"), 
+                                                      pattern     = curr_wd[wdir] )
         }
+        
         curr_wd <- paste0(curr_wd,collapse = f_sep)
         
         ###
@@ -275,12 +285,12 @@ if(is.element(est.method,kaks_calc_methods)){
         if(!is.null(kaks_calc.params))
                 system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks ",kaks_calc.params)))
         
-},error = function(){ stop(paste0("KaKs_Calculator 1.2 couldn't run properly, please check your input files."))}
+        },error = function(e){ stop("KaKs_Calculator 1.2 couldn't run properly, please check your input files.")}
 
         )
 
-tryCatch(
-{
+       tryCatch({
+               
         kaks_tbl <- read.csv(paste0("_calculation",f_sep,file_name,".axt.kaks"),sep = "\t", header = TRUE)
         kaks_tbl_res <- kaks_tbl[ , 1:5]
         kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
@@ -293,11 +303,11 @@ tryCatch(
         
         return(kaks_tbl_res)
         
-}, error = function(){stop(paste0("Something went wront with KaKs_Calculator .\n",
+        }, error = function(e){stop("Something went wront with KaKs_Calculator .\n",
                                   paste0("_calculation",f_sep,file_name,".axt.kaks"),
-                                  " could not be read properly."))}
-)
-}
+                                  " could not be read properly.")}
+        )
+      }
 
 }
 

@@ -533,8 +533,8 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                  
                         if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                         
-                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
-                                                    "... the interface call did not work properly.") )}
+                 }, error = function(e){ stop("Please check the correct path to ",tool,
+                                                    "... the interface call did not work properly.")}
                  )
                  
                  if(get_aln){
@@ -595,8 +595,8 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                 }
                 if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                 
-               },error = function(){ stop(paste0("Please check the correct path to ",tool,
-                                   "... the interface call did not work properly.") )}
+               }, error = function(e){ stop("Please check the correct path to ",tool,
+                                   "... the interface call did not work properly.")}
                 )
              
                
@@ -622,8 +622,8 @@ multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
                                                 clean_all_folders("_alignment")
                                         
                                         return(aln)
-                                }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
-                                                                   file.out, " could not be read properly."))}
+                                }, error = function(e){ stop("Something went wront with ",tool," .\n",
+                                                                   file.out, " could not be read properly.")}
                         )
                 }
         }
