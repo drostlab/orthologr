@@ -298,6 +298,8 @@ can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/mas
 
 [Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
  
+You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd).
+
 More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the corresponding `cdd_deltablast.* files` need to be stored
 in a folder named `_blast_db` that is accessible from your working directory with `setwd("_blast_db")`. Otherwise the DELTA-BLAST option will not work properly.
 
