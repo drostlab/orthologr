@@ -39,7 +39,7 @@
 #' # performing SSearch on two cds files parsing the output                   
 #' ssearch( file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'           seqtype = "cds", parse_output_to = "ssearch.out")
+#'           seq_type = "cds", parse_output_to = "ssearch.out")
 #'     
 #'}
 #'@export 
