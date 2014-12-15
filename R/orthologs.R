@@ -290,7 +290,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 ortho_tbl <- data.table::copy(
                         
                         alignmentSearch( query_file      = query_file, 
-                                         subject_files   = subject_files,
+                                         subject_file   = subject_files,
                                          seq_type        = seq_type,
                                          format          = format,
                                          tool            = "ggsearch",
@@ -298,7 +298,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                          comp_cores      = comp_cores,
                                          details         = detailed_output,
                                          clean_folders   = clean_folders,
-                                         eval            = eval )
+                                         #eval            = eval 
+                                         )
                         
                 )
                 
@@ -311,7 +312,7 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                 ortho_tbl <- data.table::copy(
                         
                         alignmentSearch( query_file      = query_file, 
-                                         subject_files   = subject_files,
+                                         subject_file   = subject_files,
                                          seq_type        = seq_type,
                                          format          = format,
                                          tool            = "ssearch",
@@ -319,7 +320,8 @@ orthologs <- function(query_file,subject_files, seq_type = "protein",
                                          comp_cores      = comp_cores,
                                          details         = detailed_output,
                                          clean_folders   = clean_folders,
-                                         eval            = eval )
+                                        #eval            = eval 
+                                        )
                         
                 )
                 
