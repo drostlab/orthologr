@@ -67,9 +67,12 @@
 #' \item \code{ortho_detection} : 
 #'    \itemize{  
 #'    \item \code{"RBH"} (BLAST best reciprocal hit)
-#'     \item \code{"BH"} (BLAST best reciprocal hit) 
-#'     \item \code{"PO"} (ProteinOrtho) 
-#'     \item \code{"OrthoMCL"} (OrthoMCL)
+#'    \item \code{"BH"} (BLAST best hit)
+#'    \item \code{"DELTA"} (DELTA-BLAST best reciprocal hit) 
+#'    \item \code{"PO"} (ProteinOrtho) 
+#'    \item \code{"OrthoMCL"} (OrthoMCL)
+#'    \item \code{"GGSEARCH"} (GGSearch)
+#'    \item \code{"SSEARCH"} (SSearch)
 #'      }
 #'      
 #' \item \code{aa_aln_type} : 
@@ -200,13 +203,23 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         if(ortho_detection == "BH"){
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
-                hit.table <- data.table::copy( blast_best(query_file = query_file, subject_file = subject_file, 
-                                                          blast_params = blast_params, path = blast_path, 
-                                                          comp_cores = comp_cores,seq_type = "cds",
-                                                          eval = eval, format = format))
+                hit.table <- data.table::copy( 
+                        
+                        blast_best( query_file   = query_file, 
+                                    subject_file = subject_file, 
+                                    blast_params = blast_params, 
+                                    path         = blast_path, 
+                                    comp_cores   = comp_cores,
+                                    seq_type     = "cds",
+                                    eval         = eval, 
+                                    format       = format )
+                        )
                                                 
-                q_cds <- read.cds(file = query_file, format = format)
-                s_cds <- read.cds(file = subject_file, format = format)
+                q_cds <- read.cds( file   = query_file, 
+                                   format = format )
+                
+                s_cds <- read.cds( file   = subject_file, 
+                                   format = format )
                 
                 q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"blastinput.fasta"), format = "fasta")
                 
@@ -221,14 +234,23 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                            
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
-                        blast_rec(query_file = query_file, subject_file = subject_file, 
-                                  blast_params = blast_params, path = blast_path, 
-                                  comp_cores = comp_cores, seq_type = "cds", 
-                                  eval = eval, format = format))
+                        
+                        blast_rec( query_file   = query_file, 
+                                   subject_file = subject_file, 
+                                   blast_params = blast_params, 
+                                   path         = blast_path, 
+                                   comp_cores   = comp_cores, 
+                                   seq_type     = "cds", 
+                                   eval         = eval, 
+                                   format       = format )
+                        )
                 
                 
-                q_cds <- read.cds(file = query_file, format = format)
-                s_cds <- read.cds(file = subject_file, format = format)
+                q_cds <- read.cds( file   = query_file, 
+                                   format = format )
+                
+                s_cds <- read.cds( file   = subject_file, 
+                                   format = format )
                 
                 
                 filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
@@ -249,10 +271,17 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
-                        orthologs(query_file = query_file, subject_files = subject_file, 
-                                  ortho_detection = "PO",eval = eval, path = ortho_path,
-                                  comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format, quiet = quiet))
+                        
+                        orthologs( query_file      = query_file, 
+                                   subject_files   = subject_file, 
+                                   ortho_detection = "PO",
+                                   eval            = eval, 
+                                   path            = ortho_path,
+                                   comp_cores      = comp_cores, 
+                                   seq_type        = "cds", 
+                                   format          = format, 
+                                   quiet           = quiet )
+                        )
                 
         }
         
@@ -260,21 +289,72 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         if(ortho_detection == "OrthoMCL"){
                 
                 hit.table <- data.table::copy(
-                        orthologs(query_file = query_file, subject_files = subject_file, 
-                                  ortho_detection = "OrthoMCL",eval = eval, path = ortho_path,
-                                  comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format, quiet = quiet))
+                        
+                        orthologs( query_file        = query_file, 
+                                   subject_files     = subject_file, 
+                                   ortho_detection   = "OrthoMCL",
+                                   eval              = eval,
+                                   path              = ortho_path,
+                                   comp_cores        = comp_cores, 
+                                   seq_type          = "cds", 
+                                   format            = format, 
+                                   quiet             = quiet )
+                        )
                 
         }
         
-        # use InParanoid as orthology inference method
-        if(ortho_detection == "IP"){
+        # use DELTA-BLAST best reciprocal hit as orthology inference method
+        if(ortho_detection == "DELTA"){
          
                 hit.table <- data.table::copy(
-                        orthologs(query_file = query_file, subject_files = subject_file, 
-                                  ortho_detection = "IP",eval = eval, path = ortho_path,
-                                  comp_cores = comp_cores, seq_type = "cds", 
-                                  format = format, quiet = quiet))
+                        
+                        orthologs( query_file      = query_file, 
+                                   subject_files   = subject_file, 
+                                   ortho_detection = "DELTA",
+                                   eval            = eval, 
+                                   path            = ortho_path,
+                                   comp_cores      = comp_cores, 
+                                   seq_type        = "cds", 
+                                   format          = format, 
+                                   quiet           = quiet )
+                        )
+                
+        }
+        
+        
+        # use GGSEARCH as orthology inference method
+        if(ortho_detection == "GGSEARCH"){
+                
+                hit.table <- data.table::copy(
+                        
+                        orthologs( query_file      = query_file, 
+                                   subject_files   = subject_file, 
+                                   ortho_detection = "GGSEARCH",
+                                   eval            = eval, 
+                                   path            = ortho_path,
+                                   comp_cores      = comp_cores, 
+                                   seq_type        = "cds", 
+                                   format          = format, 
+                                   quiet           = quiet )
+                )
+                
+        }
+        
+        # use SSEARCH as orthology inference method
+        if(ortho_detection == "SSEARCH"){
+                
+                hit.table <- data.table::copy(
+                        
+                        orthologs( query_file      = query_file, 
+                                   subject_files   = subject_file, 
+                                   ortho_detection = "SSEARCH",
+                                   eval            = eval, 
+                                   path            = ortho_path,
+                                   comp_cores      = comp_cores, 
+                                   seq_type        = "cds", 
+                                   format          = format, 
+                                   quiet           = quiet )
+                )
                 
         }
         
@@ -295,15 +375,17 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
         
         
        # return the dNdS table for all query_ids and subject_ids
-           return(compute_dnds(complete_tbl = final_tbl,
-                       aa_aln_type = aa_aln_type,
-                       aa_aln_tool = aa_aln_tool,
-                       aa_aln_path = aa_aln_path,
-                       codon_aln_tool = codon_aln_tool, 
-                       kaks_calc_path = kaks_calc_path, 
-                       dnds_est.method = dnds_est.method, quiet = quiet,
-                       comp_cores = comp_cores, clean_folders = clean_folders)
-                       )   
+           return( compute_dnds( complete_tbl    = final_tbl,
+                                 aa_aln_type     = aa_aln_type,
+                                 aa_aln_tool     = aa_aln_tool,
+                                 aa_aln_path     = aa_aln_path,
+                                 codon_aln_tool  = codon_aln_tool, 
+                                 kaks_calc_path  = kaks_calc_path, 
+                                 dnds_est.method = dnds_est.method, 
+                                 quiet           = quiet,
+                                 comp_cores      = comp_cores, 
+                                 clean_folders   = clean_folders )
+                  )   
 }
 
 
