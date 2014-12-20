@@ -63,7 +63,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "RBH", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -122,7 +122,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           seq_type        = "protein", 
           ortho_detection = "RBH", 
           path            = "here/path/to/blastp", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -142,7 +142,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           seq_type        = "protein", 
           ortho_detection = "RBH", 
           comp_cores      = 2, 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -215,7 +215,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "RBH", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -262,7 +262,7 @@ RBH <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 
           seq_type          = "protein", 
           ortho_detection   = "RBH",
           detailed_output   = TRUE, 
-          clean_folders     = TRUE)
+          clean_folders     = FALSE)
 
 
 glimpse(RBH)
@@ -331,7 +331,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "DELTA", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -376,7 +376,7 @@ DELTA <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package 
           seq_type          = "protein", 
           ortho_detection   = "DELTA",
           detailed_output   = TRUE, 
-          clean_folders     = TRUE)
+          clean_folders     = FALSE)
 
 
 glimpse(DELTA)
@@ -510,7 +510,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "PO", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -554,7 +554,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           seq_type        = "protein", 
           comp_cores      = 2,
           ortho_detection = "PO", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
@@ -781,11 +781,12 @@ library(orthologr)
 # it is also possible to run ProteinOrtho using the synteny option
 # make sure you can provide a *.gff file
 # see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details
-ProteinOrtho(query_file    = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-             subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-             seq_type      = "protein",
-             format        = "fasta",
-             po_params     = "-synteny")
+ProteinOrtho(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+             subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+             seq_type        = "protein",
+             format          = "fasta",
+             po_params       = "-synteny",
+             clean_folders   = FALSE)
 
 ```
 
@@ -803,10 +804,45 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "OrthoMCL", 
-          clean_folders   = TRUE)
+          clean_folders   = FALSE)
 
 
 ```
 
 
+### GGSearch
 
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using GGSearch
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "GGSEARCH", 
+          clean_folders   = FALSE)
+
+
+```
+
+
+### SSearch
+
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using SSearch
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "SSEARCH", 
+          clean_folders   = FALSE)
+
+
+```
