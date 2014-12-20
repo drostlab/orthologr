@@ -11,7 +11,7 @@ is.dnaSequence <- function(seq){
 
 is.ortho_detection_method <- function(method = NULL){
         
-        provided <- c("BH","RBH","PO","OrthoMCL","IP")
+        provided <- c("BH","RBH","PO","OrthoMCL","DELTA","GGSEARCH","SSEARCH")
         
         if(is.null(method)){
                 print("The followig methods are provided: ")

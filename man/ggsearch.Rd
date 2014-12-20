@@ -46,7 +46,7 @@ ggsearch( file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 # performing GGSearch on two cds files parsing the output
 ggsearch( file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
           library_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-          seqtype = "cds", parse_output_to = "ggsearch.out")
+          seq_type = "cds", parse_output_to = "ggsearch.out")
 
 }
 }
