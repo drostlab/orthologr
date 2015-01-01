@@ -68,7 +68,8 @@ class RedundancyCom95{
     int numN, numTsS, numTvS;   
     int codonState;
     string type;		//type refers to Ts or Tv
-    int numPossChanges, numPossTs, numPossTv;
+    // int numPossChanges; // is just set, but never used
+    int numPossTs, numPossTv;
     double FirstN, First2S, First2V;
     string codonTrans;
     string mutationTrans;
@@ -84,7 +85,8 @@ class RedundancyCom95{
             for (k = 0; k <= 3; k++)
               {
                 numN = numTsS = numTvS = 0;	//initialize
-                numPossChanges = numPossTs = numPossTv = 0;
+                // numPossChanges = 0; // is just set, but never used
+                numPossTs = numPossTv = 0;
                 S = N = 0;
                 codon[0] = intToNuc(i);
                 codon[1] = intToNuc(j);
@@ -216,7 +218,8 @@ void FillThirdPositionCounts ()
     int numN, numTsS, numTvS;	
     int codonState;
     string type;		//type refers to Ts or Tv
-    int numPossChanges, numPossTs, numPossTv;
+    // int numPossChanges;     // is just set, but never used 
+    int numPossTs, numPossTv;
     double ThirdN, Third2S, Third2V, Third4;
     string codonTrans;
     string mutationTrans;
@@ -231,7 +234,8 @@ void FillThirdPositionCounts ()
             for (k = 0; k <= 3; k++)
               {
                 numN = numTsS = numTvS = 0;	//initialize
-                numPossChanges = numPossTs = numPossTv = 0;
+                // numPossChanges = 0; // is just set, but never used
+                numPossTs = numPossTv = 0;
                 S = N = 0;
                 codon[0] = intToNuc(i);
                 codon[1] = intToNuc(j);

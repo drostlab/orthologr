@@ -66,7 +66,7 @@ class Sites {
                         const pair<string,string> * sequence2,
                         const RedundancyCom95 * sitesObj)
       {       
-            size_t i = 0, j = 0;
+            int i = 0, j = 0;
             int nc;
             std::string codon1,codon2;
             codon1.resize(3);

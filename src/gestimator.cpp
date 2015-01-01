@@ -119,7 +119,7 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
 
 		// if (Gapped(&data))
 		bool gaps=false;
-	    for(int i=0;i<data.size();i++){
+	    for(size_t i=0;i<data.size();i++){
 			if( data[i].second.find("-") != std::string::npos){
 				    gaps=true;
 			}
@@ -133,7 +133,7 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
 			  \param data vector<T> to modify
 			*/
 
-		   int i, j,datasize=data.size();
+		   size_t i, j,datasize=data.size();
 		   int length = data[0].second.length ();
 		   vector<string> ungapped_sequences(data.size());
 		   bool site_is_gapped;
@@ -170,8 +170,8 @@ void gestimator(std::string file, std::string file_out = "", int maxHits = 3,
    RedundancyCom95 code_degeneracy;
    
    // foreach sequence pair in data
-   for(int i=0;i<data.size();i++){
-           for(int j=i+1;j<data.size();j++){
+   for(size_t i=0;i<data.size();i++){
+           for(size_t j=i+1;j<data.size();j++){
 
                    Comeron95 *C = new Comeron95(&data[i], &data[j], maxHits,&code_degeneracy);
                    if (file_out == "")
