@@ -7,7 +7,7 @@ The `orthologr` package provides interfaces between R and common bioinformatics 
 used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
 CDS prediction, and divergence stratigraphy.
 
-## Fast installation guide
+## Fast Installation Guide
 
 ```r
 # install.packages("devtools")
@@ -45,14 +45,14 @@ biocLite("Biostrings")
 
 Learn `orthologr` by use cases provided by the following tutorials: 
 
-- [Orthology Inference using two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
-- [dNdS estimation for two or multiple species](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
-- [Phylotranscriptomics analyses based on sequence divergence: divergence stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
-- [Perform BLAST searches to find conserved regions in your set of subject organisms](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd)
-- [Sequence Alignments](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
+- [Orthology Inference](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
+- [Performing dNdS Estimation](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
+- [Divergence Stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
+- [Perform BLAST Searches](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd)
+- [Perform Sequence Alignments](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
 
 
-## Installing prerequisite tools
+## Installing Prerequisite Tools
 
 Since many function have been implemented as interface functions between
 the __R__ language and common bioinformatics tools, some of these tools must
