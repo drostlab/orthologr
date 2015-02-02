@@ -175,7 +175,9 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                         line <- gsub("^\\s+","",line)
                         splits <- strsplit(line, ">>>| ")
                         query_id <- splits[[1]][2]
-                        end=FALSE
+                        end<-FALSE
+                        mu<-0
+                        var<-0
                         while (length(line <- readLines(con, n = 1, warn = FALSE)) > 0 && !end){
                         
                                 if(statistics && grepl("^Statistics:",line)){
@@ -191,6 +193,14 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                                         }
                                 }
                                 
+                                # break if no hits were found!!!
+                                if(grepl("!! No sequences with E()",line)){
+                                        end<-TRUE
+                                        mu<-0
+                                        var<-0
+                                }
+                                
+                                # take detailed entry of first hit
                                 if(grepl(">>",line)){
                                         
 #                                 if(grepl("The best scores are:",line)){
@@ -232,7 +242,7 @@ alignmentSearch <- function(query_file, subject_file, seq_type = "protein",
                                         current.line <- current.line + 1
                                         query_id <- NULL
                                         subject_id <- NULL
-                                        end = TRUE
+                                        end <- TRUE
                                 }
                         }
                 }
