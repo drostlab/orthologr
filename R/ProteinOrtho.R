@@ -200,6 +200,7 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                                 data.table::setnames(ProteinOrtho_tbl,old = paste0("V",1:dim(ProteinOrtho_tbl)[2]),
                                                     new = c(PO_tbl_header[[3]],PO_tbl_header[[2]][-c(1:length(PO_tbl_header[[3]]))]))
                                 data.table::setkeyv(ProteinOrtho_tbl,PO_tbl_header[[3]])
+                                hash_tag<-1
         
                         } else {
                                 
