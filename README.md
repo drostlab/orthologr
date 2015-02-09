@@ -38,6 +38,12 @@ biocLite()
 
 # install package: Biostrings
 biocLite("Biostrings")
+
+# install package: S4Vectors
+source("http://bioconductor.org/biocLite.R")
+biocLite("S4Vectors")
+
+
 ```
 
 
