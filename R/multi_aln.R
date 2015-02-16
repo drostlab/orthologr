@@ -253,9 +253,14 @@
 #' }
 #' @return In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.
 #' @export
-multi_aln <- function(file, tool, get_aln = FALSE, path = NULL,
-                      multi_aln_name = NULL, params = NULL, 
-                      quiet = FALSE, clean_folders = FALSE){
+multi_aln <- function(file, 
+                      tool, 
+                      get_aln        = FALSE, 
+                      path           = NULL,
+                      multi_aln_name = NULL, 
+                      params         = NULL, 
+                      quiet          = FALSE, 
+                      clean_folders  = FALSE){
         
         if(!is.multiple_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")

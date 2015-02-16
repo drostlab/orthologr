@@ -98,13 +98,16 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         query_id <- NULL
         
-        dNdS_tbl <- filter_dNdS( dNdS(query_file = query_file,
-                                      subject_file = subject_file,
-                                      ortho_detection = ortho_detection,
-                                      aa_aln_type = "pairwise", aa_aln_tool = "NW",
-                                      codon_aln_tool = "pal2nal", dnds_est.method = "Comeron", 
-                                      comp_cores = comp_cores, quiet = quiet) , 
-                                      dnds.threshold = dnds.threshold)
+        dNdS_tbl <- filter_dNdS( dNdS( query_file      = query_file,
+                                       subject_file    = subject_file,
+                                       ortho_detection = ortho_detection,
+                                       aa_aln_type     = "pairwise", 
+                                       aa_aln_tool     = "NW",
+                                       codon_aln_tool  = "pal2nal", 
+                                       dnds_est.method = "Comeron", 
+                                       comp_cores      = comp_cores, 
+                                       quiet           = quiet ), 
+                                 dnds.threshold = dnds.threshold)
         
         
         if(ds.values){

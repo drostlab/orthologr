@@ -95,10 +95,18 @@
 #' @return A data.table storing the BLAST hit table returned by BLAST.
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @export
-blast <- function(query_file, subject_file, seq_type = "cds",
-                  format = "fasta", blast_algorithm = "blastp",
-                  eval = "1E-5", remote = FALSE, db = NULL, path = NULL,
-                  comp_cores = 1, blast_params = NULL, clean_folders = FALSE){
+blast <- function(query_file, 
+                  subject_file, 
+                  seq_type        = "cds",
+                  format          = "fasta",
+                  blast_algorithm = "blastp",
+                  eval            = "1E-5", 
+                  remote          = FALSE, 
+                  db              = NULL, 
+                  path            = NULL,
+                  comp_cores      = 1, 
+                  blast_params    = NULL, 
+                  clean_folders   = FALSE){
         
         if(!is.element(blast_algorithm,c("blastp","deltablast","tblastn","blastn")))
                 stop("Please choose a valid BLAST mode.")

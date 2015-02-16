@@ -162,14 +162,25 @@
 #' @seealso \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}} 
 #' @export
-dNdS <- function(query_file, subject_file, seq_type = "protein",
-                 format = "fasta", ortho_detection = "RBH", 
-                 blast_params = NULL, blast_path = NULL, 
-                 eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple", 
-                 aa_aln_tool = "clustalw", aa_aln_path = NULL, 
-                 aa_aln_params = NULL, codon_aln_tool = "pal2nal", 
-                 kaks_calc_path = NULL, dnds_est.method = "YN", 
-                 comp_cores = 1, quiet = FALSE, clean_folders = FALSE){
+dNdS <- function(query_file, 
+                 subject_file, 
+                 seq_type        = "protein",
+                 format          = "fasta", 
+                 ortho_detection = "RBH", 
+                 blast_params    = NULL, 
+                 blast_path      = NULL, 
+                 eval            = "1E-5", 
+                 ortho_path      = NULL, 
+                 aa_aln_type     = "multiple", 
+                 aa_aln_tool     = "clustalw", 
+                 aa_aln_path     = NULL, 
+                 aa_aln_params   = NULL, 
+                 codon_aln_tool  = "pal2nal", 
+                 kaks_calc_path  = NULL, 
+                 dnds_est.method = "YN", 
+                 comp_cores      = 1, 
+                 quiet           = FALSE, 
+                 clean_folders   = FALSE){
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
@@ -435,10 +446,16 @@ dNdS <- function(query_file, subject_file, seq_type = "protein",
 #' @import foreach
 #' @import data.table
 compute_dnds <- function(complete_tbl,
-                         aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
-                         aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-                         dnds_est.method = "YN", kaks_calc_path = NULL, 
-                         quiet = FALSE, comp_cores = 1, clean_folders = FALSE){
+                         aa_aln_type     = "multiple", 
+                         aa_aln_tool     = "clustalw", 
+                         aa_aln_path     = NULL,
+                         aa_aln_params   = NULL, 
+                         codon_aln_tool  = "pal2nal",
+                         dnds_est.method = "YN", 
+                         kaks_calc_path  = NULL, 
+                         quiet           = FALSE, 
+                         comp_cores      = 1, 
+                         clean_folders   = FALSE){
         
         if(comp_cores > parallel::detectCores())
                 stop("You assigned more cores to the comp_cores argument than are availible on your machine.")

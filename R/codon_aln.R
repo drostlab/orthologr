@@ -66,10 +66,14 @@
 #' @seealso \code{\link{pairwise_aln}}, \code{\link{multi_aln}}, \code{\link{substitutionrate}},
 #'  \code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}
 #' @export
-codon_aln <- function(file_aln, file_nuc, format = "clustal", 
-                      tool = "pal2nal", params = NULL, 
-                      codon_aln_name = NULL, get_aln = FALSE, 
-                      quiet = FALSE){
+codon_aln <- function(file_aln, 
+                      file_nuc, 
+                      format         = "clustal", 
+                      tool           = "pal2nal", 
+                      params         = NULL, 
+                      codon_aln_name = NULL, 
+                      get_aln        = FALSE, 
+                      quiet          = FALSE){
         
         
         # determine the file seperator of the current OS

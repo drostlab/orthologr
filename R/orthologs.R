@@ -148,11 +148,19 @@
 #' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}
 #' @export
  
-orthologs <- function(query_file,subject_files, seq_type = "protein",
-                      outgroup_file = NULL, eval = "1E-5", format = "fasta",
-                      ortho_detection = "RBH", path = NULL, add_params = NULL,
-                      detailed_output = FALSE, comp_cores = 1,
-                      quiet = FALSE, clean_folders = TRUE){
+orthologs <- function(query_file,
+                      subject_files, 
+                      seq_type        = "protein",
+                      outgroup_file   = NULL, 
+                      eval            = "1E-5", 
+                      format          = "fasta",
+                      ortho_detection = "RBH", 
+                      path            = NULL, 
+                      add_params      = NULL,
+                      detailed_output = FALSE, 
+                      comp_cores      = 1,
+                      quiet           = FALSE, 
+                      clean_folders   = TRUE){
         
         if(!is.element(ortho_detection, c("RBH","PO","OrthoMCL","GGSEARCH","SSEARCH","DELTA")))
                 stop("Please choose a orthology detection method that is supported by this function.")
