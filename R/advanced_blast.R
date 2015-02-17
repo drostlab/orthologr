@@ -176,13 +176,20 @@
 #' the hit table returned by BLAST in this folder.
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @export
-advanced_blast <- function(query_file, subject_file, 
-                           seq_type = "cds",format = "fasta", 
-                           blast_algorithm = "blastp", path = NULL,
-                           blast_params = NULL, makedb_type = "protein",
-                           taxonomy = FALSE, db_path = NULL,
-                           sql_database = FALSE, session_name = NULL,
-                           write.only = FALSE, clean_folders = FALSE){
+advanced_blast <- function(query_file, 
+                           subject_file, 
+                           seq_type        = "cds",
+                           format          = "fasta", 
+                           blast_algorithm = "blastp", 
+                           path            = NULL,
+                           blast_params    = NULL, 
+                           makedb_type     = "protein",
+                           taxonomy        = FALSE, 
+                           db_path         = NULL,
+                           sql_database    = FALSE, 
+                           session_name    = NULL,
+                           write.only      = FALSE, 
+                           clean_folders   = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
         if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
@@ -204,9 +211,6 @@ advanced_blast <- function(query_file, subject_file,
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         aa <- geneids <- NULL
-        
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
         
         # initialize the BLAST search
         
@@ -245,22 +249,22 @@ advanced_blast <- function(query_file, subject_file,
         output = paste0(session_name,"_blastresult.csv")
         
         
-        if(!file.exists(paste0("_blast_db",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_blast_db"))){
                 
-                dir.create("_blast_db")
+                dir.create(file.path(tempdir(),"_blast_db"))
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd,"_blast_db"))
+        setwd(file.path(tempdir(),"_blast_db"))
         
         # write query fasta file 
-        write_AA <- as.list(query.dt[ ,aa])
-        name <- query.dt[ , geneids]      
+#         write_AA <- as.list(query.dt[ ,aa])
+#         name <- query.dt[ , geneids]      
         
         tryCatch({
                 
-                seqinr::write.fasta( sequences = write_AA, 
-                                     names     = name,
+                seqinr::write.fasta( sequences = as.list(query.dt[ ,aa]), 
+                                     names     = query.dt[ , geneids],
                                      nbchar    = 80,
                                      open      = "w",
                                      file.out  = input )
@@ -426,8 +430,10 @@ advanced_blast <- function(query_file, subject_file,
                         
         if(!sql_database){
                 
-                hit_table <- data.table::fread(input = output, sep = "\t", 
-                                               header = FALSE, colClasses = col_Classes)
+                hit_table <- data.table::fread(input      = output, 
+                                               sep        = "\t", 
+                                               header     = FALSE,
+                                               colClasses = col_Classes)
                 
                 data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
                                      new = colNames)
@@ -438,7 +444,7 @@ advanced_blast <- function(query_file, subject_file,
                 setwd(file.path(currwd))
                 
                 if(clean_folders)
-                        clean_all_folders("_blast_db")
+                        clean_all_folders(file.path(tempdir(),"_blast_db"))
                 
                 return(hit_table) 
                 
@@ -452,8 +458,13 @@ advanced_blast <- function(query_file, subject_file,
                 connect_db <- DBI::dbConnect(RSQLite::SQLite(), dbname = "blast_sql_db.sqlite3")
                 
                 
-                DBI::dbWriteTable(connect_db, name = "hit_tbl",value = output,row.names = FALSE,
-                                      header = FALSE, sep = "\t", overwrite = TRUE)
+                DBI::dbWriteTable(connect_db, 
+                                  name      = "hit_tbl",
+                                  value     = output,
+                                  row.names = FALSE,
+                                  header    = FALSE, 
+                                  sep       = "\t", 
+                                  overwrite = TRUE)
                 
                 on.exit({
                         
@@ -469,9 +480,10 @@ advanced_blast <- function(query_file, subject_file,
                 setwd(file.path(currwd))
                 
                 if(clean_folders){
+                        
                         warnings("Are you sure you want to clean all folders? The SQLite database
                                  you want to connect with will be deleted as well.")
-                        clean_all_folders("_blast_db")
+                        clean_all_folders(file.path(tempdir(),"_blast_db"))
                         
                         cat("\n")
                         warnings("Database has been deleted.")
