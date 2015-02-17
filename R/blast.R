@@ -124,9 +124,6 @@ blast <- function(query_file,
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         aa <- geneids <- NULL
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
-        
         # initialize the BLAST search
         query.dt <- set_blast( file     = query_file, 
                                seq_type = seq_type, 
@@ -138,18 +135,23 @@ blast <- function(query_file,
                                format   = format, 
                                makedb   = TRUE )[[2]]
         
+        filename <- unlist(strsplit(query_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+        filename <- filename[length(filename)]
+        
+        
         # create an internal folder structure for the BLAST process 
-        input = "blastinput.fasta"
-        output = "blastresult.csv"
+        input = paste0("query_",filename,".fasta")
+        # input = "blastinput.fasta"
+        output = paste0("blastresult",filename,".csv")
         
         
-        if(!file.exists(paste0("_blast_db",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_blast_db"))){
                 
-                dir.create("_blast_db")
+                dir.create(file.path(tempdir(),"_blast_db"))
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd, "_blast_db"))
+        setwd(file.path(tempdir(),"_blast_db"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -158,13 +160,13 @@ blast <- function(query_file,
         if(comp_cores > cores)
                 stop("You chose more cores than are available on your machine.")
         
-        write_AA <- as.list(query.dt[ ,aa])
-        name <- query.dt[ ,geneids]      
-        
+#         write_AA <- as.list(query.dt[ ,aa])
+#         name <- query.dt[ ,geneids]      
+#         
         tryCatch(
          {
-                seqinr::write.fasta( sequences = write_AA, 
-                                     names     = name,
+                seqinr::write.fasta( sequences = as.list(query.dt[ ,aa]), 
+                                     names     = query.dt[ ,geneids],
                                      nbchar    = 80,
                                      open      = "w",
                                      file.out  = input )
@@ -274,9 +276,10 @@ blast <- function(query_file,
                   setwd(file.path(currwd))
                   
                   if(clean_folders)
-                          clean_all_folders("_blast_db")
+                          clean_all_folders(file.path(tempdir(),"_blast_db"))
                   
                   return(hit_table)
+                  
          }, error = function(e){ stop("File ",output, "could not be read correctly.",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") }
