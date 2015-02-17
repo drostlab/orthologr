@@ -66,6 +66,8 @@ exonerate <- function(query_files, subject_files, params = NULL,core_interface =
         if(!file.exists("_exonerate"))
                 dir.create("_exonerate")
         
+        aln <- NULL
+        
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
