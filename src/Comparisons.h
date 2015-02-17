@@ -38,16 +38,8 @@ using namespace std;
    
    
 // [[Rcpp::export]]
-bool Different (const string & seq1, const string & seq2,
-		bool skip_missing = false, bool nucleic_acid = false)
-// Ask if two strings are different.  While this can normally be done by asking
-// if (seq1 != seq2) {}, missing data poses a problem here.  If skip-missing == 1,
-// missing data (the 'N' character for nucleotide data, 'X' for amino acid)
-// are not used to determine if the sequences are different.  If nucleic_acid ==1,
-// nucleotide data are assumed, if nucleic_acid==0, protein data are assumed.  
-// \note case-insensitive
-// \return true if the seqs are different, false otherwise.  If the two sequences
-// are of different length, true is returned.
+bool Different (const std::string& seq1, const std::string& seq2, bool skip_missing = false, bool nucleic_acid = false)
+
 {
       if(! (seq1.length () == seq2.length ()))
 	return true;
@@ -76,14 +68,8 @@ bool Different (const string & seq1, const string & seq2,
 }
 
 // [[Rcpp::export]]
-unsigned NumDiffs (const string & seq1, const string & seq2,
-		   bool skip_missing = false, bool nucleic_acid = false)
-    /*
-      \return the number of differences between two strings.  Can skip missing
-      data in the same fashion as Comparisons::Different.  If one sequence is shorter
-      than the other, the number of positions compared is the length of the shorter 
-      sequence.
-    */
+unsigned NumDiffs (const std::string & seq1, const std::string & seq2, bool skip_missing = false, bool nucleic_acid = false)
+    
 {
       unsigned ndiff = 0;
       size_t len = seq1.length();
@@ -119,7 +105,7 @@ char toChar(int x) {
 
     
 // [[Rcpp::export]]
-string TsTv (int i, int j)
+std::string TsTv (int i, int j)
 {
       if( ! (i<=3 && j <= 3)){ 
 	// catch a call of TsTv without using nucToInt. 

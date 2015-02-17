@@ -1,32 +1,32 @@
-/*
+//
+//
+// Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+//
+// Remove the brackets to email me.
+//
+// This file is part of libsequence.
+//
+// libsequence is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// libsequence is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+//
+//
+// Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+// in orthologr without using external libraries from libsequence.
+//
+// All changes are also free under the terms of GNU General Public License
+// version 3 of the License, or any later version.
 
-Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
 
-Remove the brackets to email me.
-
-This file is part of libsequence.
-
-libsequence is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-libsequence is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
-
-
-Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
-in orthologr without using external libraries from libsequence.
-
-All changes are also free under the terms of GNU General Public License
-version 3 of the License, or any later version.
-
-*/
 
 #include <Rcpp.h>
 #include <assert.h>     /* assert */
@@ -54,11 +54,11 @@ void diverge(const pair<string,string> *seq1,
 	     const pair<std::string,std::string> *seq2,
              GranthamWeights2 *_weights2 = NULL, 
              GranthamWeights3 *_weights3 = NULL){
-  /*
-    go through every aligned, ungapped codon,
-    and calculate divergence.  maintains a running sum of divergence
-    statistics stored a private data to the class
-  */
+ //
+ //   go through every aligned, ungapped codon,
+ //   and calculate divergence.  maintains a running sum of divergence
+ //   statistics stored a private data to the class
+ //
     size_t i, j, ndiff;
     size_t length = seq1->second.length();
 
@@ -110,8 +110,7 @@ void diverge(const pair<string,string> *seq1,
                 //              ndiff = NumDiffs(codon1,codon2);
 
                         //Rcpp::Rcout << "CHECK:NDIFF="<<ndiff<<endl;
-                        if (ndiff == 2
-                            && maxhits >= 2)
+                        if (ndiff == 2 && maxhits >= 2)
                           {	//if codons differ at 2 sites,
                             //use rules of class TwoSubstitutions
                             TwoSubs Double;
@@ -164,15 +163,15 @@ void diverge(const pair<string,string> *seq1,
         
 void omega(const pair<string,string> *seq1, 
            const pair<string,string> *seq2){
-/*
-    calculate values needed to obtain dN and dS.
-    formulae are from Comeron '95 and use the identical notation
-    the rest of the code is just calculating numbers from the data.
-    At first glance, it loodS like this is a lot of code,
-    but these calculations require careful checking, becuase when you
-    have a lot of changes, or very few, you can take logs of negative
-    numbers, or divide by zero, hence calls to isnan() and isinf()
-*/
+//
+//    calculate values needed to obtain dN and dS.
+//    formulae are from Comeron '95 and use the identical notation
+//    the rest of the code is just calculating numbers from the data.
+//    At first glance, it loodS like this is a lot of code,
+//    but these calculations require careful checking, becuase when you
+//    have a lot of changes, or very few, you can take logs of negative
+//    numbers, or divide by zero, hence calls to isnan() and isinf()
+//
   
     double log1, log2;
 
@@ -286,13 +285,13 @@ void omega(const pair<string,string> *seq1,
 
 public:
 
-/*
-    Initialize and calculate synonymous and nonsynonymous distances between 
-    two sequence objects
-    \param seqa an object of type or derived from type const pair<string,string>
-    \param seqb an object of type or derived from type const pair<string,string>
-    \param max maximum number of substitutions per codon to allow in the analysis
-*/
+//
+//    Initialize and calculate synonymous and nonsynonymous distances between 
+//    two sequence objects
+//    \param seqa an object of type or derived from type const pair<string,string>
+//    \param seqb an object of type or derived from type const pair<string,string>
+//    \param max maximum number of substitutions per codon to allow in the analysis
+//
 Comeron95(const pair<string,string> *seq1, 
 	const pair<string,string> *seq2, int max, 
 	const RedundancyCom95 *genetic_code_redundancy){
@@ -348,133 +347,133 @@ Comeron95(const pair<string,string> *seq1,
 }
 
 double dn (void) const
- /*
-  \return the nonsynonymous distance
-  \note 999.0 is returned if dN cannot be calculated
-*/
+//
+//  \return the nonsynonymous distance
+//  \note 999.0 is returned if dN cannot be calculated
+//
 {
       return dN;
 }
 
 double ds (void) const
- /*
-  \return the nonsynonymous distance
-  \note 999.0 is returned if dN cannot be calculated
-*/
+ //
+//  \return the nonsynonymous distance
+//  \note 999.0 is returned if dN cannot be calculated
+//
 {
       return dS;
 }
 
 double ratio (void) const
- /*
-  \return the nonsynonymous distance
-  \note 999.0 is returned if dN cannot be calculated
-*/
+//
+//  \return the nonsynonymous distance
+//  \note 999.0 is returned if dN cannot be calculated
+//
 {
       if( dN==999. || dS==999. || dS==0.) return 999;
       return dN/dS;
 }
  
 double P0 (void) const
-/*
-  \return number of transitions at nondegenerate sites
-*/
+//
+//  \return number of transitions at nondegenerate sites
+//
 {
   return p0;
 }
 
 double P2S (void) const
-/*
-  \return number of transitions at 2-fold, transitional degenerate sites
-*/
+//
+//  \return number of transitions at 2-fold, transitional degenerate sites
+//
 {
   return p2S;
 }
 
 double P2V (void) const
-/*
-  \return number of transitions at  2-fold, transversional degenerate sites
-*/
+//
+//  \return number of transitions at  2-fold, transversional degenerate sites
+//
 {
   return p2V;
 }
 
 double P4 (void) const
-/*
-  \return number of transitions at 4-fold degenerate sites
-*/
+//
+//  \return number of transitions at 4-fold degenerate sites
+//
 {
   return p4;
 }
 
 double Q0 (void) const
-/*
-  \return number of transversion at nondegenerate sites
-*/
+//
+//  \return number of transversion at nondegenerate sites
+//
 {
   return q0;
 }
 
 double Q2S (void) const
-/*
-  \return number of transversion at 2-fold, transitional degenerate sites
-*/
+//
+//  \return number of transversion at 2-fold, transitional degenerate sites
+//
 {
   return q2S;
 }
 
 double Q2V (void) const
-/*
-  \return number of transversion at 2-fold, transversional sites
-*/
+//
+//  \return number of transversion at 2-fold, transversional sites
+//
 {
   return q2V;
 }
 
 double Q4 (void) const
-/*
-  \return number of transversion at 4-fold degenerate sites
-*/
+//
+//  \return number of transversion at 4-fold degenerate sites
+//
 {
   return q4;
 }
  
 double L0 (void) const
-/*
-  \return the number of nondegenerate sites compared
-*/
+//
+//  \return the number of nondegenerate sites compared
+//
 {
   return sites->L0();
 }
 
 double L2S (void) const
-/*
-  \return the number of twofold, transitional-degenerate sites compared
-*/
+//
+//  \return the number of twofold, transitional-degenerate sites compared
+//
 {
   return sites->L2S();
 }
 
 double L2V (void) const
-/*
-  \return the number of twofold, transversional-degenerate sites compared
-*/
+//
+//  \return the number of twofold, transversional-degenerate sites compared
+//
 {
   return sites->L2V();
 }
 
 double L4 (void) const
-/*
-  \return the number of 4-fold degenerate sites compared
-*/
+//
+//  \return the number of 4-fold degenerate sites compared
+//
 {
   return sites->L4();
 }
   
 double as (void) const
-  /*
-    \return corrected synonymous divergence at transitional-degenerate sites
-  */
+//
+//    \return corrected synonymous divergence at transitional-degenerate sites
+//
 {
     if (!isfinite (As))
       return 999.;
@@ -482,9 +481,9 @@ double as (void) const
 }
 
 double aa (void) const
-  /*
-    \return corrected nonsynonymous divergence at tranversioal- and non- degenerate sites
-  */
+//
+//    \return corrected nonsynonymous divergence at tranversioal- and non- degenerate sites
+//
 {
     if (!isfinite (Aa))
       return 999.;
@@ -492,9 +491,9 @@ double aa (void) const
 }
 
 double bs (void) const
-  /*
-    \return corrected synonymous divergence at transversional- and fourfold-  degenerate sites
-  */
+//
+//    \return corrected synonymous divergence at transversional- and fourfold-  degenerate sites
+//
 {
     if (!isfinite (Bs))
       return 999.;
@@ -502,9 +501,9 @@ double bs (void) const
 }
 
 double ba (void) const
-  /*
-    \return corrected nonsynonymous divergence at transitional- and non- degenerate sites
-  */
+//
+//    \return corrected nonsynonymous divergence at transitional- and non- degenerate sites
+//
 {
     if (!isfinite (Ba))
       return 999.;

@@ -50,12 +50,6 @@ bool ambigousNucleotides(const std::string & codon){
   
 // [[Rcpp::export]]
 bool codonPrecondition(const std::string & codon)
-  /*
-    Checks to see if this class can handle the codon.
-    A valid codon is:
-    1.) of length 3, 
-    2.) contains only characters in the set {A,G,C,T} (case sensitive)
-  */
 {
     if ( codon.length() != 3 || !ambigousNucleotides(codon) )
          return true;
@@ -96,7 +90,7 @@ int nucToInt(char c)
  
 
 // [[Rcpp::export]]
-char Universal(string codon)
+char Universal(std::string codon)
   {
     //handle gaps A codon with a single or 2
     //gap characters returns an X, since it's ambiguous,
@@ -288,13 +282,13 @@ char Universal(string codon)
 
  
 // [[Rcpp::export]]
-string TranslateCodon(string codon)
+std::string TranslateCodon(std::string codon)
   {
     //if the range is less than 3 in length (1 codon), return an empty string
     if (codon.length() != 3) 
         return std::string();
 
-    string translation;
+    std::string translation;
 
         codon[0] = char(std::toupper(codon[0]));
         codon[1] = char(std::toupper(codon[1]));

@@ -1,32 +1,31 @@
-/*
+//
+//
+// Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
+//
+// Remove the brackets to email me.
+//
+// This file is part of libsequence.
+//
+// libsequence is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// libsequence is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
+//
+//
+// Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
+// in orthologr without using external libraries from libsequence.
+//
+// All changes are also free under the terms of GNU General Public License
+// version 3 of the License, or any later version.
 
-Copyright (C) 2003-2009 Kevin Thornton, krthornt[]@[]uci.edu
-
-Remove the brackets to email me.
-
-This file is part of libsequence.
-
-libsequence is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-libsequence is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
-
-
-Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
-in orthologr without using external libraries from libsequence.
-
-All changes are also free under the terms of GNU General Public License
-version 3 of the License, or any later version.
-
-*/
 
 #include <Rcpp.h>
 using namespace Rcpp;
@@ -402,10 +401,7 @@ void FillThirdPositionCounts ()
 //so it is left alone for now
 
   double FirstNon (const std::string & codon) const 
-  /*
-    \return number of times the first codon position is non-degenerate
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+
   {
     if(codonPrecondition(codon)) {
         return firstNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -415,10 +411,7 @@ void FillThirdPositionCounts ()
   }
 
   double First2S (const std::string & codon) const 
-  /*
-    \return number of times the first codon position is synonymous via a transition
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return first2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -427,10 +420,7 @@ void FillThirdPositionCounts ()
   }
 
   double First2V (const std::string & codon) const 
-  /*
-    \return number of times the first codon position is synonymous via a transversion
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+ 
   {
     if(codonPrecondition(codon)) 
         return first2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -439,10 +429,7 @@ void FillThirdPositionCounts ()
   }
 
   double ThirdNon (const std::string & codon) const 
-  /*
-    \return number of times the third position is non-degenerate
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return thirdNon[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -451,10 +438,7 @@ void FillThirdPositionCounts ()
   }
 
   double ThirdFour (const std::string & codon) const 
-  /*
-    \return number of times the third position is fourfold-degenerate
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return thirdFour[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -463,10 +447,7 @@ void FillThirdPositionCounts ()
   }
 
   double Third2S (const std::string & codon) const 
-  /*
-    \return number of times the third position is synonymous via a transition
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return third2S[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -475,10 +456,7 @@ void FillThirdPositionCounts ()
   }
 
   double Third2V (const std::string & codon) const 
-  /*
-    \return number of times the third position is synonymous via a transversion
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return third2V[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -487,11 +465,7 @@ void FillThirdPositionCounts ()
   }
 
   double L0_vals (const std::string & codon) const 
-  /*
-    \return the number of non-degenerate positions in \a codon
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-    \note the return value = 1.0+FirstNon(\a codon )+ThirdNon(\a codon)
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return l0_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -500,11 +474,7 @@ void FillThirdPositionCounts ()
   }
 
   double L2S_vals (const std::string & codon) const 
-  /*
-    \return the number of transitional silent sites in \a codon
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-    \note the return value = First2S(\a codon )+Third2S(\a codon )
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return l2S_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -513,11 +483,7 @@ void FillThirdPositionCounts ()
   }
 
   double L2V_vals (const std::string & codon) const 
-  /*
-    \return the number of transversional silent sites in \a codon
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-    \note the return value = First2V(\a codon )+Third2V(\a codon )
-  */
+  
   {
     if(codonPrecondition(codon)) 
         return l2V_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
@@ -526,11 +492,7 @@ void FillThirdPositionCounts ()
   }
 
   double L4_vals (const std::string & codon) const 
-  /*
-    \return the number of fourfold silent sites in \a codon
-    \pre codon is of length 3, is all uppercase, and only contains the characters {A,G,C,T}
-    \note the return value = ThirdFour(\a codon )
-  */
+  
   {
     if(codonPrecondition(codon)){
         return l4_vals[nucToInt(codon[0])][nucToInt(codon[1])][nucToInt(codon[2])];
