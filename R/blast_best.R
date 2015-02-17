@@ -89,11 +89,17 @@
 #' @seealso \code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @import data.table
 #' @export
-blast_best <- function(query_file, subject_file, seq_type = "cds",
-                       format = "fasta", blast_algorithm = "blastp", 
-                       eval = "1E-5", path = NULL, comp_cores = 1,
-                       blast_params = NULL, detailed_output = FALSE,
-                       clean_folders = FALSE){
+blast_best <- function(query_file, 
+                       subject_file, 
+                       seq_type        = "cds",
+                       format          = "fasta", 
+                       blast_algorithm = "blastp", 
+                       eval            = "1E-5", 
+                       path            = NULL, 
+                       comp_cores      = 1,
+                       blast_params    = NULL, 
+                       detailed_output = FALSE,
+                       clean_folders   = FALSE){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -120,8 +126,7 @@ blast_best <- function(query_file, subject_file, seq_type = "cds",
         if(!detailed_output){
                 
                 tryCatch({
-                        besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1],
-                                  by = key(hit_tbl.dt)]
+                        besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1], by = key(hit_tbl.dt)]
         
                         #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
                         data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))

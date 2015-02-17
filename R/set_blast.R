@@ -43,8 +43,14 @@
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}, \code{\link{advanced_makedb}}
 #' @import data.table
 #' @export
-set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
-                      path = NULL, makedb_type = "protein", ...){
+
+set_blast <- function(file, 
+                      seq_type    = "cds",
+                      format      = "fasta", 
+                      makedb      = FALSE,
+                      path        = NULL, 
+                      makedb_type = "protein",
+                      ...){
         
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
         # CONCERNING THE CASE THAT A POTENTIAL USER
@@ -83,99 +89,90 @@ set_blast <- function(file, seq_type = "cds",format = "fasta", makedb = FALSE,
                 # https://github.com/hadley/dplyr/issues/548
                 
                 # omit empty sequences
-                dt <- dt[,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
+                dt <- dt[ ,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
                 
                 # omit sequences taht are not multiples of 3
-                dt <- dt[,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
+                dt <- dt[ ,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
                 
                 # omit sequences consisting of others than ACGT
-                dt <- dt[,.SD[sapply(seqs,is.dnaSequence)]]
+                dt <- dt[ ,.SD[sapply(seqs,is.dnaSequence)]]
                 
                 # translate cds to protein sequences
-                tryCatch(
-{
-        dt[ , aa := transl(seqs), by = geneids]
-        
-}, error = function() {stop(paste0("The input coding sequences could not be translated properly to amino acid sequences.",
-                                   ,"\n"," Please check whether ",file, " stores valid coding sequences."))}
+                tryCatch({
+                        
+                        dt[ , aa := transl(seqs), by = geneids]
+                        
+                        }, error = function(e) {stop("The input coding sequences could not be translated properly to amino acid sequences.",
+                                   ,"\n"," Please check whether ",file, " stores valid coding sequences.")}
                 )
 
         }
-
-
-# read file storing protein sequence -> no translation needed
-if(seq_type == "protein"){
         
-        dt <- data.table::copy(read.proteome(file = file, format = "fasta", ...))
-        data.table::setnames(dt, old = "seqs", new = "aa")
-}
-
-
-if(seq_type == "dna"){
-        
-        dt <- data.table::copy(read.genome(file = file, format = "fasta", ...))
-        
-        # here will come -> CDS prediction
-        # then CDS -> protein translation
-        
-}
-
-
-# determine the file seperator of the current OS
-f_sep <- .Platform$file.sep
-
-
-# WE COULD ALSO INSERT A IF-STATEMENT CHECKING THAT
-# IN CASE THE USER INSERTS AN AA-FASTA FILE,
-# THE TRANSLATION PROCESS IS BEING OMITTED
-
-
-# makedb
-dbname <- vector(mode = "character", length = 1)
-filename <- unlist(strsplit(file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-filename <- filename[length(filename)]
-
-
-if(makedb){
-        if(!file.exists(paste0("_blast_db",f_sep))){ 
+        # read file storing protein sequence -> no translation needed
+        if(seq_type == "protein"){
                 
-                dir.create("_blast_db") 
+                dt <- data.table::copy(read.proteome(file = file, format = "fasta", ...))
+                data.table::setnames(dt, old = "seqs", new = "aa")
+        }
+        
+        if(seq_type == "dna"){
+                
+                dt <- data.table::copy(read.genome(file = file, format = "fasta", ...))
+        
+                # here will come -> CDS prediction
+                # then CDS -> protein translation
+        }
+
+        # WE COULD ALSO INSERT A IF-STATEMENT CHECKING THAT
+        # IN CASE THE USER INSERTS AN AA-FASTA FILE,
+        # THE TRANSLATION PROCESS IS BEING OMITTED
+
+
+        # makedb
+        dbname <- vector(mode = "character", length = 1)
+        filename <- unlist(strsplit(file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+        filename <- filename[length(filename)]
+
+
+     if(makedb){
+        if(!file.exists(file.path(tempdir(),"_blast_db"))){ 
+                
+                dir.create(file.path(tempdir(),"_blast_db")) 
                 
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd,"_blast_db"))
+        setwd(file.path(tempdir(),"_blast_db"))
         
-        dbname <- paste0("out_",filename,"_translate.fasta")
-        seqinr::write.fasta(as.list(dt[ , aa]),
-                            names = dt[ , geneids],
-                            nbchar = 80, open = "w",
-                            file.out = dbname 
+        dbname <- paste0("blastdb_",filename,"_protein.fasta")
+        
+        seqinr::write.fasta( sequences = as.list(dt[ , aa]),
+                             names     = dt[ , geneids],
+                             nbchar    = 80, 
+                             open      = "w",
+                             file.out  = dbname )
+        
+        tryCatch({
+                
+                if(is.null(path)){
+                        system(paste0("makeblastdb -in ", dbname,
+                               " -input_type fasta -dbtype ",db_type," -hash_index"))
+                        
+                } else {
+                        system(paste0("export PATH=",path,"; makeblastdb -in ",
+                               dbname," -input_type fasta -dbtype ",db_type," -hash_index"))
+                }
+                
+                }, error = function(e){ stop("makeblastdb did not work properly. The default parameters are: ","\n",
+                                   "-input_type fasta -dbtype prot .","\n","Please check that you really want to work with a protein database.","\n",
+                                   "Additionally check: ",dbname," .")}
         )
         
-        tryCatch(
-{
-        if(is.null(path)){
-                system(
-                        paste0("makeblastdb -in ", dbname,
-                               " -input_type fasta -dbtype ",db_type," -hash_index")
-                )
-        } else {
-                system(
-                        paste0("export PATH=",path,"; makeblastdb -in ",
-                               dbname," -input_type fasta -dbtype ",db_type," -hash_index")
-                )
-        }
-}, error = function(){ stop(paste0("makeblastdb did not work properly. The default parameters are: \n",
-                                   "-input_type fasta -dbtype prot . \n","Please check that you really want to work with a protein database.\n",
-                                   "Additionally check: ",dbname," ."))}
-        )
+        # return to global working directory
+        setwd(file.path(currwd))
+     }
 
-# return to global working directory
-setwd(file.path(currwd))
-}
-
-return(list(na.omit(dt), dbname))
+     return(list(na.omit(dt), dbname))
 }
 
 

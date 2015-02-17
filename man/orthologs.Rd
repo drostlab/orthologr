@@ -8,7 +8,7 @@ orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, eval = "1E-5", format = "fasta",
   ortho_detection = "RBH", path = NULL, add_params = NULL,
   detailed_output = FALSE, comp_cores = 1, quiet = FALSE,
-  clean_folders = TRUE)
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -46,7 +46,7 @@ Default is \code{detailed_output} = \code{FALSE}.}
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
-shall be removed. Default is \code{clean_folders} = \code{TRUE}.}
+shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes

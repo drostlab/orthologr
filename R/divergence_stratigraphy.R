@@ -85,10 +85,16 @@
 #' @seealso \code{\link{dNdS}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}},
 #'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
-divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
-                                    ortho_detection = "RBH", blast_path = NULL, 
-                                    comp_cores = 1,dnds.threshold = 2, quiet = FALSE, 
-                                    clean_folders = FALSE, ds.values = TRUE){
+divergence_stratigraphy <- function(query_file, 
+                                    subject_file, 
+                                    eval            = "1E-5",
+                                    ortho_detection = "RBH", 
+                                    blast_path      = NULL, 
+                                    comp_cores      = 1,
+                                    dnds.threshold  = 2, 
+                                    quiet           = FALSE, 
+                                    clean_folders   = FALSE, 
+                                    ds.values       = TRUE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -123,7 +129,7 @@ divergence_stratigraphy <- function(query_file, subject_file, eval = "1E-5",
         
         
         if(clean_folders)
-                clean_all_folders(c("_alignment", "_blast_db", "_calculation"))
+                clean_all_folders(c(file.path(tempdir(),"_alignment"), file.path(tempdir(),"_blast_db"), file.path(tempdir(),"_calculation")))
         
         return ( as.data.frame(dm_tbl) )
         

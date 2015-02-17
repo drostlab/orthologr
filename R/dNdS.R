@@ -232,11 +232,17 @@ dNdS <- function(query_file,
                 s_cds <- read.cds( file   = subject_file, 
                                    format = format )
                 
-                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"blastinput.fasta"), format = "fasta")
+                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_qry <- filename_qry[length(filename_qry)]
+                
+                input = paste0("query_",filename_qry,".fasta")
+                
+                q_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",input), format = "fasta")
                 
                 filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename_subj <- filename_subj[length(filename_subj)]
-                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_subj,"_translate.fasta"), format = "fasta")
+                
+                s_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",filename_subj), format = "fasta")
     
         }
         
@@ -267,12 +273,16 @@ dNdS <- function(query_file,
                 filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename_qry <- filename_qry[length(filename_qry)]
                 
-                q_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_qry,"_translate.fasta"), format = "fasta")
+                input_qry = paste0("query_",filename_qry,".fasta")
+                
+                q_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",input_qry), format = "fasta")
                 
                 filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename_subj <- filename_subj[length(filename_subj)]
                 
-                s_aa <- read.proteome(file = paste0("_blast_db",f_sep,"out_",filename_subj,"_translate.fasta"), format = "fasta")
+                input_subj = paste0("query_",filename_subj,".fasta")
+                
+                s_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",input_subj), format = "fasta")
                 
                 
         }
