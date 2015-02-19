@@ -11,6 +11,7 @@
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, 
 #' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
+#' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep. 
 #' @param remote a boolean value specifying whether a remote BLAST search shall be performed.
 #' In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
 #' since a query of only a few genes against NCBI nr database, can consume a lot of time and might cause
@@ -109,7 +110,8 @@ blast <- function(query_file,
                   seq_type        = "cds",
                   format          = "fasta",
                   blast_algorithm = "blastp",
-                  eval            = "1E-5", 
+                  eval            = "1E-5",
+                  max.target.seqs = 500,
                   remote          = FALSE, 
                   db              = NULL, 
                   path            = NULL,
@@ -211,7 +213,7 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                paste0("blastp -db ",database," -query ",input,
-                                                      " -evalue ",eval," -out ", output ," -outfmt 6", 
+                                                      " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                       " -num_threads ", comp_cores)
                                                )
                                 } else {
@@ -219,7 +221,7 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("blastp -db ",database," -query ",input,
-                                                       " -evalue ",eval," -out ", output ," -outfmt 6", 
+                                                       " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )   
                                         
@@ -236,7 +238,7 @@ blast <- function(query_file,
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
                                                        database," -query ",input," -evalue ",
-                                                       eval," -out ", output ," -outfmt 6", 
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores)
                                               )
                                 } else {
@@ -245,7 +247,7 @@ blast <- function(query_file,
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
                                                        database," -query ",input," -evalue ",
-                                                       eval," -out ", output ," -outfmt 6", 
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )
                                         

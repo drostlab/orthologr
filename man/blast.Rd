@@ -5,9 +5,9 @@
 \title{Perform a BLAST+ search}
 \usage{
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", eval = "1E-5", remote = FALSE, db = NULL,
-  path = NULL, comp_cores = 1, blast_params = NULL,
-  clean_folders = FALSE, save.output = NULL)
+  blast_algorithm = "blastp", eval = "1E-5", max.target.seqs = 500,
+  remote = FALSE, db = NULL, path = NULL, comp_cores = 1,
+  blast_params = NULL, clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -26,6 +26,8 @@ Default is \code{format} = \code{"fasta"}.}
 e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep.}
 
 \item{remote}{a boolean value specifying whether a remote BLAST search shall be performed.
 In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,

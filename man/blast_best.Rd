@@ -60,37 +60,37 @@ are used to speed up best hit computations.
 \dontrun{
 
 # performing gene orthology inference using the best hit (BH) method
-blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
 
 
 # performing gene orthology inference using the best hit (BH) method starting with protein sequences
-blast_best(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+blast_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-           seq_type = "protein")
+           seq_type     = "protein")
 
 
 
 # getting the entire BLAST table as output using the argument 'detailed_output = TRUE'
-blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+blast_best(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
            detailed_output = TRUE)
 
 
 
 # use multicore processing
-blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-           comp_cores = 2)
+           comp_cores   = 2)
 
 
 
 # performing gene orthology inference using the best hit (BH) method and external
 # blastp path
-blast_best(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-           path = "path/to/blastp/")
+           path         = "path/to/blastp/")
 
 
 }
