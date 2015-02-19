@@ -30,7 +30,9 @@ The following interfaces are (yet) implemented in the `orthologs()` function:
 
 ### BLAST based methods:
 
-- BLAST reciprocal best hit (RBH)
+- BLASTp best hit (BH)
+
+- BLASTp reciprocal best hit (RBH)
 
 - DELTA-BLAST reciprocal best hit (DELTA)
 
@@ -122,7 +124,8 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           seq_type        = "protein", 
           ortho_detection = "RBH", 
           path            = "here/path/to/blastp", 
-          clean_folders   = FALSE)
+          clean_folders   = FALSE,
+          comp_cores      = 1)
 
 
 ```
@@ -141,8 +144,8 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "RBH", 
-          comp_cores      = 2, 
-          clean_folders   = FALSE)
+          clean_folders   = FALSE,
+          comp_cores      = 1)
 
 
 ```
@@ -180,12 +183,64 @@ are removed after analyses.
 
 ## Program specific use of the orthologs() function
 
-In this section a small examples will illustrate the use
-of the `orthologs()` function for each orthology inference program
-for which an interface is implemented in `orthologr`.
+In this section small examples will illustrate the use
+of the `orthologs()` function for each orthology inference program.
 
 
-### BLAST best reciprocal hit
+### BLASTp best hit
+
+The BLASTp best hit method is a uni-directional BLAST best hit search of a `query organism A` 
+against a `subject organism B` based on the `e-value`.
+
+Orthology Inference using BLASTp best hit can be performed by specifying the argument `ortho_detection = "BH"`
+and one computing core `comp_core = 1`:
+
+```{r,eval=FALSE}
+
+library(orthologr)
+
+# perform orthology inference using BLAST best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "BH", 
+          clean_folders   = TRUE,
+          detailed_output = FALSE,
+          comp_cores      = 1)
+
+
+```
+
+```
+       query_id            subject_id evalue
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00
+10: AT1G01110.2 333544|PACid:16034284  0e+00
+11: AT1G01120.1 918858|PACid:16049140  0e+00
+12: AT1G01140.3 470161|PACid:16036015  0e+00
+13: AT1G01150.1 918855|PACid:16037307 3e-150
+14: AT1G01160.1 918854|PACid:16044153  1e-93
+15: AT1G01170.2 311317|PACid:16052302  3e-54
+16: AT1G01180.1 909860|PACid:16056125  0e+00
+17: AT1G01190.1 311315|PACid:16059488  0e+00
+18: AT1G01200.1 470156|PACid:16041002 3e-172
+19: AT1G01210.1 311313|PACid:16057125  7e-76
+20: AT1G01220.1 470155|PACid:16047984  0e+00
+```
+
+The resulting table stores the orthologous gene pairs and the corresponding e-value of the best hit.
+By specifying `detailed_output = TRUE` more information of the BLAST result can be obtained.
+
+
+### BLASTp best reciprocal hit
 
 The BLAST best reciprocal hit is a bi-directional BLAST best hit search of a `query organism A` 
 against a `subject organism B` based on the `e-value`.
@@ -203,7 +258,7 @@ based on the `e-value` in both BLAST directions, the corresponding tupel `(query
 is retained as orthologous gene pair.
 
 As demonstrated before a simple call of `orthologs()` using `ortho_detection = "RBH"`
-can be performed as follows:
+and one computing core `comp_core = 1` can be performed as follows:
 
 ```{r,eval=FALSE}
 
@@ -215,7 +270,8 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
           ortho_detection = "RBH", 
-          clean_folders   = FALSE)
+          clean_folders   = FALSE,
+          comp_cores      = 1)
 
 
 ```
@@ -262,7 +318,8 @@ RBH <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 
           seq_type          = "protein", 
           ortho_detection   = "RBH",
           detailed_output   = TRUE, 
-          clean_folders     = FALSE)
+          clean_folders     = FALSE,
+          comp_cores        = 1)
 
 
 glimpse(RBH)
@@ -286,9 +343,8 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
 ```
 
 In case you would like to store the corresponding `hit tables` returned by BLAST for
-subsequent analyses, you can specify the `clean_folders = FALSE` argument.
-When `clean_folders` is set to `FALSE`, a folder named `_blast_db` will be created 
-inside the current working directory of your R session storing the corresponding BLAST output.
+subsequent analyses, you can specify the `clean_folders = FALSE` argument. The corresponding
+BLAST hit table can then be found in `file.path(tempdir(),"_blast_db")`.
 
 A detailed overview of further analyses that can be done with the corresponding BLAST output
 can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
@@ -298,19 +354,18 @@ can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/mas
 
 [Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
  
-You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd).
+You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd) and store all `cdd_deltablast.* files` in a folder: `path/to/cdd_database/folder`.
 
-More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the corresponding `cdd_deltablast.* files` need to be stored
-in a folder named `_blast_db` that is accessible from your working directory with `setwd("_blast_db")`. Otherwise the DELTA-BLAST option will not work properly.
+More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `orthologs()` the corresponding path to the `cdd_deltablast.* files` need to be specified in the `cdd.delta` argument.
 
 The DELTA-BLAST best reciprocal hit is a bi-directional DELTA-BLAST best hit search of a `query organism A` 
 against a `subject organism B` based on the `e-value`.
 
 The Algorithm for DELTA-BLAST best reciprocal hit runs as follows:
 
-1) `bh_A <- advanced_blast(A,B)`
+1) `bh_A <- delta.blast(A,B)`
 
-2) `bh_B <- advanced_blast(B,A)`
+2) `bh_B <- delta.blast(B,A)`
 
 3) `join(bh_A,bh_B)` by tupel `(query_id, subject_id)`
 
@@ -318,8 +373,7 @@ In other words, only in case the tuple `(query_id, subject_id)` is returned as b
 based on the `e-value` in both DELTA-BLAST directions, the corresponding tupel `(query_id, subject_id)`
 is retained as orthologous gene pair.
 
-As demonstrated before a simple call of `orthologs()` using `ortho_detection = "DELTA"`
-can be performed as follows:
+As demonstrated before a simple call of `orthologs()` using `ortho_detection = "DELTA"`, the `cdd.path = "path/to/cdd_database/folder"`, and one computing core `comp_core = 1` can be performed as follows:
 
 ```{r,eval=FALSE}
 
@@ -330,8 +384,11 @@ library(orthologr)
 orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type        = "protein", 
-          ortho_detection = "DELTA", 
-          clean_folders   = FALSE)
+          ortho_detection = "DELTA",
+          cdd.path        = "path/to/cdd_database/folder",
+          clean_folders   = FALSE,
+          detailed_output = FALSE,
+          comp_cores      = 1)
 
 
 ```
@@ -361,7 +418,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
 20 AT1G01220.1 470155|PACid:16047984  0e+00
 ```
 
-When you need more parameters returned by `DELTA`, you can specify the `detailed_output = TRUE`
+When you need more parameters returned by `DELTA-BLAST`, you can specify the `detailed_output = TRUE`
 argument to obtain all DELTA-BLAST parameters.
 
 ```{r,eval=FALSE}
@@ -375,8 +432,10 @@ DELTA <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package 
           subject_files     = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
           seq_type          = "protein", 
           ortho_detection   = "DELTA",
+          cdd.path          = "path/to/cdd_database/folder",
           detailed_output   = TRUE, 
-          clean_folders     = FALSE)
+          clean_folders     = FALSE,
+          comp_cores        = 1)
 
 
 glimpse(DELTA)
@@ -405,8 +464,8 @@ $ query_coverage_per_subj (dbl) 100, 100, 100, 99, 100, 100, 100, 100, 100, 100,
 In case you would like to store the corresponding `hit tables` returned by DELTA-BLAST for
 subsequent analyses, you can specify the `clean_folders = FALSE` argument.
 When `clean_folders` is set to `FALSE`, a folder named `_blast_db` will be created 
-inside the current working directory of your R session storing the corresponding DELTA-BLAST output.
-
+inside the `tempdir()` folder of your R session storing the corresponding DELTA-BLAST output.
+The corresponding DELTA-BLAST hit table can then be found in `file.path(tempdir(),"_blast_db")`.
 A detailed overview of further analyses that can be done with the corresponding DELTA-BLAST output
 can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
 
