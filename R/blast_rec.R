@@ -18,6 +18,8 @@
 #' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @param a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+#'  to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
 #' first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
@@ -54,23 +56,32 @@
 #'           
 #' # performing gene orthology inference using the reciprocal best hit (RBH) method
 #' # starting with protein sequences
-#' blast_rec(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#' blast_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type = "protein")
+#'           seq_type     = "protein")
+#' 
+#' 
+#' 
+#' # save the BLAST output file to the current working directory
+#' blast_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           seq_type     = "protein",
+#'           save.output  = getwd())
 #' 
 #' 
 #' 
 #' # use multicore processing
-#' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#' blast_rec(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'            comp_cores = 2)
+#'            comp_cores   = 2)
+#'            
 #'            
 #'            
 #' # performing gene orthology inference using the reciprocal best hit (RBH) method
 #' # and external path to blastp
-#' blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'           path = "path/to/blastp")
+#'           path         = "path/to/blastp")
 #'           
 #'           
 #'           
@@ -90,7 +101,8 @@ blast_rec <- function(query_file,
                       comp_cores      = 1, 
                       blast_params    = NULL, 
                       detailed_output = FALSE, 
-                      clean_folders   = FALSE){
+                      clean_folders   = FALSE,
+                      save.output     = NULL){
         
         orthoA <- blast_best( query_file      = query_file,
                               subject_file    = subject_file, 
@@ -101,7 +113,8 @@ blast_rec <- function(query_file,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
-                              detailed_output = detailed_output )
+                              detailed_output = detailed_output,
+                              save.output     = save.output )
         
         orthoB <- blast_best( query_file      = subject_file,
                               subject_file    = query_file,
@@ -113,7 +126,8 @@ blast_rec <- function(query_file,
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
                               detailed_output = detailed_output,
-                              clean_folders   = clean_folders )
+                              clean_folders   = clean_folders,
+                              save.output     = save.output )
         
         data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
         

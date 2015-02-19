@@ -7,7 +7,7 @@
 blast_rec(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
   comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
-  clean_folders = FALSE)
+  clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -37,6 +37,9 @@ ortholog pairs.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
+
+\item{a}{path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
 }
 \value{
 A data.table as returned by the \code{\link{blast}} function, storing the geneids
@@ -65,23 +68,32 @@ blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 
 # performing gene orthology inference using the reciprocal best hit (RBH) method
 # starting with protein sequences
-blast_rec(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+blast_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein")
+          seq_type     = "protein")
+
+
+
+# save the BLAST output file to the current working directory
+blast_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type     = "protein",
+          save.output  = getwd())
 
 
 
 # use multicore processing
-blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast_rec(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-           comp_cores = 2)
+           comp_cores   = 2)
+
 
 
 # performing gene orthology inference using the reciprocal best hit (RBH) method
 # and external path to blastp
-blast_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-          path = "path/to/blastp")
+          path         = "path/to/blastp")
 
 
 
