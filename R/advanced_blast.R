@@ -107,15 +107,19 @@
 #' 
 #' 
 #' # performing a BLAST search using blastp (default)
-#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2")
+#' advanced_blast(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       blast_algorithm = "blastp", 
+#'       blast_params    = "-evalue 1E-5 -num_threads 2" )
 #'       
 #' # performing a BLAST search using blastp (default) and starting with protein sequences
-#' advanced_blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type = "protein", blast_algorithm = "blastp", 
-#'       blast_params = "-evalue 1E-5 -num_threads 2")       
+#' advanced_blast(
+#'       query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'       seq_type        = "protein", 
+#'       blast_algorithm = "blastp", 
+#'       blast_params    = "-evalue 1E-5 -num_threads 2" )       
 #'  
 #' 
 #'              
@@ -123,9 +127,12 @@
 #' #
 #' # you can also use deltablast to perform BLAST searches
 #' # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"                          
-#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'                blast_algorithm = "deltablast", blast_params = "-evalue 1E-5 -num_threads 2")                                       
+#' advanced_blast(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       blast_algorithm = "deltablast",
+#'       db_path         = "path/to/cdd_files", 
+#'       blast_params    = "-evalue 1E-5 -num_threads 2")                                       
 #'                              
 #'                                                                  
 #'                                                                                                                                          
@@ -133,9 +140,9 @@
 #' library(dplyr)
 #' 
 #' advB <- advanced_blast(
-#'            query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'            seq_type = "cds",blast_algorithm = "blastp", 
+#'            seq_type     = "cds",blast_algorithm = "blastp", 
 #'            blast_params = "-evalue 1E-5 -num_threads 1")
 #'                                  
 #' best_hit <- advB %>% group_by(query_id) %>% summarise(min(evalue))
@@ -147,10 +154,12 @@
 #' library(dplyr)
 #' 
 #' sqlE <- advanced_blast(
-#'              query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'              subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'              seq_type = "cds",blast_algorithm = "blastp", 
-#'              blast_params = "-evalue 1E-5 -num_threads 1", sql_database = TRUE)
+#'              query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'              subject_file    = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'              seq_type        = "cds",
+#'              blast_algorithm = "blastp", 
+#'              blast_params    = "-evalue 1E-5 -num_threads 1", 
+#'              sql_database    = TRUE)
 #'
 #' head(sqlE)
 #' 
@@ -165,10 +174,11 @@
 #'                                                  
 #'                                                                                                   
 #' # using advanced_blast() with external BLAST path                                                                                                                                                   
-#' advanced_blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'                blast_algorithm = "blastp", blast_params = "-evalue 1E-5 -num_threads 2",
-#'                path = "path/to/blastp/")
+#' advanced_blast(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'                blast_algorithm = "blastp", 
+#'                blast_params    = "-evalue 1E-5 -num_threads 2",
+#'                path            = "path/to/blastp/")
 #' 
 #' }
 #'
@@ -176,6 +186,7 @@
 #' the hit table returned by BLAST in this folder.
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 #' @export
+
 advanced_blast <- function(query_file, 
                            subject_file, 
                            seq_type        = "cds",
@@ -197,7 +208,7 @@ advanced_blast <- function(query_file,
                                          "blastx","tblastn","tblastx")))
                 stop("Please choose a valid BLAST mode.")
         
-        if(is.element(subject_file,c("nr","plaza","cdd_delta"))){
+        if(is.element(subject_file,c("nr","nt","plaza","cdd_delta"))){
                 
                 use_ncbi_database <- TRUE
                 
@@ -218,6 +229,9 @@ advanced_blast <- function(query_file,
                                format   = format, 
                                seq_type = seq_type )[[1]]
         
+        if(!is.null(db_path))
+                cdd_files <- list.files(db_path)
+        
         if(!use_ncbi_database){
                 
                 # make a BLASTable databse of the subject
@@ -226,18 +240,31 @@ advanced_blast <- function(query_file,
                                        seq_type    = seq_type, 
                                        makedb      = TRUE, 
                                        makedb_type = makedb_type )[[2]]
+                
+                filename <- unlist(strsplit(subject_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <- filename[length(filename)]
+                dbname <- paste0("blastdb_",filename,"_protein.fasta")
+                
         }
         
         if(use_ncbi_database){
                 
-                if(use_ncbi_database == "nr")
+                if((subject_file == "nr") && (blast_algorithm == "blastp"))
                         database <- "nr" 
                 
-                if(use_ncbi_database == "plaza")
-                        database <- "plaza"
+                if((subject_file == "nt") && (blast_algorithm == "blastn"))
+                        database <- "nt" 
                 
-                if(use_ncbi_database == "cdd_delta")
+                if((subject_file == "plaza") && (blast_algorithm == "blastp"))
+                        database <- "plaza" 
+                
+                if((subject_file == "cdd_delta") && (blast_algorithm == "deltablast"))
                         database <- "cdd_delta" 
+                
+                else {
+                        
+                        stop("Please specify subject_file and blast_algorithm accordingly .")
+                }
                 
         }
         
@@ -284,7 +311,12 @@ advanced_blast <- function(query_file,
         if(taxonomy == TRUE){
                 
                 if(!is.null(db_path)){
-                        system( paste0("export BLASTDB=",db_path,"; ",blast_algorithm," -db ",database," -query ",input,
+                        
+                        file.copy(list.files(),db_path)
+                        
+                        setwd(db_path)
+                        
+                        system( paste0(blast_algorithm," -db ",database," -query ",input,
                                        " -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                        length mismatch gapopen qstart qend sstart send evalue 
@@ -302,8 +334,8 @@ advanced_blast <- function(query_file,
                 }
                 
                 }
-                }, error = function(e){ stop(paste0("taxdb could not be included to the BLAST search. \n",
-                                                   "Please check the validity of the path: ",db_path," .\n",
+                }, error = function(e){ stop(paste0("taxdb could not be included to the BLAST search.","\n",
+                                                   "Please check the validity of the path: ",db_path," .","\n",
                                                    "Additionally, check the validity of: ",database,", ",input,
                                                    ", ",output,", and blast_params: ",blast_params," ."))}
         )
@@ -313,14 +345,32 @@ advanced_blast <- function(query_file,
                         
         if(taxonomy == FALSE){
                 
-                system( paste0(blast_algorithm," -db ",database," -query ",input,
-                               " -out ", output ," ",blast_params, 
-                               " -outfmt '6 qseqid sseqid pident nident length mismatch 
-                               gapopen qstart qend sstart send evalue bitscore score qcovs'")
-                )
+                if(is.null(db_path)){
+                        
+                        system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                " -out ", output ," ",blast_params, 
+                                " -outfmt '6 qseqid sseqid pident nident length mismatch 
+                                gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                              )
+                                
                 
-        }
-
+                }
+                
+                if(!is.null(db_path)){
+                        
+                        file.copy(list.files(),db_path)
+                        
+                        setwd(db_path)
+                        
+                        system( paste0(blast_algorithm," -db ",database," -query ",input,
+                                       " -out ", output ," ",blast_params, 
+                                       " -outfmt '6 qseqid sseqid pident nident length mismatch 
+                                gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                              )
+                        
+                }
+                
+          }
         }, error = function(e){stop("The advanced BLAST search did not work properly.","\n",
                                   "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
         )
@@ -334,8 +384,12 @@ advanced_blast <- function(query_file,
                 
                 if(!is.null(db_path)){     
                         
+                        file.copy(list.files(),db_path)
+                        
+                        setwd(db_path)
+                        
                         system(
-                                paste0("export PATH=",path,"; ","export BLASTDB=",db_path,"; ",blast_algorithm," -db ",
+                                paste0("export PATH=",path,"; ",blast_algorithm," -db ",
                                        database," -query ",input," -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                        length mismatch gapopen qstart qend sstart send evalue bitscore 
@@ -346,21 +400,39 @@ advanced_blast <- function(query_file,
                 
                 if(is.null(db_path)){
                         
-                        system(
-                                paste0("export PATH=",path,"; ",blast_algorithm," -db ",
+                        if(!is.null(db_path)){
+                                
+                                file.copy(list.files(),db_path)
+                                
+                                setwd(db_path)
+                                
+                                system(
+                                       paste0("export PATH=",path,"; ",blast_algorithm," -db ",
                                        database," -query ",input," -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
                                        length mismatch gapopen qstart qend sstart send evalue bitscore 
                                        score qcovs'")
                                 )
+                        }
                         
+                        if(is.null(db_path)){
+                         
+                                system(
+                                        paste0("export PATH=",path,"; ",blast_algorithm," -db ",
+                                               database," -query ",input," -out ", output ," ",blast_params,
+                                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
+                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
+                                       score qcovs'")
+                                )
+                                
+                        }
                         
                 }
                 
                 }
         
-        }, error = function(e){stop("taxdb could not be included to the BLAST search. \n",
-                                          "Please check the validity of the path: ",db_path," .\n",
+        }, error = function(e){stop("taxdb could not be included to the BLAST search.","\n",
+                                          "Please check the validity of the path: ",db_path," .","\n",
                                           "Additionally, check the validity of: ",database,", ",input,",
                                           ",output,", and blast_params: ",blast_params," .")}
         )
@@ -370,13 +442,32 @@ advanced_blast <- function(query_file,
                         
         if(taxonomy == FALSE){
                 
-                system(
-                        paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                if(!is.null(db_path)){
+                        
+                        file.copy(list.files(),db_path)
+                        
+                        setwd(db_path)
+                        
+                        system(
+                               paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
                                database," -query ",input," -out ", output ," ",blast_params,
                                " -outfmt '6 qseqid sseqid pident nident length 
                                mismatch gapopen qstart qend sstart send evalue bitscore 
                                score qcovs'")
                         )
+                }
+                
+                
+                if(is.null(db_path)){
+                 
+                        system(
+                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
+                                       database," -query ",input," -out ", output ," ",blast_params,
+                                       " -outfmt '6 qseqid sseqid pident nident length 
+                               mismatch gapopen qstart qend sstart send evalue bitscore 
+                               score qcovs'")
+                        )  
+                }
                 
         }
         
@@ -439,6 +530,10 @@ advanced_blast <- function(query_file,
                                      new = colNames)
                 
                 data.table::setkeyv(hit_table, c("query_id","subject_id"))
+                
+                all.files <- list.files()
+                
+                unlink(all.files[-which(is.element(all.files,cdd_files))])
                 
                 # return to the global working directory
                 setwd(file.path(currwd))
