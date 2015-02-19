@@ -16,12 +16,13 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.
+#' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
 #' @param add_params a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 #' Default is \code{add_params} = \code{NULL}.
 #' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs. 
-#' Default is \code{detailed_output} = \code{FALSE}.
+#' Default is \code{detailed_output} = \code{TRUE}.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
@@ -100,14 +101,16 @@
 #' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type        = "protein", 
-#'           ortho_detection = "DELTA")
+#'           ortho_detection = "DELTA",
+#'           cdd.path        = "path/to/cdd/database/folder")
 #'           
 #'           
 #' # multicore version          
 #' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type        = "protein", 
-#'           ortho_detection = "DELTA", 
+#'           ortho_detection = "DELTA",
+#'           cdd.path        = "path/to/cdd/database/folder", 
 #'           comp_cores      = 2)          
 #'                      
 #'           
@@ -190,10 +193,11 @@ orthologs <- function(query_file,
                       outgroup_file   = NULL, 
                       eval            = "1E-5", 
                       format          = "fasta",
-                      ortho_detection = "RBH", 
+                      ortho_detection = "RBH",
+                      cdd.path        = NULL,
                       path            = NULL, 
                       add_params      = NULL,
-                      detailed_output = FALSE, 
+                      detailed_output = TRUE, 
                       comp_cores      = 1,
                       quiet           = FALSE, 
                       clean_folders   = FALSE){
@@ -260,6 +264,7 @@ orthologs <- function(query_file,
                         advanced_blast( query_file      = query_file, 
                                         subject_file    = subject_files,
                                         blast_algorithm = "deltablast",
+                                        db_path         = cdd.path,
                                         path            = path, 
                                         blast_params    = pars, 
                                         seq_type        = seq_type,  
@@ -272,6 +277,7 @@ orthologs <- function(query_file,
                         advanced_blast( query_file      = subject_files, 
                                         subject_file    = query_file,
                                         blast_algorithm = "deltablast",
+                                        db_path         = cdd.path,
                                         path            = path, 
                                         blast_params    = pars, 
                                         seq_type        = seq_type,  
