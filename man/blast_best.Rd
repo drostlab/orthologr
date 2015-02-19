@@ -7,7 +7,7 @@
 blast_best(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", path = NULL,
   comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
-  clean_folders = FALSE)
+  clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -39,6 +39,9 @@ ortholog pairs.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
+
+\item{save.output}{a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
 }
 \value{
 A data.table as returned by the \code{blast} function, storing the geneids
@@ -69,6 +72,14 @@ blast_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'or
 blast_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
            seq_type     = "protein")
+
+
+
+# save the BLAST output file to the current working directory
+blast_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+           subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+           seq_type     = "protein",
+           save.output  = getwd())
 
 
 

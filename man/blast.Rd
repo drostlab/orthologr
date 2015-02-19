@@ -48,7 +48,7 @@ that a set of default parameters is used when running BLAST.}
 \item{clean_folders}{a boolean value specifying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 
-\item{save.output}{a path to the location in which the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+\item{save.output}{a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
 }
 \value{

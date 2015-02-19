@@ -19,6 +19,8 @@
 #' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+#' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.
 #' 
@@ -61,6 +63,14 @@
 #' 
 #' 
 #' 
+#' # save the BLAST output file to the current working directory
+#' blast_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'            seq_type     = "protein",
+#'            save.output  = getwd())
+#' 
+#' 
+#' 
 #' # getting the entire BLAST table as output using the argument 'detailed_output = TRUE'
 #' blast_best(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'            subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
@@ -94,12 +104,13 @@ blast_best <- function(query_file,
                        seq_type        = "cds",
                        format          = "fasta", 
                        blast_algorithm = "blastp", 
-                       eval            = "1E-5", 
+                       eval            = "1E-5",
                        path            = NULL, 
                        comp_cores      = 1,
                        blast_params    = NULL, 
                        detailed_output = FALSE,
-                       clean_folders   = FALSE){
+                       clean_folders   = FALSE,
+                       save.output     = NULL){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -107,21 +118,23 @@ blast_best <- function(query_file,
         evalue <- NULL
 
         # default parameters for best hit filtering
-        default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"
+        default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
         
         
         # performing a BLAST search from query against subject: blast(query,subject)
         # using the BLAST parameter: '-max_target_seqs 1' allows to retain
         # only the best hit result and therefore, speeds up the BLAST search process
-        hit_tbl.dt <- blast( query_file    = query_file,
-                             subject_file  = subject_file,
-                             eval          = eval,
-                             seq_type      = seq_type,
-                             format        = format, 
-                             path          = path, 
-                             comp_cores    = comp_cores,
-                             blast_params  = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), default_pars),
-                             clean_folders = clean_folders )
+        hit_tbl.dt <- blast( query_file      = query_file,
+                             subject_file    = subject_file,
+                             eval            = eval,
+                             max.target.seqs = 1,
+                             seq_type        = seq_type,
+                             format          = format, 
+                             path            = path, 
+                             comp_cores      = comp_cores,
+                             blast_params    = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), default_pars),
+                             clean_folders   = clean_folders,
+                             save.output     = save.output)
         
         if(!detailed_output){
                 

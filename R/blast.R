@@ -25,7 +25,7 @@
 #' that a set of default parameters is used when running BLAST.
 #' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
-#' @param save.output a path to the location in which the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+#' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @details This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
 #' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
@@ -287,16 +287,25 @@ blast <- function(query_file,
                   
                   setwd(file.path(currwd))
                   
-                  # save the BLAST output file to path save.output
-                  if(!is.null(save.output))
-                          file.copy(file.path(tempdir(),"_blast_db",output),save.output)
                   
-                  if(clean_folders)
+                  if(clean_folders){
+                          # save the BLAST output file to path save.output
+                          if(!is.null(save.output))
+                                  file.copy(file.path(tempdir(),"_blast_db",output),save.output)
+                          
                           clean_all_folders(file.path(tempdir(),"_blast_db"))
+                  }
+                  
+                  if(!clean_folders){
+                          # save the BLAST output file to path save.output
+                          if(!is.null(save.output))
+                                  file.copy(file.path(tempdir(),"_blast_db",output),save.output)
+                          
+                  }
                   
                   return(hit_table)
                   
-         }, error = function(e){ stop("File ",output, "could not be read correctly.",
+         }, error = function(e){ stop("File ",output, " could not be read correctly.",
                                              " Please check the correct path to ",output,
                                              " or whether BLAST did write the resulting hit table correctly.") }
         )
