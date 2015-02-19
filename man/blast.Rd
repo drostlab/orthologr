@@ -7,7 +7,7 @@
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", remote = FALSE, db = NULL,
   path = NULL, comp_cores = 1, blast_params = NULL,
-  clean_folders = FALSE)
+  clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -45,6 +45,9 @@ that a set of default parameters is used when running BLAST.}
 
 \item{clean_folders}{a boolean value specifying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
+
+\item{save.output}{a path to the location in which the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
 }
 \value{
 A data.table storing the BLAST hit table returned by BLAST.
@@ -74,31 +77,38 @@ problems due to time out errors when submitting too large queries!
 \examples{
 \dontrun{
 # performing a BLAST search using blastp (default)
-blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 
 # performing a BLAST search using blastp (default) using amino acid sequences as input file
-blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-      seq_type = "protein")
+      seq_type     = "protein")
+
+
+# save the BLAST output table in your current working directory
+blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+      seq_type     = "protein",
+      save.output  = getwd())
 
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
-blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      comp_cores = 2)
+      comp_cores   = 2)
 
 
  # running blastp using additional parameters
- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      blast_params = "-max_target_seqs 1")
+ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+       blast_params = "-max_target_seqs 1")
 
 
 # running blastp using additional parameters and an external blastp path
- blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
+ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
 }
 }
 \author{

@@ -24,6 +24,8 @@
 #' that a set of default parameters is used when running BLAST.
 #' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @param save.output a path to the location in which the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+#' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @details This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
 #' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
 #' 
@@ -65,31 +67,38 @@
 #' \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
 #' @examples \dontrun{
 #' # performing a BLAST search using blastp (default)
-#' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #' 
 #' # performing a BLAST search using blastp (default) using amino acid sequences as input file
-#' blast(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#' blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type = "protein")
+#'       seq_type     = "protein")
+#'       
+#'       
+#' # save the BLAST output table in your current working directory
+#' blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'       seq_type     = "protein",
+#'       save.output  = getwd())       
 #'       
 #' # in case you are working with a multicore machine, you can also run parallel
 #' # BLAST computations using the comp_cores parameter: here with 2 cores
-#' blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
 #'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       comp_cores = 2)
+#'       comp_cores   = 2)
 #'       
 #'
 #'  # running blastp using additional parameters
-#'  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_params = "-max_target_seqs 1")
+#'  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'        subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'        blast_params = "-max_target_seqs 1")
 #'
 #'
 #' # running blastp using additional parameters and an external blastp path
-#'  blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")              
+#'  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'        subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'        blast_params = "-max_target_seqs 1", path = "path/to/blastp/")              
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
@@ -106,7 +115,8 @@ blast <- function(query_file,
                   path            = NULL,
                   comp_cores      = 1, 
                   blast_params    = NULL, 
-                  clean_folders   = FALSE){
+                  clean_folders   = FALSE,
+                  save.output     = NULL){
         
         if(!is.element(blast_algorithm,c("blastp","deltablast","tblastn","blastn")))
                 stop("Please choose a valid BLAST mode.")
@@ -142,7 +152,7 @@ blast <- function(query_file,
         # create an internal folder structure for the BLAST process 
         input = paste0("query_",filename,".fasta")
         # input = "blastinput.fasta"
-        output = paste0("blastresult",filename,".csv")
+        output = paste0("blastresult_",filename,".csv")
         
         
         if(!file.exists(file.path(tempdir(),"_blast_db"))){
@@ -274,6 +284,10 @@ blast <- function(query_file,
                   data.table::setkeyv(hit_table, c("query_id","subject_id"))
                   
                   setwd(file.path(currwd))
+                  
+                  # save the BLAST output file to path save.output
+                  if(!is.null(save.output))
+                          file.copy(file.path(tempdir(),"_blast_db",output),save.output)
                   
                   if(clean_folders)
                           clean_all_folders(file.path(tempdir(),"_blast_db"))
