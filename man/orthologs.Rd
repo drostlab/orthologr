@@ -66,6 +66,7 @@ The following interfaces are implemented in the \code{orthologs} function:
 BLAST based methods:
 
 \itemize{
+  \item BLAST best hit (BH)
   \item BLAST reciprocal best hit (RBH)
   \item DELTA-BLAST reciprocal best hit (DELTA)
   \item ProteinOrtho (PO)
@@ -82,18 +83,33 @@ Alignment based methods:
 \examples{
 \dontrun{
 
+
+### BLAST Best Hit
+
+# perform orthology inference using BLAST best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "BH")
+
+
 ### BLAST Reciprocal Best Hit
 
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH")
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "RBH")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "RBH", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "RBH",
+          comp_cores      = 2)
 
 
 
@@ -101,14 +117,18 @@ orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthol
 
 # perform orthology inference using DELTA-BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "DELTA")
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "DELTA")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "DELTA", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "DELTA",
+          comp_cores      = 2)
 
 
 
@@ -120,49 +140,65 @@ subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'ortho
                        system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
                        system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
 
-orthologs(query_file = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
-          subject_files = subject_organisms,
-          seq_type = "protein", ortho_detection = "PO")
+orthologs(query_file      = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
+          subject_files   = subject_organisms,
+          seq_type        = "protein",
+          ortho_detection = "PO")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = subject_organisms,
-          seq_type = "protein", ortho_detection = "PO", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = subject_organisms,
+          seq_type        = "protein",
+          ortho_detection = "PO",
+          comp_cores      = 2)
 
 
 ### Orthology Inference using OrthoMCL
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "OrthoMCL")
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "OrthoMCL")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "OrthoMCL", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "OrthoMCL",
+          comp_cores      = 2)
 
 
 
 ### Orthology Inference using GGSearch
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "GGSEARCH")
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "GGSEARCH")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "GGSEARCH", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "GGSEARCH",
+          comp_cores      = 2)
 
 
 
 ### Orthology Inference using SSearch
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "SSEARCH")
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "SSEARCH")
+
 
 # multicore version
-orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type = "protein", ortho_detection = "SSEARCH", comp_cores = 2)
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "SSEARCH",
+          comp_cores      = 2)
 
 }
 }
