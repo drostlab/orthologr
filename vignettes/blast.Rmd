@@ -887,20 +887,21 @@ be passed to the corresponding `blast_algorithm` based on the [NCBI blast stand-
 
  [Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
 
-You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd).
+You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd) and store all `cdd_deltablast.* files` in a folder: `path/to/cdd_database/folder`.
 
-More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the corresponding `cdd_deltablast.* files` need to be stored
-in a folder named `_blast_db` that is accessible from your working directory with `setwd("_blast_db")`. Otherwise the DELTA-BLAST option will not work properly.
+
+More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the `db_path` argument denoting the path to the folder storing the corresponding `cdd_deltablast.* files` need to be specified.
  
 ```{r,eval=FALSE}
 
 # DELTA-BLAST
 #
 # you can also use deltablast to perform BLAST searches
-# make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"
+# make sure you have specified the the db_path argument to the cdd_deltablast.* files
 advanced_blast(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
                subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-               blast_algorithm = "deltablast", 
+               blast_algorithm = "deltablast",
+               db_path         = "path/to/cdd_files",
                blast_params    = "-evalue 1E-5 -num_threads 2")
 
 
@@ -954,6 +955,123 @@ Adding sequences from FASTA; added 20 sequences in 0.010026 seconds.
 20:            0       1   107       1   107  2e-40       124       313                     100
 21:            0       1  1056       1  1056  0e+00      1765      4571                     100
     gap_openings q_start q_end s_start s_end evalue bit_score score_raw query_coverage_per_subj
+
+```
+
+A more intuitive way (but less flexible) to perform delta-blast searches is to use the `delta.blast()` function.
+The `delta.blast()` function works in two ways. 
+
+1) Use the `cdd_delta` database as additional information by performing `deltablast` searches between
+`query organism A` and `subject organism B`.
+
+2) Perform a `deltablast` search between `query organism A` and the `cdd_delta` database
+
+
+The following example illustrates the first option (A vs B via cdd_delta).
+
+Here the `cdd.path` argument specifies the path to the `cdd_deltablast.* files`:
+
+
+```{r,eval=FALSE}
+# perform a delta-blast serach between A. thaliana and A. lyrata genes
+delta.blast(
+            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+            cdd.path     = "path/to/cdd/database/folder",
+            comp_cores   = 1)
+
+
+```
+
+```
+
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+ 1: AT1G01010.1 333554|PACid:16033839         73.77               346         469         81            9       1   430       1   466  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328         91.06               224         246         22            0       1   246       1   246  3e-88
+ 3: AT1G01030.1 470180|PACid:16054974         95.26               342         359         13            2       1   359       1   355  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793         91.57              1803        1969         95            8       6  1910       2  1963  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489        100.00               213         213          0            0       1   213       1   213 2e-128
+ 6: AT1G01060.3 470177|PACid:16043374         89.51               580         648         58            5       1   646       1   640  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578         93.44               342         366         20            2       1   366       1   362  2e-68
+ 8: AT1G01080.1 909871|PACid:16053217         78.60               235         299         59            1       1   294       1   299  4e-77
+ 9: AT1G01090.1 470171|PACid:16052860         96.77               420         434          8            3       1   429       1   433  0e+00
+10: AT1G01110.2 333544|PACid:16034284         93.56               494         528         34            0       1   528       1   528  0e+00
+11: AT1G01120.1 918858|PACid:16049140         99.24               525         529          4            0       1   529       1   529  0e+00
+12: AT1G01140.3 470161|PACid:16036015         98.45               446         453          6            1       1   452       1   453 9e-179
+13: AT1G01150.1 470177|PACid:16043374         13.33                10          75         51            3     215   289       8    68  1e-07
+14: AT1G01150.1 918855|PACid:16037307         71.88               207         288         71            3       5   292      16   293 3e-120
+15: AT1G01160.1 918854|PACid:16044153         78.65               140         178         32            1       4   175       2   179  4e-45
+16: AT1G01170.2 311317|PACid:16052302         85.57                83          97          0            1       2    84       4   100  5e-54
+17: AT1G01180.1 909860|PACid:16056125         92.58               287         310         20            1       1   307       1   310 8e-156
+18: AT1G01190.1 311315|PACid:16059488         94.00               501         533         31            1       1   533       6   537  0e+00
+19: AT1G01200.1 470156|PACid:16041002         95.80               228         238         10            0       1   238       1   238 2e-114
+20: AT1G01210.1 311313|PACid:16057125         95.33               102         107          5            0       1   107       1   107  2e-40
+21: AT1G01220.1 470155|PACid:16047984         96.69              1021        1056         35            0       1  1056       1  1056  0e+00
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+    bit_score score_raw query_coverage_per_subj
+ 1:       637      1643                     100
+ 2:       257       657                     100
+ 3:       502      1294                     100
+ 4:      2362      6123                      99
+ 5:       357       917                     100
+ 6:      1003      2592                     100
+ 7:       214       544                     100
+ 8:       232       592                     100
+ 9:       658      1698                     100
+10:       763      1971                     100
+11:       747      1928                     100
+12:       504      1298                     100
+13:        43       100                      22
+14:       344       883                      83
+15:       143       361                      88
+16:       158       399                      99
+17:       441      1135                      64
+18:       522      1345                      99
+19:       323       828                     100
+20:       124       313                     100
+21:      1765      4571                     100
+    bit_score score_raw query_coverage_per_subj
+```
+
+The following example illustrates the second option (A vs cdd_delta).
+The difference is the specification of argument `subject_file = "cdd_delta"` instead
+of a second subject organism:
+
+```{r,eval=FALSE}
+# perform a delta-blast serach between A. thaliana and the cdd database
+delta.blast(
+            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+            subject_file = "cdd_delta",
+            cdd.path     = "path/to/cdd/database/folder",
+            comp_cores   = 1)
+
+```
+
+```
+        query_id     subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+  1: AT1G01010.1 gnl|CDD|251251         40.15                55         137         71            4       5   139       3   130  5e-79
+  2: AT1G01020.1 gnl|CDD|252420         35.82                72         201        109            5       6   193       1   194  4e-55
+  3: AT1G01030.1 gnl|CDD|197383         29.70                30         101         66            1      54   154       1    96  1e-42
+  4: AT1G01030.1 gnl|CDD|214977         35.64                36         101         57            2      56   156       1    93  3e-39
+  5: AT1G01030.1 gnl|CDD|251248         37.62                38         101         59            2      56   156       1    97  4e-44
+ ---                                                                                                                                  
+828: AT1G01220.1 gnl|CDD|235243         15.28                22         144        105            3     742   879       9   141  1e-09
+829: AT1G01220.1 gnl|CDD|235407         17.91                65         363        248           14     717  1046      24   369  4e-70
+830: AT1G01220.1 gnl|CDD|237766         13.83                39         282        187           10     757  1035      32   260  2e-13
+831: AT1G01220.1 gnl|CDD|249743         35.29                24          68         43            1     818   885       1    67  1e-17
+832: AT1G01220.1 gnl|CDD|256035         33.33                11          33         16            1     716   748      17    43  1e-10
+     bit_score score_raw query_coverage_per_subj
+  1:     243.0       620                      31
+  2:     177.0       450                      76
+  3:     145.0       366                      28
+  4:     136.0       342                      28
+  5:     149.0       376                      28
+ ---                                            
+828:      59.2       142                      13
+829:     239.0       610                      31
+830:      70.8       172                      26
+831:      79.6       195                       6
+832:      59.2       142                       3
 
 ```
 
