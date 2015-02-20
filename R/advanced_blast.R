@@ -261,10 +261,10 @@ advanced_blast <- function(query_file,
                 if((subject_file == "cdd_delta") && (blast_algorithm == "deltablast"))
                         database <- "cdd_delta" 
                 
-                else {
-                        
-                        stop("Please specify subject_file and blast_algorithm accordingly .")
-                }
+#                 else {
+#                         
+#                         stop("Please specify subject_file and blast_algorithm accordingly .")
+#                 }
                 
         }
         
