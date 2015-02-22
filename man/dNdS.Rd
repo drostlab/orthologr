@@ -5,10 +5,10 @@
 \title{Compute dNdS values for two organisms}
 \usage{
 dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
-  ortho_detection = "RBH", blast_params = NULL, blast_path = NULL,
-  eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple",
-  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
-  codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
+  ortho_detection = "RBH", cdd.path = NULL, blast_params = NULL,
+  blast_path = NULL, eval = "1E-5", ortho_path = NULL,
+  aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
+  aa_aln_params = NULL, codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
   dnds_est.method = "YN", comp_cores = 1, quiet = FALSE,
   clean_folders = FALSE)
 }
@@ -28,6 +28,8 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+
+\item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
 
 \item{blast_params}{a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}.}
 
@@ -154,27 +156,38 @@ The \code{dNdS()} function can be used choosing the folllowing options:
 # 3) pal2nal for codon alignments
 # 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
 # 5) single core processing 'comp_cores = 1'
-dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH", aa_aln_type = "multiple",
-aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal",
-dnds_est.method = "YN", comp_cores = 1)
+dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH",
+     aa_aln_type     = "multiple",
+     aa_aln_tool     = "clustalw",
+     codon_aln_tool  = "pal2nal",
+     dnds_est.method = "YN",
+     comp_cores      = 1 )
 
 
 # running dNdS using the 'aa_aln_path' argument to specify the path to
 # the corresponding alignment tool
-dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH", aa_aln_type = "multiple",
-aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH",
+     aa_aln_type     = "multiple",
+     aa_aln_tool     = "clustalw",
+     aa_aln_path     = "/path/to/clustalw/",
+     codon_aln_tool  = "pal2nal",
+     dnds_est.method = "YN",
+     comp_cores      = 2 )
 
 # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
-dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-ortho_detection = "RBH", aa_aln_type = "multiple",
-aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH",
+     aa_aln_type     = "multiple",
+     aa_aln_tool     = "clustalw",
+     aa_aln_path     = "/path/to/clustalw/",
+     codon_aln_tool  = "pal2nal",
+     dnds_est.method = "YN",
+     comp_cores      = 2 )
 
 }
 }
@@ -198,7 +211,7 @@ Pages H, Aboyoun P, Gentleman R and DebRoy S. Biostrings: String objects represe
 matching algorithms. R package version 2.32.1.
 }
 \seealso{
-\code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+\code{\link{divergence_stratigraphy}}, \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 \code{\link{blast_rec}}, \code{\link{read.cds}}
 }
 
