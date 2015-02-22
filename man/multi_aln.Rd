@@ -137,87 +137,107 @@ returns a file in clustal format *.aln. This is only important when \code{get_al
 # CLUSTALW Example:
 
 # in case the default execution path of clustalw runs properly on your system
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalw", get_aln = TRUE)
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalw",
+          get_aln = TRUE)
 
 # in case the default execution path of clustalw is not set within the default path
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalw", get_aln = TRUE, path = "path/to/clustalw/")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalw",
+          get_aln = TRUE,
+          path    = "path/to/clustalw/")
 
 # running clustalw using additional parameters
 # details: system("clustalw2 -help")
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalw", get_aln = TRUE,
-          params = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalw",
+          get_aln = TRUE,
+          params  = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
 
 
 # T_COFFEE Example:
 
 # in case the default execution path of t_coffee runs properly on your system
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "t_coffee", get_aln = TRUE)
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "t_coffee",
+          get_aln = TRUE)
 
 # in case the default execution path of t_coffee is not set within the default path
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "t_coffee", get_aln = TRUE, path = "path/to/t_coffee/")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "t_coffee",
+          get_aln = TRUE,
+          path    = "path/to/t_coffee/")
 
 # running t_coffee using additional parameters
 # details: http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "t_coffee", get_aln = TRUE,
-          params = "-mode expresso")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "t_coffee",
+          get_aln = TRUE,
+          params  = "-mode expresso")
 
 
 
 # MUSCLE Example:
 
 # in case the default execution path of muscle runs properly on your system
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "muscle", get_aln = TRUE)
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "muscle",
+          get_aln = TRUE)
 
 # in case the default execution path of muscle is not set within the default path
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "muscle", get_aln = TRUE, path = "path/to/muscle/")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "muscle",
+          get_aln = TRUE,
+          path    = "path/to/muscle/")
 
 # running muscle using additional parameters
 # details: http://www.drive5.com/muscle/manual/
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "muscle", get_aln = TRUE,
-          params = "-diags -clwstrict")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "muscle",
+          get_aln = TRUE,
+          params  = "-diags -clwstrict")
 
 
 # CLUSTALO Example:
 
 # in case the default execution path of clustalo runs properly on your system
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalo", get_aln = TRUE)
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalo",
+          get_aln = TRUE)
 
 # in case the default execution path of clustalo is not set within the default path
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalo", get_aln = TRUE, path = "path/to/clustalo/")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalo",
+          get_aln = TRUE,
+          path    = "path/to/clustalo/")
 
 # running clustalo using additional parameters
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "clustalo", get_aln = TRUE,
-          params = "--outfmt clu")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalo",
+          get_aln = TRUE,
+          params  = "--outfmt clu")
 
 
 
 # MAFFT Example:
 
 # in case the default execution path of mafft runs properly on your system
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "mafft", get_aln = TRUE)
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "mafft",
+          get_aln = TRUE)
 
 # in case the default execution path of mafft is not set within the default path
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "mafft", get_aln = TRUE, path = "path/to/mafft/")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "mafft",
+          get_aln = TRUE,
+          path    = "path/to/mafft/")
 
 # running mafft using additional parameters
 # details: http://www.drive5.com/mafft/manual/
-multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          tool = "mafft", get_aln = TRUE,
-          params = "--maxiterate 1 --clustalout")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "mafft",
+          get_aln = TRUE,
+          params  = "--maxiterate 1 --clustalout")
 
 
 }
