@@ -318,8 +318,8 @@ multi_aln <- function(file,
                 
                 
                 # test whether the connection to clustalw works
-#                 tryCatch(
-#                 {
+                 tryCatch({
+                         
                        if(is.null(path)){
                                
                                # if no specific parameters are set,
@@ -330,10 +330,12 @@ multi_aln <- function(file,
                                        # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
                                        
                                         # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
-                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
+                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"), 
+                                               show.output.on.console = FALSE)
                                } else {
                                        # add additional parameters when running clustalw
-                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",params))                                       
+                                      system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",params), 
+                                             show.output.on.console = FALSE)                                       
                                }
                         } else {
                                 
@@ -343,24 +345,24 @@ multi_aln <- function(file,
                                         
                                         # use the default parameters when running clustalw
                                         system(
-                                                paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                                file," -outfile=",file.out," -quiet")
-                                        )
+                                               paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
+                                               file," -outfile=",file.out," -quiet"), 
+                                               show.output.on.console = FALSE)
                                 } else {
                                         
                                         # add additional parameters when running clustalw
                                         system(
-                                                paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                                       file," -outfile=",file.out," ",params)
-                                        )    
+                                               paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
+                                               file," -outfile=",file.out," ",params), 
+                                               show.output.on.console = FALSE)   
                                 }
                         }
                        
                        if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                        
-#                 },error = function(){ stop(paste0("Please check the correct path to ",tool,
-#                                                    "... the interface call did not work properly.") )}
-#                 )
+                 },error = function(e){ stop("Please check the correct path to ",tool,
+                                              "... the interface call did not work properly.") }
+                 )
                 
                 
                 
@@ -372,8 +374,8 @@ multi_aln <- function(file,
                                         aln <- seqinr::read.alignment(file.out, format = "clustal")
                                         return(aln)
                                         
-                                }, error = function(){stop(paste0("Something went wront with ",tool," .\n",
-                                                                   file.out, " could not be read properly."))}
+                                }, error = function(e){stop("Something went wront with ",tool," .","\n",
+                                                            file.out, " could not be read properly.")}
                         )
                 }
         }
