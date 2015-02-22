@@ -12,6 +12,7 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
@@ -136,37 +137,50 @@
 #' # 3) pal2nal for codon alignments
 #' # 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
 #' # 5) single core processing 'comp_cores = 1'
-#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' ortho_detection = "RBH", aa_aln_type = "multiple",
-#' aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
-#' dnds_est.method = "YN", comp_cores = 1)
+#' dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'      ortho_detection = "RBH", 
+#'      aa_aln_type     = "multiple",
+#'      aa_aln_tool     = "clustalw", 
+#'      codon_aln_tool  = "pal2nal", 
+#'      dnds_est.method = "YN", 
+#'      comp_cores      = 1 )
 #' 
 #' 
 #' # running dNdS using the 'aa_aln_path' argument to specify the path to
 #' # the corresponding alignment tool
-#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' ortho_detection = "RBH", aa_aln_type = "multiple",
-#' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+#' dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'      ortho_detection = "RBH", 
+#'      aa_aln_type     = "multiple",
+#'      aa_aln_tool     = "clustalw", 
+#'      aa_aln_path     = "/path/to/clustalw/",
+#'      codon_aln_tool  = "pal2nal", 
+#'      dnds_est.method = "YN", 
+#'      comp_cores      = 2 )
 #' 
 #' # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
-#' dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#' ortho_detection = "RBH", aa_aln_type = "multiple",
-#' aa_aln_tool = "clustalw", aa_aln_path = "/path/to/clustalw/",
-#' codon_aln_tool = "pal2nal", dnds_est.method = "YN", comp_cores = 2)
+#' dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'      ortho_detection = "RBH", 
+#'      aa_aln_type     = "multiple",
+#'      aa_aln_tool     = "clustalw", 
+#'      aa_aln_path     = "/path/to/clustalw/",
+#'      codon_aln_tool  = "pal2nal", 
+#'      dnds_est.method = "YN", 
+#'      comp_cores      = 2 )
 #' 
 #' }
-#' @seealso \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
+#' @seealso \code{\link{divergence_stratigraphy}}, \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}} 
 #' @export
+
 dNdS <- function(query_file, 
                  subject_file, 
                  seq_type        = "protein",
                  format          = "fasta", 
-                 ortho_detection = "RBH", 
+                 ortho_detection = "RBH",
+                 cdd.path        = NULL,
                  blast_params    = NULL, 
                  blast_path      = NULL, 
                  eval            = "1E-5", 
@@ -239,11 +253,21 @@ dNdS <- function(query_file,
                 
                 q_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",input), format = "fasta")
                 
+                s_aa_tmp <- cds2aa(s_cds)
+                
                 filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename_subj <- filename_subj[length(filename_subj)]
                 
+                seqinr::write.fasta( sequences = as.list(s_aa_tmp[ , aa]),
+                                     names     = s_aa_tmp[ , geneids],
+                                     nbchar    = 80, 
+                                     open      = "w",
+                                     file.out  = file.path(tempdir(),"_blast_db",filename_subj) )
+                                 
                 s_aa <- read.proteome(file = file.path(tempdir(),"_blast_db",filename_subj), format = "fasta")
     
+                  
+        
         }
         
         # use BLAST best reciprocal hit as orthology inference method
@@ -287,97 +311,60 @@ dNdS <- function(query_file,
                 
         }
         
-        # use ProteinOrtho as orthology inference method
-        if(ortho_detection == "PO"){
+        if(!is.element(ortho_detection,c("BH","RBH"))){
                 
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
                 hit.table <- data.table::copy(
                         
                         orthologs( query_file      = query_file, 
                                    subject_files   = subject_file, 
-                                   ortho_detection = "PO",
+                                   ortho_detection = ortho_detection,
                                    eval            = eval, 
                                    path            = ortho_path,
+                                   cdd.path        = cdd.path,
                                    comp_cores      = comp_cores, 
                                    seq_type        = "cds", 
-                                   format          = format, 
-                                   quiet           = quiet )
-                        )
-                
-        }
-        
-        # use OrthoMCL as orthology inference method
-        if(ortho_detection == "OrthoMCL"){
-                
-                hit.table <- data.table::copy(
-                        
-                        orthologs( query_file        = query_file, 
-                                   subject_files     = subject_file, 
-                                   ortho_detection   = "OrthoMCL",
-                                   eval              = eval,
-                                   path              = ortho_path,
-                                   comp_cores        = comp_cores, 
-                                   seq_type          = "cds", 
-                                   format            = format, 
-                                   quiet             = quiet )
-                        )
-                
-        }
-        
-        # use DELTA-BLAST best reciprocal hit as orthology inference method
-        if(ortho_detection == "DELTA"){
-         
-                hit.table <- data.table::copy(
-                        
-                        orthologs( query_file      = query_file, 
-                                   subject_files   = subject_file, 
-                                   ortho_detection = "DELTA",
-                                   eval            = eval, 
-                                   path            = ortho_path,
-                                   comp_cores      = comp_cores, 
-                                   seq_type        = "cds", 
-                                   format          = format, 
-                                   quiet           = quiet )
-                        )
-                
-        }
-        
-        
-        # use GGSEARCH as orthology inference method
-        if(ortho_detection == "GGSEARCH"){
-                
-                hit.table <- data.table::copy(
-                        
-                        orthologs( query_file      = query_file, 
-                                   subject_files   = subject_file, 
-                                   ortho_detection = "GGSEARCH",
-                                   eval            = eval, 
-                                   path            = ortho_path,
-                                   comp_cores      = comp_cores, 
-                                   seq_type        = "cds", 
-                                   format          = format, 
-                                   quiet           = quiet )
+                                   format          = format,
+                                   detailed_output = FALSE,
+                                   quiet           = quiet,
+                                   clean_folders   = FALSE)
                 )
                 
+                
+                q_cds <- read.cds( file   = query_file, 
+                                   format = format )
+                
+                s_cds <- read.cds( file   = subject_file, 
+                                   format = format )
+                
+                
+                q_aa_tmp <- cds2aa(q_cds)
+                s_aa_tmp <- cds2aa(s_cds)
+                
+                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_qry <- filename_qry[length(filename_qry)]
+                
+                filename_subj <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_subj <- filename_subj[length(filename_subj)]
+                
+                seqinr::write.fasta( sequences = as.list(q_aa_tmp[ , aa]),
+                                     names     = q_aa_tmp[ , geneids],
+                                     nbchar    = 80, 
+                                     open      = "w",
+                                     file.out  = file.path(tempdir(),filename_qry) )
+                
+                seqinr::write.fasta( sequences = as.list(s_aa_tmp[ , aa]),
+                                     names     = s_aa_tmp[ , geneids],
+                                     nbchar    = 80, 
+                                     open      = "w",
+                                     file.out  = file.path(tempdir(),filename_subj) )
+                
+                q_aa <- read.proteome(file = file.path(tempdir(),filename_qry), format = "fasta")
+                s_aa <- read.proteome(file = file.path(tempdir(),filename_subj), format = "fasta")
+                
+                
         }
         
-        # use SSEARCH as orthology inference method
-        if(ortho_detection == "SSEARCH"){
-                
-                hit.table <- data.table::copy(
-                        
-                        orthologs( query_file      = query_file, 
-                                   subject_files   = subject_file, 
-                                   ortho_detection = "SSEARCH",
-                                   eval            = eval, 
-                                   path            = ortho_path,
-                                   comp_cores      = comp_cores, 
-                                   seq_type        = "cds", 
-                                   format          = format, 
-                                   quiet           = quiet )
-                )
-                
-        }
         
         data.table::setnames(q_cds, old=c("geneids", "seqs"), new = c("query_id","query_cds"))
         data.table::setnames(s_cds, old=c("geneids", "seqs"), new = c("subject_id","subject_cds"))
