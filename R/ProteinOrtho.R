@@ -109,10 +109,13 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         if(format != "fasta")
                 stop("ProteinOrtho only supports fasta files storing protein sequences *.faa or nucleotide sequences *.fna")
         
-        if(!is.element(seq_type,c("protein","dna")))
-                stop("ProteinOrtho only supports protein sequences or nucleotide sequences. Please choose: 'protein' or 'dna'.")
+        if(!is.element(seq_type,c("protein","dna","cds")))
+                stop("ProteinOrtho only supports protein sequences or nucleotide sequences. Please choose: 'protein', 'cds' or 'dna'.")
         
         if(seq_type == "protein")
+                blast_program <- "blastp+"
+        
+        if(seq_type == "cds")
                 blast_program <- "blastp+"
         
         if(seq_type == "dna")
@@ -121,13 +124,13 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_ProteinOrtho",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_ProteinOrtho"))){
                 
-                dir.create("_ProteinOrtho")
+                dir.create(file.path(tempdir(),"_ProteinOrtho"))
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd, "_ProteinOrtho"))
+        setwd(file.path(tempdir(),"_ProteinOrtho"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -192,20 +195,19 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                         if(length(subject_files) == 1){
                                 
                                 # read the header of the ProteinOrtho output file
-                                PO_tbl_header <- strsplit(readLines(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),n=3),"\t")
+                                PO_tbl_header <- strsplit(readLines(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.blast-graph"),n=3),"\t")
                                 PO_tbl_header <-  lapply(PO_tbl_header,stringr::str_replace_all,"#","")
         
                                 # store the output table of ProteinOrtho
-                                ProteinOrtho_tbl <- data.table::fread(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph"),sep = "\t",skip = 3)
+                                ProteinOrtho_tbl <- data.table::fread(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.blast-graph"),sep = "\t",skip = 3)
                                 data.table::setnames(ProteinOrtho_tbl,old = paste0("V",1:dim(ProteinOrtho_tbl)[2]),
                                                     new = c(PO_tbl_header[[3]],PO_tbl_header[[2]][-c(1:length(PO_tbl_header[[3]]))]))
                                 data.table::setkeyv(ProteinOrtho_tbl,PO_tbl_header[[3]])
-                                hash_tag<-1
-        
+                                
                         } else {
                                 
                                 # read the header of the ProteinOrtho output file
-                                PO_tbl <- strsplit(readLines(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.blast-graph")),"\t")
+                                PO_tbl <- strsplit(readLines(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.blast-graph")),"\t")
                                 hash_tag <- which(lapply(PO_tbl,function(x) stringr::str_detect(x[[1]][1],"#")) == TRUE)
                                 hash_tag <- hash_tag[-c(1,2)]
                                 
@@ -232,11 +234,11 @@ ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-
                                 
                                 ProteinOrtho_tbl[length(hash_tag)] <- list(tmp_df)
                                 
-                                ProteinOrtho_tbl[length(hash_tag) + 1] <- list(read.csv(paste0("_ProteinOrtho",f_sep,"ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
+                                ProteinOrtho_tbl[length(hash_tag) + 1] <- list(read.csv(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
                         }
                         
         if(delete_files)
-                unlink("_ProteinOrtho",recursive = TRUE, force = TRUE)
+                unlink(file.path(tempdir(),"_ProteinOrtho"),recursive = TRUE, force = TRUE)
         
         names(ProteinOrtho_tbl) <- c(paste0("comparison_",1:length(hash_tag)),"proteinortho_tbl")
         
