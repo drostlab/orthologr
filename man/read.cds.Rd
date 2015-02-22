@@ -4,14 +4,14 @@
 \alias{read.cds}
 \title{Read the CDS of a given organism}
 \usage{
-read.cds(file, format, ...)
+read.cds(file, format, delete_corrupt = TRUE, ...)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the CDS.}
 
-\item{format}{a character string specifying the file format used to store the CDS, e.g. "fasta", "gbk".}
+\item{format}{a character string specifying the file format used to store the CDS, e.g. "fasta", "fatsq".}
 
-\item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
+\item{...}{additional arguments that are used by the \code{\link[Biostrings]{readDNAStringSet}} function.}
 }
 \value{
 A data.table storing the gene id in the first column and the corresponding
@@ -24,7 +24,7 @@ This function reads an organism specific CDS stored in a defined file format.
 The \code{read.cds} function takes a string specifying the path to the cds file
 of interest as first argument.
 
-It is possible to read in different proteome file standards such as \emph{fasta} or \emph{genebank}.
+It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 
 CDS stored in fasta files can be downloaded from http://www.ensembl.org/info/data/ftp/index.html.
 }
@@ -36,6 +36,6 @@ Ath.cds <- read.cds(system.file('seqs/ortho_thal_cds.fasta', package = 'ortholog
 }
 }
 \author{
-Hajk-Georg Drost and Sarah Scharfenberg
+Hajk-Georg Drost
 }
 

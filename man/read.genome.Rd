@@ -9,9 +9,9 @@ read.genome(file, format, ...)
 \arguments{
 \item{file}{a character string specifying the path to the file storing the genome.}
 
-\item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".}
+\item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "fastq".}
 
-\item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
+\item{...}{additional arguments that are used by the \code{\link[Biostrings]{readDNAStringSet}} function.}
 }
 \value{
 A data.table storing the gene id in the first column and the corresponding
@@ -24,7 +24,7 @@ This function reads an organism specific genome stored in a defined file format.
 The \code{read.genome} function takes a string specifying the path to the genome file
 of interest as first argument.
 
-It is possible to read in different genome file standards such as \emph{fasta} or \emph{genebank}.
+It is possible to read in different genome file standards such as \emph{fasta} or \emph{fastq}.
 Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/info/genomes.
 }
 \examples{

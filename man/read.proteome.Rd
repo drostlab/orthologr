@@ -9,9 +9,9 @@ read.proteome(file, format, ...)
 \arguments{
 \item{file}{a character string specifying the path to the file storing the proteome.}
 
-\item{format}{a character string specifying the file format used to store the proteome, e.g. "fasta", "gbk".}
+\item{format}{a character string specifying the file format used to store the proteome, e.g. "fasta", "fastq".}
 
-\item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
+\item{...}{additional arguments that are used by the \code{\link[Biostrings]{readAAStringSet}} function.}
 }
 \value{
 A data.table storing the gene id in the first column and the corresponding
@@ -24,7 +24,7 @@ This function reads an organism specific proteome stored in a defined file forma
 The \code{read.proteome} function takes a string specifying the path to the proteome file
 of interest as first argument.
 
-It is possible to read in different proteome file standards such as \emph{fasta} or \emph{genebank}.
+It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 
 Proteomes stored in fasta files can be downloaded from http://www.ebi.ac.uk/reference_proteomes.
 }
@@ -36,6 +36,6 @@ Ath.proteome <- read.proteome(system.file('seqs/ortho_thal_aa.fasta', package = 
 }
 }
 \author{
-Hajk-Georg Drost and Sarah Scharfenberg
+Hajk-Georg Drost
 }
 
