@@ -56,27 +56,25 @@ pairwise_aln <- function(file,
         if(seq_type == "protein")
                 seqtype <- "AA"
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_alignment",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment"))){
                 
-                dir.create("_alignment")
+                dir.create(file.path(tempdir(),"_alignment"))
         }
         
-        if(!file.exists(paste0("_alignment",f_sep,"pairwise_aln",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","pairwise_aln"))){
                 
-                dir.create(paste0("_alignment",f_sep,"pairwise_aln"))
+                dir.create(file.path(tempdir(),"_alignment","pairwise_aln"))
         }
         
         if(is.null(pairwise_aln_name)){
                 
-                file.out <- paste0("_alignment",f_sep,"pairwise_aln",f_sep,tool,"_",seqtype,".aln")
+                file.out <- file.path(tempdir(),"_alignment","pairwise_aln",paste0(tool,"_",seqtype,".aln"))
         }
         
         if(!is.null(pairwise_aln_name)){
                 
-                file.out <- paste0("_alignment",f_sep,"pairwise_aln",f_sep,pairwise_aln_name,"_",tool,"_",seqtype,".aln")    
+                file.out <- file.path(tempdir(),"_alignment","pairwise_aln",paste0(pairwise_aln_name,"_",tool,"_",seqtype,".aln"))    
         }
         
         # Needleman-Wunsch using Biostrings::pairwiseAlignment( type=global)

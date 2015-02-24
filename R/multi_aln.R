@@ -285,27 +285,25 @@ multi_aln <- function(file,
         if(!is.multiple_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_alignment",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment"))){
                 
-                dir.create("_alignment")
+                dir.create(file.path(tempdir(),"_alignment"))
         }
         
-        if(!file.exists(paste0("_alignment",f_sep,"multi_aln",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","multi_aln"))){
                 
-                dir.create(paste0("_alignment",f_sep,"multi_aln"))
+                dir.create(file.path(tempdir(),"_alignment","multi_aln"))
         }
         
         if(is.null(multi_aln_name)){
                 
-                file.out <- paste0("_alignment",f_sep,"multi_aln",f_sep,tool,".aln")
+                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(tool,".aln"))
         }
 
         if(!is.null(multi_aln_name)){
          
-                file.out <- paste0("_alignment",f_sep,"multi_aln",f_sep,multi_aln_name,"_",tool,".aln")    
+                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(multi_aln_name,"_",tool,".aln"))    
         }
         
 # does not work as expected, could be included in another way or not.
@@ -643,7 +641,7 @@ multi_aln <- function(file,
         }
         
       if(clean_folders)
-          clean_all_folders("_alignment")
+          clean_all_folders(file.path(tempdir(),"_alignment"))
 }
 
 

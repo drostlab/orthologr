@@ -478,24 +478,24 @@ compute_dnds <- function(complete_tbl,
         if(!multicore)
                 dNdS_values <- vector(mode = "list", length = nrow(complete_tbl))
         
-        if(!file.exists(paste0("_alignment",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment"))){
                 
-                dir.create("_alignment")
+                dir.create(file.path(tempdir(),"_alignment"))
         }
         
-        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","orthologs"))){
                 
-                dir.create(paste0("_alignment",f_sep,"orthologs"))
+                dir.create(file.path(tempdir(),"_alignment","orthologs"))
         }
         
-        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","orthologs","CDS"))){
                 
-                dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"CDS"))
+                dir.create(file.path(tempdir(),"_alignment","orthologs","CDS"))
         }
         
-        if(!file.exists(paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","orthologs","AA"))){
                 
-                dir.create(paste0("_alignment",f_sep,"orthologs",f_sep,"AA"))
+                dir.create(file.path(tempdir(),"_alignment","orthologs","AA"))
         }
         
                 
@@ -520,11 +520,14 @@ compute_dnds <- function(complete_tbl,
                 aa_aln_name <- paste0("q",i)
 
                 # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
-                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,aa_aln_name,"_cds.fasta")
-                seqinr::write.fasta(sequences = cds_seqs, names = orthologs_names, file.out = cds_session_fasta)
+                cds_session_fasta <- file.path(tempdir(),"_alignment","orthologs","CDS",paste0(aa_aln_name,"_cds.fasta"))
+                
+                seqinr::write.fasta(sequences = cds_seqs, 
+                                    names     = orthologs_names, 
+                                    file.out  = cds_session_fasta)
         
                 # create aa fasta of orthologous gene pair having session name: 'aa_aln_name'
-                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,aa_aln_name,"_aa.fasta")
+                aa_session_fasta <- file.path(tempdir(),"_alignment","orthologs","AA",paste0(aa_aln_name,"_aa.fasta"))
                 
                 seqinr::write.fasta( sequences = aa_seqs, 
                                      names     = orthologs_names, 
@@ -554,7 +557,7 @@ compute_dnds <- function(complete_tbl,
                         aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
                         
                         # align codon -> cds.aln
-                        codon_aln( file_aln       = paste0("_alignment",f_sep,"multi_aln",f_sep,aa_aln_session_name),
+                        codon_aln( file_aln       = file.path(tempdir(),"_alignment","multi_aln",paste0(aa_aln_session_name)),
                                    file_nuc       = cds_session_fasta,
                                    tool           = codon_aln_tool,
                                    format         = "fasta",
@@ -577,7 +580,7 @@ compute_dnds <- function(complete_tbl,
                         aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,"_AA.aln")
                         
                         # align codon -> cds.aln
-                        codon_aln( file_aln       = paste0("_alignment",f_sep,"pairwise_aln",f_sep,aa_aln_session_name),
+                        codon_aln( file_aln       = file.path(tempdir(),"_alignment","pairwise_aln",paste0(aa_aln_session_name)),
                                    file_nuc       = cds_session_fasta, 
                                    tool           = codon_aln_tool,
                                    format         = "fasta",
@@ -593,7 +596,7 @@ compute_dnds <- function(complete_tbl,
                 
                 
                 # compute kaks
-                dNdS.table <- substitutionrate( file           = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
+                dNdS.table <- substitutionrate( file           = file.path(tempdir(),"_alignment","codon_aln",codon_aln_session_name), 
                                                 subst_name     = aa_aln_name, 
                                                 kaks_calc_path = kaks_calc_path,
                                                 est.method     = dnds_est.method, 
@@ -634,14 +637,14 @@ compute_dnds <- function(complete_tbl,
                 aa_aln_name <- paste0("q",i)
                 
                 # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
-                cds_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"CDS",f_sep,aa_aln_name,"_cds.fasta")
+                cds_session_fasta <- file.path(tempdir(),"_alignment","orthologs","CDS",paste0(aa_aln_name,"_cds.fasta"))
                 
                 seqinr::write.fasta( sequences = cds_seqs, 
                                      names     = orthologs_names, 
                                      file.out  = cds_session_fasta )
                 
                 # create aa fasta of orthologous gene pair having session name: 'aa_aln_name'
-                aa_session_fasta <- paste0("_alignment",f_sep,"orthologs",f_sep,"AA",f_sep,aa_aln_name,"_aa.fasta")
+                aa_session_fasta <- file.path(tempdir(),"_alignment","orthologs","AA",paste0(aa_aln_name,"_aa.fasta"))
                 
                 seqinr::write.fasta( sequences = aa_seqs, 
                                      names     = orthologs_names, 
@@ -670,7 +673,7 @@ compute_dnds <- function(complete_tbl,
                         aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,".aln")
                         
                         # align codon -> cds.aln
-                        codon_aln( file_aln       = paste0("_alignment",f_sep,"multi_aln",f_sep,aa_aln_session_name),
+                        codon_aln( file_aln       = file.path(tempdir(),"_alignment","multi_aln",aa_aln_session_name),
                                    file_nuc       = cds_session_fasta, 
                                    tool           = codon_aln_tool,
                                    format         = "fasta",
@@ -693,7 +696,7 @@ compute_dnds <- function(complete_tbl,
                         aa_aln_session_name <- paste0(aa_aln_name,"_",aa_aln_tool,"_AA.aln")
                         
                         # align codon -> cds.aln
-                        codon_aln( file_aln       = paste0("_alignment",f_sep,"pairwise_aln",f_sep,aa_aln_session_name),
+                        codon_aln( file_aln       = file.path(tempdir(),"_alignment","pairwise_aln",aa_aln_session_name),
                                    file_nuc       = cds_session_fasta, 
                                    tool           = codon_aln_tool,
                                    format         = "fasta",
@@ -705,7 +708,7 @@ compute_dnds <- function(complete_tbl,
                 codon_aln_session_name <- paste0(aa_aln_name,"_",codon_aln_tool,".aln")
                 
                 # compute kaks
-                dNdS.table <- substitutionrate( file           = paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_session_name), 
+                dNdS.table <- substitutionrate( file           = file.path(tempdir(),"_alignment","codon_aln",codon_aln_session_name), 
                                                 subst_name     = aa_aln_name, 
                                                 kaks_calc_path = kaks_calc_path,
                                                 est.method     = dnds_est.method, 
@@ -729,7 +732,7 @@ compute_dnds <- function(complete_tbl,
         
 
         if(clean_folders)
-                clean_all_folders(c("_alignment", "_blast_db","_calculation"))
+                clean_all_folders(c(file.path(tempdir(),"_alignment"),file.path(tempdir(),"_blast_db"),file.path(tempdir(),"_calculation")))
 
         # returning the dNdS table as data.table object
         return(dNdS_tbl)

@@ -54,27 +54,33 @@
 #' @examples \dontrun{
 #' 
 #' # estimate the dNdS rate using Li's method
-#' substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                  est.method = "Li", format = "fasta")
+#' substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                  est.method = "Li", 
+#'                  format     = "fasta")
 #'  
 #' # estimate the dNdS rate using Comeron's method
-#' substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                  est.method = "Comeron", format = "fasta")
+#' substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                  est.method = "Comeron", 
+#'                  format     = "fasta")
 #'                  
 #' # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
-#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
-#'                   est.method = "MA", format = "fasta") 
+#'  substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'                   est.method = "MA", 
+#'                   format     = "fasta") 
 #'                   
 #'  # estimate the dNdS rate using Nei and Gojobori's method provided by the 
 #'  # KaKs_Calculator 1.2 program
-#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"), 
-#'                   est.method = "NG", format = "fasta")     
+#'  substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'                   est.method = "NG", 
+#'                   format     = "fasta")     
 #'   
 #'   # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's 
 #'   # method provided by the KaKs_Calculator 1.2 program 
 #'   # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"                 
-#'  substitutionrate(system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                   est.method = "kaks_calc", format = "fasta",kaks_calc.params = "-m NG -m YN")
+#'  substitutionrate(file             = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'                   est.method       = "kaks_calc", 
+#'                   format           = "fasta",
+#'                   kaks_calc.params = "-m NG -m YN")
 #'                   
 #'                                           
 #' }
@@ -99,9 +105,13 @@
 #' @seealso \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 #' \code{\link{blast_rec}}, \code{\link{read.cds}}
 #' @export
-substitutionrate <- function(file, est.method, format = "fasta",
-                             quiet = FALSE, kaks_calc.params = NULL,
-                             kaks_calc_path = NULL, subst_name = NULL){
+substitutionrate <- function(file, 
+                             est.method, 
+                             format           = "fasta",
+                             quiet            = FALSE, 
+                             kaks_calc.params = NULL,
+                             kaks_calc_path   = NULL, 
+                             subst_name       = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
         kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
@@ -120,9 +130,9 @@ substitutionrate <- function(file, est.method, format = "fasta",
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_calculation",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_calculation"))){
                 
-                dir.create("_calculation")
+                dir.create(file.path(tempdir(),"_calculation"))
         }
         
         
@@ -130,20 +140,20 @@ substitutionrate <- function(file, est.method, format = "fasta",
                 
                 if(is.null(subst_name)){
                         
-                        file.out <- paste0("_calculation",f_sep,"gestimout")
+                        file.out <- file.path(tempdir(),"_calculation","gestimout")
                 }
                 
                 if(!is.null(subst_name)){
                         
-                        file.out <- paste0("_calculation",f_sep,subst_name,"_gestimout")    
+                        file.out <- file.path(tempdir(),"_calculation",paste0(subst_name,"_gestimout")  )  
                 }
                 
                 # file in fasta required     
                 if(format != "fasta")
                         stop("To use gestimator an alignment file in fasta format is required.")
                 
-                tryCatch(
-{    
+                tryCatch({
+                        
         # To use gestimator a file in fasta format is required    
         
         # include this line instead of the following, to use internal gestimator
@@ -248,7 +258,7 @@ substitutionrate <- function(file, est.method, format = "fasta",
         ### by: path/'to a folder'/of_interest
         file_name <- unlist(strsplit(file,f_sep))
         file_name <- file_name[length(file_name)]
-        curr_wd <- unlist(strsplit(getwd(),f_sep))
+        curr_wd <- unlist(strsplit(tempdir(),f_sep))
         wdir <- grepl(" ",curr_wd)
         
         if(any(wdir)){
@@ -280,10 +290,10 @@ substitutionrate <- function(file, est.method, format = "fasta",
         
 
         if(is.null(kaks_calc.params))
-                system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks"," -m ",est.method)))
+                system(paste0(KaKs_Calculator," -i ",file.path(tempdir(),"_calculation",paste0(file_name,".axt"))," -o ",file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")," -m ",est.method)))
         
         if(!is.null(kaks_calc.params))
-                system(paste0(KaKs_Calculator," -i ",paste0("_calculation",f_sep,file_name,".axt")," -o ",paste0("_calculation",f_sep,file_name,".axt.kaks ",kaks_calc.params)))
+                system(paste0(KaKs_Calculator," -i ",file.path(tempdir(),"_calculation",paste0(file_name,".axt"))," -o ",file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")," ",kaks_calc.params)))
         
         },error = function(e){ stop("KaKs_Calculator 1.2 couldn't run properly, please check your input files.")}
 
@@ -291,7 +301,7 @@ substitutionrate <- function(file, est.method, format = "fasta",
 
        tryCatch({
                
-        kaks_tbl <- read.csv(paste0("_calculation",f_sep,file_name,".axt.kaks"),sep = "\t", header = TRUE)
+        kaks_tbl <- read.csv(file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")),sep = "\t", header = TRUE)
         kaks_tbl_res <- kaks_tbl[ , 1:5]
         kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
                                    sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[2]) ,
@@ -303,8 +313,8 @@ substitutionrate <- function(file, est.method, format = "fasta",
         
         return(kaks_tbl_res)
         
-        }, error = function(e){stop("Something went wront with KaKs_Calculator .\n",
-                                  paste0("_calculation",f_sep,file_name,".axt.kaks"),
+        }, error = function(e){stop("Something went wront with KaKs_Calculator.","\n",
+                                  file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")),
                                   " could not be read properly.")}
         )
       }

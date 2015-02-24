@@ -40,14 +40,18 @@
 #' # performing a codon alignment using PAL2NAL
 #' codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
 #'                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'), 
-#'                        format = "clustal", tool = "pal2nal", get_aln = TRUE)
+#'                        format   = "clustal", 
+#'                        tool     = "pal2nal", 
+#'                        get_aln  = TRUE)
 #'                        
 #'                        
 #' # running PAL2NAL with additional parameters (e.g. a different codon table)
 #' codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'orthologr'),
 #'                        file_nuc = system.file('seqs/dna_seqs.fasta', package = 'orthologr'), 
-#'                        format = "clustal", tool = "pal2nal", get_aln = TRUE,
-#'                        params = "-codontable 2")
+#'                        format   = "clustal", 
+#'                        tool     = "pal2nal", 
+#'                        get_aln  = TRUE,
+#'                        params   = "-codontable 2")
 #'                         
 #' }
 #'                        
@@ -84,7 +88,7 @@ codon_aln <- function(file_aln,
         # this is not an elegant version, only motivated by this discussion:
         # http://stackoverflow.com/questions/13463103/inst-and-extdata-folders-in-r-packaging
         # is there a better choice?
-        path <- system.file(paste0("pal2nal",f_sep,"pal2nal.v14",f_sep,"pal2nal.pl"), package = "orthologr", mustWork = TRUE)
+        path <- system.file(file.path("pal2nal","pal2nal.v14","pal2nal.pl"), package = "orthologr", mustWork = TRUE)
         #path <- "/exec/pal2nal.v14/"
         
         if(!is.element(tool,c("pal2nal")))
@@ -93,22 +97,22 @@ codon_aln <- function(file_aln,
         if(!is.element(format,c("clustal", "fasta")))
                 stop("Please choose a format that is supported by this function.")
         
-        if(!file.exists(paste0("_alignment",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment"))){
                 
-                dir.create("_alignment")
+                dir.create(file.path(tempdir(),"_alignment"))
         }
         
         
-        if(!file.exists(paste0("_alignment",f_sep,"codon_aln",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_alignment","codon_aln"))){
                 
-                dir.create(paste0("_alignment",f_sep,"codon_aln"))
+                dir.create(file.path(tempdir(),"_alignment","codon_aln"))
         }
         
         if(is.null(codon_aln_name))
-                file.out <- paste0("_alignment",f_sep,"codon_aln",f_sep,tool,".aln")
+                file.out <- file.path(tempdir(),"_alignment","codon_aln",paste0(tool,".aln"))
         
         if(!is.null(codon_aln_name))
-                file.out <- paste0("_alignment",f_sep,"codon_aln",f_sep,codon_aln_name,"_",tool,".aln")
+                file.out <- file.path(tempdir(),"_alignment","codon_aln",paste0(codon_aln_name,"_",tool,".aln"))
         
         
         # test whether the connection to pal2nal works
@@ -125,8 +129,8 @@ codon_aln <- function(file_aln,
                                         system(paste0("perl ",path," ",file_aln," ",file_nuc," -output ",format," >",file.out," ",params))
                                 
                 
-                        },error = function(){ stop(paste0("Please check the correct path to ",tool,
-                                                           "... the interface call did not work properly.") ) }
+                        },error = function(e){ stop("Please check the correct path to ",tool,
+                                                    "... the interface call did not work properly." ) }
                         
                         )
                 }
@@ -141,10 +145,20 @@ codon_aln <- function(file_aln,
                                 dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
                                 return(dna_aln)
                
-                        }, error = function(){stop(paste0("Something went wront with Pal2Nal.pl .\n",
-                                                           file.out, " could not be read properly."))}
+                        }, error = function(e){stop("Something went wront with Pal2Nal.pl .","\n",
+                                                     file.out, " could not be read properly.")}
                 )
         }
 
 }
+
+
+
+
+
+
+
+
+
+
 
