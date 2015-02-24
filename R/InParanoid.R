@@ -57,10 +57,13 @@
 #' @return a list storing the ortholog groups returned by InParanoid.
 #' @seealso \code{\link{orthologs}}, \code{\link{dNdS}}
 #'
-InParanoid <- function(query_file, subject_file, 
-                       outgroup_file = NULL,ip_path = NULL,
-                       seq_type = "protein", format = "fasta", 
-                       delete_files = FALSE){
+InParanoid <- function(query_file, 
+                       subject_file, 
+                       outgroup_file = NULL,
+                       ip_path       = NULL,
+                       seq_type      = "protein", 
+                       format        = "fasta", 
+                       delete_files  = FALSE){
         
         if(format != "fasta")
                 stop("InParanoid only supports fasta files.")
@@ -68,16 +71,14 @@ InParanoid <- function(query_file, subject_file,
         if(!is.element(seq_type,c("protein")))
                 stop("InParanoid only supports protein sequences. Please choose: seq_type = 'protein'.")
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_InParanoid",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_InParanoid"))){
                 
-                dir.create("_InParanoid")
+                dir.create(file.path(tempdir(),"_InParanoid"))
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd, "_InParanoid"))
+        setwd(file.path(tempdir(),"_InParanoid"))
         
         
         if(is.null(ip_path)){
@@ -139,7 +140,7 @@ InParanoid <- function(query_file, subject_file,
                          
                          
                          # read InParanoid output
-                         InParanoid_list <- sapply(readLines(paste0("_InParanoid",f_sep,ip_tbl_name)),function(x) unlist(strsplit(x,"\t")))
+                         InParanoid_list <- sapply(readLines(file.path(tempdir(),"_InParanoid",ip_tbl_name)),function(x) unlist(strsplit(x,"\t")))
                          
 #                          # store the output table of InParanoid
 #                          InParanoid_tbl <- data.table::fread(paste0("_InParanoid",f_sep,ip_tbl_name,sep = "\t",header = FALSE, skip = 1)

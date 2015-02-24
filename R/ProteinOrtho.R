@@ -101,9 +101,15 @@
 #' @seealso \code{\link{orthologs}}
 #' @export
 
-ProteinOrtho <- function(query_file, subject_files, po_params = NULL,eval = "1E-5",
-                         seq_type = "protein", format = "fasta", po_path = NULL, 
-                         comp_cores = 1, delete_files = FALSE){
+ProteinOrtho <- function(query_file, 
+                         subject_files, 
+                         po_params    = NULL,
+                         eval         = "1E-5",
+                         seq_type     = "protein", 
+                         format       = "fasta", 
+                         po_path      = NULL, 
+                         comp_cores   = 1, 
+                         delete_files = FALSE){
         
         
         if(format != "fasta")

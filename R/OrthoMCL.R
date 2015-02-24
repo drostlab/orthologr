@@ -50,9 +50,15 @@
 #' @seealso \code{\link{orthologs}}, \code{\link{dNdS}}
 #' @export
 
-OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1E-5",
-                     seq_type = "protein", format = "fasta", orthomcl_path = NULL, 
-                     comp_cores = 1, delete_files = FALSE){
+OrthoMCL <- function(query_file,
+                     subject_files,
+                     orthomcl_params = NULL,
+                     eval            = "1E-5",
+                     seq_type        = "protein", 
+                     format          = "fasta", 
+                     orthomcl_path   = NULL, 
+                     comp_cores      = 1, 
+                     delete_files    = FALSE){
         
         
         if(format != "fasta")
@@ -61,16 +67,14 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
         if(!is.element(seq_type,c("protein","dna")))
                 stop("OrthoMCL only supports protein sequences or nucleotide sequences. Please choose: 'protein' or 'dna'.")
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
         
-        if(!file.exists(paste0("_OrthoMCL",f_sep))){
+        if(!file.exists(file.path(tempdir(),"_OrthoMCL"))){
                 
-                dir.create("_OrthoMCL")
+                dir.create(file.path(tempdir(),"_OrthoMCL"))
         }
         
         currwd <- getwd()
-        setwd(file.path(currwd, "_OrthoMCL"))
+        setwd(file.path(tempdir(),"_OrthoMCL"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -82,7 +86,10 @@ OrthoMCL <- function(query_file, subject_files, orthomcl_params = NULL,eval = "1
         
         setwd(currwd)
         
+        stop("The OrthoMCL interface is not implemented yet!")
+        
+        
         if(delete_files)
-                clean_all_folders("_OrthoMCL")
+                clean_all_folders(file.path(tempdir(),"_OrthoMCL"))
         
 }
