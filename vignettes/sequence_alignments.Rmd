@@ -12,14 +12,14 @@ vignette: >
 The `orthologr` package provides multiple functions to perform pairwise and multiple sequence alignments. The following functions are implemented in `orthologr`:
 
 
-* `multi_aln()` : An interface function to common multiple alignment tools
-* `pairwise_aln()` : An interface function to common pairwise alignment tools
-* `codon_aln()` : Function to compute a codon alignment
+* `multi_aln()` : Perform Multiple Sequence Alignments
+* `pairwise_aln()` : Perform Pairwise Sequence Alignments
+* `codon_aln()` : Perform Codon Alignments
 
 ## Getting Started
 
 Prior to be able to use all sequence alignment functions implemented in `orthologr`
-you need to install the corresponding alignment tool of interest.
+you need to install corresponding alignment tools of interest.
 The above mentioned functions provide interfaces to the following alignment programs:
 
 ### The `multi_aln()` function
@@ -68,6 +68,77 @@ CLUSTAL 2.1 Multiple Sequence Alignments
 -FULLHELP           :output full help content.
 -ALIGN              :do full multiple alignment.
 
+```
+
+### Perform A Multiple Alignment Using ClustalW
+
+The `multi_aln()` function takes a fasta file storing the genes (proteins) that shall
+be aligned. The `tool` argument specifies the alignment tool that shall be used to perform
+a multiple sequence alignment (in this case `tool = clustalw`). The `get_aln` argument specifies whether or not the alignment shall be printed out to the console. In case `get_aln = FALSE`, the corresponding alignment
+file is stored in the `file.path(tempdir(),_alignment,multi_aln)` directory.
+
+```{r,eval=FALSE}
+# in case the default execution path of clustalw runs properly on your system
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalw",
+          get_aln = TRUE)
+
+```
+
+```
+ CLUSTAL 2.1 Multiple Sequence Alignments
+
+
+
+[1] "Multiple Alignment successfully written in /var/folders/tb/
+v6lh8_g505bfjytt3lvdmvw00000gn/T//RtmpOXdtWL/_alignment/multi_aln/clustalw.aln."
+
+AAMultipleAlignment with 2 rows and 429 columns
+     aln                                                                                           names               
+[1] MEDQVGFGFRPNDEELVGHYLRNKIEGNTSRDVEVAISEVNICSYD...IKIPPSTNTVKQSWIVLENAQWNYLKNMIIGVLLFISVISWIILVG AT1G01010.1
+[2] --------MAASEHRCVGCGFR---------------VKSLFIQYS...IFEP-------TIFLTQFGSLMQYLSYLFRTV-------------- 333554|PACid_1603...
+```
+
+It is also possible to pass additional parameters to the ClustalW call:
+
+```{r,eval=FALSE}
+# running clustalw using additional parameters
+# details: system("clustalw2 -help")
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalw",
+          get_aln = TRUE,
+          params  = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
+
+```
+
+```
+CLUSTAL 2.1 Multiple Sequence Alignments
+
+
+Sequence type explicitly set to Protein
+Sequence format is Pearson
+Sequence 1: AT1G01010.1             429 aa
+Sequence 2: 333554|PACid_16033839   245 aa
+Start of Pairwise alignments
+Aligning...
+
+Sequences (1:2) Aligned. Score:  2
+Guide tree file created:   [/Library/Frameworks/R.framework/Versions/3.1/Resources/library/orthologr/seqs/aa_seqs.dnd]
+
+There are 1 groups
+Start of Multiple Alignment
+
+Aligning...
+Group 1:                     Delayed
+Alignment Score 29
+
+CLUSTAL-Alignment file created  [/var/folders/tb/v6lh8_g505bfjytt3lvdmvw00000gn/T//RtmpOXdtWL/_alignment/multi_aln/clustalw.aln]
+
+[1] "Multiple Alignment successfully written in /var/folders/tb/v6lh8_g505bfjytt3lvdmvw00000gn/T//RtmpOXdtWL/_alignment/multi_aln/clustalw.aln."
+AAMultipleAlignment with 2 rows and 429 columns
+     aln                                                                                             names               
+[1] MEDQVGFGFRPNDEELVGHYLRNKIEGNTSRDVEVAISEVNICSYD...IKIPPSTNTVKQSWIVLENAQWNYLKNMIIGVLLFISVISWIILVG AT1G01010.1
+[2] --------MAASEHRCVGCGFR---------------VKSLFIQYS...IFEP-------TIFLTQFGSLMQYLSYLFRTV-------------- 333554|PACid_1603...
 ```
 
 ### T_COFFEE
@@ -128,6 +199,18 @@ Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
 Fastest possible (nucleotides): -maxiters 1 -diags
 
 ```
+
+
+```{r,eval=FALSE}
+# in case the default execution path of muscle runs properly on your system
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "muscle",
+          get_aln = TRUE)
+
+
+```
+
+
 
 ### ClustalO
 
