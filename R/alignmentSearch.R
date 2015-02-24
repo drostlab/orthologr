@@ -72,9 +72,9 @@ alignmentSearch <- function(query_file,
         f_sep <- .Platform$file.sep
         options <- ""
         
-        if(!file.exists(paste0("_global_orthologs",f_sep))){ 
+        if(!file.exists(file.path(tempdir(),"_global_orthologs"))){ 
                 
-                dir.create("_global_orthologs") 
+                dir.create(file.path(tempdir(),"_global_orthologs")) 
                 
         }
                 
@@ -103,7 +103,7 @@ alignmentSearch <- function(query_file,
                 # write protein sequences to library
                 filename <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                queries <- paste0("_global_orthologs",f_sep,"out_",filename,"_translate.fasta")
+                queries <- file.path(tempdir(),"_global_orthologs",paste0("out_",filename,"_translate.fasta"))
                 
                 seqinr::write.fasta( sequences = as.list(q_dt[ , aa]),
                                      names     = q_dt[ , geneids],
@@ -133,7 +133,7 @@ alignmentSearch <- function(query_file,
                 # write protein sequences to library
                 filename <- unlist(strsplit(subject_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
                 filename <- filename[length(filename)]
-                dbname <- paste0("_global_orthologs",f_sep,"out_",filename,"_translate.fasta")
+                dbname <- file.path(tempdir(),"_global_orthologs",paste0("out_",filename,"_translate.fasta"))
                 
                 seqinr::write.fasta( sequences = as.list(s_dt[ , aa]),
                                      names     = s_dt[ , geneids],
@@ -159,7 +159,7 @@ alignmentSearch <- function(query_file,
                           library_file    = dbname, 
                           path            = path, 
                           options         = options,
-                          parse_output_to = file.path("_global_orthologs","search.out") )
+                          parse_output_to = file.path(tempdir(),"_global_orthologs","search.out") )
         }
         
         if( tool == "ssearch"){
@@ -168,11 +168,11 @@ alignmentSearch <- function(query_file,
                          library_file    = dbname, 
                          path            = path, 
                          options         = options,
-                         parse_output_to = file.path("_global_orthologs","search.out") )
+                         parse_output_to = file.path(tempdir(),"_global_orthologs","search.out") )
         }
         
         # parse output file
-        con  <- file(file.path("_global_orthologs","search.out"), open = "r")
+        con  <- file(file.path(tempdir(),"_global_orthologs","search.out"), open = "r")
         collect <- vector(mode = "list")
         new_names <- c("query_id","subject_id","e_value")
         current.line <- 1
@@ -265,7 +265,7 @@ alignmentSearch <- function(query_file,
         
         if(clean_folders){
                 
-                clean_all_folders("_global_orthologs")
+                clean_all_folders(file.path(tempdir(),"_global_orthologs"))
         }
         
         return(hit.table)
