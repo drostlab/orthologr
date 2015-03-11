@@ -1,7 +1,7 @@
 orthologr
 =========
 
-### A Framework for Orthology Inference, Sequence Alignments, and Population Genomics.
+### A Software Framework for Comparative Genomics.
 
 The `orthologr` package provides interfaces between R and common bioinformatics tools
 used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
