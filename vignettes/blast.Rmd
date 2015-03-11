@@ -31,6 +31,8 @@ The following BLAST interface functions are implemented in `orthologr`:
 * blast() : simple interface function to BLAST+
 * blast_best() : optimized function to perform BLAST+ best hit searches
 * blast_rec() : a function to perform a BLAST+ best reciprocal hit (BRH) searches
+* delta.blast() : Perform a DELTA-BLAST Search
+* blast.nr() : Perform a BLASTp search against NCBI nr
 * advanced_blast() : advanced interface function to BLAST+ (integrated SQLite connection to the output hit table)
 * advanced_makedb() : advanced interface function to makeblastdb
 
