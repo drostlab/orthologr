@@ -59,9 +59,9 @@ Learn `orthologr` by use cases provided by the following tutorials:
 - [Install Prerequisite Tools](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd)
 - [Perform BLAST Searches](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd)
 - [Perform Sequence Alignments](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
-- [Orthology Inference](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
-- [Performing dNdS Estimation](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
-- [Divergence Stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
+- [Perform Orthology Inference](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd)
+- [Perform dNdS Estimation](https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd)
+- [Perform Divergence Stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
 
 
 
