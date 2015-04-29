@@ -47,16 +47,18 @@
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 #' 
 #' The following pipieline resembles the dNdS estimation process:
-#'         
-#' 1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
 #' 
-#' 2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
+#' \itemize{
+#'                 
+#' \item 1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
 #' 
-#' 3) Codon Alignment: e.g. pal2nal program
+#' \item 2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
 #' 
-#' 4) dNdS estimation: e.g. Yang, Z. and Nielsen, R. (2000) \url{http://mbe.oxfordjournals.org/content/17/1/32.short}
+#' \item 3) Codon Alignment: e.g. pal2nal program
 #' 
+#' \item 4) dNdS estimation: e.g. Yang, Z. and Nielsen, R. (2000) \url{http://mbe.oxfordjournals.org/content/17/1/32.short}
 #' 
+#' }
 #' Note: it is assumed that when using \code{dNdS()} all corresponding multiple sequence alignment programs you
 #' want to use are already installed on your machine and are executable via either
 #' the default execution \code{PATH} or you specifically define the location of the executable file
@@ -399,25 +401,28 @@ dNdS <- function(query_file,
 
 
 
-#' @title This function computes the dNdS value of one given pairwise alignment
+#' @title Compute dNdS Values For A Given Pairwise Alignment
 #' @description This function takes a vector containing the
 #' query amino acid sequence, subject amino acid sequence, query CDS sequence, and subject CDS sequence
 #' and then runs the following pipieline:
 #' 
-#' 1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
+#' \itemize{
 #' 
-#' 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
+#' \item 1) Multiple-Alignment of query amino acid sequence and subject amino acid sequence
 #' 
-#' 3) dNdS estimation of the codon alignment returned by 2)
+#' \item 2) Codon-Alignment of the amino acid alignment returned by 1) and query CDS sequence + subject CDS sequence
 #' 
+#' \item 3) dNdS estimation of the codon alignment returned by 2)
+#' 
+#' }
 #' @param complete_tbl a data.table object storing the query_id, subject_id, query_cds (sequence), 
 #' subject_cds (sequence), query_aa (sequence), and subject_aa (sequence) of the organisms that shall be compared.
 #' @param aa_aln_tool a character string specifying the multiple alignment tool that shall be used for pairwise protein alignments.
 #' @param aa_aln_path a character string specifying the path to the corresponding multiple alignment tool.
-#' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
+#' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = \code{"pairwise"}.
 #' Default is \code{aa_aln_type} = "multiple".
 #' @param aa_aln_params a character string specifying additional parameters that shall be passed to the multiple alignment system call.
-#' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = "pal2nal".
+#' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
 #' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
