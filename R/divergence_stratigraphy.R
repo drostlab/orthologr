@@ -1,6 +1,6 @@
 #' @title Perform Divergence Stratigraphy
 #' @description This function takes a query organism and performs
-#' divergence stratigraphy (Quint et al.,2012 ; Drost et al. 2014) against a
+#' divergence stratigraphy (Quint et al.,2012 ; Drost et al. 2015) against a
 #' closely related subject organism.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
@@ -18,71 +18,115 @@
 #'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
 #' @param ds.values a logical value specifying whether divegrence stratum values (ds values) or dNdS values shall be returned
 #' by \code{divergence_stratigraphy}. Default is \code{ds.values} = \code{TRUE}.
-#' @details Introduced by Quint et al., 2012 and extended in Drost et al. 2014, divergence stratigraphy
+#' @param subject.id a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.
+#' @details Introduced by Quint et al., 2012 and extended in Drost et al. 2015, divergence stratigraphy
 #'  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
 #'  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
 #'  stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column.
 #'  
 #'  Following steps are performed to obtain a standard divergence map based on divergence_stratigraphy:
 #'  
-#'  1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
+#'  Divergence Stratigraphy:
 #'  
-#'  2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
+#'  \itemize{
+#'  \item 1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
 #'  
-#'  3) Codon alignments of orthologous genes using PAL2NAL
+#'  \item 2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 #'  
-#'  4) dNdS estimation using Comeron's method (1995)
+#'  \item 3) Codon alignments of orthologous genes using PAL2NAL
 #'  
-#'  5) Assigning dNdS values to divergence strata (deciles)
-#' 
+#'  \item 4) dNdS estimation using Comeron's method (1995)
+#'  
+#'  \item 5) Assigning dNdS values to divergence strata (deciles)
+#' }
 #' @note Although this function has been heavily optimized and parallelized, performing
 #' Divergence Stratigraphy using two genomes will take some computation time.
 #' 
 #' In our experience performing Divergence Stratigraphy using two genomes (one query and one subject genome)
 #' on an 8 core machine can take up to 1,5 - 2 hours.
 #'   
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @author Hajk-Georg Drost
 #' @references
 #'  
 #'  Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature (490): 98-101.
 #'  
-#'  Drost HG et al. (2014). Active maintenance of phylotranscriptomic hourglass patterns in animal and plant embryogenesis.
+#'  Drost HG et al. (2015). Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol Biol Evol. 32 (5): 1221-1231 doi:10.1093/molbev/msv012
 #'  
 #' @examples \dontrun{
 #'  
 #'  
 #'  # performing standard divergence stratigraphy
 #'  divergence_stratigraphy(
-#'       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       eval = "1E-5", ortho_detection = "RBH", comp_cores = 1, 
-#'       quiet = TRUE, clean_folders = TRUE)
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5",
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE)
 #'       
 #'       
 #'       
 #'  # performing standard divergence stratigraphy using the blast_path argument to specify
 #'  # the path to theblastp
 #'  divergence_stratigraphy(
-#'       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       eval = "1E-5", ortho_detection = "RBH",blast_path = "path/to/blastp",
-#'       comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5", 
+#'       ortho_detection = "RBH",
+#'       blast_path      = "path/to/blastp",
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE)
 #'  
 #'  
 #'  
 #'  # Divergence Stratigraphy can also be performed in parallel 
 #'  # (on a multicore machine) using the 'comp_cores' argument
 #'  divergence_stratigraphy(
-#'       query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       eval = "1E-5", ortho_detection = "RBH", comp_cores = 2, 
-#'       quiet = TRUE, clean_folders = TRUE)
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5", 
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 2, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE)
 #'  
 #'  
+#'  
+#'  
+#'  # in case you want a divergence map with DS values and query_id and subject_id
+#'  # you can specify subject.id = TRUE
+#'  # performing standard divergence stratigraphy
+#'  divergence_stratigraphy(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5",
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE,
+#'       subject.id      = TRUE)
+#'       
+#'       
+#'       
+#'       
+#'  # in case you want a divergence map with KaKs values and query_id and subject_id
+#'  # you can specify ds.values = FALSE and subject.id = TRUE
+#'  # performing standard divergence stratigraphy
+#'  divergence_stratigraphy(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5",
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE,
+#'       subject.id      = TRUE)
 #'  }
 #'  
 #' @return A data.table storing the divergence map of the query organism.
-#' @seealso \code{\link{dNdS}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}},
+#' @seealso \code{\link{dNdS}}, \code{\link{DivergenceMap}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
 #'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}
 #' @export
 divergence_stratigraphy <- function(query_file, 
@@ -94,7 +138,8 @@ divergence_stratigraphy <- function(query_file,
                                     dnds.threshold  = 2, 
                                     quiet           = FALSE, 
                                     clean_folders   = FALSE, 
-                                    ds.values       = TRUE){
+                                    ds.values       = TRUE,
+                                    subject.id      = FALSE){
         
         if(!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -113,18 +158,20 @@ divergence_stratigraphy <- function(query_file,
                                        dnds_est.method = "Comeron", 
                                        comp_cores      = comp_cores, 
                                        quiet           = quiet ), 
-                                 dnds.threshold = dnds.threshold)
+                                       dnds.threshold  = dnds.threshold)
         
         
         if(ds.values){
                 # divergence map: standard = col1: divergence stratum, col2: query_id
-                dm_tbl <- DivergenceMap( dNdS_tbl )
+                dm_tbl <- DivergenceMap( dNdS_tbl , subject.id )
         }
         
         if(!ds.values){
                 
-                dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
-                
+                if(!subject.id)
+                        dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
+                if(subject.id)
+                        dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])
         }
         
         
@@ -137,10 +184,11 @@ divergence_stratigraphy <- function(query_file,
 
 
 
-#' @title Sort dNdS values into divergence strata
+#' @title Sort dNdS Values Into Divergence Strata
 #' @description This function takes a data.table returned by dNdS
 #' and sorts the corresponding dNdS value into divergence strata (deciles).
 #' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
+#' @param a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.
 #' @details 
 #' 
 #' Divergence Strata are decile values of corresponding \code{\link{dNdS}} values.
@@ -152,26 +200,32 @@ divergence_stratigraphy <- function(query_file,
 #' This allows a better comparison between Phylostrata and Divergence Strata (for more details see package: \pkg{myTAI}).
 #' 
 #' 
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' 
 #' # get a divergence map of example sequences
-#' dNdS_tbl <-  dNdS( query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                    subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'                    ortho_detection = "RBH", aa_aln_type = "multiple",
-#'                    aa_aln_tool = "clustalw", codon_aln_tool = "pal2nal", 
-#'                    dnds_est.method = "YN", comp_cores = 1 )
+#' dNdS_tbl <- dNdS( 
+#'               query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'               subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'               ortho_detection = "RBH", 
+#'               aa_aln_type     = "multiple",
+#'               aa_aln_tool     = "clustalw", 
+#'               codon_aln_tool  = "pal2nal", 
+#'               dnds_est.method = "YN", 
+#'               comp_cores      = 1 )
 #'                  
 #' divMap <- DivergenceMap( dNdS_tbl )                       
 #' 
-#'               
+#' # in case you want the subject_id as well, you can set
+#' # the argument subject.id = TRUE
+#' divMap <- DivergenceMap( dNdS_tbl = dNdS_tbl, subject.id = TRUE)               
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
 #' @return a data.table storing a standard divergence map.
 #' @import data.table
 #' @export
-DivergenceMap <- function(dNdS_tbl){
+DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -196,8 +250,10 @@ DivergenceMap <- function(dNdS_tbl){
         
         data.table::setnames(dNdS_tbl_divMap, old = "dNdS", new = "divergence_strata")
         
-        return(dNdS_tbl_divMap[ , list(divergence_strata,query_id)])
-        
+        if(!subject.id)
+                return(dNdS_tbl_divMap[ , list(divergence_strata,query_id)])
+        if(subject.id)
+                dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])       
 }
 
 
