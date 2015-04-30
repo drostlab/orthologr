@@ -223,6 +223,8 @@ dNdS <- function(query_file,
         if(!is.dnds_est_method(dnds_est.method))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
         
+        aa <- geneids <- NULL
+        
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
@@ -466,7 +468,7 @@ compute_dnds <- function(complete_tbl,
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        query_id <- subject_id <- query_cds <- subject_cds <- query_aa <- subject_aa <- NULL
+        query_id <- subject_id <- query_cds <- subject_cds <- query_aa <- subject_aa <- aa <- geneids <- NULL
         
         multicore <- (comp_cores > 1)
         
@@ -547,8 +549,6 @@ compute_dnds <- function(complete_tbl,
 #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
 #                 
                 
-                
-              
                 if(aa_aln_type == "multiple"){
                         
                         # align aa -> <aa_aln_tool>.aln
@@ -594,11 +594,7 @@ compute_dnds <- function(complete_tbl,
                                    quiet          = quiet )
                 }
                 
-                
-        
                 codon_aln_session_name <- paste0(aa_aln_name,"_",codon_aln_tool,".aln")
-                
-                
                 
                 # compute kaks
                 dNdS.table <- substitutionrate( file           = file.path(tempdir(),"_alignment","codon_aln",codon_aln_session_name), 
@@ -613,7 +609,6 @@ compute_dnds <- function(complete_tbl,
               )
             }
         }
-
 
         if(multicore){
                 
@@ -636,7 +631,6 @@ compute_dnds <- function(complete_tbl,
                 
                 # storing the query amino acid sequence and subject amino acid sequence of the orthologous gene pair 
                 aa_seqs <- list(complete_tbl[i, query_aa],complete_tbl[i, subject_aa])
-                
                 
                 #aa_aln_name <- paste0("query_",i,"___","subject_",i)
                 aa_aln_name <- paste0("q",i)
@@ -662,8 +656,6 @@ compute_dnds <- function(complete_tbl,
                 #                 
                 #                 Biostrings::writePairwiseAlignments(pairwise_aln, block.width = 60)
                 #       
-                
-
                 
                 if(aa_aln_type == "multiple"){
                         
