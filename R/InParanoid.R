@@ -71,7 +71,6 @@ InParanoid <- function(query_file,
         if(!is.element(seq_type,c("protein")))
                 stop("InParanoid only supports protein sequences. Please choose: seq_type = 'protein'.")
         
-        
         if(!file.exists(file.path(tempdir(),"_InParanoid"))){
                 
                 dir.create(file.path(tempdir(),"_InParanoid"))
@@ -80,32 +79,19 @@ InParanoid <- function(query_file,
         currwd <- getwd()
         setwd(file.path(tempdir(),"_InParanoid"))
         
-        
         if(is.null(ip_path)){
-                
                 if(is.null(outgroup_file)){
-                        
                         system(paste0("perl inparanoid.pl ",query_file," ",subject_file))
-                                
                 } else {
-                                
                         system(paste0("perl inparanoid.pl ",query_file," ",subject_file," ",outgroup_file))
-                        
-                }
-                        
-                
-        } else {
-                
+                  }
+            } else {
                 if(is.null(outgroup_file)){
-                        
-                        system(paste0("perl ",ip_path,f_sep,"inparanoid.pl ",query_file," ",subject_file))
-                
+                        system(paste0("perl ",ip_path,.Platform$file.sep,"inparanoid.pl ",query_file," ",subject_file))
                 } else {
+                       system(paste0("perl ",ip_path,.Platform$file.sep,"inparanoid.pl ",query_file," ",subject_file," ",outgroup_file))
                         
-                        system(paste0("perl ",ip_path,f_sep,"inparanoid.pl ",query_file," ",subject_file," ",outgroup_file))
-                        
-                }
-                                
+                }           
         }
         
         setwd(currwd)
@@ -113,31 +99,24 @@ InParanoid <- function(query_file,
         tryCatch(
                  {
                          # get the query file name
-                         query_name <- unlist(strsplit(query_file,f_sep))
+                         query_name <- unlist(strsplit(query_file,.Platform$file.sep))
                          query_name <- query_name[length(query_name)]
                          
                          # get the subject file name
-                         subject_name <- unlist(strsplit(subject_file,f_sep))
+                         subject_name <- unlist(strsplit(subject_file,.Platform$file.sep))
                          subject_name <- subject_name[length(subject_name)]
                          
                          if(!is.null(outgroup_file)){
-                                 
                                  # get the outgroup file name
-                                 outgroup_name <- unlist(strsplit(outgroup_file,f_sep))
+                                 outgroup_name <- unlist(strsplit(outgroup_file,.Platform$file.sep))
                                  outgroup_name <- outgroup_name[length(outgroup_name)]
-                                 
                          }
-                         
                          
                          if(is.null(outgroup_file)){
-                                 
                                  ip_tbl_name <- paste0("table.",query_name,"-",subject_name)
-                                 
                          } else {
-                                 
                                  ip_tbl_name <- paste0("table.",query_name,"-",subject_name,"-",outgroup_name)
                          }
-                         
                          
                          # read InParanoid output
                          InParanoid_list <- sapply(readLines(file.path(tempdir(),"_InParanoid",ip_tbl_name)),function(x) unlist(strsplit(x,"\t")))
@@ -171,8 +150,6 @@ InParanoid <- function(query_file,
                   }, error = function(e) { stop("The InParanoid_tbl interface call did not terminate properly.",
                                              "Please make sure you passed all parameters correctly to InParanoid_tbl.") }
         )
-
-        
 }
 
 
