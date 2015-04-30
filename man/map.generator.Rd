@@ -5,9 +5,8 @@
 \title{Generate dNdS Maps Between a Query Organism and Multiple Subject Organisms}
 \usage{
 map.generator(query_file, subjects.folder, output.folder, eval = "1E-5",
-  ortho_detection = "RBH", comp_cores = 1, write_table = TRUE,
-  ds.values = FALSE, subject.id = TRUE, progress.bar = TRUE, sep = ";",
-  ...)
+  ortho_detection = "RBH", comp_cores = 1, ds.values = FALSE,
+  subject.id = TRUE, progress.bar = TRUE, sep = ";", ...)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of the query organism.}
