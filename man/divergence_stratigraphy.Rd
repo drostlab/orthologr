@@ -159,6 +159,6 @@ Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature
 }
 \seealso{
 \code{\link{dNdS}}, \code{\link{DivergenceMap}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
-  \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}
+  \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
 }
 
