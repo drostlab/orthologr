@@ -15,9 +15,9 @@ and gene ids in the second column. See \code{\link{read.proteome}} for details.}
 
 \item{nbchar}{number of characters per line.}
 
-\item{as.string}{when set to TRUE sequences are in the form of strings instead of vectors of single characters.}
+\item{open}{mode to open the output file, you can choose from "w" to write into a new file, or "a" to append at the end of an already existing file.}
 
-\item{mode}{to open the output file, use "w" to write into a new file, use "a" to append at the end of an already existing file.}
+\item{as.string}{when set to TRUE sequences are in the form of strings instead of vectors of single characters.}
 }
 \description{
 This function takes a proteome (in data.table notation) as returned by
@@ -27,7 +27,9 @@ This function takes a proteome (in data.table notation) as returned by
 \dontrun{
 
 # read an example proteome
-Ath.proteome <- read.proteome(system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'), format = "fasta")
+Ath.proteome <- read.proteome(
+                      system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+                      format = "fasta")
 
 # use the write.proteome function to store it on your hard drive
 write.proteome(Ath.proteome, "test_proteome.fasta")

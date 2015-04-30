@@ -9,7 +9,7 @@ DivergenceMap(dNdS_tbl, subject.id = FALSE)
 \arguments{
 \item{dNdS_tbl}{a data.table object returned by \code{\link{dNdS}}.}
 
-\item{a}{logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.}
+\item{subject.id}{a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.}
 }
 \value{
 a data.table storing a standard divergence map.
