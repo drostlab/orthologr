@@ -9,6 +9,27 @@ CDS prediction, and phylotranscriptomics (divergence stratigraphy).
 
 ## Fast Installation Guide
 
+Before you can load and install `orthologr` you need to install the following packages from [Bioconductor](http://www.bioconductor.org/):
+
+
+```r
+# install all Bioconductor packages orthologr depends on
+
+# install Bioconductor base packages
+source("http://bioconductor.org/biocLite.R")
+biocLite()
+
+# install package: Biostrings
+biocLite("Biostrings")
+
+# install package: S4Vectors
+source("http://bioconductor.org/biocLite.R")
+biocLite("S4Vectors")
+
+```
+
+Now you can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
+
 ```r
 # install.packages("devtools")
 
@@ -29,20 +50,6 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
-
-# install all Bioconductor packages orthologr depends on
-
-# install Bioconductor base packages
-source("http://bioconductor.org/biocLite.R")
-biocLite()
-
-# install package: Biostrings
-biocLite("Biostrings")
-
-# install package: S4Vectors
-source("http://bioconductor.org/biocLite.R")
-biocLite("S4Vectors")
-
 
 ```
 
