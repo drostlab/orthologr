@@ -49,7 +49,7 @@ biocLite("S4Vectors")
 ## Citation
 
 
-> Drost HG, Gabel A, Grosse I, Quint M (2015). Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. doi:10.1093/molbev/msv012
+> Drost HG, Gabel A, Grosse I, Quint M. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. (2015) 32 (5): 1208-1220. doi:10.1093/molbev/msv012
 
 
 ## Use Cases
