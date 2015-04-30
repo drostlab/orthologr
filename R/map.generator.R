@@ -10,8 +10,6 @@
 #' dNdS computations. Possible options are: \code{ortho_detection} = \code{"BH"} (BLAST best hit), 
 #' \code{ortho_detection} = \code{"RBH"} (BLAST best reciprocal hit), etc.
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
-#' @param write_table a logical value specifying whether or not the corresponding dNdS Map shall be stored
-#' on your hard drive.
 #' @param ds.values a logical value indicating whether divegrence stratum values (ds values) or dNdS values should be returned by \code{\link{divergence_stratigraphy}}. Default is \code{ds.values = FALSE}.
 #' @param progress.bar should a progress bar be shown. Default is \code{progress.bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
