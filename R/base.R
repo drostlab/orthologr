@@ -35,30 +35,20 @@ NULL
 #' 
 #' @seealso \code{\link{divergence_stratigraphy}}, \code{\link{blast}}, \code{\link{blast_best}}, 
 #' \code{\link{blast_rec}}, \code{\link{dNdS}}
-#' @export
+#' 
 clean_all_folders <- function(foldernames){
                 
         if(length(foldernames) > 1){
-                
                 for(i in 1:length(foldernames)){
-                        
                         if(file.exists(foldernames[i])){
-                                
                                 unlink(foldernames[i],recursive = TRUE, force = TRUE)
                         }
-                        
-                        
                 }
-                
         } else {
-                
                 if(file.exists(foldernames)){
-                        
                         unlink(foldernames,recursive = TRUE, force = TRUE)
                 }
-        
         }
-        
 }
 
 
