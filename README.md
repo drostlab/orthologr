@@ -7,7 +7,7 @@ The `orthologr` package provides interface functions between R and common bioinf
 used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
 CDS prediction, and phylotranscriptomics (divergence stratigraphy).
 
-## Fast Installation Guide
+## Installation Guide
 
 Before you can load and install `orthologr` you need to install the following packages from [Bioconductor](http://www.bioconductor.org/):
 
@@ -28,6 +28,8 @@ biocLite("S4Vectors")
 
 ```
 
+### On Unix Based Systems
+
 Now you can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
 
 ```r
@@ -37,6 +39,14 @@ Now you can use the [devtools](http://cran.r-project.org/web/packages/devtools/i
 library(devtools)
 install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
+```
+
+### On Windows Systems
+
+In some cases (when working with __WINDOWS__ machines), the installation via `devtools`
+will not work properly. In this case you can try the follwing steps:
+
+```r
 # On Windows, this won't work - see ?build_github_devtools
 install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
@@ -50,8 +60,8 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
-
 ```
+
 
 ## Citation
 
