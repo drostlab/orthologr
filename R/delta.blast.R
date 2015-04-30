@@ -24,6 +24,7 @@
 #' search is perfored either against a subject database or against the cdd database itself.
 #' @author Hajk-Georg Drost
 #' @examples
+#' \dontrun{
 #' 
 #' # perform a delta-blast serach between A. thaliana and A. lyrata genes
 #' delta.blast(
@@ -36,7 +37,7 @@
 #'             query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'             subject_file = "cdd_delta",
 #'             cdd.path     = "path/to/cdd/database/folder" )
-#' 
+#' }
 #' @references
 #' \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS}
 #' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_blast}}
