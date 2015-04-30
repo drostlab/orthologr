@@ -18,7 +18,7 @@
 #' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
-#' @param a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
+#' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #'  to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @author Hajk-Georg Drost and Sarah Scharfenberg
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
