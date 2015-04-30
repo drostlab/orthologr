@@ -46,6 +46,8 @@ This function provides an interface between \code{delta-blast} and R. Given a qu
 search is perfored either against a subject database or against the cdd database itself.
 }
 \examples{
+\dontrun{
+
 # perform a delta-blast serach between A. thaliana and A. lyrata genes
 delta.blast(
             query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -57,6 +59,7 @@ delta.blast(
             query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
             subject_file = "cdd_delta",
             cdd.path     = "path/to/cdd/database/folder" )
+}
 }
 \author{
 Hajk-Georg Drost
