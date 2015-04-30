@@ -24,15 +24,6 @@ NULL
 #' 
 #' 
 #' @return This is a void function.
-#' @examples 
-#' 
-#' # create a new directory
-#' dir.create("_alignment")
-#' 
-#' # in case internal folders exist, they are removed like this
-#' clean_all_folders("_alignment")
-#' 
-#' 
 #' @seealso \code{\link{divergence_stratigraphy}}, \code{\link{blast}}, \code{\link{blast_best}}, 
 #' \code{\link{blast_rec}}, \code{\link{dNdS}}
 #' 
