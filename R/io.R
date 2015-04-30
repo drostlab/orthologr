@@ -99,6 +99,7 @@ read.proteome <- function(file, format, ...){
 #' @description This function reads an organism specific CDS stored in a defined file format.
 #' @param file a character string specifying the path to the file storing the CDS.
 #' @param format a character string specifying the file format used to store the CDS, e.g. "fasta", "fatsq".
+#' @param delete_corrupt a logical value indicating whether corrupt base triplets should be removed from the input \code{file}.
 #' @param ... additional arguments that are used by the \code{\link[Biostrings]{readDNAStringSet}} function.
 #' @author Hajk-Georg Drost
 #' @details The \code{read.cds} function takes a string specifying the path to the cds file
@@ -171,7 +172,7 @@ read.cds <- function(file, format, delete_corrupt = TRUE, ...){
 #' and gene ids in the second column. See \code{\link{read.proteome}} for details.
 #' @param file.name a character string specifying the name of the fasta output file.
 #' @param nbchar number of characters per line.
-#' @param mode to open the output file, use "w" to write into a new file, use "a" to append at the end of an already existing file.
+#' @param open mode to open the output file, you can choose from "w" to write into a new file, or "a" to append at the end of an already existing file.
 #' @param as.string when set to TRUE sequences are in the form of strings instead of vectors of single characters.
 #' @author Hajk-Georg Drost
 #' @examples
@@ -179,7 +180,9 @@ read.cds <- function(file, format, delete_corrupt = TRUE, ...){
 #' \dontrun{
 #' 
 #' # read an example proteome
-#' Ath.proteome <- read.proteome(system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'), format = "fasta")
+#' Ath.proteome <- read.proteome(
+#'                       system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'), 
+#'                       format = "fasta")
 #' 
 #' # use the write.proteome function to store it on your hard drive
 #' write.proteome(Ath.proteome, "test_proteome.fasta")
@@ -189,7 +192,8 @@ read.cds <- function(file, format, delete_corrupt = TRUE, ...){
 #' @export
 
 write.proteome <- function(proteome, file.name, nbchar = 80, open = "w", as.string = TRUE){
-        
+        # define visible bindings for global variables
+        seqs <- geneids <- NULL
         seqinr::write.fasta( sequences = as.list(proteome[ , seqs]),
                              names     = proteome[ , geneids],
                              nbchar    = nbchar, 

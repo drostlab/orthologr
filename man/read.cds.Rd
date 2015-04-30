@@ -11,6 +11,8 @@ read.cds(file, format, delete_corrupt = TRUE, ...)
 
 \item{format}{a character string specifying the file format used to store the CDS, e.g. "fasta", "fatsq".}
 
+\item{delete_corrupt}{a logical value indicating whether corrupt base triplets should be removed from the input \code{file}.}
+
 \item{...}{additional arguments that are used by the \code{\link[Biostrings]{readDNAStringSet}} function.}
 }
 \value{
