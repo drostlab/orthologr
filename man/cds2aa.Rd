@@ -6,7 +6,12 @@
 \usage{
 cds2aa(dt)
 }
+\arguments{
+\item{dt}{a \code{data.table} object storing cds sequences in a column named \code{seqs}.}
+}
 \description{
-Translate CDS file to Amino Acids file
+This function takes a \code{data.table} object as input and
+translates the cds sequences stored as \code{seqs} column into the corresponding amino acid
+sequence.
 }
 

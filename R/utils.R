@@ -92,12 +92,18 @@ is.alignment_search_tool <- function(tool = NULL){
 }
 
 #' @title Translate CDS file to Amino Acids file
+#' @description This function takes a \code{data.table} object as input and
+#' translates the cds sequences stored as \code{seqs} column into the corresponding amino acid
+#' sequence.
+#' @param dt a \code{data.table} object storing cds sequences in a column named \code{seqs}.
 #' @import data.table
 cds2aa <- function(dt){
         
         if(!is.data.table(dt))
                 stop("Your CDS file was not corretly transformed into a data.table object.")
         
+        # define visible bindings for global variables
+        seqs <- aa <- geneids <- NULL
         
         # When using data.tables within packaes, always make sure
         # 'data.table' is included in the DESCRIPTION file as 'Imports' AND
