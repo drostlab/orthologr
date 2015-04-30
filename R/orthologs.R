@@ -205,6 +205,7 @@ orthologs <- function(query_file,
         if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","GGSEARCH","SSEARCH","DELTA")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
+        i <- query_id <- subject_id <- evalue <- NULL
         if(seq_type == "cds"){
                 
                 f_sep <- .Platform$file.sep
@@ -248,7 +249,6 @@ orthologs <- function(query_file,
                 
                 
         }
-        
         
         if(ortho_detection == "BH"){
                 
@@ -352,7 +352,7 @@ orthologs <- function(query_file,
                         
                         
                 }, error = function(e){ stop("The BLAST tables resulting from ",query_file, " and ",
-                                             subject_file," could not be joined properly to select only the reciprocal best hits.")}
+                                             subject_files," could not be joined properly to select only the reciprocal best hits.")}
                 )
                 
                 if(clean_folders)
