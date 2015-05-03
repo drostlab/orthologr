@@ -176,7 +176,14 @@ divergence_stratigraphy <- function(query_file,
         if(clean_folders)
                 clean_all_folders(c(file.path(tempdir(),"_alignment"), file.path(tempdir(),"_blast_db"), file.path(tempdir(),"_calculation")))
         
-        return ( as.data.frame(dm_tbl) )
+        DivergenceMap.DF <- as.data.frame(dm_tbl)
+        
+        if(ds.values)
+                colnames(DivergenceMap.DF)[1] <- "DS"
+        if(!ds.values)
+                colnames(DivergenceMap.DF)[1] <- "dNdS"
+        
+        return ( DivergenceMap.DF )
 }
 
 
@@ -229,7 +236,7 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         query_id <- subject_id <- divergence_strata <- NULL
         
-        dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id)
+        dNdS_tbl_divMap <- dplyr::select(dplyr::tbl_dt(dNdS_tbl), dNdS, query_id, subject_id)
         
         DecileValues <- stats::quantile(dNdS_tbl_divMap[ , dNdS],probs = seq(0.0, 1, 0.1), na.rm = TRUE)
         
@@ -250,7 +257,7 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         if(!subject.id)
                 return(dNdS_tbl_divMap[ , list(divergence_strata,query_id)])
         if(subject.id)
-                dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])       
+                return(dNdS_tbl_divMap[ , list(divergence_strata,query_id, subject_id)])       
 }
 
 
