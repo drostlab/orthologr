@@ -17,11 +17,11 @@ knitr::opts_chunk$set(
 ```
 
 The `orthologr` package allows you to perform __Divergence Stratigraphy__ for query and subject organisms
-of interest. __Divergence Stratigraphy__ is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column ([Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html); [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full)).
+of interest. __Divergence Stratigraphy__ is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column ([Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html); [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)).
 
-Following steps are performed to obtain a standard divergence map based on the `divergence_stratigraphy()` function:
+The following Algorithm implemented in `divergence_stratigraphy()` defines __Divergence Stratigraphy__ as method (see [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)):
 
-1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
+1) Orthology Inference using BLAST best reciprocal hit ("RBH") based on blastp
 
 2) Pairwise global amino acid alignments of orthologous genes using the [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574)
 
@@ -29,28 +29,44 @@ Following steps are performed to obtain a standard divergence map based on the `
 
 4) dNdS estimation using [Comeron's method (1995)](http://link.springer.com/article/10.1007/BF00173196)
 
-5) Assigning estimated dNdS values to divergence strata (deciles of all dNdS values)
+5) Categorize estimated dNdS values into `divergence strata` (= deciles of all dNdS values)
 
 
 In `orthologr` the [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574), [PAL2NAL](http://www.bork.embl.de/pal2nal/) and [Comeron's method (1995)](http://link.springer.com/article/10.1007/BF00173196) 
-are already included in the `orthologr` package and don't need to be installed. 
+are already included in the `orthologr` package and do not have to be installed separately. Nevertheless, make sure __you have BLAST installed on your machine before using `divergence_stratigraphy()`__.  
+
+__Note__: The following examples assume that the __BLAST__ program is installed in your default execution path `usr/local/bin`. In case you do not have __BLAST__ installed yet or the following command in R produces a different output, please consult the [Installation Vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#orthology-inference-tools) to corretly set up the __BLAST__ program to perform __Divergence Stratigraphy__.  
+
+```{r,eval=FALSE}
+system("blastp -version")
+```
+
+```
+blastp: 2.2.30+
+Package: blast 2.2.30, build Oct 27 2014 17:10:51
+```
+
 
 
 ## Divergence Map Computations
 
-In [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full) we define a `Divergence Map` as table storing the degree of sequence divergence for each protein coding gene of a given query organism. In this case selection pressure was quantified by dNdS estimation (ratio of synonymous versus non-synonymous `codon -> amino acid` sequence substitution rates).
+In [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full) we define a `Divergence Map` as table storing the degree of sequence divergence (= `divergence strata`) for each protein coding gene of a given query organism. In this case selection pressure was quantified by dNdS estimation (ratio of synonymous versus non-synonymous `codon -> amino acid` sequence substitution rates).
 The resulting dNdS values for all protein coding genes of the query organism are then categorized into deciles (10%-quantiles) allowing users to compare the results obtained from `Phylostratigraphy` with results obtained form `Divergence Stratigraphy`. 
 
-To perform __Divergence Stratigraphy__ using `orthologr` you need the following prerequisites
+To perform __Divergence Stratigraphy__ using `orthologr` you need the following input files:
 
 * a CDS file covering all protein coding genes of the query organism of interest
 * a CDS file covering all protein coding genes of the subject organism of interest
+
+### Sequence Data Retrieval
 
 In the following example, we will use _Arabidopsis thaliana_ as query organism
 and _Arabidopsis lyrata_ as subject organism.
 
 First, we need to download the CDS sequences for all protein coding genes of _A. thaliana_
 and _A. lyrata_.
+
+#### Option 1:
 
 The CDS retrieval can be done using a `Terminal` or by manual downloading the files
 
@@ -79,12 +95,31 @@ Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 
 ```
-When the download is finished you need to unzip the files and
-then start R to perform the following analyses:
+When the download is finished you need to unzip the files.
 
-__Note__: Please note that performing __Divergence Stratigraphy__ with two large genomes can take
-(even on a multicore machine) some time -> up to several hours.
-On a 4 core machine with 3.4 GHz i7 processors the computation time of generating a divergence map between _A. thaliana_ and _A. lyrata_ was 3 hours.
+
+#### Option 2:
+
+I implemented the [biomartr](https://github.com/HajkD/biomartr) package to automate the process do sequence data retrieval. The [Sequence Retrieval Vignette](https://github.com/HajkD/biomartr/blob/master/vignettes/Sequence_Retrieval.Rmd) stored in `biomartr` provides detailed use cases for the automation of biological sequence retrieval.
+
+__Note__: Make sure you have [biomartr](https://github.com/HajkD/biomartr#fast-installation-guide) installed before running any `biomartr` functions.
+
+### Computation Time
+
+__Please note that__ performing __Divergence Stratigraphy__ with two large genomes can take
+(even on a multicore machine) some time -> __up to several hours__.
+On a 4 core machine with 3.4 GHz i7 processors the computation time of generating a divergence map between _A. thaliana_ and _A. lyrata_ was __2.5-3 hours__.
+
+The `comp_cores` argument implemented in the `divergence_stratigraphy()` function allows you to specify the number of cores you want to use on your machine. The default value is `comp_cores = 1` which might take __10-12h__ to execute. So make sure you use all cores available on your machine to speed up the computation time.
+
+## Running `divergence_stratigraphy()`
+
+As mentioned earlier the `divergence_stratigraphy()` function is the main function to perform the __Divergence Stratigraphy__ algorithm.
+
+In `divergence_stratigraphy()` the `query_file` and `subject_file` arguments take an
+character string storing the path to the corresponding __fasta__ files containing the CDS
+sequences of these organisms. Here the previously downloaded CDS sequence files of _A. thaliana_ (= `query_file`) and _A. lyrata_ (= `subject_file`) need to be specified. The `eval` is set to `1E-5` (default ; see [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html)) and `BLAST best reciprocal hit` is used for orthology inference (see [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)). In case ``orthologr` is running on a multicore machine, you can set the `comp_cores` argument to any number of cores
+supported by your machine. The `clean_folders` argument indicates whether the internal folder structure should be deleted (cleaned) after processing is finished. In this case all output files generated by `divergence_stratigraphy` (stored in `tempdir()`) will be removed after the `Divergence Map` was returned. The `quiet` argument indicates whether a successful interface call should be printed out to the console (`quiet = FALSE`) or not (`quiet = TRUE`).
 
 
 ```{r,eval=FALSE}
@@ -102,13 +137,7 @@ Athaliana_DM <- divergence_stratigraphy(
 
 ```
 
-In `divergence_stratigraphy()` the `query_file` and `subject_file` arguments take an
-character string storing the path to the corresponding __fasta__ files containing the protein
-sequences of these organisms. The `eval` is set to `1E-5` (default ; see [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html)) and `BLAST best reciprocal hit` is used for orthology inference (see [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full)). In case you work
-with a multicore machine, you can set the `comp_cores` argument to any number of cores
-supported by your machine. The `clean_folders` argument specifies whether the internal folder structure shall be deleted (cleaned) after processing is finished. In this case all output files returned by BLAST and the alignment tools are deleted.
-
-You can run a test __Divergence Stratigraphy__ with 20 example genes stored in the `orthologr` package:
+Before running `divergence_stratigraphy()` with two complete genomes, you can first run a test __Divergence Stratigraphy__ with 20 example genes that are stored in the `orthologr` package:
 
 ```{r,eval=FALSE}
 library(orthologr)
@@ -153,14 +182,36 @@ library(orthologr)
 
 ```
 
-When your diverge map computations are done and you have a divergence map of your query organism,
-subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package.
+The resulting output is a `Divergence Map` of the 20 example genes.
 
-Please see [Introduction to the myTAI package](http://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
-for more details.
+To save corresponding `Divergenec Maps` to your hard drive you can
+pass the resulting `divergence_stratigraphy()` output to a variable
+and then use the `write.table()` function implemented in R to store the
+`Divergenec Map` as `*.csv` file.
+
+```{r,eval=FALSE}
+Athaliana_DM <- divergence_stratigraphy( ... )
+
+write.table(x         = Athaliana_DM, 
+            file      = "Ath_Aly_DivergenceMap.csv", 
+            sep       = ";", 
+            col.names = TRUE, 
+            row.names = FALSE, 
+            quote     = FALSE)
+```
+
+This way `write.table()` will store the `Divergence Map` to your current working directory (= `getwd()`).
+
+### Specifying the arguments in `divergence_stratigraphy()`
+
+Several argument combinations can be specified in `divergence_stratigraphy()` (see `Arguments` in `?divergence_stratigraphy`). This section introduces additional output options of `divergence_stratigraphy()`.
 
 
-In case you need to specify the PATH to your BLAST folder, you can use the `blast_path` argument:
+#### Example: `blast_path`
+
+Sometimes the machine you are working on does not allow you to install __BLAST__ in the default execution path `usr/local/bin`. For this purpose the `blast_path` argument is implemented in `divergence_stratigraphy()`. This argument takes an character string specifying the `PATH` to your `blastp` execution file that is stored on a different place than `usr/local/bin`.
+
+The following example shows a possible specification of `blast_path`.
 
 ```{r,eval=FALSE}
 library(orthologr)
@@ -178,7 +229,6 @@ library(orthologr)
       clean_folders   = TRUE)
 
 ```
-
 
 ```
 
@@ -206,19 +256,26 @@ library(orthologr)
 
 ```
 
-### `divergence_stratigraphy()` and dNdS-maps
+#### Example: `ds.values`
 
-In case you are interested in the dNdS values of corresponding proteome comparisons returned by `divergence_stratigraphy`, you can either use the `dNdS()` function to obtain dNdS values for all protein coding genes of a given query and subject proteome or you can specify the `ds.values` argument: `ds.values = FALSE`.
+As defined earlier, a `Divergence Map` stores the `divergence strata` for protein coding genes of a `query` organism. However, `divergence strata` are based on `dNdS` values that were categorized into deciles. For this reason it is not possible to map a `divergence stratum` value to the exact initial `dNdS` value. So in cases you are interested in the the exact `dNdS` value of protein coding genes, you can specify the `ds.values` argument in `divergence_stratigraphy()` allowing you to retrieve a `dNdS Map` instead of a `Divergence Map`. For this purpose you need to set `ds.values = FALSE`.
+
 
 ```{r,eval=FALSE}
 library(orthologr)
 
 # performing standard divergence stratigraphy
+# but receive a dNdS Map instead of a Divergence Map
  divergence_stratigraphy(
-      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      eval = "1E-5", ortho_detection = "RBH",ds.values = FALSE, dnds.threshold = 1,
-      comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH",
+      ds.values       = FALSE, 
+      dnds.threshold  = 1,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
 
 ```
 
@@ -248,4 +305,16 @@ library(orthologr)
 
 ```
 
-The corresponding output is denoted as `dNdS-map`.
+The corresponding output now stores `dNdS` values instead of `DS` values in the first column.
+
+#### Example: `subject.id`
+
+
+
+## Combine the Divergence Map with Gene Expression Data
+
+When your diverge map computations are done and you have a divergence map of your query organism,
+subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package.
+
+Please see [Introduction to the myTAI package](http://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
+for more details.
