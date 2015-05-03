@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 The `orthologr` package allows you to perform __Divergence Stratigraphy__ for query and subject organisms
-of interest. __Divergence Stratigraphy__ is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column ([Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html); Drost et al., 2014).
+of interest. __Divergence Stratigraphy__ is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column ([Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html); [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full)).
 
 Following steps are performed to obtain a standard divergence map based on the `divergence_stratigraphy()` function:
 
@@ -35,38 +35,11 @@ Following steps are performed to obtain a standard divergence map based on the `
 In `orthologr` the [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574), [PAL2NAL](http://www.bork.embl.de/pal2nal/) and [Comeron's method (1995)](http://link.springer.com/article/10.1007/BF00173196) 
 are already included in the `orthologr` package and don't need to be installed. 
 
-## Fast Installation guide for orthologr
 
-```r
-# install orthologr from CRAN
-install.packages("orthologr", dependencies = TRUE)
+## Divergence Map Computations
 
-# or the developer version from github
-library(devtools)
-install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
-
-# On Windows, this won't work - see ?build_github_devtools
-install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
-
-# When working with Windows, first you need to install the
-# R package: rtools -> install.packages("rtools")
-
-# Afterwards you can install devtools -> install.packages("devtools")
-# and then you can run:
-
-devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
-
-# and then call it from the library
-library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
-
-
-
-```
-
-## Retrieving a divergence map
-
-A divergence map quantifies for each protein coding gene of a given organism the
-degree of selection pressure. The selection pressure is quantified by dNdS estimation.
+In [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full) we define a `Divergence Map` as table storing the degree of sequence divergence for each protein coding gene of a given query organism. In this case selection pressure was quantified by dNdS estimation (ratio of synonymous versus non-synonymous `codon -> amino acid` sequence substitution rates).
+The resulting dNdS values for all protein coding genes of the query organism are then categorized into deciles (10%-quantiles) allowing users to compare the results obtained from `Phylostratigraphy` with results obtained form `Divergence Stratigraphy`. 
 
 To perform __Divergence Stratigraphy__ using `orthologr` you need the following prerequisites
 
@@ -109,21 +82,29 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 When the download is finished you need to unzip the files and
 then start R to perform the following analyses:
 
+__Note__: Please note that performing __Divergence Stratigraphy__ with two large genomes can take
+(even on a multicore machine) some time -> up to several hours.
+On a 4 core machine with 3.4 GHz i7 processors the computation time of generating a divergence map between _A. thaliana_ and _A. lyrata_ was 3 hours.
+
+
 ```{r,eval=FALSE}
 library(orthologr)
 
 # compute the divergence map of A. thaliana
 Athaliana_DM <- divergence_stratigraphy(
-                         query_file = "path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa",
-                         subject_file = "path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa",
-                         eval = "1E-5", ortho_detection = "RBH",
-                         comp_cores = 1, quiet = TRUE, clean_folders = TRUE )
+                         query_file      = "path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa",
+                         subject_file    = "path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa",
+                         eval            = "1E-5", 
+                         ortho_detection = "RBH",
+                         comp_cores      = 1, 
+                         quiet           = TRUE, 
+                         clean_folders   = TRUE )
 
 ```
 
 In `divergence_stratigraphy()` the `query_file` and `subject_file` arguments take an
 character string storing the path to the corresponding __fasta__ files containing the protein
-sequences of these organisms. The `eval` is set to `1E-5` (default ; see [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html)) and BLAST reciprocal best hit is used for orthology inference. In case you work
+sequences of these organisms. The `eval` is set to `1E-5` (default ; see [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html)) and `BLAST best reciprocal hit` is used for orthology inference (see [Drost et al. (2015)](http://mbe.oxfordjournals.org/content/32/5/1221.full)). In case you work
 with a multicore machine, you can set the `comp_cores` argument to any number of cores
 supported by your machine. The `clean_folders` argument specifies whether the internal folder structure shall be deleted (cleaned) after processing is finished. In this case all output files returned by BLAST and the alignment tools are deleted.
 
@@ -134,10 +115,14 @@ library(orthologr)
 
 # performing standard divergence stratigraphy
  divergence_stratigraphy(
-      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      eval = "1E-5", ortho_detection = "RBH", dnds.threshold = 1,
-      comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH", 
+      dnds.threshold  = 1,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
 
 ```
 
@@ -167,12 +152,6 @@ library(orthologr)
 20                 3 AT1G01220.1
 
 ```
-
-
-Please note that performing __Divergence Stratigraphy__ using two large genomes might take
-(even on a multicore machine) up to several minutes or hours (depending on the number of available computing cores).
-On a 8 core machine with 3.4 GHz i7 processors the computation of an divergence map between _A. thaliana_ and _A. lyrata_
-took 65 minutes.
 
 When your diverge map computations are done and you have a divergence map of your query organism,
 subsequent _phylotranscriptomics_ analyses can be done using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package.
@@ -188,10 +167,15 @@ library(orthologr)
 
 # performing standard divergence stratigraphy
  divergence_stratigraphy(
-      query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      blast_path = "here/the/path/to/blastp", eval = "1E-5", ortho_detection = "RBH", 
-      dnds.threshold = 1, comp_cores = 1, quiet = TRUE, clean_folders = TRUE)
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      blast_path      = "here/the/path/to/blastp", 
+      eval            = "1E-5", 
+      ortho_detection = "RBH", 
+      dnds.threshold  = 1, 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
 
 ```
 
@@ -222,7 +206,7 @@ library(orthologr)
 
 ```
 
-### divergence_stratigraphy() and dNdS-maps
+### `divergence_stratigraphy()` and dNdS-maps
 
 In case you are interested in the dNdS values of corresponding proteome comparisons returned by `divergence_stratigraphy`, you can either use the `dNdS()` function to obtain dNdS values for all protein coding genes of a given query and subject proteome or you can specify the `ds.values` argument: `ds.values = FALSE`.
 
