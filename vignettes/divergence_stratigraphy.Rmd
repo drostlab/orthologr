@@ -1,5 +1,5 @@
 ---
-title: "Divergence Stratigraphy using orthologr"
+title: "Performing Divergence Stratigraphy"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -148,7 +148,7 @@ library(orthologr)
       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       eval            = "1E-5", 
       ortho_detection = "RBH", 
-      dnds.threshold  = 1,
+      dnds.threshold  = 2,
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
@@ -223,7 +223,7 @@ library(orthologr)
       blast_path      = "here/the/path/to/blastp", 
       eval            = "1E-5", 
       ortho_detection = "RBH", 
-      dnds.threshold  = 1, 
+      dnds.threshold  = 2, 
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
@@ -258,7 +258,7 @@ library(orthologr)
 
 #### Example: `ds.values`
 
-As defined earlier, a `Divergence Map` stores the `divergence strata` for protein coding genes of a `query` organism. However, `divergence strata` are based on `dNdS` values that were categorized into deciles. For this reason it is not possible to map a `divergence stratum` value to the exact initial `dNdS` value. So in cases you are interested in the the exact `dNdS` value of protein coding genes, you can specify the `ds.values` argument in `divergence_stratigraphy()` allowing you to retrieve a `dNdS Map` instead of a `Divergence Map`. For this purpose you need to set `ds.values = FALSE`.
+As defined earlier, a `Divergence Map` stores the `divergence strata` for protein coding genes of a `query` organism. However, `divergence strata` are based on `dNdS` values that were categorized into deciles. For this reason it is not possible to map a `divergence stratum` value to the exact initial `dNdS` value. So in case you are interested in the the exact `dNdS` value of protein coding genes, you can specify the `ds.values` argument in `divergence_stratigraphy()` allowing you to retrieve a `dNdS Map` instead of a `Divergence Map`. For this purpose you need to set `ds.values = FALSE`.
 
 
 ```{r,eval=FALSE}
@@ -272,7 +272,7 @@ library(orthologr)
       eval            = "1E-5", 
       ortho_detection = "RBH",
       ds.values       = FALSE, 
-      dnds.threshold  = 1,
+      dnds.threshold  = 2,
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
@@ -395,7 +395,72 @@ divergence_stratigraphy(
 20 0.10230 AT1G01220.1 470155|PACid:16047984
 ```
 
-## Combine the Divergence Map with Gene Expression Data
+#### Example: `dnds.threshold`
+
+`Divergence Strata` are obtained by categorizing dNdS values into deciles. For decilation the range of dNdS values is important. The `dnds.threshold` defines the upper level cut off of dNdS values. Since dNdS values are in the range [0, +Inf] a upper threshold needs to be specified.
+The default value for `dnds.threshold` in `divergence_stratigraphy()` is `dnds.threshold = 2` due to the interpretation of dNdS values for predicting sequence evolution (dNdS < 1 -> negative selection; dNdS = 1 -> neutral selection; dNdS > 1 -> positive selection). Hence, all dNdS values `> 1` predict positive selection. In my experience of computing dNdS values between hundreds of pairwise species comparisons covering all evolutionary distances, dNdS values of orthologous genes rarely take values > 2. Nevertheless, in case you wish to extend or reduce the upper threshold for dNdS values, you can specify the `dnds.threshold` in `divergence_stratigraphy()`.
+
+
+```{r,eval=FALSE}
+# upper threshold for dNdS: dnds.threshold = 5
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH",
+      ds.values       = FALSE, 
+      dnds.threshold  = 5,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+
+```
+
+#### Example: `ortho_detection`
+
+According to [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full) the __Divergence Stratigraphy__ algorithm performs __BLAST__ best reciprocal hit (RBH) as orthology inference method. Despite this convention, the `ortho_detection` argument allows you to perform orthology inference within the __Divergence Stratigraphy__ algorithm that is based on any orthology inference method implemented in `orthologr` (see `?orthologs` or [Orthology Inference Vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd) for details). For example in [Quint et al., 2012](http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html) instead of __BLAST__ best reciprocal hit, the method __BLAST__ best hit (BH) was used to perform orthology inference within the __Divergence Stratigraphy__ algorithm.
+
+
+```{r,eval=FALSE}
+# orthology inference method: ortho_detection = "BH"
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "BH",
+      ds.values       = TRUE, 
+      dnds.threshold  = 2,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+
+```
+
+```
+   DS    query_id
+1  10 AT1G01010.1
+2   9 AT1G01020.1
+3   5 AT1G01030.1
+4   4 AT1G01040.1
+5   1 AT1G01050.1
+6   9 AT1G01060.3
+7   6 AT1G01070.1
+8   8 AT1G01080.1
+9   2 AT1G01090.1
+10  7 AT1G01110.2
+11  2 AT1G01120.1
+12  3 AT1G01140.3
+13 10 AT1G01150.1
+14  8 AT1G01160.1
+15  1 AT1G01170.2
+16  6 AT1G01180.1
+17  7 AT1G01190.1
+18  4 AT1G01200.1
+19  5 AT1G01210.1
+20  3 AT1G01220.1
+```
+
+## Combine a Divergence Map with Gene Expression Data
 
 `Divergence Maps` can be used for a wide range of analyses. One example is to combine `Divergence Maps` with gene expression data to capture evolutionary signals in developmental transcriptomes (= `Phylotranscriptomics`; see [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)). Performing phylotranscriptomic analyses based on an existing `Divergence Map` can easily be done by using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package. You can consult the [Introduction to the myTAI package Vignette](http://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
 for more details.
