@@ -22,77 +22,94 @@ __Some tools are not trivial to install, so please read the corresponding sectio
 and execute test cases that are presented in each section.__
 
 
-### Programming Languages
+## Programming Languages
 
-Most functions are optimized in terms of computational performance.
-For this purpose, you need following programming languages on your system:
+The following bioinformatics tools you are going to install are based on
+the these programming languages:
 
  - [__R__](http://www.cran.r-project.org) >= 3.1.1
  
- Please make sure you have the latest __R__ version installed on your system.
- 
- To check which R version is currently installed on your system run the following command in __R__
- 
-```r
- # ckecking the current R version
- version$version.string
- 
-```
- 
  - [__C++11__](http://isocpp.org/about)
- 
- Please make also sure that you have C++11 installed on your system,
- this is important to use the features provided by [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html).
  
  - [__Perl__](https://www.perl.org) >= 5.12
  
- The Perl language is used to run [__Pal2Nal__](http://www.bork.embl.de/pal2nal/) and parts of
- [__KaKs_Calculator__](https://code.google.com/p/kaks-calculator/).
- 
-Run the following command in your Terminal to check whether you have [Perl](https://www.perl.org)
-installed and what version is installed on your system
- 
-```shell
- perl -v
-```
- 
  - [__Python__](https://www.python.org) >= 2.7
 
-Check the current [Python](https://www.python.org) version installed with
+Please make sure these programming languages are installed and executable on the machines you are going run `orthologr` on.
 
-```shell
-python --version
-
-```
-
-### Orthology Inference Tools
+## Installing Orthology Inference Tools
 
 The `orthologr` package provides interfaces to the following bioinformatics tools 
-enabling orthology detection ([orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9)):
+to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9):
 
-The main function to perform orthology inference is `orthologs()` and internally this function relies
-on the following interface functions implemented in `orthologr`.
 
- - [__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) : Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
- 
- There are several interface functions to BLAST+ implemented in `orthologr`
+### Install `BLAST`
+
+[__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) = Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
+
+1) Go to ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ and download the system specific BLAST program.
+
+2) Install BLAST :  
+
+* On a Windows machine (see [installation manual: Windows](http://www.ncbi.nlm.nih.gov/books/NBK52637/))
+-> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly.
+* On a Unix machine (see [installation manual: Unix](http://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
+-> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
+
+After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
+
+```{r,eval=FALSE}
+# test whether blastp is corretly installed on your machine
+system("blastp -version")
+```
+
+```
+blastp: 2.2.30+
+Package: blast 2.2.30, build Oct 27 2014 17:10:51
+```
+
+__You should see this output if BLAST was installed corretly.__
+
+In case you find the following output:
+
+```
+sh: blastp: command not found
+```
+
+You should return to `step 2)` and install BLAST so that it can be executed
+from the default execution `PATH`.
+
+These interface functions to BLAST+ are implemented in `orthologr`:
  
  - `blast()` : Interface function to BLAST+
- - `blast_best()` : Function to perform a BLAST+ best hit search
- - `blast_rec()` : Function to perform a BLAST+ reciprocal best hit (RBH) search
- - `set_blast()` : Function preparing the parameters and databases for subsequent BLAST+ searches
+ - `blast_best()` : Perform a BLAST+ best hit search
+ - `blast_rec()` : Perform a BLAST+ reciprocal best hit (RBH) search
+ - `set_blast()` : Preparing the parameters and databases for subsequent BLAST+ searches
+ - `blast.nr()` : Perform a BLASTp search against NCBI nr
+ - `delta.blast()` : Perform a DELTA-BLAST Search
  - `advanced_blast()` : Advanced interface function to BLAST+
  - `advanced_makedb()` : Advanced interface function to makeblastdb
  
- - [__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) : An orthology inference tool for large-scale analysis
+ 
+### Install `ProteinOrtho`
+ 
+[__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) is an orthology inference tool for large-scale analysis.
  
  * `ProteinOrtho()`: Interface function to ProteinOrtho
- 
+
+### Install `OrthoMCL`
+
  - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus all BLAST of all compared protein sequences
  
  * `OrthoMCL()`: Interface function to OrthoMCL
  
- 
+
+### Install `GGSearch` and `SSearch`
+
+### Install `HMMER`
+
+
+
 ### Multiple Alignment Tools
 
 The `orthologr` package also provides interfaces to the following Multiple Alignment Tools.
