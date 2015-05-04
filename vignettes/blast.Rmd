@@ -22,26 +22,9 @@ knitr::opts_chunk$set(
 The `orthologr` package provides several interface functions to perform
 BLAST searches.
 
-First, make sure you have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on your machine. 
+First, make sure you have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on your machine. You can follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
 
-
-The following BLAST interface functions are implemented in `orthologr`:
-
-* set_blast() : a function preparing the parameters and databases for subsequent BLAST searches 
-* blast() : simple interface function to BLAST+
-* blast_best() : optimized function to perform BLAST+ best hit searches
-* blast_rec() : a function to perform a BLAST+ best reciprocal hit (BRH) searches
-* delta.blast() : Perform a DELTA-BLAST Search
-* blast.nr() : Perform a BLASTp search against NCBI nr
-* advanced_blast() : advanced interface function to BLAST+ (integrated SQLite connection to the output hit table)
-* advanced_makedb() : advanced interface function to makeblastdb
-
-All aforementioned functions are returned as data.table object to enable fast accessibility and
-very fast computations (data manipulations).
-
-
-
-## Performing BLAST searches
+## Performing BLAST Searches
 
 The `orthologr` package stores 20 example genes (orthologs) between _Arabidopsis thaliana_
 and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a simple

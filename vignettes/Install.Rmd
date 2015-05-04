@@ -68,7 +68,7 @@ blastp: 2.2.30+
 Package: blast 2.2.30, build Oct 27 2014 17:10:51
 ```
 
-__You should see this output if BLAST was installed corretly.__
+__You should see this output if BLAST was installed correctly.__
 
 In case you find the following output:
 
