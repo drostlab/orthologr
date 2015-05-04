@@ -11,9 +11,16 @@ vignette: >
 
 ## Installing Prerequisite Tools
 
-Since many function have been implemented as interface functions between
-the __R__ language and common bioinformatics tools, some of these tools must
-be installed on your system to be able to use the corresponding functions in `orthologr`.
+Most `orthologr` functions are interface functions that pass data to common
+bioinformatics tools, internally call the corresponding tool, and read their output
+as R object. For this purpose, when using interface functions in `orthologr` one needs to 
+install the underlying bioinformatics tools to obain accurate results. 
+
+The following sections provide step by step instructions or guideance on installing 
+all bioinformatics tools for which R interface functions are implemented in `orthologr`.
+__Some tools are not trivial to install, so please read the corresponding sections carefully
+and execute test cases that are presented in each section.__
+
 
 ### Programming Languages
 
