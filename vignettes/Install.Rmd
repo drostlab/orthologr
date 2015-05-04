@@ -59,7 +59,7 @@ to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978
 After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
 
 ```{r,eval=FALSE}
-# test whether blastp is corretly installed on your machine
+# test whether blastp is correctly installed on your machine
 system("blastp -version")
 ```
 
