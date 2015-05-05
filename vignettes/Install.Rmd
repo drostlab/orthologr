@@ -93,14 +93,18 @@ These interface functions to BLAST+ are implemented in `orthologr`:
  
 ### Install `ProteinOrtho`
  
-[__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) is an orthology inference tool for large-scale analysis.
- 
+[__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) is an orthology inference tool for large-scale analysis. Please follow [these](http://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html) step by step instructions to install ProteinOrtho so that it is executable from your default execution `PATH`, e.g. `usr/local/bin`.
+
+The following interface function to ProteinOrtho is implemented in `orthologr`:
+
  * `ProteinOrtho()`: Interface function to ProteinOrtho
 
 ### Install `OrthoMCL`
 
- - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus all BLAST of all compared protein sequences
+ - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus all BLAST of all compared protein sequences. Please follow [these](http://www.orthomcl.org/common/downloads/software/v2.0/UserGuide.txt) step by step instructions to install OrthoMCL so that it is executable from your default execution `PATH`, e.g. `usr/local/bin`.
  
+The following interface function to OrthoMCL is implemented in `orthologr`:
+
  * `OrthoMCL()`: Interface function to OrthoMCL
  
 
