@@ -94,8 +94,8 @@
 #'              subject_files = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'              seq_type = "protein",format = "fasta", delete_files = TRUE)      
 #'              
-#'                                                                                                                                                                                                                                                                                                                                                                                                                                      
-#'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+#'                                                   
+#'
 #' }
 #' @return a data.frame storing the ProteinOrtho output.
 #' @seealso \code{\link{orthologs}}
@@ -135,8 +135,6 @@ ProteinOrtho <- function(query_file,
                 dir.create(file.path(tempdir(),"_ProteinOrtho"))
         }
         
-        currwd <- getwd()
-        setwd(file.path(tempdir(),"_ProteinOrtho"))
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -193,11 +191,18 @@ ProteinOrtho <- function(query_file,
                 
         }
         
-        setwd(currwd)
+        #setwd(currwd)
         
-        tryCatch(
-                {
-        
+#         tryCatch(
+#                 {
+                        currwd <- getwd()
+                        file.copy(c("ProteinOrtho.blast-graph","ProteinOrtho.proteinortho","ProteinOrtho.proteinortho-graph"),file.path(tempdir(),"_ProteinOrtho"))
+                        file.remove(c("ProteinOrtho.blast-graph","ProteinOrtho.proteinortho","ProteinOrtho.proteinortho-graph"))
+                        
+                        #setwd(file.path(tempdir(),"_ProteinOrtho"))
+                        
+                        
+                        
                         if(length(subject_files) == 1){
                                 
                                 # read the header of the ProteinOrtho output file
@@ -205,10 +210,8 @@ ProteinOrtho <- function(query_file,
                                 PO_tbl_header <-  lapply(PO_tbl_header,stringr::str_replace_all,"#","")
         
                                 # store the output table of ProteinOrtho
-                                ProteinOrtho_tbl <- data.table::fread(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.blast-graph"),sep = "\t",skip = 3)
-                                data.table::setnames(ProteinOrtho_tbl,old = paste0("V",1:dim(ProteinOrtho_tbl)[2]),
-                                                    new = c(PO_tbl_header[[3]],PO_tbl_header[[2]][-c(1:length(PO_tbl_header[[3]]))]))
-                                data.table::setkeyv(ProteinOrtho_tbl,PO_tbl_header[[3]])
+                                ProteinOrtho_tbl <- as.data.frame(data.table::fread(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.blast-graph"),sep = "\t",skip = 3, header = FALSE))
+#                                
                                 
                         } else {
                                 
@@ -243,19 +246,23 @@ ProteinOrtho <- function(query_file,
                                 ProteinOrtho_tbl[length(hash_tag) + 1] <- list(read.csv(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
                         }
                         
-        if(delete_files)
+        if (delete_files)
                 unlink(file.path(tempdir(),"_ProteinOrtho"),recursive = TRUE, force = TRUE)
         
-        names(ProteinOrtho_tbl) <- c(paste0("comparison_",1:length(hash_tag)),"proteinortho_tbl")
+        if (length(subject_files) > 1)  
+                names(ProteinOrtho_tbl) <- c(paste0("comparison_",1:length(hash_tag)),"proteinortho_tbl")
         
+        else if (length(subject_files) == 1)  
+                names(ProteinOrtho_tbl) <- c("query_id","subject_id","evalue_qry_subj","bitscore_qry_subj","evalue_subj_qry","bitscore_subj_qry")
+                        
         return(ProteinOrtho_tbl)
         
         
         
-                }, error = function(e) stop("The ProteinOrtho interface call did not terminate properly.",
-                                            "Please make sure you passed all parameters correctly to ProteinOrtho.",
-                                            "Did you provide a *.gff file in case you used the synteny option?")
-        )
+#                 }, error = function(e) warning("The ProteinOrtho interface call did not terminate properly.",
+#                                             "Please make sure you passed all parameters correctly to ProteinOrtho.",
+#                                             "Did you provide a *.gff file in case you used the synteny option?")
+#         )
         
 
 }
