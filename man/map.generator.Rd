@@ -26,6 +26,8 @@ dNdS computations. Possible options are: \code{ortho_detection} = \code{"BH"} (B
 
 \item{ds.values}{a logical value indicating whether divegrence stratum values (ds values) or dNdS values should be returned by \code{\link{divergence_stratigraphy}}. Default is \code{ds.values = FALSE}.}
 
+\item{subject.id}{a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.}
+
 \item{progress.bar}{should a progress bar be shown. Default is \code{progress.bar = TRUE}.}
 
 \item{sep}{a file separator that is used to store maps as csv file.}

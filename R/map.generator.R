@@ -11,6 +11,7 @@
 #' \code{ortho_detection} = \code{"RBH"} (BLAST best reciprocal hit), etc.
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
 #' @param ds.values a logical value indicating whether divegrence stratum values (ds values) or dNdS values should be returned by \code{\link{divergence_stratigraphy}}. Default is \code{ds.values = FALSE}.
+#' @param subject.id a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.
 #' @param progress.bar should a progress bar be shown. Default is \code{progress.bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
 #' @param ... additional parameters that shall be passed to  \code{\link{divergence_stratigraphy}}.
@@ -47,6 +48,7 @@ map.generator <- function(query_file,
                            progress.bar     = TRUE,
                            sep              = ";",
                           ... ){
+        
         
         # retrieve all subject files within a given folder
         subj.files <- list.files(subjects.folder)
