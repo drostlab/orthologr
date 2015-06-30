@@ -33,9 +33,7 @@ the these programming languages:
  
  - [__Perl__](https://www.perl.org) >= 5.12
  
- - [__Python__](https://www.python.org) >= 2.7
-
-Please make sure these programming languages are installed and executable on the machines you are going run `orthologr` on.
+ Please make sure these programming languages are installed and executable on the machines you are going run `orthologr` on.
 
 ## Installing Orthology Inference Tools
 
@@ -55,6 +53,22 @@ to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978
 -> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly.
 * On a Unix machine (see [installation manual: Unix](http://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
 -> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
+
+### Personal Experience
+
+Based on our personal experience the installation of BLAST works best when copy/pasting
+the BLAST executables to the path `usr/local/bin`. In detail you can run the following steps
+to copy/paste the BLAST executables to `usr/local/bin` (on Unix systems) :
+
+Open the Terminal application on your system and type:
+
+```
+open /usr/local/bin 
+
+```
+
+Next, copy/paste the `blastp`, `makeblastdb`, etc files (BLAST executables) from your BLAST folder to `/usr/local/bin`. To do so you will need to enter the system password to allow the copy process.
+
 
 After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
 
