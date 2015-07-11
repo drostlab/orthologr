@@ -31,6 +31,9 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("IRanges")
 ```
 
+Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
+Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
+
 ### On Unix Based Systems
 
 Now you can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
@@ -43,9 +46,6 @@ library(devtools)
 install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 ```
-
-Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
-Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
 
 ### On Windows Systems
 
@@ -67,9 +67,6 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 ```
-
-Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
-Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
 
 ## Citation
 
