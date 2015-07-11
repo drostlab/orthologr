@@ -1,6 +1,6 @@
 Package: orthologr
 Type: Package
-Title: A Software Framework for Comparative Genomics
+Title: Performing Comparative Genomics with R
 Version: 0.0.1
 Date: 2015-07-11
 Authors@R: as.person(c(
