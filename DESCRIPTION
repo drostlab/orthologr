@@ -2,10 +2,10 @@ Package: orthologr
 Type: Package
 Title: A Software Framework for Comparative Genomics
 Version: 0.0.1
-Date: 2014-06-08
+Date: 2015-07-11
 Authors@R: as.person(c(
     "Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de> [aut, cre]",
-    "Sarah Scharfenberg [aut]",
+    "Sarah Scharfenberg [ctb]",
     "Kristian Karsten Ullrich [ctb]"
     ))
 Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>

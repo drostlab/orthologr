@@ -26,6 +26,9 @@ biocLite("Biostrings")
 source("http://bioconductor.org/biocLite.R")
 biocLite("S4Vectors")
 
+# install package: IRanges
+source("http://bioconductor.org/biocLite.R")
+biocLite("IRanges")
 ```
 
 ### On Unix Based Systems
