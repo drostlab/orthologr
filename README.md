@@ -1,7 +1,7 @@
 orthologr
 =========
 
-### A Software Framework for Comparative Genomics.
+### Performing Comparative Genomics with R
 
 The `orthologr` package provides interface functions between R and common bioinformatics tools
 used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
