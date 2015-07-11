@@ -44,6 +44,9 @@ install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 ```
 
+Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
+Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
+
 ### On Windows Systems
 
 In some cases (when working with __WINDOWS__ machines), the installation via `devtools`
@@ -65,6 +68,8 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 ```
 
+Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
+Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
 
 ## Citation
 
