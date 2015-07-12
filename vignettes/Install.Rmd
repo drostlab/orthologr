@@ -13,11 +13,12 @@ vignette: >
 
 Most `orthologr` functions are interface functions that pass data to common
 bioinformatics tools, internally call the corresponding tool, and read their output
-as R object. For this purpose, when using interface functions in `orthologr` one needs to 
+as R object. For this purpose, when using interface functions in `orthologr` users need to 
 install the underlying bioinformatics tools to obain accurate results. 
 
-The following sections provide step by step instructions or guideance on installing 
+The following sections provide step by step instructions or guidance on installing 
 all bioinformatics tools for which R interface functions are implemented in `orthologr`.
+
 __Some tools are not trivial to install, so please read the corresponding sections carefully
 and execute test cases that are presented in each section.__
 
@@ -124,9 +125,11 @@ The following interface function to OrthoMCL is implemented in `orthologr`:
 
 ### Install `GGSearch` and `SSearch`
 
+This section will be covered soon.
+
 ### Install `HMMER`
 
-
+This section will be covered soon.
 
 ### Multiple Alignment Tools
 
@@ -193,6 +196,8 @@ For this purpose you need to have __KaKs_Calculator__ installed on your system a
 
 
 ### CDS prediction pipeline
+
+__The `predict_cds()` function is not finished yet.__
 
 It is also possible to run __Divergence Stratigraphy__ or any other
 orthology inference method starting with non-annotated genomes.
