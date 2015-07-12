@@ -26,9 +26,6 @@ biocLite("Biostrings")
 source("http://bioconductor.org/biocLite.R")
 biocLite("S4Vectors")
 
-# install package: IRanges
-source("http://bioconductor.org/biocLite.R")
-biocLite("IRanges")
 ```
 
 Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
@@ -36,7 +33,7 @@ Please type `a` specifying that all package dependencies of the corresponding pa
 
 ### On Unix Based Systems
 
-Now you can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
+Now users can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
 
 ```r
 # install.packages("devtools")
@@ -50,17 +47,17 @@ install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 ### On Windows Systems
 
 In some cases (when working with __WINDOWS__ machines), the installation via `devtools`
-will not work properly. In this case you can try the follwing steps:
+will not work properly. In this case users can try the follwing steps:
 
 ```r
 # On Windows, this won't work - see ?build_github_devtools
 install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
-# When working with Windows, first you need to install the
+# When working with Windows, first users need to install the
 # R package: rtools -> install.packages("rtools")
 
-# Afterwards you can install devtools -> install.packages("devtools")
-# and then you can run:
+# Afterwards users can install devtools -> install.packages("devtools")
+# and then they can run:
 
 devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
@@ -76,7 +73,7 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 
 ## Use Cases
 
-Learn `orthologr` by use cases provided by the following tutorials: 
+Learn `orthologr` by reading these tutorials: 
 
 - [Install Prerequisite Tools](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd)
 - [Perform BLAST Searches](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd)
