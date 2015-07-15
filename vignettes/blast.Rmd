@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 The `orthologr` package provides several interface functions to perform
 BLAST searches.
 
-First, make sure you have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on your machine. You can follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
+First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
 
 ## Performing BLAST Searches
 
