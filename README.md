@@ -65,7 +65,7 @@ devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 ```
 
-### Troubleshooting in Windows
+### Troubleshooting on Windows Machines
 
 - Install `orthologr` on a Win 8 laptop: [solution](https://github.com/HajkD/orthologr/issues/1) ( Thanks to Andres Romanowski )
 
