@@ -14,6 +14,8 @@ Description: The present collection of functions can be used to perform
     biological research.
 License: GPL-3
 SystemRequirements: C++, Perl
+VignetteBuilder: knitr
+NeedsCompilation: yes
 Depends:
     R (>= 3.1.1),
     seqinr (>= 3.0-7),
@@ -29,4 +31,11 @@ Imports:
     stringr (>= 0.6.2),
     IRanges (>= 1.22.9),
     DBI (>= 0.3.1)
+Suggests: 
+    knitr (>= 1.6),
+    rmarkdown (>= 0.3.3),
+    devtools (>= 1.6.1),
+    testthat (>= 0.9.1)
 LinkingTo: Rcpp
+URL: https://github.com/HajkD/orthologr
+BugReports: https://github.com/HajkD/orthologr/issues
