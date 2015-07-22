@@ -1,6 +1,8 @@
 orthologr
 =========
 
+[![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
+
 ### Performing Comparative Genomics with R
 
 The `orthologr` package provides interface functions between R and common bioinformatics tools
