@@ -55,11 +55,45 @@ to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978
 * On a Unix machine (see [installation manual: Unix](http://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
 -> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
 
+For example for Linux systems open the `Terminal` application and run (Thanks to Alexander Gabel):
+
+```
+# download BLAST+ version 2.2.31
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
+
+# extract the compiled version of BLAST
+tar zxvpf ncbi-blast+2.2.29-x64-linux.tar.gz
+
+# copy BLAST files to `usr/local/bin`
+cp ncbi-blast-2.2.31+/bin/* usr/local/bin
+```
+
+Alternatively users can set the system call to the BLAST programs by specifying the `PATH` variable (this is useful, because it allows an easier update of BLAST versions instead of deleting all BLAST programs from `usr/local/bin`):
+
+```
+# open vim text editor
+vi .bash_profile
+
+# type 'Shift' then I to edit the file .bash_profile
+# and specify the export PATH
+export PATH=${PATH}:/path/to/downloaded/blast/folder/ncbi-blast-2.2.31+/bin
+
+# type 'ESC' then ':' then 'w' then 'q' to save and quit the .bash_profile file 
+
+# log out from your server with
+exit
+
+# log in again and type
+blastp -version
+```
+
+Now users should see the BLAST command line options.
+
 ### Personal Experience
 
 Based on our personal experience the installation of BLAST works best when copy/pasting
 the BLAST executables to the path `usr/local/bin`. In detail you can run the following steps
-to copy/paste the BLAST executables to `usr/local/bin` (on Unix systems) :
+to copy/paste the BLAST executables to `usr/local/bin` (on Unix systems). However, updating BLAST will then need to manually delete all previous BLAST programs from `usr/local/bin` :
 
 Open the Terminal application on your system and type:
 
