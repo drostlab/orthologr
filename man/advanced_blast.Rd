@@ -175,8 +175,8 @@ head(sqlE)
 
 glimpse(sqlE)
 
-# select all rows that have an evalue of zero
-filter(sqlE,evalue == 0)
+# select all rows that have an evalue > 1e-15
+filter(sqlE,evalue > 1e-15)
 
 # select the best hit using the evalue criterion
 sqlE \%>\% group_by(query_id) \%>\% summarise(best_hit_eval = min(evalue))
