@@ -298,12 +298,12 @@ multi_aln <- function(file,
         
         if(is.null(multi_aln_name)){
                 
-                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(tool,".aln"))
+                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(basename(file),"_",tool,".aln"))
         }
 
         if(!is.null(multi_aln_name)){
          
-                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(multi_aln_name,"_",tool,".aln"))    
+                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(basename(file),"_",multi_aln_name,"_",tool,".aln"))    
         }
         
 # does not work as expected, could be included in another way or not.
