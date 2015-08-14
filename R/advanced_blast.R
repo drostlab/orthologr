@@ -165,8 +165,8 @@
 #' 
 #' glimpse(sqlE)
 #' 
-#' # select all rows that have an evalue of zero
-#' filter(sqlE,evalue == 0)
+#' # select all rows that have an evalue > 1e-15
+#' filter(sqlE,evalue > 1e-15)
 #' 
 #' # select the best hit using the evalue criterion
 #' sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
@@ -223,29 +223,6 @@ advanced_blast <- function(query_file,
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         aa <- geneids <- NULL
         
-        # initialize the BLAST search
-        
-        query.dt <- set_blast( file     = query_file, 
-                               format   = format, 
-                               seq_type = seq_type )[[1]]
-        
-        if(!is.null(db_path))
-                cdd_files <- list.files(db_path)
-        
-        if(!use_ncbi_database){
-                
-                # make a BLASTable databse of the subject
-                database <- set_blast( file        = subject_file, 
-                                       format      = format, 
-                                       seq_type    = seq_type, 
-                                       makedb      = TRUE, 
-                                       makedb_type = makedb_type )[[2]]
-                
-                filename <- unlist(strsplit(subject_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                filename <- filename[length(filename)]
-                dbname <- paste0("blastdb_",filename,"_protein.fasta")
-                
-        }
         
         if(use_ncbi_database){
                 
@@ -283,6 +260,29 @@ advanced_blast <- function(query_file,
         
         currwd <- getwd()
         setwd(file.path(tempdir(),"_blast_db"))
+        
+        # initialize the BLAST search
+        query.dt <- set_blast( file     = query_file, 
+                               format   = format, 
+                               seq_type = seq_type )[[1]]
+        
+        if(!is.null(db_path))
+                cdd_files <- list.files(db_path)
+        
+        if(!use_ncbi_database){
+                
+                # make a BLASTable databse of the subject
+                database <- set_blast( file        = subject_file, 
+                                       format      = format, 
+                                       seq_type    = seq_type, 
+                                       makedb      = TRUE, 
+                                       makedb_type = makedb_type )[[2]]
+                
+                filename <- unlist(strsplit(subject_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <- filename[length(filename)]
+                dbname <- paste0("blastdb_",filename,"_protein.fasta")
+                
+        }
         
         # write query fasta file 
 #         write_AA <- as.list(query.dt[ ,aa])
@@ -457,7 +457,6 @@ advanced_blast <- function(query_file,
                         )
                 }
                 
-                
                 if(is.null(db_path)){
                  
                         system(
@@ -475,7 +474,6 @@ advanced_blast <- function(query_file,
                                   "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
        )
        }
-
 
        if(!write.only){
         
@@ -533,7 +531,8 @@ advanced_blast <- function(query_file,
                 
                 all.files <- list.files()
                 
-                unlink(all.files[-which(is.element(all.files,cdd_files))])
+                if(!is.null(db_path))
+                        unlink(all.files[-which(is.element(all.files,cdd_files))])
                 
                 # return to the global working directory
                 setwd(file.path(currwd))
