@@ -171,17 +171,67 @@ The `orthologr` package also provides interfaces to the following Multiple Align
 Nevertheless, non of them have to be installed if the corresponding interface functions
 are not used.
 
- - [__ClustalW__](http://www.clustal.org/clustal2/) : Advanced multiple alignment tool of nucleic acid and protein sequences
+### Install `ClustalW2`
+
+To install `ClustalW2` please go to the [ClustalW](http://www.clustal.org/clustal2/) homepage and download
+the corresponding [clustalw2 program](http://www.clustal.org/download/current/) matching your operating system.
+
+After downloading and unpacking the `clustalw2` program, please go to the clustalw-2.1 folder and open a `Terminal` application
+to type (in this example for Mac OS X):
+
+```
+# copy clustalw2 files to `usr/local/bin`
+cp clustalw2 usr/local/bin
+```
+
+### Install `T-Coffee`
+
+To install `T-Coffee` please go to the [T-Coffee](http://www.tcoffee.org/Projects/tcoffee/) homepage and download
+the corresponding [T-Coffee program](http://www.tcoffee.org/Packages/Stable/Latest/) matching your operating system.
+
  
- - [__T_Coffee__](http://www.tcoffee.org/Projects/tcoffee/) : A collection of tools for processing multiple sequence alignments
- of nucleic acids and proteins as well as their 3D structure
+ 
+### Install `MUSCLE`
  
  - [__MUSCLE__](http://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
  
- - [__ClustalO__](http://www.clustal.org/omega/) : Fast and scalable multiple alignment tool for nucleic acid and protein sequences that is also
- capable of performing HMM alignments
+ 
+### Install `ClustalO`
+ 
+ 1) Download the [argtable](http://argtable.sourceforge.net/) program.
+ 
+ 2) Unzip the file.
+ 
+ 3) Run within the argtable folder:
+ 
+ ```
+ ./configure
+ 
+ make
+ 
+ make check
+ 
+ sudo make install
+ ```
+ 
+ 4) Download [ClustalO](http://www.clustal.org/omega/).
+ 
+ 5) Unzip the folder and run within the folder:
+ 
+ ```
+ ./configure
+ 
+ make
+ 
+ sudo make install
+ ```
+ 
+### Install `MAFFT`
  
  - [__MAFFT__](http://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
+
+
+
 
 In `orthologr` the function `multi_aln()` provides interfaces to all of these multiple alignment tools
 as well as an pairwise alignment interface to the [Biostrings](http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574).
