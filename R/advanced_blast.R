@@ -71,6 +71,7 @@
 #' to receive an SQLite connection as specified by \code{tbl} in \code{dplyr} please use the \code{sql_database} = \code{TRUE} argument. 
 #' 
 #' In case you want to use deltablast, you need to all cdd_delta.* files into the folder "_blast_db".
+#' 
 #' @author Hajk-Georg Drost
 #' @note This function is also able to return the subject taxonomy.
 #' 
@@ -227,10 +228,10 @@ advanced_blast <- function(query_file,
         if(use_ncbi_database){
                 
                 if((subject_file == "nr") && (blast_algorithm == "blastp"))
-                        database <- "nr" 
+                        database <- "env_nr" 
                 
                 if((subject_file == "nt") && (blast_algorithm == "blastn"))
-                        database <- "nt" 
+                        database <- "env_nt" 
                 
                 if((subject_file == "plaza") && (blast_algorithm == "blastp"))
                         database <- "plaza" 
@@ -258,9 +259,6 @@ advanced_blast <- function(query_file,
                 dir.create(file.path(tempdir(),"_blast_db"))
         }
         
-        currwd <- getwd()
-        setwd(file.path(tempdir(),"_blast_db"))
-        
         # initialize the BLAST search
         query.dt <- set_blast( file     = query_file, 
                                format   = format, 
@@ -284,6 +282,10 @@ advanced_blast <- function(query_file,
                 
         }
         
+        currwd <- getwd()
+        setwd(file.path(tempdir(),"_blast_db"))
+        
+
         # write query fasta file 
 #         write_AA <- as.list(query.dt[ ,aa])
 #         name <- query.dt[ , geneids]      
@@ -308,7 +310,7 @@ advanced_blast <- function(query_file,
         tryCatch(
                 {
                         
-        if(taxonomy == TRUE){
+        if(taxonomy){
                 
                 if(!is.null(db_path)){
                         
@@ -319,8 +321,7 @@ advanced_blast <- function(query_file,
                         system( paste0(blast_algorithm," -db ",database," -query ",input,
                                        " -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue 
-                                       bitscore score qcovs'")
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                         )
                 }
                 
@@ -328,8 +329,7 @@ advanced_blast <- function(query_file,
                         system( paste0(blast_algorithm," -db ",database," -query ",input,
                                        " -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue 
-                                       bitscore score qcovs'")
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                         )
                 }
                 
@@ -343,14 +343,14 @@ advanced_blast <- function(query_file,
         tryCatch(
                 {
                         
-        if(taxonomy == FALSE){
+        if(!taxonomy){
                 
                 if(is.null(db_path)){
                         
                         system( paste0(blast_algorithm," -db ",database," -query ",input,
                                 " -out ", output ," ",blast_params, 
-                                " -outfmt '6 qseqid sseqid pident nident length mismatch 
-                                gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                                " -outfmt '6 qseqid sseqid pident nident 
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                               )
                                 
                 
@@ -364,8 +364,8 @@ advanced_blast <- function(query_file,
                         
                         system( paste0(blast_algorithm," -db ",database," -query ",input,
                                        " -out ", output ," ",blast_params, 
-                                       " -outfmt '6 qseqid sseqid pident nident length mismatch 
-                                gapopen qstart qend sstart send evalue bitscore score qcovs'")
+                                       " -outfmt '6 qseqid sseqid pident nident 
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                               )
                         
                 }
@@ -380,7 +380,7 @@ advanced_blast <- function(query_file,
         tryCatch(
                 {
                         
-        if(taxonomy == TRUE){
+        if(taxonomy){
                 
                 if(!is.null(db_path)){     
                         
@@ -392,12 +392,10 @@ advanced_blast <- function(query_file,
                                 paste0("export PATH=",path,"; ",blast_algorithm," -db ",
                                        database," -query ",input," -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
-                                       score qcovs'")
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                                 )
                 } 
-                
-                
+        
                 if(is.null(db_path)){
                         
                         if(!is.null(db_path)){
@@ -410,8 +408,7 @@ advanced_blast <- function(query_file,
                                        paste0("export PATH=",path,"; ",blast_algorithm," -db ",
                                        database," -query ",input," -out ", output ," ",blast_params,
                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
-                                       score qcovs'")
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                                 )
                         }
                         
@@ -421,8 +418,7 @@ advanced_blast <- function(query_file,
                                         paste0("export PATH=",path,"; ",blast_algorithm," -db ",
                                                database," -query ",input," -out ", output ," ",blast_params,
                                                " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen qstart qend sstart send evalue bitscore 
-                                       score qcovs'")
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                                 )
                                 
                         }
@@ -440,7 +436,7 @@ advanced_blast <- function(query_file,
         tryCatch(
                 {
                         
-        if(taxonomy == FALSE){
+        if(!taxonomy){
                 
                 if(!is.null(db_path)){
                         
@@ -451,9 +447,8 @@ advanced_blast <- function(query_file,
                         system(
                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
                                database," -query ",input," -out ", output ," ",blast_params,
-                               " -outfmt '6 qseqid sseqid pident nident length 
-                               mismatch gapopen qstart qend sstart send evalue bitscore 
-                               score qcovs'")
+                               " -outfmt '6 qseqid sseqid pident nident 
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                         )
                 }
                 
@@ -462,9 +457,8 @@ advanced_blast <- function(query_file,
                         system(
                                 paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
                                        database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid pident nident length 
-                               mismatch gapopen qstart qend sstart send evalue bitscore 
-                               score qcovs'")
+                                       " -outfmt '6 qseqid sseqid pident nident 
+                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
                         )  
                 }
                 
@@ -493,12 +487,12 @@ advanced_blast <- function(query_file,
         
         default_params <- vector(mode = "character")
         default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
-                            "num_ident_matches","alig_length","mismatches", "gap_openings","q_start",
-                            "q_end","s_start","s_end","evalue","bit_score","score_raw",
-                            "query_coverage_per_subj")
+                            "num_ident_matches","alig_length","mismatches", "gap_openings","n_gaps","pos_match",
+                             "ppos", "q_start", "q_end","q_len","qcov","qcovhsp","query_seq","s_start","s_end",
+                            "s_len","subject_seq","evalue","bit_score","score_raw")
         
         
-        if(taxonomy == FALSE)
+        if(!taxonomy)
                 default_params <- default_params[!((default_params == "subject_taxonomy") | (default_params == "subject_kingdom"))]
         
         
@@ -507,11 +501,15 @@ advanced_blast <- function(query_file,
         colNames <- c(default_params,additional_params)
         
         # define the colClasses for faster file streaming
-        if(taxonomy == TRUE)
-                col_Classes <- c(rep("character",4), rep("numeric",13))
+        if(taxonomy)
+                col_Classes <- c(rep("character",4), rep("numeric",13),
+                                 "character",rep("numeric",3),rep("character",1),
+                                 rep("numeric",3))
         
-        if(taxonomy == FALSE)
-                col_Classes <- c(rep("character",2), rep("numeric",13))
+        if(!taxonomy)
+                col_Classes <- c(rep("character",2), rep("numeric",13),
+                                 "character",rep("numeric",3),rep("character",1),
+                                 rep("numeric",3))
         
         
         tryCatch(
