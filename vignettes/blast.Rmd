@@ -1060,6 +1060,63 @@ delta.blast(
 
 ```
 
+### Performing BLASTP searches against the NCBI nr database with `blast.nr()`
+
+The `blast.nr()` function implemented in `orthologr` allows users to perform
+local `blastp` searches against the NCBI nr database.
+
+For this purpose, the first step is to download the NCBI nr database to a local machine
+using the [biomartr](https://cran.r-project.org/web/packages/biomartr/index.html) package.
+
+Please notice that the NCBI nr database contains about 30 files storing
+approx. 500 MB data per file. So when downloading this large database via `biomartr`
+users need to make sure that they are constantly connected to the internet. 
+
+```{r, eval = FALSE}
+# install the 'biomartr' package from CRAN
+install.packages("biomartr")
+
+# load biomartr
+load("biomartr")
+
+# download the NCBI nr database to your local machine to a folder
+# names 'DB'
+sapply(listDatabases("nr"),download_database)
+```
+
+After downloading all NCBI nr files to the `DB` folder users need to
+go to the `DB` folder and unpack all `env_nr*` files and store them
+in the same `DB` folder. In case users whish to specify a different
+folder for downloading NCBI nr they can specify the `path` argument
+of the `?download_database` function implemented in `biomartr`.
+
+Now users can use the `blast.nr()` function to perform BLASTP searches against NCBI nr.
+
+```{r, eval = FALSE}
+blast.nr( query_file      = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          nr.path         = "DB",
+          seq_type        = "protein",
+          max.target.seqs = 20,
+          comp_cores      = 2 )
+```
+
+```
+                query_id                  subject_id perc_identity num_ident_matches alig_length mismatches gap_openings
+1: 333554|PACid:16033839 gi|139291046|gb|ECE46929.1|         40.00                24          60         35            1
+2: 333554|PACid:16033839 gi|140103111|gb|ECJ55606.1|         46.03                29          63         34            0
+   n_gaps pos_match ppos q_start q_end q_len qcov qcovhsp                                                       query_seq
+1:      1        39 65.0       8    66   246   24      24    CVGC-GFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVL
+2:      0        47 74.6       8    70   246   26      26 CVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAI
+   s_start s_end s_len                                                     subject_seq evalue bit_score score_raw
+1:       9    68    71    CVECMCDENESIYKKYSEGNLRLTRCIRCSDFVDRYVEYDNVLIVLDLVLHKNPAYRHLL  1e-07      54.3       129
+2:      48   110   114 CVECGKSVQQVFKMFGKGNIRLSRCKSCHSISDKYVEYEFVLIFIDLLLHKTQVYRHLIFNRL  8e-14      72.0       175
+```
+
+Here, the `nr.path` argument specifies the folder path to the NCBI nr database.
+In case users unpacked all NCBI nr files to the `DB` folder created by `download_database()`
+the `nr.path` argument can be specified as `nr.path = "DB"`.
+
+
 ### Storing very large hit tables in a SQLite database with advanced_blast()
 
 The `advanced_blast()` function can also store the BLAST output CSV file in a SQLite database. This works only with [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html) version >= 0.3 . To store the BLAST output in an SQLite database and to receive an SQLite connection as specified by [tbl()](http://cran.r-project.org/web/packages/dplyr/vignettes/databases.html) in dplyr please use the `sql_database = TRUE` argument.
