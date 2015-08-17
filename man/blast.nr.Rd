@@ -2,7 +2,7 @@
 % Please edit documentation in R/blast.nr.R
 \name{blast.nr}
 \alias{blast.nr}
-\title{Perform a BLASTp search against NCBI nr}
+\title{Perform a BLASTP search against NCBI nr}
 \usage{
 blast.nr(query_file, nr.path = NULL, seq_type = "protein",
   format = "fasta", eval = "1E-5", max.target.seqs = 500, path = NULL,
@@ -33,10 +33,10 @@ e.g. \code{format} = \code{"fasta"}. Default is \code{format} = \code{"fasta"}.}
 \item{comp_cores}{a numeric value specifying the number of cores that shall be used to run BLAST searches.}
 }
 \description{
-This function performs a BLASTp search of a given set of sequences NCBI nr.
+This function performs a BLASTP search of a given set of sequences NCBI nr.
 }
 \details{
-This function provides users an R interface to perform BLASTp searches against the NCBI nr database.
+This function provides users an R interface to perform BLASTP searches against the NCBI nr database.
 }
 \examples{
 \dontrun{
