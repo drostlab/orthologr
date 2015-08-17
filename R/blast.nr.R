@@ -1,6 +1,6 @@
-#' @title Perform a BLASTp search against NCBI nr
+#' @title Perform a BLASTP search against NCBI nr
 #' @description 
-#' This function performs a BLASTp search of a given set of sequences NCBI nr.
+#' This function performs a BLASTP search of a given set of sequences NCBI nr.
 #' @param query_file a character string specifying the path to the query file of interest (query organism).
 #' @param nr.path path to the NCBI nr database folder.
 #' @param seq_type a character string specifying the sequence type stored in the input file. 
@@ -16,7 +16,7 @@
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is NULL, implicating that a set of default parameters is used when running BLAST.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to run BLAST searches.
 #' @details
-#' This function provides users an R interface to perform BLASTp searches against the NCBI nr database. 
+#' This function provides users an R interface to perform BLASTP searches against the NCBI nr database. 
 #' @author Hajk-Georg Drost
 #' @examples
 #' 
