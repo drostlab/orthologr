@@ -1077,7 +1077,7 @@ users need to make sure that they are constantly connected to the internet.
 install.packages("biomartr")
 
 # load biomartr
-load("biomartr")
+library("biomartr")
 
 # download the NCBI nr database to your local machine to a folder
 # names 'DB'
@@ -1093,11 +1093,13 @@ of the `?download_database` function implemented in `biomartr`.
 Now users can use the `blast.nr()` function to perform BLASTP searches against NCBI nr.
 
 ```{r, eval = FALSE}
-blast.nr( query_file      = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
-          nr.path         = "DB",
-          seq_type        = "protein",
-          max.target.seqs = 20,
-          comp_cores      = 2 )
+nr.res <- blast.nr( query_file      = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+                    nr.path         = "DB",
+                    seq_type        = "protein",
+                    max.target.seqs = 20,
+                    comp_cores      = 2 )
+
+nr.res
 ```
 
 ```
@@ -1115,6 +1117,34 @@ blast.nr( query_file      = system.file('seqs/aa_seqs.fasta', package = 'ortholo
 Here, the `nr.path` argument specifies the folder path to the NCBI nr database.
 In case users unpacked all NCBI nr files to the `DB` folder created by `download_database()`
 the `nr.path` argument can be specified as `nr.path = "DB"`.
+
+The corresponding `gi id` can then be clipped by running:
+
+```{r,eval=FALSE}
+
+nr.res[ , "subject_id"] <- unlist(lapply(stringr::str_split(nr.res[ , subject_id],"[|]"), function(x) x[2]))
+
+nr.res
+```
+
+```
+                query_id subject_id perc_identity num_ident_matches alig_length mismatches
+1: 333554|PACid:16033839  139291046         40.00                24          60         35
+2: 333554|PACid:16033839  140103111         46.03                29          63         34
+   gap_openings n_gaps pos_match ppos q_start q_end q_len qcov qcovhsp
+1:            1      1        39 65.0       8    66   246   24      24
+2:            0      0        47 74.6       8    70   246   26      26
+                                                         query_seq s_start s_end s_len
+1:    CVGC-GFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVL       9    68    71
+2: CVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAI      48   110   114
+                                                       subject_seq evalue bit_score score_raw
+1:    CVECMCDENESIYKKYSEGNLRLTRCIRCSDFVDRYVEYDNVLIVLDLVLHKNPAYRHLL  1e-07      54.3       129
+2: CVECGKSVQQVFKMFGKGNIRLSRCKSCHSISDKYVEYEFVLIFIDLLLHKTQVYRHLIFNRL  8e-14      72.0       175
+```
+
+By performing this `gi` clipping the initial `gi id` returned by blasting against
+the `NCBI nr` database `gi|139291046|gb|ECE46929.1|` is clipped to the `gi id` `139291046` for which corresponding `taxonomy ids` can be extracted from [NCBI Taxonomy](ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/).
+
 
 
 ### Storing very large hit tables in a SQLite database with advanced_blast()
