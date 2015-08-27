@@ -6,8 +6,8 @@ orthologr
 ### Performing Comparative Genomics with R
 
 The `orthologr` package provides interface functions between R and common bioinformatics tools
-used to perform orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
-CDS prediction, and phylotranscriptomics (divergence stratigraphy).
+used to perform BLAST searches, orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
+CDS prediction, and [phylotranscriptomics](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) (divergence stratigraphy).
 
 ## Installation Guide
 
@@ -91,6 +91,52 @@ Learn `orthologr` by reading these tutorials:
 - [Perform Divergence Stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
 
 
+## Interfaces implemented in `orthologr`:
+
+### Perform BLAST searches with R  
+
+* `advanced_blast()`: Perform an advanced BLAST+ search
+* `advanced_makedb()`: Create a BLASTable database with makeblastdb (advanced options)
+* `blast()`: Perform a BLAST+ search
+* `blast.nr()`: Perform a BLASTP search against NCBI nr
+* `blast_best()`: Perform a BLAST+ best hit search
+* `blast_rec()`: Perform a BLAST+ best reciprocal hit (BRH) search
+* `delta.blast()`: Perform a DELTA-BLAST Search
+* `ggsearch()`: Compute Global Alignments with GGSearch
+* `ssearch()`: Compute Local Alignments with SSearch
+
+
+### Perform Pairwise and Multiple Sequence Alignements with R
+
+* `multi_aln()`: Compute Multiple Sequence Alignments based on the `clustalw`, `t_coffee`, `muscle`, `clustalo`, and `mafft` programs.
+* `pairwise_aln()`: Compute Pairwise Alignments
+* `codon_aln()`: Compute a Codon Alignment
+
+### Perform Orthology Inference with R
+
+* `orthologs()`: Main Orthology Inference Function
+* `ProteinOrtho()`: Orthology Inference with ProteinOrtho
+
+### Perform Population Genomics with R
+
+* `dNdS()`: Compute dNdS values for two organisms
+* `substitutionrate()`: Internal function for dNdS computations
+
+### Read and Write CDS, Genomes, and Proteomes
+
+* `read.cds()`: Read the CDS of a given organism
+* `read.genome()`: Read the genome of a given organism
+* `read.proteome()`: Read the proteome of a given organism
+* `write.proteome()`: Save a proteome in fasta format
+
+
+## Discussions and Bug Reports
+
+I would be very happy to learn more about potential improvements of the concepts and functions provided in this package.
+
+Furthermore, in case you find some bugs, need additional (more flexible) functionality of parts of this package, or want to contribute to this project please let me know:
+
+https://github.com/HajkD/orthologr/issues
 
 ## Licenses
 
