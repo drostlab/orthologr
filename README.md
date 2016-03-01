@@ -3,11 +3,18 @@ orthologr
 
 [![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
 
-### Performing Comparative Genomics with R
+## Performing Comparative Genomics with R
 
 The `orthologr` package provides interface functions between R and common bioinformatics tools
 used to perform BLAST searches, orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
 CDS prediction, and [phylotranscriptomics](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) (divergence stratigraphy).
+
+## Citation
+
+> Drost HG, Gabel A, Grosse I, Quint M. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ (2015) 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
+>
+> Drost HG, Bellstädt J, Ó'Maoiléidigh DS, Silva AT, Gabel A, Weinholdt C, Ryan PT, Dekkers BJW, Bentsink L, Hilhorst H, Ligterink W, Wellmer F, Grosse I, and Quint M. __Post-embryonic hourglass patterns mark ontogenetic transitions in plant development__. _Mol. Biol. Evol._ (2016) [doi:10.1093/molbev/msw039](http://mbe.oxfordjournals.org/content/early/2016/02/23/molbev.msw039.short?rss=1) 
+
 
 ## Installation Guide
 
@@ -72,11 +79,6 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 ### Troubleshooting on Windows Machines
 
 - Install `orthologr` on a Win 8 laptop: [solution](https://github.com/HajkD/orthologr/issues/1) ( Thanks to Andres Romanowski )
-
-## Citation
-
-
-> Drost HG, Gabel A, Grosse I, Quint M. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. (2015) 32 (5): 1221-1231. doi:10.1093/molbev/msv012
 
 
 ## Use Cases
