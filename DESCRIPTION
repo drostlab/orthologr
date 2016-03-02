@@ -1,26 +1,23 @@
 Package: orthologr
 Type: Package
-Title: Performing Comparative Genomics with R
+Title: Comparative Genomics with R
 Version: 0.0.1
 Date: 2015-07-11
 Authors@R: as.person(c(
-    "Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de> [aut, cre]",
-    "Sarah Scharfenberg [ctb]",
-    "Kristian Karsten Ullrich [ctb]"
-    ))
-Maintainer: Hajk-Georg Drost <hajk-georg.drost@informatik.uni-halle.de>
-Description: This package implements interface functions to perform BLAST searches, pairwise and multiple sequence alignments,
-    orthology inference, and population genomics for
-    biological research.
+    "Hajk-Georg Drost <hgd23@cam.ac.uk> [aut, cre]",
+    "Sarah Scharfenberg [ctb]"))
+Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
+Description: Perform BLAST searches, pairwise and multiple sequence alignments, orthology inference, and
+    population genomics for biological research.
 License: GPL-3
 SystemRequirements: C++, Perl
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Depends:
     R (>= 3.1.1),
-    seqinr (>= 3.0-7),
     data.table (>= 1.9.4)
 Imports:
+    seqinr,
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
     doParallel (>= 1.0.8),
@@ -31,7 +28,7 @@ Imports:
     stringr (>= 0.6.2),
     IRanges,
     DBI (>= 0.3.1)
-Suggests: 
+Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
     devtools (>= 1.6.1),
@@ -39,3 +36,4 @@ Suggests:
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
+RoxygenNote: 5.0.1
