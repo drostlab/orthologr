@@ -3,11 +3,9 @@ orthologr
 
 [![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
 
-## Performing Comparative Genomics with R
+## Comparative Genomics with R
 
-The `orthologr` package provides interface functions between R and common bioinformatics tools
-used to perform BLAST searches, orthology inference, multiple sequence alignments, codon alignments, dNdS estimation,
-CDS prediction, and [phylotranscriptomics](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) (divergence stratigraphy).
+The `orthologr` package allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) with R.
 
 ## Citation
 
@@ -42,9 +40,19 @@ biocLite("XVector")
 Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
 Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
 
+
+Install `orthologr` from CRAN:
+
+```
+# install orthologr 0.0.1 from CRAN
+install.packages("orthologr")
+```
+
+
+
 ### On Unix Based Systems
 
-Now users can use the [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package to install `orthologr` from GitHub.
+Now users can use the `devtools` package to install `orthologr` from GitHub.
 
 ```r
 # install.packages("devtools")
@@ -104,8 +112,6 @@ Learn `orthologr` by reading these tutorials:
 * `blast_best()`: Perform a BLAST+ best hit search
 * `blast_rec()`: Perform a BLAST+ best reciprocal hit (BRH) search
 * `delta.blast()`: Perform a DELTA-BLAST Search
-* `ggsearch()`: Compute Global Alignments with GGSearch
-* `ssearch()`: Compute Local Alignments with SSearch
 
 
 ### Perform Pairwise and Multiple Sequence Alignements with R
