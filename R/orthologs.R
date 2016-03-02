@@ -6,7 +6,7 @@
 #' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
 #' Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).
 #' @param outgroup_file a character string specifying the paths to the sequence files of interest (outgroup organisms).
-#' This argument is only used by \code{\link{InParanoid}}.
+#' This argument is only used by \code{InParanoid}.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param seq_type a character string specifying the sequence type stored in the input file.
 #' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
@@ -39,16 +39,8 @@
 #'   \item BLAST best hit (BH) 
 #'   \item BLAST reciprocal best hit (RBH)
 #'   \item DELTA-BLAST reciprocal best hit (DELTA)
-#'   \item ProteinOrtho (PO)
-#'   \item OrthoMCL (OrthoMCL)
 #' }
 #' 
-#' Alignment based methods:
-#' 
-#' \itemize{
-#'   \item Best Global Alignment (GGSEARCH)
-#'   \item Best Local Alignment (SSEARCH)
-#' }
 #' 
 #' @author Hajk-Georg Drost
 #' @return A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
@@ -113,78 +105,8 @@
 #'           cdd.path        = "path/to/cdd/database/folder", 
 #'           comp_cores      = 2)          
 #'                      
-#'           
-#' 
-#' 
-#' ### Orthology Inference using ProteinOrtho
-#' 
-#' # defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila
-#' subject_organisms <- c(system.file('seqs/example_brapa_aa.faa', package = 'orthologr'),
-#'                        system.file('seqs/example_alyra_aa.faa', package = 'orthologr'),
-#'                        system.file('seqs/example_thalo_aa.faa', package = 'orthologr'))
-#' 
-#' orthologs(query_file      = system.file('seqs/example_athal_aa.faa', package = 'orthologr'),
-#'           subject_files   = subject_organisms,
-#'           seq_type        = "protein", 
-#'           ortho_detection = "PO")
-#'     
-#'                 
-#' # multicore version          
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = subject_organisms,
-#'           seq_type        = "protein", 
-#'           ortho_detection = "PO", 
-#'           comp_cores      = 2)  
-#'           
-#'                           
-#' ### Orthology Inference using OrthoMCL
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "OrthoMCL")
-#'           
-#'           
-#' # multicore version          
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "OrthoMCL", 
-#'           comp_cores      = 2)  
-#'
-#' 
-#' 
-#' ### Orthology Inference using GGSearch
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "GGSEARCH")
-#'           
-#'           
-#' # multicore version          
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "GGSEARCH", 
-#'           comp_cores      = 2)  
-#' 
-#'           
-#'                               
-#' ### Orthology Inference using SSearch
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "SSEARCH")
-#'           
-#'           
-#' # multicore version          
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "SSEARCH", 
-#'           comp_cores      = 2)  
-#'
 #' }
-#' @seealso \code{\link{blast_rec}}, \code{\link{ProteinOrtho}}, \code{\link{OrthoMCL}}, \code{\link{dNdS}}
+#' @seealso \code{\link{blast_rec}}, \code{\link{dNdS}}
 #' @export
  
 orthologs <- function(query_file,
@@ -383,87 +305,6 @@ orthologs <- function(query_file,
         }
         
         
-        if(ortho_detection == "OrthoMCL"){
-                
-                
-                ortho_tbl <- data.table::copy(
-                        
-                        OrthoMCL( query_file      = query_file, 
-                                  subject_files   = subject_files, 
-                                  orthomcl_path   = path, 
-                                  orthomcl_params = add_params,
-                                  eval            = eval, 
-                                  comp_cores      = comp_cores,
-                                  seq_type        = seq_type, 
-                                  format          = format )
-                        
-                        )
-                
-                
-                if(clean_folders)
-                        clean_all_folders(file.path(tempdir(),"_OrthoMCL"))
-                
-        }
-        
-        
-        if(ortho_detection == "GGSEARCH"){
-                
-                
-                ortho_tbl <- data.table::copy(
-                        
-                        alignmentSearch( query_file      = query_file, 
-                                         subject_file   = subject_files,
-                                         seq_type        = seq_type,
-                                         format          = format,
-                                         tool            = "ggsearch",
-                                         path            = path, 
-                                         comp_cores      = comp_cores,
-                                         details         = detailed_output,
-                                         clean_folders   = clean_folders,
-                                         #eval            = eval 
-                                         )
-                        
-                )
-                
-        }
-        
-        
-        if(ortho_detection == "SSEARCH"){
-                
-                
-                ortho_tbl <- data.table::copy(
-                        
-                        alignmentSearch( query_file      = query_file, 
-                                         subject_file   = subject_files,
-                                         seq_type        = seq_type,
-                                         format          = format,
-                                         tool            = "ssearch",
-                                         path            = path, 
-                                         comp_cores      = comp_cores,
-                                         details         = detailed_output,
-                                         clean_folders   = clean_folders,
-                                        #eval            = eval 
-                                        )
-                        
-                )
-                
-        }
-        
-#         if(ortho_detection == "IP"){
-#                 
-#                 
-#                 ortho_tbl <- InParanoid(query_file = query_file, subject_file = subject_files, 
-#                                    outgroup_file = outgroup_file,ip_path = path,
-#                                    seq_type = seq_type, format = format)
-#                 
-#                 
-#                 if(clean_folders)
-#                         clean_all_folders("_InParanoid")
-#                 
-#                 
-#         }
-#         
-
         return(ortho_tbl)
         
 }
