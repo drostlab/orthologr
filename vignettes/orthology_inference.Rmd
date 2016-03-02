@@ -36,25 +36,7 @@ The following interfaces are (yet) implemented in the `orthologs()` function:
 
 - DELTA-BLAST reciprocal best hit (DELTA)
 
-- ProteinOrtho (PO)
-
-- OrthoMCL (OrthoMCL)
-
-- OMA (OMA) 
-
-### Alignment based methods (FASTA):
-
-- GGSearch (GGSEARCH)
-
-- SSearch (SSEARCH) 
-
-### HMM based methods
-
-- phmmer
-
-- hmmsearch
-
-- jackhmmer 
+- ProteinOrtho
 
 Using a simple example stored in the package environment of `orthologr` you
 can get an impression on how to use the `orthologs()` function.
@@ -858,59 +840,3 @@ ProteinOrtho(query_file      = system.file('seqs/ortho_thal_aa.fasta', package =
 
 ```
 
-
-### OrthoMCL
-
-
-```{r,eval=FALSE}
-
-library(orthologr)
-
-# perform orthology inference using OrthoMCL
-# and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "OrthoMCL", 
-          clean_folders   = FALSE)
-
-
-```
-
-
-### GGSearch
-
-
-```{r,eval=FALSE}
-
-library(orthologr)
-
-# perform orthology inference using GGSearch
-# and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "GGSEARCH", 
-          clean_folders   = FALSE)
-
-
-```
-
-
-### SSearch
-
-
-```{r,eval=FALSE}
-
-library(orthologr)
-
-# perform orthology inference using SSearch
-# and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "SSEARCH", 
-          clean_folders   = FALSE)
-
-
-```
