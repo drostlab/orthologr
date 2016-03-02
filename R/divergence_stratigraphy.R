@@ -11,7 +11,7 @@
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
-#'  @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
+#' @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
 #' Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Default is \code{dnds.threshold} = 2.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
@@ -147,7 +147,7 @@ divergence_stratigraphy <- function(query_file,
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        query_id <- subject_id <- dNdS <- NULL
+        query_id <- subject_id <- dNdS <- dnds.threshold <- NULL
         
         dNdS_tbl <- filter_dNdS( dNdS( query_file      = query_file,
                                        subject_file    = subject_file,
