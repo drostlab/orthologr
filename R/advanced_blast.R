@@ -109,42 +109,42 @@
 #' 
 #' # performing a BLAST search using blastp (default)
 #' advanced_blast(
-#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_algorithm = "blastp", 
-#'       blast_params    = "-evalue 1E-5 -num_threads 2" )
+#'   query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'   subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'   blast_algorithm = "blastp", 
+#'   blast_params    = "-evalue 1E-5 -num_threads 2" )
 #'       
 #' # performing a BLAST search using blastp (default) and starting with protein sequences
 #' advanced_blast(
-#'       query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'       subject_file    = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type        = "protein", 
-#'       blast_algorithm = "blastp", 
-#'       blast_params    = "-evalue 1E-5 -num_threads 2" )       
+#'   query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'   subject_file    = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'   seq_type        = "protein", 
+#'   blast_algorithm = "blastp", 
+#'   blast_params    = "-evalue 1E-5 -num_threads 2" )       
 #'  
 #' 
 #'              
 #' # DELTA-BLAST
 #' #
 #' # you can also use deltablast to perform BLAST searches
-#' # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"                          
+#' # make sure you have the cdd_deltablast.* files stored in the folder "_blast_db"     
 #' advanced_blast(
-#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       blast_algorithm = "deltablast",
-#'       db_path         = "path/to/cdd_files", 
-#'       blast_params    = "-evalue 1E-5 -num_threads 2")                                       
+#'   query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'   subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'   blast_algorithm = "deltablast",
+#'   db_path         = "path/to/cdd_files", 
+#'   blast_params    = "-evalue 1E-5 -num_threads 2")                                       
 #'                              
 #'                                                                  
-#'                                                                                                                                          
+#'                                    
 #' # when performing an advanced BLAST search, you can easily select the best hit using
 #' library(dplyr)
 #' 
 #' advB <- advanced_blast(
-#'            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'            subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'            seq_type     = "cds",blast_algorithm = "blastp", 
-#'            blast_params = "-evalue 1E-5 -num_threads 1")
+#'    query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'    subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'    seq_type     = "cds",blast_algorithm = "blastp", 
+#'    blast_params = "-evalue 1E-5 -num_threads 1")
 #'                                  
 #' best_hit <- advB %>% group_by(query_id) %>% summarise(min(evalue))
 #'
@@ -155,12 +155,12 @@
 #' library(dplyr)
 #' 
 #' sqlE <- advanced_blast(
-#'              query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'              subject_file    = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
-#'              seq_type        = "cds",
-#'              blast_algorithm = "blastp", 
-#'              blast_params    = "-evalue 1E-5 -num_threads 1", 
-#'              sql_database    = TRUE)
+#'     query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'     subject_file    = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+#'     seq_type        = "cds",
+#'     blast_algorithm = "blastp", 
+#'     blast_params    = "-evalue 1E-5 -num_threads 1", 
+#'     sql_database    = TRUE)
 #'
 #' head(sqlE)
 #' 
@@ -172,14 +172,14 @@
 #' # select the best hit using the evalue criterion
 #' sqlE %>% group_by(query_id) %>% summarise(best_hit_eval = min(evalue))
 #' 
-#'                                                  
-#'                                                                                                   
-#' # using advanced_blast() with external BLAST path                                                                                                                                                   
-#' advanced_blast(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'                blast_algorithm = "blastp", 
-#'                blast_params    = "-evalue 1E-5 -num_threads 2",
-#'                path            = "path/to/blastp/")
+#'                                                
+#' # using advanced_blast() with external BLAST path                                           
+#' advanced_blast(
+#'  query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'  subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'  blast_algorithm = "blastp", 
+#'  blast_params    = "-evalue 1E-5 -num_threads 2",
+#'  path            = "path/to/blastp/")
 #' 
 #' }
 #'
