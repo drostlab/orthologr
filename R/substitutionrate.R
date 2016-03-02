@@ -54,33 +54,40 @@
 #' @examples \dontrun{
 #' 
 #' # estimate the dNdS rate using Li's method
-#' substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                  est.method = "Li", 
-#'                  format     = "fasta")
+#' substitutionrate(
+#'    file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'    est.method = "Li", 
+#'    format     = "fasta")
 #'  
 #' # estimate the dNdS rate using Comeron's method
-#' substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                  est.method = "Comeron", 
-#'                  format     = "fasta")
+#' substitutionrate(
+#'    file       = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'    est.method = "Comeron", 
+#'    format     = "fasta")
 #'                  
-#' # estimate the dNdS rate using model averaging provided by the KaKs_Calculator 1.2 program
-#'  substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
-#'                   est.method = "MA", 
-#'                   format     = "fasta") 
+#' # estimate the dNdS rate using model averaging provided by
+#' # the KaKs_Calculator 1.2 program
+#'  substitutionrate(
+#'     file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'     est.method = "MA", 
+#'     format     = "fasta") 
 #'                   
 #'  # estimate the dNdS rate using Nei and Gojobori's method provided by the 
 #'  # KaKs_Calculator 1.2 program
-#'  substitutionrate(file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
-#'                   est.method = "NG", 
-#'                   format     = "fasta")     
+#'  substitutionrate(
+#'     file       = system.file("seqs/pal2nal.aln", package = "orthologr"), 
+#'     est.method = "NG", 
+#'     format     = "fasta")     
 #'   
 #'   # estimate the dNdS rate using Nei and Gojobori's method AND Yang and Nielsen's 
 #'   # method provided by the KaKs_Calculator 1.2 program 
-#'   # for this purpose we choose: est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"                 
-#'  substitutionrate(file             = system.file("seqs/pal2nal.aln", package = "orthologr"),
-#'                   est.method       = "kaks_calc", 
-#'                   format           = "fasta",
-#'                   kaks_calc.params = "-m NG -m YN")
+#'   # for this purpose we choose: 
+#'   # est.method = "kaks_calc" and kaks_calc.params = "-m NG -m YN"                 
+#'  substitutionrate(
+#'    file             = system.file("seqs/pal2nal.aln", package = "orthologr"),
+#'    est.method       = "kaks_calc", 
+#'    format           = "fasta",
+#'    kaks_calc.params = "-m NG -m YN")
 #'                   
 #'                                           
 #' }
