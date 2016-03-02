@@ -1,0 +1,21 @@
+citHeader("To cite orthologr in publications please use:")
+
+citEntry(entry = "Article",
+  title        = "Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis",
+  author       = personList(as.person("Drost HG"),
+                   as.person("Gabel A"),
+                   as.person("Grosse I"),
+                   as.person("Quint M")),
+  journal      = "Mol. Biol. Evol.",
+  year         = "2015",
+  volume       = "32",
+  number       = "5",
+  pages        = "1221--1231",
+  url          = "http://mbe.oxfordjournals.org/content/32/5/1221",
+  
+  textVersion  =
+  paste("Drost HG, Gabel A, Grosse I, Quint M.",
+  " Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis.",
+  " Mol. Biol. Evol. (2015) 32 (5): 1221-1231.",
+  "doi:10.1093/molbev/msv012")
+)
