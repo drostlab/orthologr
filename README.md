@@ -43,7 +43,7 @@ Please type `a` specifying that all package dependencies of the corresponding pa
 
 Install `orthologr` from CRAN:
 
-```
+```r
 # install orthologr 0.0.1 from CRAN
 install.packages("orthologr")
 ```
