@@ -470,7 +470,7 @@ the computation time of 3-4 h on a local machine for 2 genome comparisions can b
 
 ## Combine a Divergence Map with Gene Expression Data
 
-`Divergence Maps` can be used for a wide range of analyses. One example is to combine `Divergence Maps` with gene expression data to capture evolutionary signals in developmental transcriptomes (= `Phylotranscriptomics`; see [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)). Performing phylotranscriptomic analyses based on an existing `Divergence Map` can easily be done by using the [myTAI](http://cran.r-project.org/web/packages/myTAI/index.html) package. You can consult the [Introduction to the myTAI package Vignette](http://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
+`Divergence Maps` can be used for a wide range of analyses. One example is to combine `Divergence Maps` with gene expression data to capture evolutionary signals in developmental transcriptomes (= `Phylotranscriptomics`; see [Drost et al., 2015](http://mbe.oxfordjournals.org/content/32/5/1221.full)). Performing phylotranscriptomic analyses based on an existing `Divergence Map` can easily be done by using the `myTAI` package. You can consult the [Introduction to the myTAI package Vignette](https://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html)
 for more details.
 
 
