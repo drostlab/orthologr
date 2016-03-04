@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="date" content="2016-03-04" />
+
+<title>Performing Divergence Stratigraphy</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">Performing Divergence Stratigraphy</h1>
+<h4 class="date"><em>2016-03-04</em></h4>
+
+</div>
+
+
+<p>The <code>orthologr</code> package allows users to perform <strong>Divergence Stratigraphy</strong> for any query and subject organisms of interest.</p>
+<p><strong>Divergence Stratigraphy</strong> is the process of quantifying the selection pressure (in terms of protein evolutionary rate) acting on orthologous genes between closely related species. The resulting sequence divergence map (short divergence map), stores the divergence stratum in the first column and the query_id of inferred orthologous genes in the second column (<a href="http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html">Quint et al., 2012</a>; <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>; <a href="https://github.com/HajkD/myTAI">Introduction to myTAI</a>).</p>
+<p>The following Algorithm implemented in <code>divergence_stratigraphy()</code> defines <strong>Divergence Stratigraphy</strong> as method (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>):</p>
+<ol style="list-style-type: decimal">
+<li><p>Orthology Inference using BLAST best reciprocal hit (“RBH”) based on blastp</p></li>
+<li><p>Pairwise global amino acid alignments of orthologous genes using the <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574">Needleman-Wunsch algorithm</a></p></li>
+<li><p>Codon alignments of orthologous genes using <a href="http://www.bork.embl.de/pal2nal/">PAL2NAL</a></p></li>
+<li><p>dNdS estimation using <a href="http://link.springer.com/article/10.1007/BF00173196">Comeron’s method (1995)</a></p></li>
+<li><p>Categorize estimated dNdS values into <code>divergence strata</code> (= deciles of all dNdS values)</p></li>
+</ol>
+<p>In <code>orthologr</code> the <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574">Needleman-Wunsch algorithm</a>, <a href="http://www.bork.embl.de/pal2nal/">PAL2NAL</a> and <a href="http://link.springer.com/article/10.1007/BF00173196">Comeron’s method (1995)</a> are already included in the <code>orthologr</code> package and do not have to be installed separately. Nevertheless, users need to make sure <strong>they have BLAST installed on their machine before using the <code>divergence_stratigraphy()</code>function</strong>.</p>
+<p><strong>Note</strong>: The following examples assume that the <strong>BLAST</strong> program is installed and stored in the default execution path <code>usr/local/bin</code>. In case users do not have <strong>BLAST</strong> installed yet or the following command in R produces a different output, please consult the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#orthology-inference-tools">Installation Vignette</a> to corretly set up the <strong>BLAST</strong> program to perform <strong>Divergence Stratigraphy</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system</span>(<span class="st">&quot;blastp -version&quot;</span>)</code></pre></div>
+<pre><code>blastp: 2.2.30+
+Package: blast 2.2.30, build Oct 27 2014 17:10:51</code></pre>
+<div id="divergence-map-computations" class="section level2">
+<h2>Divergence Map Computations</h2>
+<p>In <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a> we define a <code>Divergence Map</code> as table storing the degree of selection pressure (= <code>divergence strata</code>) for each protein coding gene of a given query organism. In this case selection pressure was quantified by dNdS estimation (ratio of synonymous versus non-synonymous <code>codon -&gt; amino acid</code> sequence substitution rates). The resulting dNdS values for all protein coding genes of the query organism are then categorized into deciles (10%-quantiles) allowing users to compare the results obtained from <code>Phylostratigraphy</code> with results obtained form <code>Divergence Stratigraphy</code>.</p>
+<p>To perform <strong>Divergence Stratigraphy</strong> using <code>orthologr</code> users need to retrieve the following input files:</p>
+<ul>
+<li>a CDS file covering all protein coding genes of the query organism of interest</li>
+<li>a CDS file covering all protein coding genes of the subject organism of interest</li>
+</ul>
+<div id="sequence-data-retrieval" class="section level3">
+<h3>Sequence Data Retrieval</h3>
+<p>In the following example, we will use <em>Arabidopsis thaliana</em> as query organism and <em>Arabidopsis lyrata</em> as subject organism.</p>
+<p>First, we need to download the CDS sequences for all protein coding genes of <em>A. thaliana</em> and <em>A. lyrata</em>.</p>
+<div id="option-1" class="section level4">
+<h4>Option 1:</h4>
+<p>The CDS retrieval can be done using a <code>Terminal</code> or by manual downloading the files</p>
+<ul>
+<li><code>Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz</code></li>
+<li><code>Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz</code></li>
+</ul>
+<pre class="shell"><code>
+# download CDS file of A. thaliana
+curl ftp://ftp.ensemblgenomes.org/pub/
+plants/release-23/fasta/arabidopsis_thaliana/
+cds/Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz 
+-o Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# download CDS file of A. lyrata
+
+curl ftp://ftp.ensemblgenomes.org/pub/plants/
+release-23/fasta/arabidopsis_lyrata/cds/
+Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz 
+-o Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+</code></pre>
+<p>When the download is finished you need to unzip the files.</p>
+</div>
+<div id="option-2" class="section level4">
+<h4>Option 2:</h4>
+<p>We implemented the <a href="https://github.com/HajkD/biomartr">biomartr</a> package to automate the process of performing biological data retrieval. The <a href="https://github.com/HajkD/biomartr/blob/master/vignettes/Sequence_Retrieval.Rmd">Sequence Retrieval Vignette</a> stored in <code>biomartr</code> provides detailed use cases for the automation of biological sequence retrieval.</p>
+<p><strong>Note</strong>: Users need to make sure they have <a href="https://github.com/HajkD/biomartr#fast-installation-guide">biomartr</a> installed before running any <code>biomartr</code> functions.</p>
+</div>
+</div>
+<div id="computation-time" class="section level3">
+<h3>Computation Time</h3>
+<p><strong>Please note that</strong> performing <strong>Divergence Stratigraphy</strong> with two large genomes can take (even on a multicore machine) some time -&gt; <strong>up to several hours</strong>. On a 4 core machine with 3.4 GHz i7 processors the computation time of generating a divergence map between <em>A. thaliana</em> and <em>A. lyrata</em> was <strong>2.5-3 hours</strong>.</p>
+<p>The <code>comp_cores</code> argument implemented in the <code>divergence_stratigraphy()</code> function allows users to specify the number of cores they would like to use on their machine. The default value is <code>comp_cores = 1</code> which might take <strong>10-12h</strong> to execute. So users need to make sure that they use all cores available on their machine to speed up the computation time.</p>
+</div>
+</div>
+<div id="running-divergence_stratigraphy" class="section level2">
+<h2>Running <code>divergence_stratigraphy()</code></h2>
+<p>As mentioned earlier the <code>divergence_stratigraphy()</code> function is the main function to perform the <strong>Divergence Stratigraphy</strong> algorithm.</p>
+<p>In <code>divergence_stratigraphy()</code> the <code>query_file</code> and <code>subject_file</code> arguments take an character string storing the path to the corresponding <strong>fasta</strong> files containing the CDS sequences of these organisms. Here the previously downloaded CDS sequence files of <em>A. thaliana</em> (= <code>query_file</code>) and <em>A. lyrata</em> (= <code>subject_file</code>) need to be specified. The <code>eval</code> is set to <code>1E-5</code> (default ; see <a href="http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html">Quint et al., 2012</a>) and <code>BLAST best reciprocal hit</code> is used for orthology inference (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>). In case `<code>orthologr</code> is running on a multicore machine, users can set the <code>comp_cores</code> argument to any number of cores supported by their machine. The <code>clean_folders</code> argument indicates whether or not the internal folder structure should be deleted (cleaned) after processing is finished. In this case all output files generated by <code>divergence_stratigraphy</code> (stored in <code>tempdir()</code>) will be removed after the <code>Divergence Map</code> was returned. The <code>quiet</code> argument indicates whether or not a successful interface call should be printed out to the console (<code>quiet = FALSE</code>) or not (<code>quiet = TRUE</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(orthologr)
+
+<span class="co"># compute the divergence map of A. thaliana</span>
+Athaliana_DM &lt;-<span class="st"> </span><span class="kw">divergence_stratigraphy</span>(
+                         <span class="dt">query_file      =</span> <span class="st">&quot;path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa&quot;</span>,
+                         <span class="dt">subject_file    =</span> <span class="st">&quot;path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa&quot;</span>,
+                         <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+                         <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>,
+                         <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+                         <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+                         <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span> )</code></pre></div>
+<p>Before running <code>divergence_stratigraphy()</code> with two complete genomes, users can first run a test <strong>Divergence Stratigraphy</strong> with 20 example genes that are stored in the <code>orthologr</code> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(orthologr)
+
+<span class="co"># performing standard divergence stratigraphy</span>
+ <span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>, 
+      <span class="dt">dnds.threshold  =</span> <span class="dv">2</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>
+   divergence_strata    query_id
+1                 10 AT1G01010.1
+2                  9 AT1G01020.1
+3                  5 AT1G01030.1
+4                  4 AT1G01040.1
+5                  1 AT1G01050.1
+6                  9 AT1G01060.3
+7                  6 AT1G01070.1
+8                  8 AT1G01080.1
+9                  2 AT1G01090.1
+10                 7 AT1G01110.2
+11                 2 AT1G01120.1
+12                 3 AT1G01140.3
+13                10 AT1G01150.1
+14                 8 AT1G01160.1
+15                 1 AT1G01170.2
+16                 6 AT1G01180.1
+17                 7 AT1G01190.1
+18                 4 AT1G01200.1
+19                 5 AT1G01210.1
+20                 3 AT1G01220.1
+</code></pre>
+<p>The resulting output is a <code>Divergence Map</code> of the 20 example genes.</p>
+<p>To save corresponding <code>Divergenec Maps</code> to a hard drive users can pass the resulting <code>divergence_stratigraphy()</code> output to a variable and then use the <code>write.table()</code> function implemented in R to store the <code>Divergenec Map</code> as <code>*.csv</code> file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Athaliana_DM &lt;-<span class="st"> </span><span class="kw">divergence_stratigraphy</span>( ... )
+
+<span class="kw">write.table</span>(<span class="dt">x         =</span> Athaliana_DM, 
+            <span class="dt">file      =</span> <span class="st">&quot;Ath_Aly_DivergenceMap.csv&quot;</span>, 
+            <span class="dt">sep       =</span> <span class="st">&quot;;&quot;</span>, 
+            <span class="dt">col.names =</span> <span class="ot">TRUE</span>, 
+            <span class="dt">row.names =</span> <span class="ot">FALSE</span>, 
+            <span class="dt">quote     =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>This way <code>write.table()</code> will store the <code>Divergence Map</code> to the users current working directory (= <code>getwd()</code>).</p>
+<div id="specifying-the-arguments-in-divergence_stratigraphy" class="section level3">
+<h3>Specifying the arguments in <code>divergence_stratigraphy()</code></h3>
+<p>Several argument combinations can be specified in <code>divergence_stratigraphy()</code> (see <code>Arguments</code> in <code>?divergence_stratigraphy</code>). This section introduces additional output options of <code>divergence_stratigraphy()</code>.</p>
+<div id="example-blast_path" class="section level4">
+<h4>Example: <code>blast_path</code></h4>
+<p>Sometimes the machine users are working on does not allow them to install <strong>BLAST</strong> in the default execution path <code>usr/local/bin</code>. For this purpose the <code>blast_path</code> argument is implemented in <code>divergence_stratigraphy()</code>. This argument takes an character string specifying the <code>PATH</code> to the user’s <code>blastp</code> execution file that is stored in a different place than <code>usr/local/bin</code>.</p>
+<p>The following example shows a possible specification of <code>blast_path</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(orthologr)
+
+<span class="co"># performing standard divergence stratigraphy</span>
+ <span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">blast_path      =</span> <span class="st">&quot;here/the/path/to/blastp&quot;</span>, 
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>, 
+      <span class="dt">dnds.threshold  =</span> <span class="dv">2</span>, 
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>
+   divergence_strata    query_id
+1                 10 AT1G01010.1
+2                  9 AT1G01020.1
+3                  5 AT1G01030.1
+4                  4 AT1G01040.1
+5                  1 AT1G01050.1
+6                  9 AT1G01060.3
+7                  6 AT1G01070.1
+8                  8 AT1G01080.1
+9                  2 AT1G01090.1
+10                 7 AT1G01110.2
+11                 2 AT1G01120.1
+12                 3 AT1G01140.3
+13                10 AT1G01150.1
+14                 8 AT1G01160.1
+15                 1 AT1G01170.2
+16                 6 AT1G01180.1
+17                 7 AT1G01190.1
+18                 4 AT1G01200.1
+19                 5 AT1G01210.1
+20                 3 AT1G01220.1
+</code></pre>
+</div>
+<div id="example-ds.values" class="section level4">
+<h4>Example: <code>ds.values</code></h4>
+<p>As defined earlier, a <code>Divergence Map</code> stores the <code>divergence strata</code> for protein coding genes of a <code>query</code> organism. However, <code>divergence strata</code> are based on <code>dNdS</code> values that were categorized into deciles. For this reason it is not possible to map a <code>divergence stratum</code> value to the exact initial <code>dNdS</code> value. So in case users are interested in the the exact <code>dNdS</code> value of protein coding genes, they can specify the <code>ds.values</code> argument in <code>divergence_stratigraphy()</code> allowing them to retrieve a <code>dNdS Map</code> instead of a <code>Divergence Map</code>. For this purpose users need to set <code>ds.values = FALSE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(orthologr)
+
+<span class="co"># performing standard divergence stratigraphy</span>
+<span class="co"># but receive a dNdS Map instead of a Divergence Map</span>
+ <span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>,
+      <span class="dt">ds.values       =</span> <span class="ot">FALSE</span>, 
+      <span class="dt">dnds.threshold  =</span> <span class="dv">2</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>      dNdS    query_id
+1  0.41950 AT1G01010.1
+2  0.38790 AT1G01020.1
+3  0.11850 AT1G01030.1
+4  0.11560 AT1G01040.1
+5  0.00000 AT1G01050.1
+6  0.39670 AT1G01060.3
+7  0.17280 AT1G01070.1
+8  0.32170 AT1G01080.1
+9  0.04174 AT1G01090.1
+10 0.26620 AT1G01110.2
+11 0.02317 AT1G01120.1
+12 0.04324 AT1G01140.3
+13 0.64120 AT1G01150.1
+14 0.37310 AT1G01160.1
+15 0.00000 AT1G01170.2
+16 0.16830 AT1G01180.1
+17 0.17730 AT1G01190.1
+18 0.11370 AT1G01200.1
+19 0.13420 AT1G01210.1
+20 0.10230 AT1G01220.1
+</code></pre>
+<p>The corresponding output now stores <code>dNdS</code> values instead of <code>DS</code> values in the first column.</p>
+</div>
+<div id="example-subject.id" class="section level4">
+<h4>Example: <code>subject.id</code></h4>
+<p>Although the <code>Divergence Map</code> <a href="https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd#getting-started">standard</a> is specified as storing <code>DS</code> values in the first column and <code>GeneIDs</code> in the second column, in some cases it is important to store the GeneIDs of orthologous genes in the <code>subject</code> organism. The <code>subject.id</code> argument implemented in <code>divergence_stratigraphy()</code> allows users to retrieve the GeneIDs of the orthologous genes of the <code>subject</code> organism. For this purpose users need to specify <code>subject.id = TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># receive a Divergence Map with DS | query GeneID | orthologous subject GeneID </span>
+<span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>,
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>,
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>,
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>,
+      <span class="dt">subject.id      =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>   DS    query_id            subject_id
+1  10 AT1G01010.1 333554|PACid:16033839
+2   9 AT1G01020.1 470181|PACid:16064328
+3   5 AT1G01030.1 470180|PACid:16054974
+4   4 AT1G01040.1 333551|PACid:16057793
+5   1 AT1G01050.1 909874|PACid:16064489
+6   9 AT1G01060.3 470177|PACid:16043374
+7   6 AT1G01070.1 918864|PACid:16052578
+8   8 AT1G01080.1 909871|PACid:16053217
+9   2 AT1G01090.1 470171|PACid:16052860
+10  7 AT1G01110.2 333544|PACid:16034284
+11  2 AT1G01120.1 918858|PACid:16049140
+12  3 AT1G01140.3 470161|PACid:16036015
+13 10 AT1G01150.1 918855|PACid:16037307
+14  8 AT1G01160.1 918854|PACid:16044153
+15  1 AT1G01170.2 311317|PACid:16052302
+16  6 AT1G01180.1 909860|PACid:16056125
+17  7 AT1G01190.1 311315|PACid:16059488
+18  4 AT1G01200.1 470156|PACid:16041002
+19  5 AT1G01210.1 311313|PACid:16057125
+20  3 AT1G01220.1 470155|PACid:16047984</code></pre>
+<p>The resulting output now shows DS values, query GeneIDs, and orthologous subject GeneIDs.</p>
+<p>A similar output can be generated for <code>dNdS</code> values instead of <code>DS</code> values by specifying <code>ds.values = FALSE</code> and <code>subject.id = TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID </span>
+<span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>,
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>,
+      <span class="dt">ds.values       =</span> <span class="ot">FALSE</span>,
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>,
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>,
+      <span class="dt">subject.id      =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>      dNdS    query_id            subject_id
+1  0.41950 AT1G01010.1 333554|PACid:16033839
+2  0.38790 AT1G01020.1 470181|PACid:16064328
+3  0.11850 AT1G01030.1 470180|PACid:16054974
+4  0.11560 AT1G01040.1 333551|PACid:16057793
+5  0.00000 AT1G01050.1 909874|PACid:16064489
+6  0.39670 AT1G01060.3 470177|PACid:16043374
+7  0.17280 AT1G01070.1 918864|PACid:16052578
+8  0.32170 AT1G01080.1 909871|PACid:16053217
+9  0.04174 AT1G01090.1 470171|PACid:16052860
+10 0.26620 AT1G01110.2 333544|PACid:16034284
+11 0.02317 AT1G01120.1 918858|PACid:16049140
+12 0.04324 AT1G01140.3 470161|PACid:16036015
+13 0.64120 AT1G01150.1 918855|PACid:16037307
+14 0.37310 AT1G01160.1 918854|PACid:16044153
+15 0.00000 AT1G01170.2 311317|PACid:16052302
+16 0.16830 AT1G01180.1 909860|PACid:16056125
+17 0.17730 AT1G01190.1 311315|PACid:16059488
+18 0.11370 AT1G01200.1 470156|PACid:16041002
+19 0.13420 AT1G01210.1 311313|PACid:16057125
+20 0.10230 AT1G01220.1 470155|PACid:16047984</code></pre>
+</div>
+<div id="example-dnds.threshold" class="section level4">
+<h4>Example: <code>dnds.threshold</code></h4>
+<p><code>Divergence Strata</code> are obtained by categorizing dNdS values into deciles. For decilation the range of dNdS values is important. The <code>dnds.threshold</code> defines the upper level cut off of dNdS values. Since dNdS values are in the range [0, +Inf] a upper threshold needs to be specified. The default value for <code>dnds.threshold</code> in <code>divergence_stratigraphy()</code> is <code>dnds.threshold = 2</code> due to the interpretation of dNdS values for predicting sequence evolution (dNdS &lt; 1 -&gt; negative selection; dNdS = 1 -&gt; neutral selection; dNdS &gt; 1 -&gt; positive selection). Hence, all dNdS values <code>&gt; 1</code> predict positive selection. In my experience of computing dNdS values between hundreds of pairwise species comparisons covering all evolutionary distances, dNdS values of orthologous genes rarely take values &gt; 2. Nevertheless, in case you wish to extend or reduce the upper threshold for dNdS values, you can specify the <code>dnds.threshold</code> in <code>divergence_stratigraphy()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># upper threshold for dNdS: dnds.threshold = 5</span>
+ <span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;RBH&quot;</span>,
+      <span class="dt">ds.values       =</span> <span class="ot">FALSE</span>, 
+      <span class="dt">dnds.threshold  =</span> <span class="dv">5</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="example-ortho_detection" class="section level4">
+<h4>Example: <code>ortho_detection</code></h4>
+<p>According to <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a> the <strong>Divergence Stratigraphy</strong> algorithm performs <strong>BLAST</strong> best reciprocal hit (RBH) as orthology inference method. Despite this convention, the <code>ortho_detection</code> argument allows users to perform orthology inference within the <strong>Divergence Stratigraphy</strong> algorithm that is based on any orthology inference method implemented in <code>orthologr</code> (see <code>?orthologs</code> or <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd">Orthology Inference Vignette</a> for details). For example in <a href="http://www.nature.com/nature/journal/v490/n7418/full/nature11394.html">Quint et al., 2012</a> instead of using <strong>BLAST</strong> best reciprocal hit, the method <strong>BLAST</strong> best hit (BH) was used to perform orthology inference within the <strong>Divergence Stratigraphy</strong> algorithm.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># orthology inference method: ortho_detection = &quot;BH&quot;</span>
+ <span class="kw">divergence_stratigraphy</span>(
+      <span class="dt">query_file      =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">subject_file    =</span> <span class="kw">system.file</span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
+      <span class="dt">eval            =</span> <span class="st">&quot;1E-5&quot;</span>, 
+      <span class="dt">ortho_detection =</span> <span class="st">&quot;BH&quot;</span>,
+      <span class="dt">ds.values       =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">dnds.threshold  =</span> <span class="dv">2</span>,
+      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
+      <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, 
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>   DS    query_id
+1  10 AT1G01010.1
+2   9 AT1G01020.1
+3   5 AT1G01030.1
+4   4 AT1G01040.1
+5   1 AT1G01050.1
+6   9 AT1G01060.3
+7   6 AT1G01070.1
+8   8 AT1G01080.1
+9   2 AT1G01090.1
+10  7 AT1G01110.2
+11  2 AT1G01120.1
+12  3 AT1G01140.3
+13 10 AT1G01150.1
+14  8 AT1G01160.1
+15  1 AT1G01170.2
+16  6 AT1G01180.1
+17  7 AT1G01190.1
+18  4 AT1G01200.1
+19  5 AT1G01210.1
+20  3 AT1G01220.1</code></pre>
+</div>
+</div>
+</div>
+<div id="skip-divergence-stratigraphy-and-download-already-published-divergence-maps" class="section level2">
+<h2>Skip <code>Divergence Stratigraphy</code> and Download Already Published <code>Divergence Maps</code></h2>
+<p>Users can find a detailed list of <a href="https://github.com/HajkD/published_phylomaps">published Phylostratigraphic Maps and Divergence Maps</a> by following the link. This way the computation time of 3-4 h on a local machine for 2 genome comparisions can be skipped.</p>
+</div>
+<div id="combine-a-divergence-map-with-gene-expression-data" class="section level2">
+<h2>Combine a Divergence Map with Gene Expression Data</h2>
+<p><code>Divergence Maps</code> can be used for a wide range of analyses. One example is to combine <code>Divergence Maps</code> with gene expression data to capture evolutionary signals in developmental transcriptomes (= <code>Phylotranscriptomics</code>; see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>). Performing phylotranscriptomic analyses based on an existing <code>Divergence Map</code> can easily be done by using the <code>myTAI</code> package. You can consult the <a href="https://cran.r-project.org/web/packages/myTAI/vignettes/Introduction.html">Introduction to the myTAI package Vignette</a> for more details.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,303 @@
+---
+title: "Installing Prerequisite Tools"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Installing Prerequisite Tools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+
+## Installing Prerequisite Tools
+
+Most `orthologr` functions are interface functions that pass data to common
+bioinformatics tools, internally call the corresponding tool, and read their output
+as R object. For this purpose, when using interface functions in `orthologr` users need to 
+install the underlying bioinformatics tools to obain accurate results. 
+
+The following sections provide step by step instructions or guidance on installing 
+all bioinformatics tools for which R interface functions are implemented in `orthologr`.
+
+__Some tools are not trivial to install, so please read the corresponding sections carefully
+and execute test cases that are presented in each section.__
+
+
+## Programming Languages
+
+The following bioinformatics tools you are going to install are based on
+the these programming languages:
+
+ - [__R__](http://www.cran.r-project.org) >= 3.1.1
+ 
+ - [__C++11__](http://isocpp.org/about)
+ 
+ - [__Perl__](https://www.perl.org) >= 5.12
+ 
+ Please make sure these programming languages are installed and executable on the machines you are going run `orthologr` on.
+
+## Installing Orthology Inference Tools
+
+The `orthologr` package provides interfaces to the following bioinformatics tools 
+to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9):
+
+
+### Install `BLAST`
+
+[__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) = Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
+
+1) Go to ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ and download the system specific BLAST program.
+
+2) Install BLAST :  
+
+* On a Windows machine (see [installation manual: Windows](http://www.ncbi.nlm.nih.gov/books/NBK52637/))
+-> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly.
+* On a Unix machine (see [installation manual: Unix](http://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
+-> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
+
+For example for Linux systems open the `Terminal` application and run (Thanks to Alexander Gabel):
+
+```
+# download BLAST+ version 2.2.31
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
+
+# extract the compiled version of BLAST
+tar zxvpf ncbi-blast+2.2.29-x64-linux.tar.gz
+
+# copy BLAST files to `usr/local/bin`
+cp ncbi-blast-2.2.31+/bin/* usr/local/bin
+```
+
+Alternatively users can set the system call to the BLAST programs by specifying the `PATH` variable (this is useful, because it allows an easier update of BLAST versions instead of deleting all BLAST programs from `usr/local/bin`):
+
+```
+# open vim text editor
+vi .bash_profile
+
+# type 'Shift' then I to edit the file .bash_profile
+# and specify the export PATH
+export PATH=${PATH}:/path/to/downloaded/blast/folder/ncbi-blast-2.2.31+/bin
+
+# type 'ESC' then ':' then 'w' then 'q' to save and quit the .bash_profile file 
+
+# log out from your server with
+exit
+
+# log in again and type
+blastp -version
+```
+
+Now users should see the BLAST command line options.
+
+### Personal Experience
+
+Based on our personal experience the installation of BLAST works best when copy/pasting
+the BLAST executables to the path `usr/local/bin`. In detail you can run the following steps
+to copy/paste the BLAST executables to `usr/local/bin` (on Unix systems). However, updating BLAST will then need to manually delete all previous BLAST programs from `usr/local/bin` :
+
+Open the Terminal application on your system and type:
+
+```
+open /usr/local/bin 
+
+```
+
+Next, copy/paste the `blastp`, `makeblastdb`, etc files (BLAST executables) from your BLAST folder to `/usr/local/bin`. To do so you will need to enter the system password to allow the copy process.
+
+
+After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
+
+```{r,eval=FALSE}
+# test whether blastp is correctly installed on your machine
+system("blastp -version")
+```
+
+```
+blastp: 2.2.30+
+Package: blast 2.2.30, build Oct 27 2014 17:10:51
+```
+
+__You should see this output if BLAST was installed correctly.__
+
+In case you find the following output:
+
+```
+sh: blastp: command not found
+```
+
+You should return to `step 2)` and install BLAST so that it can be executed
+from the default execution `PATH`.
+
+These interface functions to BLAST+ are implemented in `orthologr`:
+ 
+ - `blast()` : Interface function to BLAST+
+ - `blast_best()` : Perform a BLAST+ best hit search
+ - `blast_rec()` : Perform a BLAST+ reciprocal best hit (RBH) search
+ - `set_blast()` : Preparing the parameters and databases for subsequent BLAST+ searches
+ - `blast.nr()` : Perform a BLASTp search against NCBI nr
+ - `delta.blast()` : Perform a DELTA-BLAST Search
+ - `advanced_blast()` : Advanced interface function to BLAST+
+ - `advanced_makedb()` : Advanced interface function to makeblastdb
+ 
+ 
+### Install `ProteinOrtho`
+ 
+[__ProteinOrtho__](https://www.bioinf.uni-leipzig.de/Software/proteinortho/) is an orthology inference tool for large-scale analysis. Please follow [these](http://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html) step by step instructions to install ProteinOrtho so that it is executable from your default execution `PATH`, e.g. `usr/local/bin`.
+
+The following interface function to ProteinOrtho is implemented in `orthologr`:
+
+ * `ProteinOrtho()`: Interface function to ProteinOrtho
+
+### Install `OrthoMCL`
+
+ - [__OrthoMCL__](http://www.orthomcl.org/orthomcl/) : An Orthology Inference tool based on the OrthoMCL Algorithm detecting ortholog groups using all-versus all BLAST of all compared protein sequences. Please follow [these](http://www.orthomcl.org/common/downloads/software/v2.0/UserGuide.txt) step by step instructions to install OrthoMCL so that it is executable from your default execution `PATH`, e.g. `usr/local/bin`.
+ 
+The following interface function to OrthoMCL is implemented in `orthologr`:
+
+ * `OrthoMCL()`: Interface function to OrthoMCL
+ 
+
+### Install `GGSearch` and `SSearch`
+
+This section will be covered soon.
+
+### Install `HMMER`
+
+This section will be covered soon.
+
+### Multiple Alignment Tools
+
+The `orthologr` package also provides interfaces to the following Multiple Alignment Tools.
+Nevertheless, non of them have to be installed if the corresponding interface functions
+are not used.
+
+### Install `ClustalW2`
+
+To install `ClustalW2` please go to the [ClustalW](http://www.clustal.org/clustal2/) homepage and download
+the corresponding [clustalw2 program](http://www.clustal.org/download/current/) matching your operating system.
+
+After downloading and unpacking the `clustalw2` program, please go to the clustalw-2.1 folder and open a `Terminal` application
+to type (in this example for Mac OS X):
+
+```
+# copy clustalw2 files to `usr/local/bin`
+cp clustalw2 usr/local/bin
+```
+
+### Install `T-Coffee`
+
+To install `T-Coffee` please go to the [T-Coffee](http://www.tcoffee.org/Projects/tcoffee/) homepage and download
+the corresponding [T-Coffee program](http://www.tcoffee.org/Packages/Stable/Latest/) matching your operating system.
+
+ 
+ 
+### Install `MUSCLE`
+ 
+ - [__MUSCLE__](http://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
+ 
+ 
+### Install `ClustalO`
+ 
+ 1) Download the [argtable](http://argtable.sourceforge.net/) program.
+ 
+ 2) Unzip the file.
+ 
+ 3) Run within the argtable folder:
+ 
+ ```
+ ./configure
+ 
+ make
+ 
+ make check
+ 
+ sudo make install
+ ```
+ 
+ 4) Download [ClustalO](http://www.clustal.org/omega/).
+ 
+ 5) Unzip the folder and run within the folder:
+ 
+ ```
+ ./configure
+ 
+ make
+ 
+ sudo make install
+ ```
+ 
+### Install `MAFFT`
+ 
+ - [__MAFFT__](http://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
+
+
+
+
+In `orthologr` the function `multi_aln()` provides interfaces to all of these multiple alignment tools
+as well as an pairwise alignment interface to the [Biostrings](http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574).
+
+
+### Codon Alignment Tools
+
+The codon alignment tool [Pal2Nal](http://www.bork.embl.de/pal2nal/) is already integrated in the `orthologr` package
+and doesn't need to be installed.
+
+ - [__Pal2Nal__](http://www.bork.embl.de/pal2nal/)
+
+You don't need to worry about downloading and installing __PAL2NAL__, it is already included in the `orthologr` package.
+The corresponding function `codon_aln()` takes a protein alignment and the corresponding coding sequences and returns
+a codon alignment by calling [__Pal2Nal__](http://www.bork.embl.de/pal2nal/) from inside of the `orthologr` package.
+
+### dNdS Estimation Methods
+
+dNdS estimation is a method to quantify the selection pressure acting on a specific protein sequence determined by pairwise comparisons of
+amino acid substitutions between two protein sequences and their corresponding codon alignments.
+Different models have been proposed to estimate this ratio quantifying selection pressure on proteins.
+The `orthologr` package includes the most common dNdS estimation methods.
+
+Starting with an codon alignment returned by `codon_aln()` the function `dNdS()` computes
+the the dN, dS, and dNdS values of pairs of proteins.
+
+Based on implementations provided by [gestimator](http://www.molpopgen.org/software/libsequence.html), [ape](https://www.cran.r-project.org/web/packages/ape/index.html), and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
+the following dNdS Estimation Methods are available in `orthologr`:
+
+ - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the [ape package](https://cran.r-project.org/web/packages/ape/index.html)
+
+ - [Comeron](http://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
+
+ - [NG](http://mbe.oxfordjournals.org/content/3/5/418.short) : Nei, M. and Gojobori, T. (1986)
+
+ - [LWL](http://mbe.oxfordjournals.org/content/2/2/150.short) : Li, W.H., et al. (1985)
+
+ - [MLWL](http://mbe.oxfordjournals.org/content/21/12/2290.short) (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+
+ - [YN](http://mbe.oxfordjournals.org/content/17/1/32.short) : Yang, Z. and Nielsen, R. (2000)
+
+ - [MYN](http://www.biomedcentral.com/1471-2148/6/44/) (Modified YN): Zhang, Z., et al. (2006)
+
+For this purpose you need to have __KaKs_Calculator__ installed on your system and executable from your default `PATH`, e,g, `/usr/local/bin/`.
+
+
+
+### CDS prediction pipeline
+
+__The `predict_cds()` function is not finished yet.__
+
+It is also possible to run __Divergence Stratigraphy__ or any other
+orthology inference method starting with non-annotated genomes.
+
+For this purpose `orthologr` provides a function `predict_cds()` that allows
+you to perform gene prediction (CDS prediction) based on the gene prediction programs
+[Augustus](http://bioinf.uni-greifswald.de/augustus/) and [GeneMark](http://exon.gatech.edu/GeneMark/)
+and also allows you to translate the predicted genes to amino acids:  genes -> cds -> amino acids that
+can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inference__.
+
+- [Augustus](http://bioinf.uni-greifswald.de/augustus/) : Prediction of regions within eukaryotic genomic sequences that can be denoted as "predicted genes"
+
+* `augustus()`: Interface function for the gene prediction program augustus
+
+- [GeneMark](http://exon.gatech.edu/GeneMark/): A family of gene prediction programs for all kingdoms of life
+
+* `genemark()` : Interface function for the gene prediction program GeneMark
+
+

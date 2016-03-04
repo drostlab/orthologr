@@ -1,0 +1,1353 @@
+---
+title: "BLAST searches using orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BLAST Searches}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE)
+```
+
+
+## Getting Started
+
+The `orthologr` package provides several interface functions to perform
+BLAST searches.
+
+First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
+
+## Performing BLAST Searches
+
+The `orthologr` package stores 20 example genes (orthologs) between _Arabidopsis thaliana_
+and _Arabidopsis lyrata_. The following example BLAST search shall illustrate a simple
+ search with standard parameters provided by the `blast()` function.
+
+When running the subsequent functions please make sure you can call BLAST+ from your
+console either in the standard `PATH` or in case you have BLAST+ installed in a separate
+folder, please specify the `path` argument that can be passed to `blast()`.
+
+To check whether BLAST+ can be executed from the default `PATH` (`usr/bin/local` on UNIX systems),
+you can run:
+
+```{r,eval=FALSE}
+
+system("blastp -version")
+
+```
+
+This should return something like this:
+
+```
+blastp: 2.2.29+
+Package: blast 2.2.29, build Dec 10 2013 15:51:59
+
+```
+
+If everything works properly, you can get started with you first BLAST+ search.
+
+
+## The blast() function
+
+The `blast()` function provides the easiest way to perform a BLAST search.
+
+```{r,eval=FALSE}
+library(dplyr)
+
+# performing a BLAST search using blastp (default)
+hit_tbl <- blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+
+glimpse(hit_tbl)
+
+```
+
+```
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
+
+```
+
+As you can see, the hit table shows the output of the BLAST+ search. The `blast()` function
+runs `blastp` as default BLAST+ algorithm. Different BLAST+ algorithms can be selected by
+specifying the `blast_algorithm` argument, e.g. `blast_algorithm = "tblastn"`. See `?blast` for further details.
+The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `perc_identity`,
+`alig_length`, `mismatches`, `gap_openings`, `q_start`, `q_end`, `s_start`, `s_end`, `evalue`, and `bit_score`.
+
+Since `blast()` stores the hit table returned by BLAST in a data.table object, you can access each column,
+using the [data.table notation](https://github.com/Rdatatable/data.table/wiki).
+
+
+In case you need to specify the `PATH` to BLAST+ please use the `path` argument:
+
+```{r,eval=FALSE}
+
+# performing a BLAST search using blastp (default)
+hit_tbl <- blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                 path         = "/path/to/blastp")
+
+
+hit_tbl
+
+```
+
+
+```{r,eval=FALSE}
+
+# access columns: query_id, subject_id, evalue, and bit_score
+hit_tbl[ , list(query_id, subject_id, evalue, bit_score)]
+
+```
+
+```
+
+       query_id            subject_id evalue bit_score
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00       627
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166       454
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00       698
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00      3704
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160       437
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00      1037
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00       696
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178       491
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00       859
+10: AT1G01110.2 333544|PACid:16034284  0e+00       972
+11: AT1G01120.1 918858|PACid:16049140  0e+00      1092
+12: AT1G01140.3 470161|PACid:16036015  0e+00       918
+13: AT1G01150.1 918855|PACid:16037307 3e-150       421
+14: AT1G01160.1 918854|PACid:16044153  1e-93       268
+15: AT1G01170.2 311317|PACid:16052302  3e-54       158
+16: AT1G01180.1 909860|PACid:16056125  0e+00       576
+17: AT1G01190.1 311315|PACid:16059488  0e+00      1036
+18: AT1G01200.1 470156|PACid:16041002 3e-172       470
+19: AT1G01210.1 311313|PACid:16057125  7e-76       215
+20: AT1G01220.1 470155|PACid:16047984  0e+00      2106
+
+```
+
+The `blast()` function also allows you to pass additional parameters to the BLAST+ search
+using the `blast_params` argument. In the following example, a remote BLAST+ search is
+performed.
+
+```
+
+blast(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                 blast_params = "-max_target_seqs 1")
+```
+
+
+In all cases the default `e-value` BLAST+ searches is `1E-5` and the default `blast_algorithm`
+is `blastp`. 
+
+
+Since BLAST+ searches can be computationally expensive, it is possible to specify the
+`comp_cores` argument when working with an multicore machine.
+
+
+```{r,eval=FALSE}
+
+# BLAST computations using the comp_cores parameter: here with 2 cores
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      comp_cores   = 2)
+
+```
+
+The `query_file` and `subject_file` arguments specify the path to the corresponding 
+fasta files storing the `CDS` files, `amino acid` files, or `genome` files of the query organism and subject organism
+of interest. Make sure that when using `CDS`files, `amino acid` files, or `genome` files the 
+corresponding argument `seq_type` must be adapted according to the input data format.
+
+Use :
+
+* `CDS` files -> `seq_type = "cds"`
+* `amino acid` files -> `seq_type = "protein"`
+* `genome` files -> `seq_type = "dna"`
+
+The `format` argument specifies the input file format, e.g. "fasta" or "gbk".
+The `blast_algorithm` argument specifies the BLAST program (algorithm) that shall be
+used to perform BLAST searches, e.g. "blastp","blastn","tblastn",etc. Again, the `eval`
+argument defines the default e-value that shall be chosen as best hit threshold.
+
+
+### Using the split-apply-combine strategy for a BLAST hit table
+
+All `blast` functions implemented in `orthologr` can easily be processed using the
+[split-apply-combine strategy](http://www.jstatsoft.org/v40/i01/paper) to detect 
+for example `one-to-one`, `one-to-many`, and `many-to-many` gene homology relationships.
+
+Here a simple example:
+
+```{r,eval=FALSE}
+
+# install.packages(c("plyr","dplyr"), dependencies = TRUE)
+library(plyr)
+library(dplyr)
+
+# perform a blastp search of 20 A. thaliana genes against 1000 A. lyrata genes
+hit_tbl <- blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'))
+
+# determine 'one-to-many' and 'one-to-one' gene relationships
+rel_hit_tbl <- ddply(.data = hit_tbl, .variables = "query_id", .fun = nrow)
+colnames(rel_hit_tbl)[2] <- "n_genes"
+
+rel_hit_tbl
+
+```
+
+```
+      query_id n_genes
+1  AT1G01010.1       4
+2  AT1G01020.1       1
+3  AT1G01030.1       1
+4  AT1G01040.1       1
+5  AT1G01050.1       1
+6  AT1G01060.3       2
+7  AT1G01070.1       3
+8  AT1G01080.1       4
+9  AT1G01090.1       1
+10 AT1G01110.2       1
+11 AT1G01120.1       3
+12 AT1G01140.3      36
+13 AT1G01150.1       1
+14 AT1G01160.1       1
+15 AT1G01170.2       1
+16 AT1G01180.1       1
+17 AT1G01190.1       6
+18 AT1G01200.1       8
+19 AT1G01210.1       1
+20 AT1G01220.1       1
+
+```
+
+Now you can sort genes into classes: `one-to-one` and `one-to-many`.
+
+```{r,eval=FALSE}
+
+# classify into 'one-to-one' relationships
+one_to_one <- filter(rel_hit_tbl,n_genes == 1)
+
+# classify into 'one-to-many' relationships
+one_to_many <- filter(rel_hit_tbl,n_genes > 1)
+
+```
+
+```{r,eval=FALSE}
+# look at one_to_one
+one_to_one 
+
+```
+
+```
+      query_id n_genes
+1  AT1G01020.1       1
+2  AT1G01030.1       1
+3  AT1G01040.1       1
+4  AT1G01050.1       1
+5  AT1G01090.1       1
+6  AT1G01110.2       1
+7  AT1G01150.1       1
+8  AT1G01160.1       1
+9  AT1G01170.2       1
+10 AT1G01180.1       1
+11 AT1G01210.1       1
+12 AT1G01220.1       1
+
+```
+
+```{r,eval=FALSE}
+# look at one_to_many
+one_to_many
+
+```
+
+```
+     query_id n_genes
+1 AT1G01010.1       4
+2 AT1G01060.3       2
+3 AT1G01070.1       3
+4 AT1G01080.1       4
+5 AT1G01120.1       3
+6 AT1G01140.3      36
+7 AT1G01190.1       6
+8 AT1G01200.1       8
+
+```
+
+Now we can treat classes: `one_to_one` and `one_to_many` differently:
+
+### one-to-one genes
+
+```{r,eval=FALSE}
+# look at the evalue, perc_identity, and alig_length of one_to_one genes
+oo_genes <- dplyr::filter(hit_tbl,query_id %in% one_to_one[ , "query_id"])
+
+oo_genes[ , list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1  AT1G01020.1 470181|PACid:16064328 3e-164         91.06         246
+2  AT1G01030.1 470180|PACid:16054974  0e+00         95.54         359
+3  AT1G01040.1 333551|PACid:16057793  0e+00         91.98        1970
+4  AT1G01050.1 909874|PACid:16064489 1e-158        100.00         213
+5  AT1G01090.1 470171|PACid:16052860  0e+00         96.77         434
+6  AT1G01110.2 333544|PACid:16034284  0e+00         93.56         528
+7  AT1G01150.1 918855|PACid:16037307 1e-148         72.63         285
+8  AT1G01160.1 918854|PACid:16044153  5e-92         84.92         179
+9  AT1G01170.2 311317|PACid:16052302  1e-52         85.57          97
+10 AT1G01180.1 909860|PACid:16056125  0e+00         92.58         310
+11 AT1G01210.1 311313|PACid:16057125  3e-74         95.33         107
+12 AT1G01220.1 470155|PACid:16047984  0e+00         96.69        1056
+
+```
+
+Now you could filter for additional criteria to define a first set of true orthologs.
+In this example we define true orthologs as `one_to_one` genes having a minimum alignment length of 300, a perc_identity of > 80 percent and an e-value < 1E-5. 
+
+```{r,eval=FALSE}
+# look at the evalue, perc_identity, and alig_length of one_to_one genes
+oo_genes <- dplyr::filter(hit_tbl,query_id %in% one_to_one[ , "query_id"])
+
+true_orthologs <- dplyr::filter(oo_genes,evalue < 1e-5, perc_identity > 80, alig_length > 300)
+
+true_orthologs[ , list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1: AT1G01030.1 470180|PACid:16054974      0         95.54         359
+2: AT1G01040.1 333551|PACid:16057793      0         91.98        1970
+3: AT1G01090.1 470171|PACid:16052860      0         96.77         434
+4: AT1G01110.2 333544|PACid:16034284      0         93.56         528
+5: AT1G01180.1 909860|PACid:16056125      0         92.58         310
+6: AT1G01220.1 470155|PACid:16047984      0         96.69        1056
+
+```
+
+This way we could filter out a high confidence set of orthologous genes from the
+`one_to_one` class of genes.
+
+In reality most orthology inference programs and methods perform way more
+complicated and sophisticated analyses to distinguish true orthologs from true paralogs
+(in-paralogs, out-paralogs, etc.). These subsequent analyses can also be performed using
+the above introduced split-apply-combine strategy. 
+
+Note, that you can perform self-BLAST searches `blast(query,query)` and `blast(subject,subject)` to distinguish between orthologous and paralogous genes.
+
+Now we continue with the `one_to_many` class of genes.
+
+### one-to-many genes
+
+Here we want to address the question how to deal with multiple hits returned by BLAST+ .
+
+Again we investigate all `one_to_many` genes:
+
+```{r,eval=FALSE}
+
+one_to_many
+
+```
+
+```
+     query_id n_genes
+1 AT1G01010.1       4
+2 AT1G01060.3       2
+3 AT1G01070.1       3
+4 AT1G01080.1       4
+5 AT1G01120.1       3
+6 AT1G01140.3      36
+7 AT1G01190.1       6
+8 AT1G01200.1       8
+
+```
+
+When looking at gene_id `AT1G01200.1` we see that it was found 8 times in the
+corresponding subject set of _A. lyrata_.
+
+```{r,eval=FALSE}
+
+hit_tbl["AT1G01200.1", list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1: AT1G01200.1 470156|PACid:16041002 2e-170         95.80         238
+2: AT1G01200.1 909905|PACid:16035105  7e-06         21.64         171
+3: AT1G01200.1 910431|PACid:16035207  8e-74         52.97         219
+4: AT1G01200.1 918732|PACid:16054958  2e-50         44.56         193
+5: AT1G01200.1 919287|PACid:16060536  1e-68         58.10         179
+6: AT1G01200.1 919355|PACid:16050170  7e-72         53.30         212
+7: AT1G01200.1 919721|PACid:16036935  9e-80         59.31         204
+8: AT1G01200.1 919852|PACid:16055066  4e-07         24.03         154
+
+```
+
+Now we have to decide which hit shall be considered as potential _ortholog_.
+In this example `subject_id` `470156|PACid:16041002` has the highest `perc_identity` as well
+as the lowest e-value `2e-170`. So a straightforward approach would be to choose subject gene `470156|PACid:16041002` as potential ortholog of query gene `AT1G01200.1`.
+
+We can validate this approach by running a reciprocal best hit search with `blast_rec()`and compare the output of gene `AT1G01200.1` with our choice `470156|PACid:16041002`.
+
+
+```{r,eval=FALSE}
+
+rbh_hit_tbl <- blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                         subject_file = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'))
+
+
+rbh_hit_tbl
+
+```
+
+```
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 3e-164
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 1e-158
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 5e-177
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 1e-148
+14 AT1G01160.1 918854|PACid:16044153  5e-92
+15 AT1G01170.2 311317|PACid:16052302  1e-52
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 2e-170
+19 AT1G01210.1 311313|PACid:16057125  3e-74
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
+When we now look at gene `AT1G01200.1` we find that indeed subject gene `470156|PACid:16041002` has been detected as potential ortholog having the same evalue `2e-170`. 
+
+```{r,eval=FALSE}
+
+rbh_hit_tbl["AT1G01200.1" , ]
+
+```
+
+```
+     query_id            subject_id evalue
+1 AT1G01200.1 470156|PACid:16041002 2e-170
+
+```
+
+Nevertheless there might be cases in which it is hard to decide for or against 
+the best hit compared with all other hits.
+
+For example we can investigate gene `AT1G01070.1` :
+
+```{r,eval=FALSE}
+
+hit_tbl["AT1G01070.1", list(query_id,subject_id,evalue,perc_identity,alig_length)]
+
+```
+
+```
+      query_id            subject_id evalue perc_identity alig_length
+1: AT1G01070.1 918864|PACid:16052578  0e+00         95.08         366
+2: AT1G01070.1 919693|PACid:16048878  2e-67         32.87         356
+3: AT1G01070.1 919961|PACid:16062329  0e+00         79.29         338
+
+```
+
+Here both e-values for subject genes `918864|PACid:16052578` and `919961|PACid:16062329` are the same and only `perc_identity` and `alig_length` differ. The _reciprocal best hit_ approach chose gene `918864|PACid:16052578` which also had the highest `perc_identity`.
+
+```{r,eval=FALSE}
+
+rbh_hit_tbl["AT1G01070.1" , ]
+
+```
+
+```
+     query_id            subject_id evalue
+1 AT1G01070.1 918864|PACid:16052578      0
+
+```
+
+But since the `blast_rec()` function was implemented to choose the bidirectional best hit based on the e-value, in border line cases a different gene as expected could be chosen.
+
+An alternative analysis that can be performed with these three candidate subject genes is the following:
+
+```{r,eval=FALSE}
+# read CDS sequences of the 20 example query genes of A. thaliana
+Ath.cds <- read.cds(file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                    format = "fasta")
+
+# read CDS sequences of the 1000 example subject genes of A. lyrata
+Aly.cds <- read.cds(file   = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+                    format = "fasta")
+
+
+# show the sequence of gene AT1G01070.1
+Ath.cds["AT1G01070.1" , seqs]
+
+```
+
+```
+[1] "atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgta
+gcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaat
+ggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaa
+tggtcgatcatttcgtcagtggccttctcggggcgagtttgatgcagtttttctttttgcttggtctgtcgtacacgtca
+gcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttggcccttattttcaggactgaaaatgt
+gaagattctaaagaccaaagcaggaatgttgaaggtgattggaactttgatctgtataagtggagctttgttcttaacat
+tttacaaaggcccacaaatatcaaactctcactctcactctcacggtggggcttcccacaacaacaacgatcaagacaag
+gccaataattggcttcttggatgtctttatttaaccataggaacagtgttgctatctctatggatgttgtttcaagggac
+tttaagtattaagtacccttgcaaatactcgagcacttgtcttatgtcaattttcgcggcatttcaatgtgctctcttga
+gcctttacaagagcagagacgttaatgattggatcatagatgatagattcgttatcaccgtcatcatatacgctggagtg
+gtaggacaagcaatgacgacggttgcaacaacatgggggattaaaaaattaggagctgtgttcgcatcggcgtttttccc
+acttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcac
+tagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcagga
+atggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"
+
+```
+
+Now you can perform a global alignment between the CDS sequences of `AT1G01070.1`
+and the three subject genes as follows:
+
+```{r,eval=FALSE}
+
+library(Biostrings)
+
+# perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, 
+# 919693|PACid:16048878, 919961|PACid:16062329
+sapply(Aly.cds[ hit_tbl[ "AT1G01070.1", subject_id], seqs ], pairwiseAlignment, 
+       pattern = Ath.cds["AT1G01070.1" , seqs],
+       type    = "global" )
+
+```
+
+```
+$...
+Global PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: [1] atggctggagatatgcaaggagtgagagta...aaggataacgactctaagtcgcccgtttaa 
+subject: [1] atgggtgaaggtatgattggagtgagagta...aaggataacgactctaagtcgcccgtttaa 
+score: 1768.965 
+
+$...
+Global PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: [1] atggctgga---gatatgcaaggagtgaga...----cgac----tctaagtcgcccgtttaa 
+subject: [1] atggctaaatcagatatgc------tg---...ggttccacaaggtctatatcgcc---ttaa 
+score: -2318.726 
+
+$...
+Global PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: [1] atggctggagatatgcaaggagtgagagta...aaggataacgactctaagtcgcccgtttaa 
+subject: [1] atgagtgaggatatgggaggagtgaaagta...----------------------------aa 
+score: 486.462 
+
+```
+
+__Note__: To obtain the score value, you need to specify the `scoreOnly = TRUE` in the `pairwiseAlignment` function.
+
+As you can see, subject gene `918864|PACid:16052578` also has the highest global alignment score `1768.965` based on the Needleman-Wunsch algorithm. This strategy might help you to differentiate between border line cases.
+
+The examples shown above shall demonstrate the use cases that can be performed using the
+`blast` functions implemented in `orthologr`.
+
+
+Another useful analysis can be to take the length of the initial query genes
+into account using the `nchar()` function:
+
+``````{r,eval=FALSE}
+# show the length distribution of all genes
+# stored in "Ath.cds"
+Ath.cds[ , nchar(seqs)]
+
+```
+
+```
+
+[1] 1290  738 1077 5730  639 1938 1098  882 1287 1584 1587 1356 1038  588  252 1437 1608  714  321 3168
+
+```
+
+Or the length of a specific gene:
+
+``````{r,eval=FALSE}
+
+Ath.cds["AT1G01070.1" , nchar(seqs)]
+
+```
+
+```
+[1] 1098
+```
+
+This way you can easily visualize the length distribution of genes stored
+in your query organism file.
+
+```{r,eval=FALSE}
+Ath.cds <- read.cds(system.file('seqs/ortho_thal_cds_1000.fasta', package = 'orthologr'),
+                    format = "fasta")
+                    
+                    
+hist(Ath.cds[ , nchar(seqs)], breaks = 100)
+
+```
+
+## The blast_best() function
+
+For some analyses it is sufficient to perform BLAST+ best hit searches.
+The `blast_best()` function is optimized to perform BLAST+ best hit searches
+(only based on the minimum e-value) and returns the best hit when performing a BLAST+ search of a query organisms
+(or set of query genes) against a subject organism (or set of subject genes).
+
+
+```{r,eval=FALSE}
+
+# performing gene orthology inference using the best hit (BH) method
+blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file  = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+           clean_folders = TRUE)
+
+
+```
+
+```
+       query_id            subject_id evalue
+ 1: AT1G01010.1 333554|PACid:16033839  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328 7e-166
+ 3: AT1G01030.1 470180|PACid:16054974  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489 2e-160
+ 6: AT1G01060.3 470177|PACid:16043374  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578  0e+00
+ 8: AT1G01080.1 909871|PACid:16053217 1e-178
+ 9: AT1G01090.1 470171|PACid:16052860  0e+00
+10: AT1G01110.2 333544|PACid:16034284  0e+00
+11: AT1G01120.1 918858|PACid:16049140  0e+00
+12: AT1G01140.3 470161|PACid:16036015  0e+00
+13: AT1G01150.1 918855|PACid:16037307 3e-150
+14: AT1G01160.1 918854|PACid:16044153  1e-93
+15: AT1G01170.2 311317|PACid:16052302  3e-54
+16: AT1G01180.1 909860|PACid:16056125  0e+00
+17: AT1G01190.1 311315|PACid:16059488  0e+00
+18: AT1G01200.1 470156|PACid:16041002 3e-172
+19: AT1G01210.1 311313|PACid:16057125  7e-76
+20: AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
+The `blast_best()` function returns: `query_id`, `subject_id`, and `eval`.
+
+In case you need more parameters returned by a BLAST+ best hit search, you
+can specify the `detailed_output` argument (`detailed_output = TRUE`).
+
+```{r,eval=FALSE}
+
+# BLAST+ best hit search
+best_hit_tbl <- blast_best(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                           subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                           detailed_output = TRUE)
+
+dplyr::glimpse(best_hit_tbl)
+
+```
+
+```
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
+
+```
+
+
+## The blast_rec() function
+
+The `blast_rec()` function was implemented to optimize BLAST+ reciprocal best hit searches
+(only based on the minimum e-value).
+BLAST+ reciprocal best hit searches are used to perform orthology inference.
+
+Running `blast_rec()` using default parameter settings:
+
+```{r,eval=FALSE}
+
+# performing gene orthology inference using the reciprocal best hit (RBH) method
+blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+
+```
+
+
+```
+      query_id            subject_id evalue
+1  AT1G01010.1 333554|PACid:16033839  0e+00
+2  AT1G01020.1 470181|PACid:16064328 7e-166
+3  AT1G01030.1 470180|PACid:16054974  0e+00
+4  AT1G01040.1 333551|PACid:16057793  0e+00
+5  AT1G01050.1 909874|PACid:16064489 2e-160
+6  AT1G01060.3 470177|PACid:16043374  0e+00
+7  AT1G01070.1 918864|PACid:16052578  0e+00
+8  AT1G01080.1 909871|PACid:16053217 1e-178
+9  AT1G01090.1 470171|PACid:16052860  0e+00
+10 AT1G01110.2 333544|PACid:16034284  0e+00
+11 AT1G01120.1 918858|PACid:16049140  0e+00
+12 AT1G01140.3 470161|PACid:16036015  0e+00
+13 AT1G01150.1 918855|PACid:16037307 3e-150
+14 AT1G01160.1 918854|PACid:16044153  1e-93
+15 AT1G01170.2 311317|PACid:16052302  3e-54
+16 AT1G01180.1 909860|PACid:16056125  0e+00
+17 AT1G01190.1 311315|PACid:16059488  0e+00
+18 AT1G01200.1 470156|PACid:16041002 3e-172
+19 AT1G01210.1 311313|PACid:16057125  7e-76
+20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+```
+
+Again you can specify the `detailed_output` argument to get more parameters
+returned by `blast_rec()`.
+
+
+```{r,eval=FALSE}
+
+# running blast_rec() using detailed_output = TRUE
+rbh <- blast_rec(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                 subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                 detailed_output = TRUE)
+
+
+dplyr::glimpse(rbh)
+```
+
+
+```
+Variables:
+$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
+$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
+$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
+
+```
+
+## The advanced_blast() function
+
+The `advanced_blast()` function was implemented to allow you to perform BLAST+ searches
+in a flexible environment. All parameters that shall be passed to the corresponding BLAST+ search
+need to be specified using the `blast_params` argument. In case you work with very large hit tables,
+that do not fit into memory, you can specify the `sql_database` argument to store the corresponding 
+hit table in a SQLite database and access it via the [dplyr database notation](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html).
+
+```{r,eval=FALSE}
+ab <- advanced_blast(query_file  = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                     blast_algorithm = "blastp", 
+                     blast_params    = "-evalue 1E-5 -num_threads 1")
+
+
+dplyr::glimpse(ab)
+
+```
+
+```
+
+Variables:
+$ query_id                (chr) "AT1G01010.1", "AT1G01020.1", "AT1...
+$ subject_id              (chr) "333554|PACid:16033839", "470181|P...
+$ perc_identity           (dbl) 73.99, 91.06, 95.54, 91.98, 100.00...
+$ num_ident_matches       (dbl) 347, 224, 343, 1812, 213, 580, 348...
+$ alig_length             (dbl) 469, 246, 359, 1970, 213, 648, 366...
+$ mismatches              (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, ...
+$ gap_openings            (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, ...
+$ q_start                 (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1...
+$ q_end                   (dbl) 430, 246, 359, 1910, 213, 646, 366...
+$ s_start                 (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1...
+$ s_end                   (dbl) 466, 246, 355, 1963, 213, 640, 362...
+$ evalue                  (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-16...
+$ bit_score               (dbl) 627, 454, 698, 3704, 437, 1037, 69...
+$ score_raw               (dbl) 1617, 1169, 1801, 9604, 1125, 2681...
+$ query_coverage_per_subj (dbl) 100, 100, 100, 99, 100, 100, 100, ...
+
+```
+
+As you can see, the `advanced_blast()` function returns more parameters than all other `blast()` functions.
+
+
+### Selecting the best hit using advanced_blast()
+
+The flexibility of `advanced_blast()` enables you to perform all previously introduced analyses (`blast()`, `blast_best()`, `blast_rec()`, etc.) as well as a variety of addtional analyses. The following example shall illustrate how to perform BLAST best hit searches using `advanced_blast()`
+
+
+```{r,eval=FALSE}
+# when performing an advanced BLAST search, you can easily select the best hit
+library(dplyr)
+
+advB <- advanced_blast(
+           query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+           subject_file    = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+           seq_type        = "cds",
+           blast_algorithm = "blastp",
+           blast_params    = "-evalue 1E-5 -num_threads 1")
+
+best_hit <- advB %>% group_by(query_id) %>% do(min(evalue))
+
+
+best_hit
+
+```
+
+```
+
+      query_id min(evalue)
+1  AT1G01010.1       0e+00
+2  AT1G01020.1      3e-164
+3  AT1G01030.1       0e+00
+4  AT1G01040.1       0e+00
+5  AT1G01050.1      1e-158
+6  AT1G01060.3       0e+00
+7  AT1G01070.1       0e+00
+8  AT1G01080.1      5e-177
+9  AT1G01090.1       0e+00
+10 AT1G01110.2       0e+00
+11 AT1G01120.1       0e+00
+12 AT1G01140.3       0e+00
+13 AT1G01150.1      1e-148
+14 AT1G01160.1       5e-92
+15 AT1G01170.2       1e-52
+16 AT1G01180.1       0e+00
+17 AT1G01190.1       0e+00
+18 AT1G01200.1      2e-170
+19 AT1G01210.1       3e-74
+20 AT1G01220.1       0e+00
+
+```
+
+The `blast_params` argument allows you to specify all parameters that shall
+be passed to the corresponding `blast_algorithm` based on the [NCBI blast stand-alone notation](http://www.ncbi.nlm.nih.gov/books/NBK1763/).
+
+
+### Using DELTA-BLAST in advanced_blast()
+
+ [Domain enhanced lookup time accelerated BLAST (DELTA-BLAST)](http://www.biomedcentral.com/content/pdf/1745-6150-7-12.pdf) is a new BLAST algorithm provided by NCBI. It was introduced as a useful program for the detection of remote protein homologs.
+
+You can download the Conserved Domain Database (CDD) file `cdd.tar.gz` from [NCBI](ftp://ftp.ncbi.nlm.nih.gov/pub/mmdb/cdd) and store all `cdd_deltablast.* files` in a folder: `path/to/cdd_database/folder`.
+
+
+More information on how to install and use DELTA-BLAST can be found [here](http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS). Make sure that when using DELTA-BLAST in `advanced_blast()` the `db_path` argument denoting the path to the folder storing the corresponding `cdd_deltablast.* files` need to be specified.
+ 
+```{r,eval=FALSE}
+
+# DELTA-BLAST
+#
+# you can also use deltablast to perform BLAST searches
+# make sure you have specified the the db_path argument to the cdd_deltablast.* files
+advanced_blast(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+               subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+               blast_algorithm = "deltablast",
+               db_path         = "path/to/cdd_files",
+               blast_params    = "-evalue 1E-5 -num_threads 2")
+
+
+```
+
+```
+Adding sequences from FASTA; added 20 sequences in 0.010026 seconds.
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches
+ 1: AT1G01010.1 333554|PACid:16033839         73.77               346         469         81
+ 2: AT1G01020.1 470181|PACid:16064328         91.06               224         246         22
+ 3: AT1G01030.1 470180|PACid:16054974         95.26               342         359         13
+ 4: AT1G01040.1 333551|PACid:16057793         91.57              1803        1969         95
+ 5: AT1G01050.1 909874|PACid:16064489        100.00               213         213          0
+ 6: AT1G01060.3 470177|PACid:16043374         89.51               580         648         58
+ 7: AT1G01070.1 918864|PACid:16052578         93.44               342         366         20
+ 8: AT1G01080.1 909871|PACid:16053217         78.60               235         299         59
+ 9: AT1G01090.1 470171|PACid:16052860         96.77               420         434          8
+10: AT1G01110.2 333544|PACid:16034284         93.56               494         528         34
+11: AT1G01120.1 918858|PACid:16049140         99.24               525         529          4
+12: AT1G01140.3 470161|PACid:16036015         98.45               446         453          6
+13: AT1G01150.1 470177|PACid:16043374         13.33                10          75         51
+14: AT1G01150.1 918855|PACid:16037307         71.88               207         288         71
+15: AT1G01160.1 918854|PACid:16044153         78.65               140         178         32
+16: AT1G01170.2 311317|PACid:16052302         85.57                83          97          0
+17: AT1G01180.1 909860|PACid:16056125         92.58               287         310         20
+18: AT1G01190.1 311315|PACid:16059488         94.00               501         533         31
+19: AT1G01200.1 470156|PACid:16041002         95.80               228         238         10
+20: AT1G01210.1 311313|PACid:16057125         95.33               102         107          5
+21: AT1G01220.1 470155|PACid:16047984         96.69              1021        1056         35
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches
+    gap_openings q_start q_end s_start s_end evalue bit_score score_raw query_coverage_per_subj
+ 1:            9       1   430       1   466  0e+00       637      1643                     100
+ 2:            0       1   246       1   246  3e-88       257       657                     100
+ 3:            2       1   359       1   355  0e+00       502      1294                     100
+ 4:            8       6  1910       2  1963  0e+00      2362      6123                      99
+ 5:            0       1   213       1   213 2e-128       357       917                     100
+ 6:            5       1   646       1   640  0e+00      1003      2592                     100
+ 7:            2       1   366       1   362  2e-68       214       544                     100
+ 8:            1       1   294       1   299  4e-77       232       592                     100
+ 9:            3       1   429       1   433  0e+00       658      1698                     100
+10:            0       1   528       1   528  0e+00       763      1971                     100
+11:            0       1   529       1   529  0e+00       747      1928                     100
+12:            1       1   452       1   453 9e-179       504      1298                     100
+13:            3     215   289       8    68  1e-07        43       100                      22
+14:            3       5   292      16   293 3e-120       344       883                      83
+15:            1       4   175       2   179  4e-45       143       361                      88
+16:            1       2    84       4   100  5e-54       158       399                      99
+17:            1       1   307       1   310 8e-156       441      1135                      64
+18:            1       1   533       6   537  0e+00       522      1345                      99
+19:            0       1   238       1   238 2e-114       323       828                     100
+20:            0       1   107       1   107  2e-40       124       313                     100
+21:            0       1  1056       1  1056  0e+00      1765      4571                     100
+    gap_openings q_start q_end s_start s_end evalue bit_score score_raw query_coverage_per_subj
+
+```
+
+A more intuitive way (but less flexible) to perform delta-blast searches is to use the `delta.blast()` function.
+The `delta.blast()` function works in two ways. 
+
+1) Use the `cdd_delta` database as additional information by performing `deltablast` searches between
+`query organism A` and `subject organism B`.
+
+2) Perform a `deltablast` search between `query organism A` and the `cdd_delta` database
+
+
+The following example illustrates the first option (A vs B via cdd_delta).
+
+Here the `cdd.path` argument specifies the path to the `cdd_deltablast.* files`:
+
+
+```{r,eval=FALSE}
+# perform a delta-blast serach between A. thaliana and A. lyrata genes
+delta.blast(
+            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+            cdd.path     = "path/to/cdd/database/folder",
+            comp_cores   = 1)
+
+
+```
+
+```
+
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+ 1: AT1G01010.1 333554|PACid:16033839         73.77               346         469         81            9       1   430       1   466  0e+00
+ 2: AT1G01020.1 470181|PACid:16064328         91.06               224         246         22            0       1   246       1   246  3e-88
+ 3: AT1G01030.1 470180|PACid:16054974         95.26               342         359         13            2       1   359       1   355  0e+00
+ 4: AT1G01040.1 333551|PACid:16057793         91.57              1803        1969         95            8       6  1910       2  1963  0e+00
+ 5: AT1G01050.1 909874|PACid:16064489        100.00               213         213          0            0       1   213       1   213 2e-128
+ 6: AT1G01060.3 470177|PACid:16043374         89.51               580         648         58            5       1   646       1   640  0e+00
+ 7: AT1G01070.1 918864|PACid:16052578         93.44               342         366         20            2       1   366       1   362  2e-68
+ 8: AT1G01080.1 909871|PACid:16053217         78.60               235         299         59            1       1   294       1   299  4e-77
+ 9: AT1G01090.1 470171|PACid:16052860         96.77               420         434          8            3       1   429       1   433  0e+00
+10: AT1G01110.2 333544|PACid:16034284         93.56               494         528         34            0       1   528       1   528  0e+00
+11: AT1G01120.1 918858|PACid:16049140         99.24               525         529          4            0       1   529       1   529  0e+00
+12: AT1G01140.3 470161|PACid:16036015         98.45               446         453          6            1       1   452       1   453 9e-179
+13: AT1G01150.1 470177|PACid:16043374         13.33                10          75         51            3     215   289       8    68  1e-07
+14: AT1G01150.1 918855|PACid:16037307         71.88               207         288         71            3       5   292      16   293 3e-120
+15: AT1G01160.1 918854|PACid:16044153         78.65               140         178         32            1       4   175       2   179  4e-45
+16: AT1G01170.2 311317|PACid:16052302         85.57                83          97          0            1       2    84       4   100  5e-54
+17: AT1G01180.1 909860|PACid:16056125         92.58               287         310         20            1       1   307       1   310 8e-156
+18: AT1G01190.1 311315|PACid:16059488         94.00               501         533         31            1       1   533       6   537  0e+00
+19: AT1G01200.1 470156|PACid:16041002         95.80               228         238         10            0       1   238       1   238 2e-114
+20: AT1G01210.1 311313|PACid:16057125         95.33               102         107          5            0       1   107       1   107  2e-40
+21: AT1G01220.1 470155|PACid:16047984         96.69              1021        1056         35            0       1  1056       1  1056  0e+00
+       query_id            subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+    bit_score score_raw query_coverage_per_subj
+ 1:       637      1643                     100
+ 2:       257       657                     100
+ 3:       502      1294                     100
+ 4:      2362      6123                      99
+ 5:       357       917                     100
+ 6:      1003      2592                     100
+ 7:       214       544                     100
+ 8:       232       592                     100
+ 9:       658      1698                     100
+10:       763      1971                     100
+11:       747      1928                     100
+12:       504      1298                     100
+13:        43       100                      22
+14:       344       883                      83
+15:       143       361                      88
+16:       158       399                      99
+17:       441      1135                      64
+18:       522      1345                      99
+19:       323       828                     100
+20:       124       313                     100
+21:      1765      4571                     100
+    bit_score score_raw query_coverage_per_subj
+```
+
+The following example illustrates the second option (A vs cdd_delta).
+The difference is the specification of argument `subject_file = "cdd_delta"` instead
+of a second subject organism:
+
+```{r,eval=FALSE}
+# perform a delta-blast serach between A. thaliana and the cdd database
+delta.blast(
+            query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+            subject_file = "cdd_delta",
+            cdd.path     = "path/to/cdd/database/folder",
+            comp_cores   = 1)
+
+```
+
+```
+        query_id     subject_id perc_identity num_ident_matches alig_length mismatches gap_openings q_start q_end s_start s_end evalue
+  1: AT1G01010.1 gnl|CDD|251251         40.15                55         137         71            4       5   139       3   130  5e-79
+  2: AT1G01020.1 gnl|CDD|252420         35.82                72         201        109            5       6   193       1   194  4e-55
+  3: AT1G01030.1 gnl|CDD|197383         29.70                30         101         66            1      54   154       1    96  1e-42
+  4: AT1G01030.1 gnl|CDD|214977         35.64                36         101         57            2      56   156       1    93  3e-39
+  5: AT1G01030.1 gnl|CDD|251248         37.62                38         101         59            2      56   156       1    97  4e-44
+ ---                                                                                                                                  
+828: AT1G01220.1 gnl|CDD|235243         15.28                22         144        105            3     742   879       9   141  1e-09
+829: AT1G01220.1 gnl|CDD|235407         17.91                65         363        248           14     717  1046      24   369  4e-70
+830: AT1G01220.1 gnl|CDD|237766         13.83                39         282        187           10     757  1035      32   260  2e-13
+831: AT1G01220.1 gnl|CDD|249743         35.29                24          68         43            1     818   885       1    67  1e-17
+832: AT1G01220.1 gnl|CDD|256035         33.33                11          33         16            1     716   748      17    43  1e-10
+     bit_score score_raw query_coverage_per_subj
+  1:     243.0       620                      31
+  2:     177.0       450                      76
+  3:     145.0       366                      28
+  4:     136.0       342                      28
+  5:     149.0       376                      28
+ ---                                            
+828:      59.2       142                      13
+829:     239.0       610                      31
+830:      70.8       172                      26
+831:      79.6       195                       6
+832:      59.2       142                       3
+
+```
+
+### Performing BLASTP searches against the NCBI nr database with `blast.nr()`
+
+The `blast.nr()` function implemented in `orthologr` allows users to perform
+local `blastp` searches against the NCBI nr database.
+
+For this purpose, the first step is to download the NCBI nr database to a local machine
+using the [biomartr](http://cran.r-project.org/package=biomartr) package.
+
+Please notice that the NCBI nr database contains about 30 files storing
+approx. 500 MB data per file. So when downloading this large database via `biomartr`
+users need to make sure that they are constantly connected to the internet. 
+
+```{r, eval = FALSE}
+# install the 'biomartr' package from CRAN
+install.packages("biomartr")
+
+# load biomartr
+library("biomartr")
+
+# download the NCBI nr database to your local machine to a folder
+# names 'DB'
+sapply(listDatabases("nr"),download_database)
+```
+
+After downloading all NCBI nr files to the `DB` folder users need to
+go to the `DB` folder and unpack all `env_nr*` files and store them
+in the same `DB` folder. In case users whish to specify a different
+folder for downloading NCBI nr they can specify the `path` argument
+of the `?download_database` function implemented in `biomartr`.
+
+Now users can use the `blast.nr()` function to perform BLASTP searches against NCBI nr.
+
+```{r, eval = FALSE}
+nr.res <- blast.nr( query_file      = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+                    nr.path         = "DB",
+                    seq_type        = "protein",
+                    max.target.seqs = 20,
+                    comp_cores      = 2 )
+
+nr.res
+```
+
+```
+                query_id                  subject_id perc_identity num_ident_matches alig_length mismatches gap_openings
+1: 333554|PACid:16033839 gi|139291046|gb|ECE46929.1|         40.00                24          60         35            1
+2: 333554|PACid:16033839 gi|140103111|gb|ECJ55606.1|         46.03                29          63         34            0
+   n_gaps pos_match ppos q_start q_end q_len qcov qcovhsp                                                       query_seq
+1:      1        39 65.0       8    66   246   24      24    CVGC-GFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVL
+2:      0        47 74.6       8    70   246   26      26 CVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAI
+   s_start s_end s_len                                                     subject_seq evalue bit_score score_raw
+1:       9    68    71    CVECMCDENESIYKKYSEGNLRLTRCIRCSDFVDRYVEYDNVLIVLDLVLHKNPAYRHLL  1e-07      54.3       129
+2:      48   110   114 CVECGKSVQQVFKMFGKGNIRLSRCKSCHSISDKYVEYEFVLIFIDLLLHKTQVYRHLIFNRL  8e-14      72.0       175
+```
+
+Here, the `nr.path` argument specifies the folder path to the NCBI nr database.
+In case users unpacked all NCBI nr files to the `DB` folder created by `download_database()`
+the `nr.path` argument can be specified as `nr.path = "DB"`.
+
+The corresponding `gi id` can then be clipped by running:
+
+```{r,eval=FALSE}
+
+nr.res[ , "subject_id"] <- unlist(lapply(stringr::str_split(nr.res[ , subject_id],"[|]"), function(x) x[2]))
+
+nr.res
+```
+
+```
+                query_id subject_id perc_identity num_ident_matches alig_length mismatches
+1: 333554|PACid:16033839  139291046         40.00                24          60         35
+2: 333554|PACid:16033839  140103111         46.03                29          63         34
+   gap_openings n_gaps pos_match ppos q_start q_end q_len qcov qcovhsp
+1:            1      1        39 65.0       8    66   246   24      24
+2:            0      0        47 74.6       8    70   246   26      26
+                                                         query_seq s_start s_end s_len
+1:    CVGC-GFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVL       9    68    71
+2: CVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAI      48   110   114
+                                                       subject_seq evalue bit_score score_raw
+1:    CVECMCDENESIYKKYSEGNLRLTRCIRCSDFVDRYVEYDNVLIVLDLVLHKNPAYRHLL  1e-07      54.3       129
+2: CVECGKSVQQVFKMFGKGNIRLSRCKSCHSISDKYVEYEFVLIFIDLLLHKTQVYRHLIFNRL  8e-14      72.0       175
+```
+
+By performing this `gi` clipping the initial `gi id` returned by blasting against
+the `NCBI nr` database `gi|139291046|gb|ECE46929.1|` is clipped to the `gi id` `139291046` for which corresponding `taxonomy ids` can be extracted from [NCBI Taxonomy](ftp://ftp.ncbi.nlm.nih.gov/pub/taxonomy/).
+
+
+
+### Storing very large hit tables in a SQLite database with advanced_blast()
+
+The `advanced_blast()` function can also store the BLAST output CSV file in a SQLite database. This works only with `dplyr` version >= 0.3 . To store the BLAST output in an SQLite database and to receive an SQLite connection as specified by [tbl()](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html) in dplyr please use the `sql_database = TRUE` argument.
+
+
+```{r,eval=FALSE}
+
+# using a SQLite database to store the BLAST output and
+# select some example data
+
+library(dplyr)
+
+sqlE <- advanced_blast(
+             query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+             subject_file    = system.file('seqs/ortho_lyra_cds_1000.fasta', package = 'orthologr'),
+             seq_type        = "cds",
+             blast_algorithm = "blastp",
+             blast_params    = "-evalue 1E-5 -num_threads 1", 
+             sql_database    = TRUE)
+
+head(sqlE)
+
+```
+
+```
+           V1                    V2    V3  V4  V5  V6 V7 V8  V9 V10 V11    V12   V13  V14 V15
+1 AT1G01010.1 333554|PACid:16033839 73.99 347 469  80  8  1 430   1 466  0e+00 627.0 1617 100
+2 AT1G01010.1 909883|PACid:16051052 34.46 122 354 162 12  1 343   1 295  7e-43 152.0  384  80
+3 AT1G01010.1 311334|PACid:16035114 43.64  72 165  81  4  1 162   1 156  1e-32 123.0  309  38
+4 AT1G01010.1 918785|PACid:16057277 33.75  54 160  80  6  6 153  10 155  8e-21  87.8  216  34
+5 AT1G01020.1 470181|PACid:16064328 91.06 224 246  22  0  1 246   1 246 3e-164 454.0 1169 100
+6 AT1G01030.1 470180|PACid:16054974 95.54 343 359  12  2  1 359   1 355  0e+00 698.0 1801 100
+
+
+```
+
+```{r,eval=FALSE}
+
+# look at the structure of sqlE
+glimpse(sqlE)
+
+```
+
+```
+Variables:
+$ V1  (chr) "AT1G01010.1", "AT1G01010.1", "AT1G01010.1", "AT1G01010.1", "AT1G01020.1...
+$ V2  (chr) "333554|PACid:16033839", "909883|PACid:16051052", "311334|PACid:16035114...
+$ V3  (dbl) 73.99, 34.46, 43.64, 33.75, 91.06, 95.54, 91.98, 100.00, 89.51, 64.52, 9...
+$ V4  (int) 347, 122, 72, 54, 224, 343, 1812, 213, 580, 40, 348, 268, 117, 271, 29, ...
+$ V5  (int) 469, 354, 165, 160, 246, 359, 1970, 213, 648, 62, 366, 338, 356, 300, 95...
+$ V6  (int) 80, 162, 81, 80, 22, 12, 85, 0, 58, 22, 14, 68, 232, 22, 66, 91, 47, 8, ...
+$ V7  (int) 8, 12, 4, 6, 0, 2, 10, 0, 5, 0, 2, 1, 3, 2, 0, 3, 0, 3, 0, 0, 5, 5, 1, 6...
+$ V8  (int) 1, 1, 1, 6, 1, 1, 6, 1, 1, 13, 1, 1, 16, 1, 105, 109, 110, 1, 1, 1, 32, ...
+$ V9  (int) 430, 343, 162, 153, 246, 359, 1910, 213, 646, 74, 366, 338, 365, 294, 19...
+$ V10 (int) 1, 1, 1, 10, 1, 1, 2, 1, 1, 1048, 1, 1, 8, 1, 336, 13, 76, 1, 1, 1, 20, ...
+$ V11 (int) 466, 295, 156, 155, 246, 355, 1963, 213, 640, 1109, 362, 336, 362, 299, ...
+$ V12 (dbl) 0e+00, 7e-43, 1e-32, 8e-21, 3e-164, 0e+00, 0e+00, 1e-158, 0e+00, 2e-22, ...
+$ V13 (dbl) 627.0, 152.0, 123.0, 87.8, 454.0, 698.0, 3704.0, 437.0, 1037.0, 98.2, 69...
+$ V14 (int) 1617, 384, 309, 216, 1169, 1801, 9604, 1125, 2681, 243, 1797, 1409, 551,...
+$ V15 (int) 100, 80, 38, 34, 100, 100, 99, 100, 100, 10, 100, 92, 96, 100, 48, 48, 2...
+
+```
+
+This way you can perfom filtering steps on very large tables.
+
+```{r,eval=FALSE}
+# select all rows that have an evalue of zero
+filter(sqlE, V12 > 1e-15)
+
+```
+
+```
+Source: sqlite 3.8.6 [blast_sql_db.sqlite3]
+From: hit_tbl [64 x 15]
+Filter: V12 > 1e-15 
+
+            V1                    V2     V3  V4  V5  V6 V7  V8  V9  V10  V11    V12   V13  V14 V15
+1  AT1G01010.1 909883|PACid:16051052  34.46 122 354 162 12   1 343    1  295  7e-43 152.0  384  80
+2  AT1G01010.1 311334|PACid:16035114  43.64  72 165  81  4   1 162    1  156  1e-32 123.0  309  38
+3  AT1G01010.1 918785|PACid:16057277  33.75  54 160  80  6   6 153   10  155  8e-21  87.8  216  34
+4  AT1G01020.1 470181|PACid:16064328  91.06 224 246  22  0   1 246    1  246 3e-164 454.0 1169 100
+5  AT1G01050.1 909874|PACid:16064489 100.00 213 213   0  0   1 213    1  213 1e-158 437.0 1125 100
+6  AT1G01060.3 311286|PACid:16063880  64.52  40  62  22  0  13  74 1048 1109  2e-22  98.2  243  10
+7  AT1G01070.1 919693|PACid:16048878  32.87 117 356 232  3  16 365    8  362  2e-67 216.0  551  96
+8  AT1G01080.1 909871|PACid:16053217  90.33 271 300  22  2   1 294    1  299 5e-177 491.0 1264 100
+9  AT1G01080.1 470321|PACid:16050357  30.53  29  95  66  0 105 199  336  430  6e-11  58.2  139  48
+10 AT1G01080.1 470321|PACid:16050357  25.18  35 139  91  3 109 244   13  141  4e-06  43.1  100  48
+..         ...                   ...    ... ... ... ... .. ... ...  ...  ...    ...   ...  ... ...
+```
+
+```{r,eval=FALSE}
+
+# select the best hit using the evalue criterion
+sqlE %>% group_by(V1) %>% do(best_hit_eval = min(V12))
+
+```
+
+```
+Source: sqlite 3.8.6 [blast_sql_db.sqlite3]
+From: <derived table> [?? x 2]
+
+            V1 best_hit_eval
+1  AT1G01010.1         0e+00
+2  AT1G01020.1        3e-164
+3  AT1G01030.1         0e+00
+4  AT1G01040.1         0e+00
+5  AT1G01050.1        1e-158
+6  AT1G01060.3         0e+00
+7  AT1G01070.1         0e+00
+8  AT1G01080.1        5e-177
+9  AT1G01090.1         0e+00
+10 AT1G01110.2         0e+00
+..         ...           ...
+```
+
+Since the BLAST output does not return a CSV header, the corresponding SQLite table 
+the BLAST output in columns named V1 - V15. In SQLite, renaming the columns can only be done
+by creating a new table which is very time consuming. The dplyr::rename() function does not support
+to rename multiple columns and therefore this "not so elegent way" is implemented in the current version of
+`orthologr`. Future versions will tackle this issue.
+
+### The set_blast() function
+
+The `set_blast()`function reads a file storing a specific sequence type, such as "cds", "protein", or "dna" in a standard sequence file format such as "fasta", etc.
+and depending of the makedb parameter either creates a blast-able database, or returns the corresponding protein sequences as data.table object for further BLAST searches.
+
+
+```{r,eval=FALSE}
+
+head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
+
+```
+
+```
+
+       geneids
+1: AT1G01010.1
+2: AT1G01020.1
+
+seqs
+1: atggaggatcaagttgggtttgggttccgtccgaacgacgaggagctcgttggtcactatctccgtaacaaaatcgaaggaaacact
+agccgcgacgttgaagtagccatcagcgaggtcaacatctgtagctacgatccttggaacttgcgcttccagtcaaagtacaaatcgaga
+gatgctatgtggtacttcttctctcgtagagaaaacaacaaagggaatcgacagagcaggacaacggtttctggtaaatggaagcttacc
+ggagaatctgttgaggtcaaggaccagtggggattttgtagtgagggctttcgtggtaagattggtcataaaagggttttggtgttcctc
+gatggaagataccctgacaaaaccaaatctgattgggttatccacgagttccactacgacctcttaccagaacatcagaggacatatgtc
+atctgcagacttgagtacaagggtgatgatgcggacattctatctgcttatgcaatagatcccactcccgcttttgtccccaatatgact
+agtagtgcaggttctgtggtcaaccaatcacgtcaacgaaattcaggatcttacaacacttactctgagtatgattcagcaaatcatggc
+cagcagtttaatgaaaactctaacattatgcagcagcaaccacttcaaggatcattcaaccctctccttgagtatgattttgcaaatcac
+ggcggtcagtggctgagtgactatatcgacctgcaacagcaagttccttacttggcaccttatgaaaatgagtcggagatgatttggaag
+catgtgattgaagaaaattttgagtttttggtagatgaaaggacatctatgcaacagcattacagtgatcaccggcccaaaaaacctgtg
+tctggggttttgcctgatgatagcagtgatactgaaactggatcaatgattttcgaagacacttcgagctccactgatagtgttggtagt
+tcagatgaaccgggccatactcgtatagatgatattccatcattgaacattattgagcctttgcacaattataaggcacaagagcaacca
+aagcagcagagcaaagaaaaggtgataagttcgcagaaaagcgaatgcgagtggaaaatggctgaagactcgatcaagatacctccatcc
+accaacacggtgaagcagagctggattgttttggagaatgcacagtggaactatctcaagaacatgatcattggtgtcttgttgttcatc
+tccgtcattagttggatcattcttgttggttaa
+2:
+atggcggcgagtgaacacagatgcgtgggatgtggttttagggtaaagtcattgttcattcaatactctccgggtaacattcgtctcatg
+aaatgcggaaattgcaaggaagtagcagatgagtacatcgagtgtgaacgcatgattattttcatcgatttaatccttcacagaccaaag
+gtatatagacacgtcctctacaatgcaattaatccagcaactgtcaatattcagcatctgttgtggaagttggtcttcgcctatcttctt
+ctagactgttatagaagcttgctactgagaaaaagtgatgaagaatcgagcttttctgatagccctgttcttctatctataaaggttctg
+attggtgtcttatctgcaaacgctgcatttatcatctcttttgccattgcgactaagggtttgctaaatgaagtttccagaagaagagag
+attatgttggggatattcatctctagttacttcaagatatttctgcttgcgatgttggtatgggaattcccaatgtcagtgatttttttt
+gtcgatatacttctcttaacatcaaactccatggctcttaaagtgatgactgaatcaacaatgaccagatgcatagccgtatgcttaatc
+gcgcacttgattagattcttggtgggtcagatttttgagccgacaatatttttgatacaaattggatctctgttgcaatatatgtcttat
+tttttcagaatcgtatga
+
+aa
+1: MEDQVGFGFRPNDEELVGHYLRNKIEGNTSRDVEVAISEVNICSYDPWNLRFQSKYKSRDAMWYFFSRRENNKGNRQSRTTVSGKWK
+LTGESVEVKDQWGFCSEGFRGKIGHKRVLVFLDGRYPDKTKSDWVIHEFHYDLLPEHQRTYVICRLEYKGDDADILSAYAIDPTPAFVPN
+MTSSAGSVVNQSRQRNSGSYNTYSEYDSANHGQQFNENSNIMQQQPLQGSFNPLLEYDFANHGGQWLSDYIDLQQQVPYLAPYENESEMI
+WKHVIEENFEFLVDERTSMQQHYSDHRPKKPVSGVLPDDSSDTETGSMIFEDTSSSTDSVGSSDEPGHTRIDDIPSLNIIEPLHNYKAQE
+QPKQQSKEKVISSQKSECEWKMAEDSIKIPPSTNTVKQSWIVLENAQWNYLKNMIIGVLLFISVISWIILVG*
+2:
+MAASEHRCVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAINPATVNIQHLLWKLVFAYLL
+LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLVWEFPMSVIFF
+VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*
+```
+
+### The advanced_makedb() function
+
+The `advanced_makedb` function provides a simple, but powerful interface between the R language and `makeblastdb`.
+You can specify the `params` argument to pass all parameters defined for `makeblastdb` to the corresponding
+`makeblastdb` call.
+
+```{r,eval=FALSE}
+
+# make the A. thaliana genome to a blast-able database
+advanced_makedb( database_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+                 params        = "-input_type fasta -dbtype prot -hash_index" )
+
+
+```
+
+```
+Building a new DB, current time: 11/10/2014 16:56:58
+New DB name:   _blast_db/ortho_thal_aa.fasta
+New DB title:  _blast_db/ortho_thal_aa.fasta
+Sequence type: Protein
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 20 sequences in 0.0583858 seconds.
+
+```
