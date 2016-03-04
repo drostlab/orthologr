@@ -243,7 +243,7 @@ ProteinOrtho <- function(query_file,
                                 
                                 ProteinOrtho_tbl[length(hash_tag)] <- list(tmp_df)
                                 
-                                ProteinOrtho_tbl[length(hash_tag) + 1] <- list(read.csv(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
+                                ProteinOrtho_tbl[length(hash_tag) + 1] <- list(utils::read.csv(file.path(tempdir(),"_ProteinOrtho","ProteinOrtho.proteinortho"),sep = "\t", header = TRUE))
                         }
                         
         if (delete_files)
