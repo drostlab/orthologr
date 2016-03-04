@@ -168,9 +168,9 @@ divergence_stratigraphy <- function(query_file,
         
         if(!ds.values){
                 if(!subject.id)
-                        dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
+                        dm_tbl <- stats::na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
                 if(subject.id)
-                        dm_tbl <- na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])
+                        dm_tbl <- stats::na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])
         }
         
         if(clean_folders)
@@ -242,7 +242,7 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         
         for(i in length(DecileValues):2){
                 
-                AllGenesOfDecile_i <- na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) & (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i-1])))
+                AllGenesOfDecile_i <- stats::na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) & (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i-1])))
                 dNdS_tbl_divMap[AllGenesOfDecile_i, dNdS:=(i-1)] 
                 
         }
