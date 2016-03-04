@@ -58,7 +58,7 @@ map.generator <- function(query_file,
         
         # initialize progress bar
         if(progress.bar)
-                pb   <- txtProgressBar(1, length(subj.files), style = 3)
+                pb   <- utils::txtProgressBar(1, length(subj.files), style = 3)
         
         for(i in 1:length(subj.files)){
                 # compute pairwise KaKs/divergence maps between query and all subject files 
@@ -72,7 +72,7 @@ map.generator <- function(query_file,
                                               subject.id      = subject.id,
                                               ... )
              
-                write.table(OrgQuery_vs_OrgSubj,
+                utils::write.table(OrgQuery_vs_OrgSubj,
                             file.path(output.folder,paste0("map_q=",basename(query_file),"_s=",subj.files[i],"_orthodetec=",ortho_detection,"_eval=",eval,".csv")), 
                             sep       = sep,
                             col.names = TRUE,
@@ -80,7 +80,7 @@ map.generator <- function(query_file,
                             quote     = FALSE)     
                 
                 if(progress.bar)
-                        setTxtProgressBar(pb, i)
+                        utils::setTxtProgressBar(pb, i)
                 
                 }
         cat("\n")
