@@ -258,10 +258,10 @@ The `orthologr` package includes the most common dNdS estimation methods.
 Starting with an codon alignment returned by `codon_aln()` the function `dNdS()` computes
 the the dN, dS, and dNdS values of pairs of proteins.
 
-Based on implementations provided by [gestimator](http://molpopgen.org/software/libsequence.html), [ape](http://www.cran.r-project.org/web/packages/ape/index.html), and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
+Based on implementations provided by [gestimator](http://www.molpopgen.org/software/libsequence.html), [ape](https://www.cran.r-project.org/web/packages/ape/index.html), and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
 the following dNdS Estimation Methods are available in `orthologr`:
 
- - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the [ape package](http://cran.r-project.org/web/packages/ape/index.html)
+ - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the [ape package](https://cran.r-project.org/web/packages/ape/index.html)
 
  - [Comeron](http://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
 
