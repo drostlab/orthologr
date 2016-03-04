@@ -778,7 +778,7 @@ The `advanced_blast()` function was implemented to allow you to perform BLAST+ s
 in a flexible environment. All parameters that shall be passed to the corresponding BLAST+ search
 need to be specified using the `blast_params` argument. In case you work with very large hit tables,
 that do not fit into memory, you can specify the `sql_database` argument to store the corresponding 
-hit table in a SQLite database and access it via the [dplyr database notation](http://cran.r-project.org/web/packages/dplyr/vignettes/databases.html).
+hit table in a SQLite database and access it via the [dplyr database notation](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html).
 
 ```{r,eval=FALSE}
 ab <- advanced_blast(query_file  = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -1066,7 +1066,7 @@ The `blast.nr()` function implemented in `orthologr` allows users to perform
 local `blastp` searches against the NCBI nr database.
 
 For this purpose, the first step is to download the NCBI nr database to a local machine
-using the [biomartr](https://cran.r-project.org/web/packages/biomartr/index.html) package.
+using the `biomartr` package.
 
 Please notice that the NCBI nr database contains about 30 files storing
 approx. 500 MB data per file. So when downloading this large database via `biomartr`
@@ -1149,7 +1149,7 @@ the `NCBI nr` database `gi|139291046|gb|ECE46929.1|` is clipped to the `gi id` `
 
 ### Storing very large hit tables in a SQLite database with advanced_blast()
 
-The `advanced_blast()` function can also store the BLAST output CSV file in a SQLite database. This works only with [dplyr](http://cran.r-project.org/web/packages/dplyr/index.html) version >= 0.3 . To store the BLAST output in an SQLite database and to receive an SQLite connection as specified by [tbl()](http://cran.r-project.org/web/packages/dplyr/vignettes/databases.html) in dplyr please use the `sql_database = TRUE` argument.
+The `advanced_blast()` function can also store the BLAST output CSV file in a SQLite database. This works only with `dplyr` version >= 0.3 . To store the BLAST output in an SQLite database and to receive an SQLite connection as specified by [tbl()](https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html) in dplyr please use the `sql_database = TRUE` argument.
 
 
 ```{r,eval=FALSE}
