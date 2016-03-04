@@ -308,7 +308,7 @@ substitutionrate <- function(file,
 
        tryCatch({
                
-        kaks_tbl <- read.csv(file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")),sep = "\t", header = TRUE)
+        kaks_tbl <- utils::read.csv(file.path(tempdir(),"_calculation",paste0(file_name,".axt.kaks")),sep = "\t", header = TRUE)
         kaks_tbl_res <- kaks_tbl[ , 1:5]
         kaks_tbl_res <- data.frame(sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[1]),
                                    sapply(kaks_tbl_res[ , 1], function(x) unlist(strsplit(as.character(x),"-"))[2]) ,
