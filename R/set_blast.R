@@ -172,7 +172,7 @@ set_blast <- function(file,
         setwd(file.path(currwd))
      }
 
-     return(list(na.omit(dt), dbname))
+     return(list(stats::na.omit(dt), dbname))
 }
 
 
