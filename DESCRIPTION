@@ -2,13 +2,14 @@ Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
 Version: 0.0.1
-Date: 2015-07-11
-Authors@R: as.person(c(
-    "Hajk-Georg Drost <hgd23@cam.ac.uk> [aut, cre]",
-    "Sarah Scharfenberg [ctb]"))
+Date: 2016-03-10
+Authors@R: c(
+            person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
+            person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
+            )
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
 Description: Perform BLAST searches, pairwise and multiple sequence alignments, orthology inference, and
-    population genomics for biological research.
+    population genomics for life science research.
 License: GPL-3
 SystemRequirements: C++, Perl
 VignetteBuilder: knitr
