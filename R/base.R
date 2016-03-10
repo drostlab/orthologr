@@ -101,6 +101,15 @@ set_path <- function(file, add.folder = NULL){
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' 
+#' filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' ortho_detection = "RBH", aa_aln_type = "pairwise",
+#' aa_aln_tool = "NW",
+#' codon_aln_tool = "pal2nal", 
+#' dnds_est.method = "Comeron", 
+#' comp_cores = 1), 
+#' dnds.threshold = 2)
+#' 
 #' # a small example using clustalw
 #' filter_dNdS( dNdS(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'                   subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
