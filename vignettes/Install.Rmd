@@ -258,10 +258,10 @@ The `orthologr` package includes the most common dNdS estimation methods.
 Starting with an codon alignment returned by `codon_aln()` the function `dNdS()` computes
 the the dN, dS, and dNdS values of pairs of proteins.
 
-Based on implementations provided by [gestimator](http://www.molpopgen.org/software/libsequence.html), [ape](https://www.cran.r-project.org/web/packages/ape/index.html), and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
+Based on implementations provided by `gestimator`, `ape`, and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
 the following dNdS Estimation Methods are available in `orthologr`:
 
- - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the [ape package](https://cran.r-project.org/web/packages/ape/index.html)
+ - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the `ape package`
 
  - [Comeron](http://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
 
@@ -276,28 +276,4 @@ the following dNdS Estimation Methods are available in `orthologr`:
  - [MYN](http://www.biomedcentral.com/1471-2148/6/44/) (Modified YN): Zhang, Z., et al. (2006)
 
 For this purpose you need to have __KaKs_Calculator__ installed on your system and executable from your default `PATH`, e,g, `/usr/local/bin/`.
-
-
-
-### CDS prediction pipeline
-
-__The `predict_cds()` function is not finished yet.__
-
-It is also possible to run __Divergence Stratigraphy__ or any other
-orthology inference method starting with non-annotated genomes.
-
-For this purpose `orthologr` provides a function `predict_cds()` that allows
-you to perform gene prediction (CDS prediction) based on the gene prediction programs
-[Augustus](http://bioinf.uni-greifswald.de/augustus/) and [GeneMark](http://exon.gatech.edu/GeneMark/)
-and also allows you to translate the predicted genes to amino acids:  genes -> cds -> amino acids that
-can subsequently be used for __Divergence Stratigraphy__ or __Orthology Inference__.
-
-- [Augustus](http://bioinf.uni-greifswald.de/augustus/) : Prediction of regions within eukaryotic genomic sequences that can be denoted as "predicted genes"
-
-* `augustus()`: Interface function for the gene prediction program augustus
-
-- [GeneMark](http://exon.gatech.edu/GeneMark/): A family of gene prediction programs for all kingdoms of life
-
-* `genemark()` : Interface function for the gene prediction program GeneMark
-
 
