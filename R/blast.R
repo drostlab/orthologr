@@ -65,7 +65,7 @@
 #' 
 #' http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
 #' 
-#' \url{http://blast.ncbi.nlm.nih.gov/Blast.cgi}
+#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
 #' @examples \dontrun{
 #' # performing a BLAST search using blastp (default)
 #' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
