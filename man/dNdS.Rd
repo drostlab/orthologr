@@ -109,9 +109,6 @@ The \code{dNdS()} function can be used choosing the folllowing options:
    \item \code{"BH"} (BLAST best hit)
    \item \code{"DELTA"} (DELTA-BLAST best reciprocal hit) 
    \item \code{"PO"} (ProteinOrtho) 
-   \item \code{"OrthoMCL"} (OrthoMCL)
-   \item \code{"GGSEARCH"} (GGSearch)
-   \item \code{"SSEARCH"} (SSearch)
      }
      
 \item \code{aa_aln_type} : 
