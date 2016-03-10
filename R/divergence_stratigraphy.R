@@ -147,7 +147,7 @@ divergence_stratigraphy <- function(query_file,
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        query_id <- subject_id <- dNdS <- dnds.threshold <- NULL
+        query_id <- subject_id <- dNdS <- NULL
         
         dNdS_tbl <- filter_dNdS( dNdS( query_file      = query_file,
                                        subject_file    = subject_file,
@@ -160,10 +160,9 @@ divergence_stratigraphy <- function(query_file,
                                        quiet           = quiet ), 
                                        dnds.threshold  = dnds.threshold)
         
-        
         if(ds.values){
                 # divergence map: standard = col1: divergence stratum, col2: query_id
-                dm_tbl <- DivergenceMap( dNdS_tbl , subject.id )
+                dm_tbl <- DivergenceMap( dNdS_tbl = dNdS_tbl , subject.id = subject.id )
         }
         
         if(!ds.values){
