@@ -42,16 +42,6 @@ biocLite("XVector")
 Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
 Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
 
-
-Install `orthologr` from CRAN:
-
-```r
-# install orthologr 0.0.1 from CRAN
-install.packages("orthologr")
-```
-
-
-
 ### On Unix Based Systems
 
 Now users can use the `devtools` package to install `orthologr` from GitHub.
