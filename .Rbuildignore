@@ -5,5 +5,6 @@
 man-roxygen
 README.html
 README.Rmd
+COPYING
 ^\.travis\.yml$
 ^\.httr-oauth$
