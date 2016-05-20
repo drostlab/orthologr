@@ -10,7 +10,7 @@ Authors@R: c(
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
 Description: Perform BLAST searches, pairwise and multiple sequence alignments, orthology inference, and
     population genomics for life science research.
-License: GPL-3
+License: GPL-2
 SystemRequirements: C++, Perl
 VignetteBuilder: knitr
 NeedsCompilation: yes
