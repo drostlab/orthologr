@@ -24,7 +24,7 @@
 // in orthologr without using external libraries from libsequence.
 //
 // All changes are also free under the terms of GNU General Public License
-// version 3 of the License, or any later version.
+// version 2 of the License, or any later version.
 
 
 

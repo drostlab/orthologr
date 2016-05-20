@@ -23,8 +23,8 @@ long with libsequence.  If not, see <http://www.gnu.org/licenses/>.
 Modified by Sarah Scharfenberg and Hajk-Georg Drost 2014 to work 
 in orthologr without using external libraries from libsequence.
 
-All changes are also free under the terms of GNU General Public License
-version 3 of the License, or any later version.
+ All changes are also free under the terms of GNU General Public License
+ version 2 of the License, or any later version.
 
 */
 
