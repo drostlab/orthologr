@@ -40,7 +40,7 @@ __Note:__ the following dNdS estimation methods are based on KaKs_Calculator:
 * "MYN" (Modified YN): Zhang, Z., et al. (2006)
 
 It is assumed that when you choose one of these dNdS estimation methods you have
-[KaKs_Calculator](https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator) installed on your machine and it can be executed from the
+[KaKs_Calculator](https://code.google.com/archive/p/kaks-calculator/) installed on your machine and it can be executed from the
 default execution `PATH`.
 
 The following pipeline resembles an example dNdS estimation procedure:
