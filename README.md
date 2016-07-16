@@ -5,8 +5,18 @@ orthologr
 
 ## Comparative Genomics with R
 
-The `orthologr` package allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) with R.
+The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform comparative genomics studies with R and implements R wrapper functions to the most important and most popular genomics and comparative genomics tools.
 
+In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) with R.
+
+In future versions we will include a vast range of analytics functions to perform state-of-the art and cutting edge comparative genomics studies.
+
+### Citation
+
+**Please cite the following paper when using `orthologr` for your own research. This will allow me to continue
+working on this software tool and will motivate me to extend its functionality and usability. Many thanks in advance :)**
+
+> Drost HG, Gabel A, Grosse I, Quint M. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
 
 ## Use Cases
 
