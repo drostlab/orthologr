@@ -76,7 +76,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
 This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral
 with nonsynonymous substitution rates (dN), which are exposed to selection as they 
-change the amino acid composition of a protein (Mugal et al., 2013 \url{http://mbe.oxfordjournals.org/content/31/1/212}).
+change the amino acid composition of a protein (Mugal et al., 2013 http://mbe.oxfordjournals.org/content/31/1/212).
 
 The \pkg{orthologr} package provides the \code{\link{dNdS}} function to perform dNdS estimation on pairs of orthologous genes.
 This function takes the CDS files of two organisms of interest (\code{query_file} and \code{subject_file}) 
@@ -151,17 +151,17 @@ The \code{dNdS()} function can be used choosing the folllowing options:
 
 # get a dNdS table using:
 # 1) reciprocal best hit for orthology inference (RBH)
-# 2) clustalw for pairwise amino acid alignments
+# 2) Needleman-Wunsch for pairwise amino acid alignments
 # 3) pal2nal for codon alignments
-# 4) Yang, Z. and Nielsen, R. (2000) (YN) for dNdS estimation
+# 4) Comeron for dNdS estimation
 # 5) single core processing 'comp_cores = 1'
 dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
      ortho_detection = "RBH", 
-     aa_aln_type     = "multiple",
-     aa_aln_tool     = "clustalw", 
+     aa_aln_type     = "pairwise",
+     aa_aln_tool     = "NW", 
      codon_aln_tool  = "pal2nal", 
-     dnds_est.method = "YN", 
+     dnds_est.method = "Comeron", 
      comp_cores      = 1 )
 
 
@@ -170,28 +170,28 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
      ortho_detection = "RBH", 
-     aa_aln_type     = "multiple",
-     aa_aln_tool     = "clustalw", 
+     aa_aln_type     = "pairwise",
+     aa_aln_tool     = "NW", 
      aa_aln_path     = "/path/to/clustalw/",
      codon_aln_tool  = "pal2nal", 
-     dnds_est.method = "YN", 
-     comp_cores      = 2 )
+     dnds_est.method = "Comeron", 
+     comp_cores      = 1 )
 
 # The same result can be obtained using multicore processing using: comp_cores = 2 or 3 or more ...
 dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
      ortho_detection = "RBH", 
-     aa_aln_type     = "multiple",
-     aa_aln_tool     = "clustalw", 
+     aa_aln_type     = "pairwise",
+     aa_aln_tool     = "NW", 
      aa_aln_path     = "/path/to/clustalw/",
      codon_aln_tool  = "pal2nal", 
-     dnds_est.method = "YN", 
-     comp_cores      = 2 )
+     dnds_est.method = "Comeron", 
+     comp_cores      = 1 )
 
 }
 }
 \author{
-Hajk-Georg Drost and Sarah Scharfenberg
+Hajk-Georg Drost
 }
 \references{
 seqinr: \url{http://seqinr.r-forge.r-project.org/}
