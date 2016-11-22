@@ -99,7 +99,7 @@ is.alignment_search_tool <- function(tool = NULL){
 #' @import data.table
 cds2aa <- function(dt){
         
-        if(!is.data.table(dt))
+        if (!is.data.table(dt))
                 stop("Your CDS file was not corretly transformed into a data.table object.")
         
         # define visible bindings for global variables
@@ -112,22 +112,31 @@ cds2aa <- function(dt){
         # https://github.com/hadley/dplyr/issues/548
         
         # omit empty sequences
-        dt <- dt[ ,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
+        dt <- dt[ , .SD[sapply(seqs, function(x) {
+                return(!(is.na(x) || x == ""))
+        })]]
         
         # omit sequences taht are not multiples of 3
-        dt <- dt[ ,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
+        dt <- dt[ , .SD[sapply(seqs, function(x) {
+                return(nchar(x) %% 3 == 0)
+        })]]
         
         # omit sequences consisting of others than ACGT
-        dt <- dt[ ,.SD[sapply(seqs,is.dnaSequence)]]
+        dt <- dt[ , .SD[sapply(seqs, is.dnaSequence)]]
         
         # translate cds to protein sequences
         tryCatch({
-                
                 dt[ , aa := transl(seqs), by = geneids]
                 
-        }, error = function(e) {stop("The input coding sequences could not be translated properly to amino acid sequences.",
-                                     ,"\n"," Please check whether ",file, " stores valid coding sequences.")}
-        )
+        }, error = function(e) {
+                stop(
+                        "The input coding sequences could not be translated properly to amino acid sequences.",
+                        "\n",
+                        " Please check whether ",
+                        file,
+                        " stores valid coding sequences."
+                )
+        })
         
         return(dt)
 }
