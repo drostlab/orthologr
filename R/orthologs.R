@@ -124,57 +124,99 @@ orthologs <- function(query_file,
                       quiet           = FALSE, 
                       clean_folders   = FALSE){
         
-        if(!is.element(ortho_detection, c("BH","RBH","PO","OrthoMCL","GGSEARCH","SSEARCH","DELTA")))
+        if(!is.element(ortho_detection,
+                       c("BH", "RBH", "PO", "OrthoMCL", "GGSEARCH", "SSEARCH", "DELTA")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         i <- query_id <- subject_id <- evalue <- NULL
-        if(seq_type == "cds"){
-                
+        if (seq_type == "cds") {
                 f_sep <- .Platform$file.sep
                 
-                filename_qry <- unlist(strsplit(query_file, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename_qry <-
+                        unlist(strsplit(
+                                query_file,
+                                f_sep,
+                                fixed = FALSE,
+                                perl = TRUE,
+                                useBytes = FALSE
+                        ))
                 filename_qry <- filename_qry[length(filename_qry)]
                 
-                write.proteome(proteome  = cds2aa(read.cds(query_file, format = format)), 
-                               file.name = file.path(tempdir(),paste0(filename_qry,"_translated.fasta")))
+                write.proteome(proteome  = cds2aa(read.cds(query_file, format = format)),
+                               file.name = file.path(tempdir(), paste0(
+                                       filename_qry, "_translated.fasta"
+                               )))
                 
-                if(length(subject_files) > 1){
+                if (length(subject_files) > 1) {
+                        subj_short.names <- vector("character", length(subject_files))
                         
-                        subj_short.names <- vector("character",length(subject_files))
-                        
-                        for(organism in 1:length(subject_files)){
-                                
-                                short.name <- unlist(strsplit(subject_files[organism], f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                                short.name <- short.name[length(short.name)]
+                        for (organism in 1:length(subject_files)) {
+                                short.name <-
+                                        unlist(
+                                                strsplit(
+                                                        subject_files[organism],
+                                                        f_sep,
+                                                        fixed = FALSE,
+                                                        perl = TRUE,
+                                                        useBytes = FALSE
+                                                )
+                                        )
+                                short.name <-
+                                        short.name[length(short.name)]
                                 subj_short.names[i] <-  short.name
                                 
                                 
-                                write.proteome(proteome  = cds2aa(read.cds(subject_files[organism], format = format)), 
-                                               file.name = file.path(tempdir(),paste0(short.name,"_translated.fasta")))
+                                write.proteome(
+                                        proteome  = cds2aa(
+                                                read.cds(subject_files[organism], format = format)
+                                        ),
+                                        file.name = file.path(
+                                                tempdir(),
+                                                paste0(short.name, "_translated.fasta")
+                                        )
+                                )
                         }
                         
-                        subject_files <- file.path(tempdir(),paste0(short.name,"_translated.fasta"))
+                        subject_files <-
+                                file.path(tempdir(),
+                                          paste0(short.name, "_translated.fasta"))
                         
                 } else {
+                        filename_subj <-
+                                unlist(
+                                        strsplit(
+                                                subject_files,
+                                                f_sep,
+                                                fixed = FALSE,
+                                                perl = TRUE,
+                                                useBytes = FALSE
+                                        )
+                                )
+                        filename_subj <-
+                                filename_subj[length(filename_subj)]
                         
-                        filename_subj <- unlist(strsplit(subject_files, f_sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-                        filename_subj <- filename_subj[length(filename_subj)]
+                        write.proteome(
+                                proteome  = cds2aa(read.cds(subject_files, format = format)),
+                                file.name = file.path(
+                                        tempdir(),
+                                        paste0(filename_subj, "_translated.fasta")
+                                )
+                        )
                         
-                        write.proteome(proteome  = cds2aa(read.cds(subject_files, format = format)), 
-                                       file.name = file.path(tempdir(),paste0(filename_subj,"_translated.fasta")))
-                        
-                        subject_files <- file.path(tempdir(),paste0(filename_subj,"_translated.fasta"))
+                        subject_files <-
+                                file.path(tempdir(),
+                                          paste0(filename_subj, "_translated.fasta"))
                         
                 }
                 
-                query_file <- file.path(tempdir(),paste0(filename_qry,"_translated.fasta"))
-                
-                
+                query_file <-
+                        file.path(tempdir(), paste0(filename_qry, "_translated.fasta"))
+        
         }
         
-        if(ortho_detection == "BH"){
+        if (ortho_detection == "BH") {
                 
-                if(length(subject_files) > 1)
+                if (length(subject_files) > 1)
                         stop("The BLAST best hit method is only defined for pairwise comparisons.")
                 
                 ortho_tbl <- data.table::copy(
@@ -190,9 +232,7 @@ orthologs <- function(query_file,
                                    format          = format )
                         
                 )
-                
-                
-                if(clean_folders)
+                if (clean_folders)
                         clean_all_folders(file.path(tempdir(),"_blast_db"))
                 
         }
