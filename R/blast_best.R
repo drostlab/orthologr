@@ -21,7 +21,7 @@
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @author Hajk-Georg Drost
 #' @details Given a set of protein sequences (query sequences), a best hit blast search (BH BLAST) is being performed.
 #' 
 #' Internally to perform best hit searches, the BLAST+ parameter settings:
@@ -136,30 +136,33 @@ blast_best <- function(query_file,
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         
-        if(!detailed_output){
-                
+        if (!detailed_output) {
                 tryCatch({
-                        besthit_tbl <- hit_tbl.dt[ , sapply(.SD[ , evalue],min)[1], by = key(hit_tbl.dt)]
-        
+                        besthit_tbl <-
+                                hit_tbl.dt[, sapply(.SD[, evalue], min)[1], by = key(hit_tbl.dt)]
+                        
                         #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
-                        data.table::setnames(besthit_tbl, old = c("V1"), new = c("evalue"))
-        
-                        data.table::setkeyv(besthit_tbl, c("query_id","subject_id"))
-        
-   
-                        # return a data.table storing only the best hits from the resulting 
-                       # BLAST search
-                       return( besthit_tbl )
-                       
-                }, error = function(e) { stop("The BLAST output couldn't be read properly, maybe a problem occured when 
-                                       selecting best hits from the resulting BLAST hit table.") } 
-                )
-
-        } else {
+                        data.table::setnames(besthit_tbl,
+                                             old = c("V1"),
+                                             new = c("evalue"))
+                        
+                        data.table::setkeyv(besthit_tbl, c("query_id", "subject_id"))
+                        
+                        
+                        # return a data.table storing only the best hits from the resulting
+                        # BLAST search
+                        return(besthit_tbl)
+                        
+                }, error = function(e) {
+                        stop(
+                                "The BLAST output couldn't be read properly, maybe a problem occured when
+                                selecting best hits from the resulting BLAST hit table."
+                        )
+                })
                 
-                return(hit_tbl.dt)
-                
-        }
-
+                } else {
+                        return(hit_tbl.dt)
+                        
+                }
 }
 
