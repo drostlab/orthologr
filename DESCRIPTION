@@ -28,7 +28,8 @@ Imports:
     RSQLite (>= 0.11.4),
     stringr (>= 0.6.2),
     IRanges,
-    DBI (>= 0.3.1)
+    DBI (>= 0.3.1),
+    dtplyr
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
