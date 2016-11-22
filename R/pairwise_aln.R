@@ -47,79 +47,96 @@ pairwise_aln <- function(file,
         if(!is.pairwise_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
-        if(!is.element(seq_type,c("dna","cds","protein")))
+        if (!is.element(seq_type, c("dna", "cds", "protein")))
                 stop("Please choose a seq_type that is supported by this function.")
         
-        if(is.element(seq_type,c("dna","cds")))
+        if (is.element(seq_type, c("dna", "cds")))
                 seqtype <- "DNA"
-           
-        if(seq_type == "protein")
+        
+        if (seq_type == "protein")
                 seqtype <- "AA"
         
         
-        if(!file.exists(file.path(tempdir(),"_alignment"))){
-                
-                dir.create(file.path(tempdir(),"_alignment"))
+        if (!file.exists(file.path(tempdir(), "_alignment"))) {
+                dir.create(file.path(tempdir(), "_alignment"))
         }
         
-        if(!file.exists(file.path(tempdir(),"_alignment","pairwise_aln"))){
-                
-                dir.create(file.path(tempdir(),"_alignment","pairwise_aln"))
+        if (!file.exists(file.path(tempdir(), "_alignment", "pairwise_aln"))) {
+                dir.create(file.path(tempdir(), "_alignment", "pairwise_aln"))
         }
         
-        if(is.null(pairwise_aln_name)){
-                
-                file.out <- file.path(tempdir(),"_alignment","pairwise_aln",paste0(tool,"_",seqtype,".aln"))
+        if (is.null(pairwise_aln_name)) {
+                file.out <-
+                        file.path(tempdir(),
+                                  "_alignment",
+                                  "pairwise_aln",
+                                  paste0(tool, "_", seqtype, ".aln"))
         }
         
-        if(!is.null(pairwise_aln_name)){
-                
-                file.out <- file.path(tempdir(),"_alignment","pairwise_aln",paste0(pairwise_aln_name,"_",tool,"_",seqtype,".aln"))    
+        if (!is.null(pairwise_aln_name)) {
+                file.out <-
+                        file.path(
+                                tempdir(),
+                                "_alignment",
+                                "pairwise_aln",
+                                paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")
+                        )
         }
         
         # Needleman-Wunsch using Biostrings::pairwiseAlignment( type=global)
-        if(tool == "NW"){
-                
+        if (tool == "NW") {
                 #read file
-                if(is.element(seq_type,c("dna","cds"))){
-#                         not possible as is sorts the input by name
-#                         seqs <- read.cds(file=file, format=format)
-#                         names <- dt[,geneids] 
-#                         seqs <- sapply(dt[,seqs] , Biostrings::DNAString)
+                if (is.element(seq_type, c("dna", "cds"))) {
+                        #                         not possible as is sorts the input by name
+                        #                         seqs <- read.cds(file=file, format=format)
+                        #                         names <- dt[,geneids]
+                        #                         seqs <- sapply(dt[,seqs] , Biostrings::DNAString)
                         
-                        input <- seqinr::read.fasta( file    = file,
-                                                     seqtype = seqtype )
+                        input <- seqinr::read.fasta(file    = file,
+                                                    seqtype = seqtype)
                         
-                        names <- names(input) 
-                        seqs <- lapply(input, function(x){return (Biostrings::DNAString(seqinr::c2s(x)))})      
+                        names <- names(input)
+                        seqs <-
+                                lapply(input, function(x) {
+                                        return (Biostrings::DNAString(seqinr::c2s(x)))
+                                })
                 }
-                if(seq_type == "protein"){
-#                         dt <- read.proteome(file=file, format=format)
-#                         names <- dt[,geneids] 
-#                         seqs <- sapply(dt[,seqs] , Biostrings::AAString)
-
-                        input <- seqinr::read.fasta( file    = file, 
-                                                     seqtype = seqtype )
+                if (seq_type == "protein") {
+                        #                         dt <- read.proteome(file=file, format=format)
+                        #                         names <- dt[,geneids]
+                        #                         seqs <- sapply(dt[,seqs] , Biostrings::AAString)
                         
-                        names <- names(input) 
-                        seqs <- lapply(input, function(x){return (Biostrings::AAString(seqinr::c2s(x)))})      
+                        input <-
+                                seqinr::read.fasta(file    = file,
+                                                   seqtype = seqtype)
+                        
+                        names <- names(input)
+                        seqs <-
+                                lapply(input, function(x) {
+                                        return (Biostrings::AAString(seqinr::c2s(x)))
+                                })
                 }
                 
                 # align
-                aln  <- Biostrings::pairwiseAlignment( pattern = seqs[[1]], 
-                                                       subject = seqs[[2]],
-                                                       type    = "global" )
-                 
+                aln  <-
+                        Biostrings::pairwiseAlignment(pattern = seqs[[1]],
+                                                      subject = seqs[[2]],
+                                                      type    = "global")
+                
                 #write file -> comment Hajk: what does pattern() and subject() do in pattern(aln), subject(aln) ?
                 # pattern(aln) == get aligned sequence that was set as pattern input
                 # subject(aln) == get aligned sequence that was set as subject input
-                seqinr::write.fasta( sequences = list(Biostrings::pattern(aln),IRanges::subject(aln)), 
-                                     names     = names,
-                                     file.out  = file.out)
+                seqinr::write.fasta(
+                        sequences = list(Biostrings::pattern(aln), IRanges::subject(aln)),
+                        names     = names,
+                        file.out  = file.out
+                )
                 
-                if(!quiet){ print(paste0("File successfully written to ",file.out)) }
+                if (!quiet) {
+                        print(paste0("File successfully written to ", file.out))
+                }
                 
-                if(get_aln) 
+                if (get_aln)
                         return(aln)
         }
 }
