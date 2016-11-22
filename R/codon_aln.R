@@ -80,76 +80,116 @@ codon_aln <- function(file_aln,
                       quiet          = FALSE){
         
         
-        # determine the file seperator of the current OS
-        f_sep <- .Platform$file.sep
-        
         # the Pal2Nal program is stored as executable within
         # the R package environment: 'exec' folder
         # this is not an elegant version, only motivated by this discussion:
         # http://stackoverflow.com/questions/13463103/inst-and-extdata-folders-in-r-packaging
         # is there a better choice?
-        path <- system.file(file.path("pal2nal","pal2nal.v14","pal2nal.pl"), package = "orthologr", mustWork = TRUE)
+        path <-
+                system.file(
+                        file.path("pal2nal", "pal2nal.v14", "pal2nal.pl"),
+                        package = "orthologr",
+                        mustWork = TRUE
+                )
         #path <- "/exec/pal2nal.v14/"
         
-        if(!is.element(tool,c("pal2nal")))
+        if (!is.element(tool, c("pal2nal")))
                 stop("Please choose a tool that is supported by this function.")
         
-        if(!is.element(format,c("clustal", "fasta")))
+        if (!is.element(format, c("clustal", "fasta")))
                 stop("Please choose a format that is supported by this function.")
         
-        if(!file.exists(file.path(tempdir(),"_alignment"))){
-                
-                dir.create(file.path(tempdir(),"_alignment"))
+        if (!file.exists(file.path(tempdir(), "_alignment"))) {
+                dir.create(file.path(tempdir(), "_alignment"))
         }
         
         
-        if(!file.exists(file.path(tempdir(),"_alignment","codon_aln"))){
-                
-                dir.create(file.path(tempdir(),"_alignment","codon_aln"))
+        if (!file.exists(file.path(tempdir(), "_alignment", "codon_aln"))) {
+                dir.create(file.path(tempdir(), "_alignment", "codon_aln"))
         }
         
-        if(is.null(codon_aln_name))
-                file.out <- file.path(tempdir(),"_alignment","codon_aln",paste0(tool,".aln"))
+        if (is.null(codon_aln_name))
+                file.out <-
+                file.path(tempdir(), "_alignment", "codon_aln", paste0(tool, ".aln"))
         
-        if(!is.null(codon_aln_name))
-                file.out <- file.path(tempdir(),"_alignment","codon_aln",paste0(codon_aln_name,"_",tool,".aln"))
+        if (!is.null(codon_aln_name))
+                file.out <-
+                file.path(tempdir(),
+                          "_alignment",
+                          "codon_aln",
+                          paste0(codon_aln_name, "_", tool, ".aln"))
         
         
         # test whether the connection to pal2nal works
-    
-                if(tool == "pal2nal"){
-                
-                        tryCatch(
-                        {       
-                                if(is.null(params))
-                                        system(paste0("perl ",path," ",file_aln," ",file_nuc," -output ",format," >",file.out))
-                                
-                                
-                                if(!is.null(params))
-                                        system(paste0("perl ",path," ",file_aln," ",file_nuc," -output ",format," >",file.out," ",params))
-                                
-                
-                        },error = function(e){ stop("Please check the correct path to ",tool,
-                                                    "... the interface call did not work properly." ) }
-                        
-                        )
-                }
-
-        if(!quiet){print(paste0("Codon Alignment successfully written in ",file.out,"."))}
         
-                
-        if(get_aln){
-                
-                tryCatch(
-                        {
-                                dna_aln <- seqinr::read.alignment(file = file.out, format = "clustal")
-                                return(dna_aln)
-               
-                        }, error = function(e){stop("Something went wront with Pal2Nal.pl .","\n",
-                                                     file.out, " could not be read properly.")}
-                )
+        if (tool == "pal2nal") {
+                tryCatch({
+                        if (is.null(params))
+                                system(
+                                        paste0(
+                                                "perl ",
+                                                path,
+                                                " ",
+                                                file_aln,
+                                                " ",
+                                                file_nuc,
+                                                " -output ",
+                                                format,
+                                                " >",
+                                                file.out
+                                        )
+                                )
+                        
+                        
+                        if (!is.null(params))
+                                system(
+                                        paste0(
+                                                "perl ",
+                                                path,
+                                                " ",
+                                                file_aln,
+                                                " ",
+                                                file_nuc,
+                                                " -output ",
+                                                format,
+                                                " >",
+                                                file.out,
+                                                " ",
+                                                params
+                                        )
+                                )
+                        
+                        
+                }, error = function(e) {
+                        stop(
+                                "Please check the correct path to ",
+                                tool,
+                                "... the interface call did not work properly."
+                        )
+                })
         }
-
+        
+        if (!quiet) {
+                print(paste0("Codon Alignment successfully written in ", file.out, "."))
+        }
+        
+        
+        if (get_aln) {
+                tryCatch({
+                        dna_aln <-
+                                seqinr::read.alignment(file = file.out, format = "clustal")
+                        return(dna_aln)
+                        
+                }, error = function(e) {
+                        stop(
+                                "Something went wront with Pal2Nal.pl .",
+                                "\n",
+                                file.out,
+                                " could not be read properly."
+                        )
+                })
+        }
+        
 }
 
 
