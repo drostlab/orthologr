@@ -286,362 +286,612 @@ multi_aln <- function(file,
                 stop("Please choose a tool that is supported by this function.")
         
         
-        if(!file.exists(file.path(tempdir(),"_alignment"))){
-                
-                dir.create(file.path(tempdir(),"_alignment"))
+        if (!file.exists(file.path(tempdir(), "_alignment"))) {
+                dir.create(file.path(tempdir(), "_alignment"))
         }
         
-        if(!file.exists(file.path(tempdir(),"_alignment","multi_aln"))){
-                
-                dir.create(file.path(tempdir(),"_alignment","multi_aln"))
+        if (!file.exists(file.path(tempdir(), "_alignment", "multi_aln"))) {
+                dir.create(file.path(tempdir(), "_alignment", "multi_aln"))
         }
         
-        if(is.null(multi_aln_name)){
-                
-                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(basename(file),"_",tool,".aln"))
-        }
-
-        if(!is.null(multi_aln_name)){
-         
-                file.out <- file.path(tempdir(),"_alignment","multi_aln",paste0(basename(file),"_",multi_aln_name,"_",tool,".aln"))    
+        if (is.null(multi_aln_name)) {
+                file.out <-
+                        file.path(tempdir(),
+                                  "_alignment",
+                                  "multi_aln",
+                                  paste0(basename(file), "_", tool, ".aln"))
         }
         
-# does not work as expected, could be included in another way or not.
-#         if(quiet){
-#                 clustalw.params = paste0(clustalw.params, " -QUIET")
-#                 mafft.params = paste0(mafft.params, " --quiet")
-#                 muscle.params = paste0(muscle.params, " -quiet")
-#                 # clustalo - no param found to limit the output
-#         }
-
+        if (!is.null(multi_aln_name)) {
+                file.out <-
+                        file.path(
+                                tempdir(),
+                                "_alignment",
+                                "multi_aln",
+                                paste0(basename(file), "_", multi_aln_name, "_", tool, ".aln")
+                        )
+        }
+        
+        # does not work as expected, could be included in another way or not.
+        #         if(quiet){
+        #                 clustalw.params = paste0(clustalw.params, " -QUIET")
+        #                 mafft.params = paste0(mafft.params, " --quiet")
+        #                 muscle.params = paste0(muscle.params, " -quiet")
+        #                 # clustalo - no param found to limit the output
+        #         }
+        
         
         # RIGHT NOW EACH NEW RUN OF THE FUNCTION OVERWRITES
         # THE EXISTING *.aln FILE
         # IN FUTURE VERSIONS WE SHOULD TRY TO KEEP (STORE) EXISTING FILES
         # AND RENAME THE NEW ONES
         
-        if(tool == "clustalw"){
-                
+        if (tool == "clustalw") {
                 # find out on what kind of OS ClustalW is running
                 operating_sys <- Sys.info()[1]
                 
-                if (operating_sys == "Darwin") 
+                if (operating_sys == "Darwin")
                         call_clustalw <- "clustalw2"
                 
                 if (operating_sys == "Linux")
                         call_clustalw <- "clustalw"
                 
-                if (operating_sys == "Windows") 
+                if (operating_sys == "Windows")
                         call_clustalw <- "clustalw2.exe"
                 
                 
                 # test whether the connection to clustalw works
-                 tryCatch({
-                         
-                       if(is.null(path)){
-                               
-                               # if no specific parameters are set,
-                               # then use the default parameters
-                               if(is.null(params)){
-                                       
-                                       # There is an error with pal2nal as clustalw deletes * during alignment what results in 
-                                       # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
-                                       
-                                        # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
-                                        system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," -quiet"))
-                               } else {
-                                       # add additional parameters when running clustalw
-                                      system(paste0(call_clustalw," -infile=",file," -outfile=",file.out," ",params))                                       
-                               }
-                        } else {
-                                
+                tryCatch({
+                        if (is.null(path)) {
                                 # if no specific parameters are set,
                                 # then use the default parameters
-                                if(is.null(params)){
+                                if (is.null(params)) {
+                                        # There is an error with pal2nal as clustalw deletes * during alignment what results in
+                                        # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
                                         
-                                        # use the default parameters when running clustalw
+                                        # right now only the default parameters for args: "-PWGAPOPEN", "-PWGAPEXT", "-GAPOPEN", "-GAPEXT" are being used
                                         system(
-                                               paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                               file," -outfile=",file.out," -quiet"))
+                                                paste0(
+                                                        call_clustalw,
+                                                        " -infile=",
+                                                        file,
+                                                        " -outfile=",
+                                                        file.out,
+                                                        " -quiet"
+                                                )
+                                        )
                                 } else {
-                                        
                                         # add additional parameters when running clustalw
                                         system(
-                                               paste0("export PATH=$PATH:",path,"; ",call_clustalw," -infile=",
-                                               file," -outfile=",file.out," ",params))   
+                                                paste0(
+                                                        call_clustalw,
+                                                        " -infile=",
+                                                        file,
+                                                        " -outfile=",
+                                                        file.out,
+                                                        " ",
+                                                        params
+                                                )
+                                        )
+                                }
+                        } else {
+                                # if no specific parameters are set,
+                                # then use the default parameters
+                                if (is.null(params)) {
+                                        # use the default parameters when running clustalw
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        call_clustalw,
+                                                        " -infile=",
+                                                        file,
+                                                        " -outfile=",
+                                                        file.out,
+                                                        " -quiet"
+                                                )
+                                        )
+                                } else {
+                                        # add additional parameters when running clustalw
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        call_clustalw,
+                                                        " -infile=",
+                                                        file,
+                                                        " -outfile=",
+                                                        file.out,
+                                                        " ",
+                                                        params
+                                                )
+                                        )
                                 }
                         }
-                       
-                       if(!quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-                       
-                 },error = function(e){ stop("Please check the correct path to ",tool,
-                                              "... the interface call did not work properly.") }
-                 )
-                
-                if(get_aln){
                         
-                        tryCatch(
-                                {
-                                        aln <- Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
-                                        return(aln)
-                                        
-                                }, error = function(e){stop("Something went wront with ",tool," .","\n",
-                                                            file.out, " could not be read properly.")}
+                        if (!quiet) {
+                                print(
+                                        paste0(
+                                                "Multiple Alignment successfully written in ",
+                                                file.out,
+                                                "."
+                                        )
+                                )
+                        }
+                        
+                }, error = function(e) {
+                        stop(
+                                "Please check the correct path to ",
+                                tool,
+                                "... the interface call did not work properly."
                         )
+                })
+                
+                if (get_aln) {
+                        tryCatch({
+                                aln <-
+                                        Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
+                                return(aln)
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "Something went wront with ",
+                                        tool,
+                                        " .",
+                                        "\n",
+                                        file.out,
+                                        " could not be read properly."
+                                )
+                        })
                 }
         }
- 
-        if(tool == "t_coffee"){
-                
+        
+        if (tool == "t_coffee") {
                 # test whether the connection to t_coffee works
-                tryCatch(
-                {
-                        if(is.null(path)){
-                                
-                                if(is.null(params)){
-                                        
-                                        # There is an error with pal2nal as t_coffee deletes * during alignment what results in 
+                tryCatch({
+                        if (is.null(path)) {
+                                if (is.null(params)) {
+                                        # There is an error with pal2nal as t_coffee deletes * during alignment what results in
                                         # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
                                         
                                         # use the default parameters when running t_coffee
                                         # perform an accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
-                                        system(paste0("t_coffee -infile ",file," -mode accurate"," -outfile ",file.out))
+                                        system(
+                                                paste0(
+                                                        "t_coffee -infile ",
+                                                        file,
+                                                        " -mode accurate",
+                                                        " -outfile ",
+                                                        file.out
+                                                )
+                                        )
                                 } else {
-                                        
                                         # add additional parameters when running t_coffee
-                                        system(paste0("t_coffee -infile ",file," ",params," -outfile ",file.out))
+                                        system(
+                                                paste0(
+                                                        "t_coffee -infile ",
+                                                        file,
+                                                        " ",
+                                                        params,
+                                                        " -outfile ",
+                                                        file.out
+                                                )
+                                        )
                                         
                                 }
                         } else {
-                                
-                                if(is.null(params)){
-                                        
+                                if (is.null(params)) {
                                         # use the default parameters when running t_coffee
                                         # perform a accurate alignment which is very accurate, but slow
                                         # http://www.tcoffee.org/Projects/tcoffee/#DOCUMENTATION
-                                        system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
-                                                 file," -mode accurate"," -outfile ",file.out))
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "t_coffee -infile ",
+                                                        file,
+                                                        " -mode accurate",
+                                                        " -outfile ",
+                                                        file.out
+                                                )
+                                        )
                                 } else {
-                                        
                                         # add additional parameters when running t_coffee
-                                        system(paste0("export PATH=$PATH:",path,"; ","t_coffee -infile ",
-                                                      file," ",params," -outfile ",file.out))
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "t_coffee -infile ",
+                                                        file,
+                                                        " ",
+                                                        params,
+                                                        " -outfile ",
+                                                        file.out
+                                                )
+                                        )
                                 }
                         }
-                
-                        if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
                         
-                },error = function(){ stop(paste0("Please check the correct path to ",tool,
-                                                   "... the interface call did not work properly.") )}
-                )
-                
-                if(get_aln){
+                        if (!quiet) {
+                                print(
+                                        paste0(
+                                                "Multiple Alignment successfully written in ",
+                                                file.out,
+                                                "."
+                                        )
+                                )
+                        }
                         
-                        tryCatch(
-                                {
-                                        aln <- Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
-                                        return(aln)
-                                }, error = function(e){stop("Something went wront with ",tool," .","\n",
-                                                             file.out, " could not be read properly.")}
+                }, error = function() {
+                        stop(
+                                paste0(
+                                        "Please check the correct path to ",
+                                        tool,
+                                        "... the interface call did not work properly."
+                                )
                         )
+                })
+                
+                if (get_aln) {
+                        tryCatch({
+                                aln <-
+                                        Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
+                                return(aln)
+                        }, error = function(e) {
+                                stop(
+                                        "Something went wront with ",
+                                        tool,
+                                        " .",
+                                        "\n",
+                                        file.out,
+                                        " could not be read properly."
+                                )
+                        })
                 }
         }
- 
-         if(tool == "muscle"){
-                 
-                 # test whether the connection to muscle works
-                 tryCatch(
-                 {        
-                          if(is.null(path)){
-                                  if(is.null(params)){
-                                          
-                                          # There is an error with pal2nal as muscle deletes * during alignment what results in 
-                                          # muscle: *** WARNING *** Invalid character '*' in FASTA sequence data, ignored
-                                          # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
-                                          
-                                          # use the default parameters when running muscle
-                                          # write output into clustalw format using the -clwstrict argument
-                                           system(paste0("muscle -in ",file," -out ",file.out, " -clwstrict"," -quiet"))
-                                           
-                                  } else {
-                                          
-                                          # add additional parameters when running muscle
-                                          # write output into clustalw format using the -clwstrict argument
-                                           system(paste0("muscle -in ",file," ",params," -out ",file.out))
-                                           
-                                  }
-                 
-                           } else {
-                                   if(is.null(params)){
-                                           
-                                           # use the default parameters when running muscle
-                                           # write output into clustalw format using the -clwstrict argument
-                                           system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
-                                                  file," -out ",file.out," -clwstrict"," -quiet"))
-                                           
-                                   } else {
-                                           
-                                           # add additional parameters when running muscle
-                                           # write output into clustalw format using the -clwstrict argument
-                                           system(paste0("export PATH=$PATH:",path,"; ","muscle -in ",
-                                                         file," ",params," -out ",file.out))
-                                           
-                                   }
-                         
-                           }
-                          
-                          if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-                 
-                 },error = function(e){ stop("Please check the correct path to ",tool,
-                                              "... the interface call did not work properly.") }
-                 )
-                
-                 if(get_aln){
-                         
-                         tryCatch(
-                                 {
-                                         aln <- Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
-                                         return(aln)
-                                         
-                                 }, error = function(e){stop("Something went wront with ",tool," .","\n",
-                                                             file.out, " could not be read properly.")}
-                         )
-                 }
-         }
- 
-         if(tool == "clustalo"){
-                 
-                 # test whether the connection to clustalo works
-                 tryCatch(
-                 {       
-                         if(is.null(path)){
-                                 
-                                 if(is.null(params)){
-                                                                                  
-                                         # use the default parameters when running clustalo
-                                         system(paste0("clustalo -i ",file," -o ",file.out," --outfmt clu --force"))
-                                 
-                                 } else {
-                                         
-                                         # add additional parameters when running clustalo
-                                         system(paste0("clustalo -i ",file," -o ",file.out," --force ",params))
-                                 }
-                 
-                         } else {
-                                 if(is.null(params)){
-                                         
-                                         # use the default parameters when running clustalo
-                                         system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                                file," -o ",file.out," --outfmt clustal --force"))
-                                 
-                                 } else {
-                                         
-                                         # add additional parameters when running clustalo
-                                         system(paste0("export PATH=$PATH:",path,"; ","clustalo -i ",
-                                                       file," -o ",file.out," --force ",params))
-                                         
-                                 }
-                         
-                        }
-                 
-                        if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-                        
-                 }, error = function(e){ stop("Please check the correct path to ",tool,
-                                              "... the interface call did not work properly.")}
-                 )
-                 
-                 if(get_aln){
-                         
-                         tryCatch(
-                                 {
-                                         aln <- Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
-                                         return(aln)
-                                         
-                         }, error = function(e){stop("Something went wront with ",tool," .","\n",
-                                                     file.out, " could not be read properly.")}
-                         )
-                 }
-         }
         
-        if(tool == "mafft"){
+        if (tool == "muscle") {
+                # test whether the connection to muscle works
+                tryCatch({
+                        if (is.null(path)) {
+                                if (is.null(params)) {
+                                        # There is an error with pal2nal as muscle deletes * during alignment what results in
+                                        # muscle: *** WARNING *** Invalid character '*' in FASTA sequence data, ignored
+                                        # pal2nal: #---  ERROR: inconsistency between the following pep and nuc seqs  ---#
+                                        
+                                        # use the default parameters when running muscle
+                                        # write output into clustalw format using the -clwstrict argument
+                                        system(
+                                                paste0(
+                                                        "muscle -in ",
+                                                        file,
+                                                        " -out ",
+                                                        file.out,
+                                                        " -clwstrict",
+                                                        " -quiet"
+                                                )
+                                        )
+                                        
+                                } else {
+                                        # add additional parameters when running muscle
+                                        # write output into clustalw format using the -clwstrict argument
+                                        system(
+                                                paste0(
+                                                        "muscle -in ",
+                                                        file,
+                                                        " ",
+                                                        params,
+                                                        " -out ",
+                                                        file.out
+                                                )
+                                        )
+                                        
+                                }
+                                
+                        } else {
+                                if (is.null(params)) {
+                                        # use the default parameters when running muscle
+                                        # write output into clustalw format using the -clwstrict argument
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "muscle -in ",
+                                                        file,
+                                                        " -out ",
+                                                        file.out,
+                                                        " -clwstrict",
+                                                        " -quiet"
+                                                )
+                                        )
+                                        
+                                } else {
+                                        # add additional parameters when running muscle
+                                        # write output into clustalw format using the -clwstrict argument
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "muscle -in ",
+                                                        file,
+                                                        " ",
+                                                        params,
+                                                        " -out ",
+                                                        file.out
+                                                )
+                                        )
+                                        
+                                }
+                                
+                        }
+                        
+                        if (!quiet) {
+                                print(
+                                        paste0(
+                                                "Multiple Alignment successfully written in ",
+                                                file.out,
+                                                "."
+                                        )
+                                )
+                        }
+                        
+                }, error = function(e) {
+                        stop(
+                                "Please check the correct path to ",
+                                tool,
+                                "... the interface call did not work properly."
+                        )
+                })
                 
+                if (get_aln) {
+                        tryCatch({
+                                aln <-
+                                        Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
+                                return(aln)
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "Something went wront with ",
+                                        tool,
+                                        " .",
+                                        "\n",
+                                        file.out,
+                                        " could not be read properly."
+                                )
+                        })
+                }
+        }
+        
+        if (tool == "clustalo") {
+                # test whether the connection to clustalo works
+                tryCatch({
+                        if (is.null(path)) {
+                                if (is.null(params)) {
+                                        # use the default parameters when running clustalo
+                                        system(
+                                                paste0(
+                                                        "clustalo -i ",
+                                                        file,
+                                                        " -o ",
+                                                        file.out,
+                                                        " --outfmt clu --force"
+                                                )
+                                        )
+                                        
+                                } else {
+                                        # add additional parameters when running clustalo
+                                        system(
+                                                paste0(
+                                                        "clustalo -i ",
+                                                        file,
+                                                        " -o ",
+                                                        file.out,
+                                                        " --force ",
+                                                        params
+                                                )
+                                        )
+                                }
+                                
+                        } else {
+                                if (is.null(params)) {
+                                        # use the default parameters when running clustalo
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "clustalo -i ",
+                                                        file,
+                                                        " -o ",
+                                                        file.out,
+                                                        " --outfmt clustal --force"
+                                                )
+                                        )
+                                        
+                                } else {
+                                        # add additional parameters when running clustalo
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "clustalo -i ",
+                                                        file,
+                                                        " -o ",
+                                                        file.out,
+                                                        " --force ",
+                                                        params
+                                                )
+                                        )
+                                        
+                                }
+                                
+                        }
+                        
+                        if (!quiet) {
+                                print(
+                                        paste0(
+                                                "Multiple Alignment successfully written in ",
+                                                file.out,
+                                                "."
+                                        )
+                                )
+                        }
+                        
+                }, error = function(e) {
+                        stop(
+                                "Please check the correct path to ",
+                                tool,
+                                "... the interface call did not work properly."
+                        )
+                })
+                
+                if (get_aln) {
+                        tryCatch({
+                                aln <-
+                                        Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
+                                return(aln)
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "Something went wront with ",
+                                        tool,
+                                        " .",
+                                        "\n",
+                                        file.out,
+                                        " could not be read properly."
+                                )
+                        })
+                }
+        }
+        
+        if (tool == "mafft") {
                 # test whether the connection to mafft works
-                tryCatch(
-                {
-                 if(is.null(path)){
-                
-                         # if no specific parameters are set,
-                         # then use the default parameters
-                         if(is.null(params)){
-                                
-                                # use the default parameters when running mafft
-                                system(paste0("mafft --quiet --anysymbol --clustalout ",file," >",file.out))
-                                
-                                # To avoid error with pal2nal when deleting * during multiple
-                                # alignment add --anysymbol
-                                # http://mbe.oxfordjournals.org/content/early/2013/02/08/molbev.mst010.full
-                                
-                         } else {
-                                
-                                # add additional parameters when running mafft
-                                system(paste0("mafft ",params," ",file," >",file.out))                                       
-                         }
-                } else {
-                
-                         # if no specific parameters are set,
-                         # then use the default parameters
-                         if(is.null(params)){
-                                
-                                # use the default parameters when running mafft
-                                system(
-                                        paste0("export PATH=$PATH:",path,"; ","mafft --quiet --anysymbol --clustalout ",
-                                               file," >",file.out)
-                                       )
-                         } else {
-                                
-                                # add additional parameters when running mafft
-                                system(
-                                        paste0("export PATH=$PATH:",path,"; ","mafft"," ",
-                                               params," ",file," >",file.out)
-                                )    
+                tryCatch({
+                        if (is.null(path)) {
+                                # if no specific parameters are set,
+                                # then use the default parameters
+                                if (is.null(params)) {
+                                        # use the default parameters when running mafft
+                                        system(
+                                                paste0(
+                                                        "mafft --quiet --anysymbol --clustalout ",
+                                                        file,
+                                                        " >",
+                                                        file.out
+                                                )
+                                        )
+                                        
+                                        # To avoid error with pal2nal when deleting * during multiple
+                                        # alignment add --anysymbol
+                                        # http://mbe.oxfordjournals.org/content/early/2013/02/08/molbev.mst010.full
+                                        
+                                } else {
+                                        # add additional parameters when running mafft
+                                        system(paste0(
+                                                "mafft ",
+                                                params,
+                                                " ",
+                                                file,
+                                                " >",
+                                                file.out
+                                        ))
+                                }
+                        } else {
+                                # if no specific parameters are set,
+                                # then use the default parameters
+                                if (is.null(params)) {
+                                        # use the default parameters when running mafft
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "mafft --quiet --anysymbol --clustalout ",
+                                                        file,
+                                                        " >",
+                                                        file.out
+                                                )
+                                        )
+                                } else {
+                                        # add additional parameters when running mafft
+                                        system(
+                                                paste0(
+                                                        "export PATH=$PATH:",
+                                                        path,
+                                                        "; ",
+                                                        "mafft",
+                                                        " ",
+                                                        params,
+                                                        " ",
+                                                        file,
+                                                        " >",
+                                                        file.out
+                                                )
+                                        )
+                                }
                         }
-                }
-                if(! quiet){print(paste0("Multiple Alignment successfully written in ",file.out,"."))}
-                
-               }, error = function(e){ stop("Please check the correct path to ",tool,
-                                   "... the interface call did not work properly.")}
-                )
-             
-               
-               ## LINUX ERROR 
-               #                  There is a problem in the configuration of your shell.
-               #                  Check the MAFFT_BINARIES environmental variable by
-               #                  $ echo $MAFFT_BINARIES
-               #                  This variable must be *unset*, unless you have installed MAFFT
-               #                  with a special configuration.  To unset this variable, type
-               #                  $ unset MAFFT_BINARIES or $ unsetenv MAFFT_BINARIES                  
-               #                  To keep this change permanently, edit setting files
-               #                  (.bash_profile, .profile, .cshrc, etc) in your home directory
-               #                  to delete the MAFFT_BINARIES line.
-               
-        
-                if(get_aln){
+                        if (!quiet) {
+                                print(
+                                        paste0(
+                                                "Multiple Alignment successfully written in ",
+                                                file.out,
+                                                "."
+                                        )
+                                )
+                        }
                         
-                        tryCatch(
-                                {
-                                        aln <- Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
-                                        
-                                        return(aln)
-                                        
-                                }, error = function(e){ stop("Something went wront with ",tool," .","\n",
-                                                              file.out, " could not be read properly.")}
+                }, error = function(e) {
+                        stop(
+                                "Please check the correct path to ",
+                                tool,
+                                "... the interface call did not work properly."
                         )
+                })
+                
+                
+                ## LINUX ERROR
+                #                  There is a problem in the configuration of your shell.
+                #                  Check the MAFFT_BINARIES environmental variable by
+                #                  $ echo $MAFFT_BINARIES
+                #                  This variable must be *unset*, unless you have installed MAFFT
+                #                  with a special configuration.  To unset this variable, type
+                #                  $ unset MAFFT_BINARIES or $ unsetenv MAFFT_BINARIES
+                #                  To keep this change permanently, edit setting files
+                #                  (.bash_profile, .profile, .cshrc, etc) in your home directory
+                #                  to delete the MAFFT_BINARIES line.
+                
+                
+                if (get_aln) {
+                        tryCatch({
+                                aln <-
+                                        Biostrings::readAAMultipleAlignment(file.out, format = "clustal")
+                                
+                                return(aln)
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "Something went wront with ",
+                                        tool,
+                                        " .",
+                                        "\n",
+                                        file.out,
+                                        " could not be read properly."
+                                )
+                        })
                 }
         }
         
-      if(clean_folders)
-          clean_all_folders(file.path(tempdir(),"_alignment"))
+        if (clean_folders)
+                clean_all_folders(file.path(tempdir(), "_alignment")
+                )
 }
 
 
