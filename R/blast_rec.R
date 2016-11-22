@@ -20,7 +20,7 @@
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #'  to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
-#' @author Hajk-Georg Drost and Sarah Scharfenberg
+#' @author Hajk-Georg Drost
 #' @details Given a set of protein sequences A and a different set of protein sequences B,
 #' first a best hit blast search is being performed from A to B: blast(A,B) and afterwards
 #' a best hit blast search is being performed from B to A: blast(B,A). Only protein sequences
@@ -129,16 +129,28 @@ blast_rec <- function(query_file,
                               clean_folders   = clean_folders,
                               save.output     = save.output )
         
-        data.table::setnames(orthoB, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
-        
-        tryCatch({       
-        
-        return ( dplyr::semi_join(dplyr::tbl_dt(orthoA), dplyr::tbl_dt(orthoB),
-                                  by = c("query_id","subject_id")) )
-        
-        
-        }, error = function(e){ stop("The BLAST tables resulting from ",query_file, " and ",
-                                   subject_file," could not be joined properly to select only the reciprocal best hits.")}
+        data.table::setnames(
+                orthoB,
+                old = c("query_id", "subject_id"),
+                new = c("subject_id", "query_id")
         )
+        
+        tryCatch({
+                return(dplyr::semi_join(
+                        dtplyr::tbl_dt(orthoA),
+                        dtplyr::tbl_dt(orthoB),
+                        by = c("query_id", "subject_id")
+                ))
+                
+                
+        }, error = function(e) {
+                stop(
+                        "The BLAST tables resulting from ",
+                        query_file,
+                        " and ",
+                        subject_file,
+                        " could not be joined properly to select only the reciprocal best hits."
+                )
+        })
 }
 
