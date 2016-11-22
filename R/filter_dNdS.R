@@ -29,8 +29,10 @@
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' 
-#' filter_dNdS( dNdS( query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                    subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' filter_dNdS( dNdS( query_file = 
+#'                    system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                    subject_file = 
+#'                    system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'                    ortho_detection = "RBH", 
 #'                    aa_aln_type = "pairwise",
 #'                    aa_aln_tool = "NW",
@@ -40,8 +42,10 @@
 #'              dnds.threshold = 2)
 #' 
 #' # a small example using clustalw
-#' filter_dNdS( dNdS( query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'                    subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#' filter_dNdS( dNdS( query_file      = 
+#'                    system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'                    subject_file    = 
+#'                    system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'                    ortho_detection = "RBH", 
 #'                    aa_aln_type     = "pairwise",
 #'                    aa_aln_tool     = "NW",
