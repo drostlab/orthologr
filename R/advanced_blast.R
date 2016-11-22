@@ -204,17 +204,26 @@ advanced_blast <- function(query_file,
                            clean_folders   = FALSE){
         
         # http://blast.ncbi.nlm.nih.gov/Blast.cgi
-        if(!is.element(blast_algorithm,c("blastp","blastn", "megablast",
-                                         "psiblast", "phiblast", "deltablast",
-                                         "blastx","tblastn","tblastx")))
-                stop("Please choose a valid BLAST mode.")
+        if (!is.element(
+                blast_algorithm,
+                c(
+                        "blastp",
+                        "blastn",
+                        "megablast",
+                        "psiblast",
+                        "phiblast",
+                        "deltablast",
+                        "blastx",
+                        "tblastn",
+                        "tblastx"
+                )
+        ))
+        stop("Please choose a valid BLAST mode.")
         
-        if(is.element(subject_file,c("nr","nt","plaza","cdd_delta"))){
-                
+        if (is.element(subject_file, c("nr", "nt", "plaza", "cdd_delta"))) {
                 use_ncbi_database <- TRUE
                 
         } else {
-                
                 use_ncbi_database <- FALSE
                 
         }
@@ -224,378 +233,613 @@ advanced_blast <- function(query_file,
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         aa <- geneids <- NULL
         
-        
-        if(use_ncbi_database){
+        if (use_ncbi_database) {
+                if ((subject_file == "nr") && (blast_algorithm == "blastp"))
+                        database <- "env_nr"
                 
-                if((subject_file == "nr") && (blast_algorithm == "blastp"))
-                        database <- "env_nr" 
+                if ((subject_file == "nt") &&
+                    (blast_algorithm == "blastn"))
+                        database <- "env_nt"
                 
-                if((subject_file == "nt") && (blast_algorithm == "blastn"))
-                        database <- "env_nt" 
+                if ((subject_file == "plaza") &&
+                    (blast_algorithm == "blastp"))
+                        database <- "plaza"
                 
-                if((subject_file == "plaza") && (blast_algorithm == "blastp"))
-                        database <- "plaza" 
+                if ((subject_file == "cdd_delta") &&
+                    (blast_algorithm == "deltablast"))
+                        database <- "cdd_delta"
                 
-                if((subject_file == "cdd_delta") && (blast_algorithm == "deltablast"))
-                        database <- "cdd_delta" 
-                
-#                 else {
-#                         
-#                         stop("Please specify subject_file and blast_algorithm accordingly .")
-#                 }
+                #                 else {
+                #
+                #                         stop("Please specify subject_file and blast_algorithm accordingly .")
+                #                 }
                 
         }
         
-        if(is.null(session_name))
+        if (is.null(session_name))
                 session_name <- get_filename(query_file)
         
-        # create an internal folder structure for the BLAST process 
-        input = paste0(session_name,"_blastinput.fasta") 
-        output = paste0(session_name,"_blastresult.csv")
+        # create an internal folder structure for the BLAST process
+        input = paste0(session_name, "_blastinput.fasta")
+        output = paste0(session_name, "_blastresult.csv")
         
         
-        if(!file.exists(file.path(tempdir(),"_blast_db"))){
-                
-                dir.create(file.path(tempdir(),"_blast_db"))
+        if (!file.exists(file.path(tempdir(), "_blast_db"))) {
+                dir.create(file.path(tempdir(), "_blast_db"))
         }
         
         # initialize the BLAST search
-        query.dt <- set_blast( file     = query_file, 
-                               format   = format, 
-                               seq_type = seq_type )[[1]]
+        query.dt <- set_blast(file     = query_file,
+                              format   = format,
+                              seq_type = seq_type)[[1]]
         
-        if(!is.null(db_path))
+        if (!is.null(db_path))
                 cdd_files <- list.files(db_path)
         
-        if(!use_ncbi_database){
-                
+        if (!use_ncbi_database) {
                 # make a BLASTable databse of the subject
-                database <- set_blast( file        = subject_file, 
-                                       format      = format, 
-                                       seq_type    = seq_type, 
-                                       makedb      = TRUE, 
-                                       makedb_type = makedb_type )[[2]]
+                database <- set_blast(
+                        file        = subject_file,
+                        format      = format,
+                        seq_type    = seq_type,
+                        makedb      = TRUE,
+                        makedb_type = makedb_type
+                )[[2]]
                 
-                filename <- unlist(strsplit(subject_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
+                filename <-
+                        unlist(
+                                strsplit(
+                                        subject_file,
+                                        .Platform$file.sep,
+                                        fixed = FALSE,
+                                        perl = TRUE,
+                                        useBytes = FALSE
+                                )
+                        )
                 filename <- filename[length(filename)]
-                dbname <- paste0("blastdb_",filename,"_protein.fasta")
+                dbname <-
+                        paste0("blastdb_", filename, "_protein.fasta")
                 
         }
         
         currwd <- getwd()
-        setwd(file.path(tempdir(),"_blast_db"))
+        setwd(file.path(tempdir(), "_blast_db"))
         
-
-        # write query fasta file 
-#         write_AA <- as.list(query.dt[ ,aa])
-#         name <- query.dt[ , geneids]      
+        
+        # write query fasta file
+        #         write_AA <- as.list(query.dt[ ,aa])
+        #         name <- query.dt[ , geneids]
         
         tryCatch({
+                seqinr::write.fasta(
+                        sequences = as.list(query.dt[, aa]),
+                        names     = query.dt[, geneids],
+                        nbchar    = 80,
+                        open      = "w",
+                        file.out  = input
+                )
                 
-                seqinr::write.fasta( sequences = as.list(query.dt[ ,aa]), 
-                                     names     = query.dt[ , geneids],
-                                     nbchar    = 80,
-                                     open      = "w",
-                                     file.out  = input )
+        }, error = function(e) {
+                stop(
+                        "File ",
+                        input,
+                        " could not be written properly to the internal folder environment.",
+                        "\n",
+                        "Please check: ",
+                        query_file,
+                        " and ",
+                        subject_file,
+                        "."
+                )
+        })
         
-        }, error = function(e){ stop("File ",input," could not be written properly to the internal folder environment.","\n",
-                                   "Please check: ",query_file, " and ",subject_file,".")}
-        )
-
-        if(is.null(path)){
-        
-        # here: http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
-        # in column -outfmt additional output columns can be selected: ' 6 qseqid sseqid staxids sskingdoms' .. or ' 6 std'
-        # which is the default value and the same as: ' 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore'
-        tryCatch(
-                {
-                        
-        if(taxonomy){
-                
-                if(!is.null(db_path)){
-                        
-                        file.copy(list.files(),db_path)
-                        
-                        setwd(db_path)
-                        
-                        system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                       " -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
-                        )
-                }
-                
-                if(is.null(db_path)){
-                        system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                       " -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
-                        )
-                }
-                
-                }
-                }, error = function(e){ stop(paste0("taxdb could not be included to the BLAST search.","\n",
-                                                   "Please check the validity of the path: ",db_path," .","\n",
-                                                   "Additionally, check the validity of: ",database,", ",input,
-                                                   ", ",output,", and blast_params: ",blast_params," ."))}
-        )
-
-        tryCatch(
-                {
-                        
-        if(!taxonomy){
-                
-                if(is.null(db_path)){
-                        
-                        system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                " -out ", output ," ",blast_params, 
-                                " -outfmt '6 qseqid sseqid pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
-                              )
+        if (is.null(path)) {
+                # here: http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+                # in column -outfmt additional output columns can be selected: ' 6 qseqid sseqid staxids sskingdoms' .. or ' 6 std'
+                # which is the default value and the same as: ' 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore'
+                tryCatch({
+                        if (taxonomy) {
+                                if (!is.null(db_path)) {
+                                        file.copy(list.files(), db_path)
+                                        
+                                        setwd(db_path)
+                                        
+                                        system(
+                                                paste0(
+                                                        blast_algorithm,
+                                                        " -db ",
+                                                        database,
+                                                        " -query ",
+                                                        input,
+                                                        " -out ",
+                                                        output ,
+                                                        " ",
+                                                        blast_params,
+                                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident
+                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                )
+                                                )
+                                }
                                 
-                
-                }
-                
-                if(!is.null(db_path)){
-                        
-                        file.copy(list.files(),db_path)
-                        
-                        setwd(db_path)
-                        
-                        system( paste0(blast_algorithm," -db ",database," -query ",input,
-                                       " -out ", output ," ",blast_params, 
-                                       " -outfmt '6 qseqid sseqid pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
-                              )
-                        
-                }
-                
-          }
-        }, error = function(e){stop("The advanced BLAST search did not work properly.","\n",
-                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
-        )
-
-       } else {
-        
-        tryCatch(
-                {
-                        
-        if(taxonomy){
-                
-                if(!is.null(db_path)){     
-                        
-                        file.copy(list.files(),db_path)
-                        
-                        setwd(db_path)
-                        
-                        system(
-                                paste0("export PATH=",path,"; ",blast_algorithm," -db ",
-                                       database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
+                                if (is.null(db_path)) {
+                                        system(
+                                                paste0(
+                                                        blast_algorithm,
+                                                        " -db ",
+                                                        database,
+                                                        " -query ",
+                                                        input,
+                                                        " -out ",
+                                                        output ,
+                                                        " ",
+                                                        blast_params,
+                                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident
+                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                )
+                                                )
+                                }
+                                
+                                }
+                        }, error = function(e) {
+                                stop(
+                                        paste0(
+                                                "taxdb could not be included to the BLAST search.",
+                                                "\n",
+                                                "Please check the validity of the path: ",
+                                                db_path,
+                                                " .",
+                                                "\n",
+                                                "Additionally, check the validity of: ",
+                                                database,
+                                                ", ",
+                                                input,
+                                                ", ",
+                                                output,
+                                                ", and blast_params: ",
+                                                blast_params,
+                                                " ."
+                                        )
                                 )
-                } 
-        
-                if(is.null(db_path)){
-                        
-                        if(!is.null(db_path)){
+                        })
+                
+                tryCatch({
+                        if (!taxonomy) {
+                                if (is.null(db_path)) {
+                                        system(
+                                                paste0(
+                                                        blast_algorithm,
+                                                        " -db ",
+                                                        database,
+                                                        " -query ",
+                                                        input,
+                                                        " -out ",
+                                                        output ,
+                                                        " ",
+                                                        blast_params,
+                                                        " -outfmt '6 qseqid sseqid pident nident
+                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                )
+                                                )
+                                        
+                                        
+                                }
                                 
-                                file.copy(list.files(),db_path)
+                                if (!is.null(db_path)) {
+                                        file.copy(list.files(), db_path)
+                                        
+                                        setwd(db_path)
+                                        
+                                        system(
+                                                paste0(
+                                                        blast_algorithm,
+                                                        " -db ",
+                                                        database,
+                                                        " -query ",
+                                                        input,
+                                                        " -out ",
+                                                        output ,
+                                                        " ",
+                                                        blast_params,
+                                                        " -outfmt '6 qseqid sseqid pident nident
+                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                )
+                                                )
+                                        
+                                }
                                 
-                                setwd(db_path)
-                                
-                                system(
-                                       paste0("export PATH=",path,"; ",blast_algorithm," -db ",
-                                       database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
+                        }
+                        }, error = function(e) {
+                                stop(
+                                        "The advanced BLAST search did not work properly.",
+                                        "\n",
+                                        "Please check the validity of: ",
+                                        database,
+                                        ", ",
+                                        input,
+                                        ", ",
+                                        output,
+                                        ", and blast_params: ",
+                                        blast_params,
+                                        " ."
                                 )
+                        })
+                
+                } else {
+                        tryCatch({
+                                if (taxonomy) {
+                                        if (!is.null(db_path)) {
+                                                file.copy(list.files(), db_path)
+                                                
+                                                setwd(db_path)
+                                                
+                                                system(
+                                                        paste0(
+                                                                "export PATH=",
+                                                                path,
+                                                                "; ",
+                                                                blast_algorithm,
+                                                                " -db ",
+                                                                database,
+                                                                " -query ",
+                                                                input,
+                                                                " -out ",
+                                                                output ,
+                                                                " ",
+                                                                blast_params,
+                                                                " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident
+                                                                length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                        )
+                                                        )
+                                        }
+                                        
+                                        if (is.null(db_path)) {
+                                                if (!is.null(db_path)) {
+                                                        file.copy(list.files(),
+                                                                  db_path)
+                                                        
+                                                        setwd(db_path)
+                                                        
+                                                        system(
+                                                                paste0(
+                                                                        "export PATH=",
+                                                                        path,
+                                                                        "; ",
+                                                                        blast_algorithm,
+                                                                        " -db ",
+                                                                        database,
+                                                                        " -query ",
+                                                                        input,
+                                                                        " -out ",
+                                                                        output ,
+                                                                        " ",
+                                                                        blast_params,
+                                                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident
+                                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                                )
+                                                                )
+                                                }
+                                                
+                                                if (is.null(db_path)) {
+                                                        system(
+                                                                paste0(
+                                                                        "export PATH=",
+                                                                        path,
+                                                                        "; ",
+                                                                        blast_algorithm,
+                                                                        " -db ",
+                                                                        database,
+                                                                        " -query ",
+                                                                        input,
+                                                                        " -out ",
+                                                                        output ,
+                                                                        " ",
+                                                                        blast_params,
+                                                                        " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident
+                                                                        length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                                )
+                                                                )
+                                                        
+                                                }
+                                                
+                                                }
+                                        
+                                        }
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "taxdb could not be included to the BLAST search.",
+                                        "\n",
+                                        "Please check the validity of the path: ",
+                                        db_path,
+                                        " .",
+                                        "\n",
+                                        "Additionally, check the validity of: ",
+                                        database,
+                                        ", ",
+                                        input,
+                                        ",
+                                        ",
+                                        output,
+                                        ", and blast_params: ",
+                                        blast_params,
+                                        " ."
+                                )
+                        })
+                        
+                        tryCatch({
+                                if (!taxonomy) {
+                                        if (!is.null(db_path)) {
+                                                file.copy(list.files(), db_path)
+                                                
+                                                setwd(db_path)
+                                                
+                                                system(
+                                                        paste0(
+                                                                "export PATH=$PATH:",
+                                                                path,
+                                                                "; ",
+                                                                blast_algorithm,
+                                                                " -db ",
+                                                                database,
+                                                                " -query ",
+                                                                input,
+                                                                " -out ",
+                                                                output ,
+                                                                " ",
+                                                                blast_params,
+                                                                " -outfmt '6 qseqid sseqid pident nident
+                                                                length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                        )
+                                                        )
+                                        }
+                                        
+                                        if (is.null(db_path)) {
+                                                system(
+                                                        paste0(
+                                                                "export PATH=$PATH:",
+                                                                path,
+                                                                "; ",
+                                                                blast_algorithm,
+                                                                " -db ",
+                                                                database,
+                                                                " -query ",
+                                                                input,
+                                                                " -out ",
+                                                                output ,
+                                                                " ",
+                                                                blast_params,
+                                                                " -outfmt '6 qseqid sseqid pident nident
+                                                                length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'"
+                                                        )
+                                                        )
+                                        }
+                                        
+                                        }
+                                
+                                }, error = function(e) {
+                                        stop(
+                                                "The advanced BLAST search did not work properly.",
+                                                "\n",
+                                                "Please check the validity of: ",
+                                                database,
+                                                ", ",
+                                                input,
+                                                ", ",
+                                                output,
+                                                ", and blast_params: ",
+                                                blast_params,
+                                                " ."
+                                        )
+                                })
+                        }
+        
+        if (!write.only) {
+                # default parameters that are not returned in the hit table
+                # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+                non_returned_params <-
+                        vector(mode = "character", length = 24)
+                non_returned_params <-
+                        c(
+                                "db",
+                                "query_loc",
+                                "outfm",
+                                "out",
+                                "subject",
+                                "subject_loc",
+                                "show_gis",
+                                "num_descriptions",
+                                "num_alignments",
+                                "max_target_seqs",
+                                "html",
+                                "gilist",
+                                "negative_gilist",
+                                "entrez_query",
+                                "culling_limit",
+                                "best_hit_overhang",
+                                "best_hit_score_edge",
+                                "dbsize",
+                                "searchsp",
+                                "import_search_strategy",
+                                "export_search_strategy",
+                                "parse_deflines",
+                                "num_threads",
+                                "remote"
+                        )
+                
+                split_params <- unlist(strsplit(blast_params, " "))
+                param_names <-
+                        split_params[sapply(split_params,
+                                            grepl,
+                                            pattern = "-[a-zA-Z]",
+                                            perl = TRUE)]
+                param_names <-
+                        stringr::str_replace(param_names,
+                                             pattern = "-",
+                                             replacement = "")
+                
+                default_params <- vector(mode = "character")
+                default_params <-
+                        c(
+                                "query_id",
+                                "subject_id",
+                                "subject_taxonomy",
+                                "subject_kingdom",
+                                "perc_identity",
+                                "num_ident_matches",
+                                "alig_length",
+                                "mismatches",
+                                "gap_openings",
+                                "n_gaps",
+                                "pos_match",
+                                "ppos",
+                                "q_start",
+                                "q_end",
+                                "q_len",
+                                "qcov",
+                                "qcovhsp",
+                                "query_seq",
+                                "s_start",
+                                "s_end",
+                                "s_len",
+                                "subject_seq",
+                                "evalue",
+                                "bit_score",
+                                "score_raw"
+                        )
+                
+                
+                if (!taxonomy)
+                        default_params <-
+                        default_params[!((default_params == "subject_taxonomy") |
+                                                 (default_params == "subject_kingdom")
+                        )]
+                
+                
+                additional_params <-
+                        param_names[(!is.element(param_names, default_params)) &
+                                            (!is.element(param_names, non_returned_params))]
+                
+                colNames <- c(default_params, additional_params)
+                
+                # define the colClasses for faster file streaming
+                if (taxonomy)
+                        col_Classes <-
+                        c(
+                                rep("character", 4),
+                                rep("numeric", 13),
+                                "character",
+                                rep("numeric", 3),
+                                rep("character", 1),
+                                rep("numeric", 3)
+                        )
+                
+                if (!taxonomy)
+                        col_Classes <-
+                        c(
+                                rep("character", 2),
+                                rep("numeric", 13),
+                                "character",
+                                rep("numeric", 3),
+                                rep("character", 1),
+                                rep("numeric", 3)
+                        )
+                
+                
+                tryCatch({
+                        if (!sql_database) {
+                                hit_table <- data.table::fread(
+                                        input      = output,
+                                        sep        = "\t",
+                                        header     = FALSE,
+                                        colClasses = col_Classes
+                                )
+                                
+                                data.table::setnames(hit_table,
+                                                     old = paste0("V", 1:length(colNames)),
+                                                     new = colNames)
+                                
+                                data.table::setkeyv(hit_table,
+                                                    c("query_id", "subject_id"))
+                                
+                                all.files <- list.files()
+                                
+                                if (!is.null(db_path))
+                                        unlink(all.files[-which(is.element(all.files, cdd_files))])
+                                
+                                # return to the global working directory
+                                setwd(file.path(currwd))
+                                
+                                if (clean_folders)
+                                        clean_all_folders(file.path(tempdir(), "_blast_db"))
+                                
+                                return(hit_table)
+                                
                         }
                         
-                        if(is.null(db_path)){
-                         
-                                system(
-                                        paste0("export PATH=",path,"; ",blast_algorithm," -db ",
-                                               database," -query ",input," -out ", output ," ",blast_params,
-                                               " -outfmt '6 qseqid sseqid staxids sskingdoms pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
+                        if (sql_database) {
+                                blast_sql_db <-
+                                        dplyr::src_sqlite("blast_sql_db.sqlite3", create = TRUE)
+                                
+                                connect_db <-
+                                        DBI::dbConnect(RSQLite::SQLite(), dbname = "blast_sql_db.sqlite3")
+                                
+                                
+                                DBI::dbWriteTable(
+                                        connect_db,
+                                        name      = "hit_tbl",
+                                        value     = output,
+                                        row.names = FALSE,
+                                        header    = FALSE,
+                                        sep       = "\t",
+                                        overwrite = TRUE
                                 )
+                                
+                                on.exit({
+                                        DBI::dbDisconnect(connect_db)
+                                        
+                                })
+                                
+                                blast_sqlite <-
+                                        dplyr::tbl(dplyr::src_sqlite("blast_sql_db.sqlite3"),
+                                                   "hit_tbl")
+                                
+                                #               dplyr::rename(blast_sqlite,)
+                                
+                                # return to the global working directory
+                                setwd(file.path(currwd))
+                                
+                                if (clean_folders) {
+                                        warnings(
+                                                "Are you sure you want to clean all folders? The SQLite database
+                                                you want to connect with will be deleted as well."
+                                        )
+                                        clean_all_folders(file.path(tempdir(), "_blast_db"))
+                                        
+                                        cat("\n")
+                                        warnings("Database has been deleted.")
+                                }
+                                
+                                return(blast_sqlite)
                                 
                         }
                         
-                }
-                
-                }
-        
-        }, error = function(e){stop("taxdb could not be included to the BLAST search.","\n",
-                                          "Please check the validity of the path: ",db_path," .","\n",
-                                          "Additionally, check the validity of: ",database,", ",input,",
-                                          ",output,", and blast_params: ",blast_params," .")}
-        )
-
-        tryCatch(
-                {
                         
-        if(!taxonomy){
-                
-                if(!is.null(db_path)){
-                        
-                        file.copy(list.files(),db_path)
-                        
-                        setwd(db_path)
-                        
-                        system(
-                               paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
-                               database," -query ",input," -out ", output ," ",blast_params,
-                               " -outfmt '6 qseqid sseqid pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
+                }, error = function(e) {
+                        stop(
+                                "File ",
+                                output,
+                                " could not be read properly, please check whether BLAST ",
+                                "correctly wrote a resulting BLAST hit table to ",
+                                output,
+                                " ."
                         )
-                }
-                
-                if(is.null(db_path)){
-                 
-                        system(
-                                paste0("export PATH=$PATH:",path,"; ",blast_algorithm," -db ",
-                                       database," -query ",input," -out ", output ," ",blast_params,
-                                       " -outfmt '6 qseqid sseqid pident nident 
-                                       length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp qseq sstart send slen sseq evalue bitscore score'")
-                        )  
-                }
-                
-        }
-        
-        }, error = function(e){stop("The advanced BLAST search did not work properly.","\n",
-                                  "Please check the validity of: ",database,", ",input,", ",output,", and blast_params: ",blast_params," .")}
-       )
-       }
-
-       if(!write.only){
-        
-        # default parameters that are not returned in the hit table
-        # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
-        non_returned_params <- vector(mode = "character", length = 24)
-        non_returned_params <- c("db","query_loc","outfm","out","subject","subject_loc",
-                                 "show_gis","num_descriptions","num_alignments","max_target_seqs",
-                                 "html","gilist","negative_gilist","entrez_query","culling_limit",
-                                 "best_hit_overhang","best_hit_score_edge","dbsize","searchsp",
-                                 "import_search_strategy","export_search_strategy","parse_deflines",
-                                 "num_threads","remote")
-        
-        split_params <- unlist(strsplit(blast_params," "))
-        param_names <- split_params[sapply(split_params,grepl,pattern="-[a-zA-Z]",perl = TRUE)]  
-        param_names <- stringr::str_replace(param_names, pattern = "-", replacement = "")
-        
-        default_params <- vector(mode = "character")
-        default_params <- c("query_id","subject_id","subject_taxonomy","subject_kingdom", "perc_identity",
-                            "num_ident_matches","alig_length","mismatches", "gap_openings","n_gaps","pos_match",
-                             "ppos", "q_start", "q_end","q_len","qcov","qcovhsp","query_seq","s_start","s_end",
-                            "s_len","subject_seq","evalue","bit_score","score_raw")
-        
-        
-        if(!taxonomy)
-                default_params <- default_params[!((default_params == "subject_taxonomy") | (default_params == "subject_kingdom"))]
-        
-        
-        additional_params <- param_names[(!is.element(param_names,default_params)) & (!is.element(param_names,non_returned_params))]
-        
-        colNames <- c(default_params,additional_params)
-        
-        # define the colClasses for faster file streaming
-        if(taxonomy)
-                col_Classes <- c(rep("character",4), rep("numeric",13),
-                                 "character",rep("numeric",3),rep("character",1),
-                                 rep("numeric",3))
-        
-        if(!taxonomy)
-                col_Classes <- c(rep("character",2), rep("numeric",13),
-                                 "character",rep("numeric",3),rep("character",1),
-                                 rep("numeric",3))
-        
-        
-        tryCatch(
-                {
-                        
-        if(!sql_database){
-                
-                hit_table <- data.table::fread(input      = output, 
-                                               sep        = "\t", 
-                                               header     = FALSE,
-                                               colClasses = col_Classes)
-                
-                data.table::setnames(hit_table, old = paste0("V",1:length(colNames)),
-                                     new = colNames)
-                
-                data.table::setkeyv(hit_table, c("query_id","subject_id"))
-                
-                all.files <- list.files()
-                
-                if(!is.null(db_path))
-                        unlink(all.files[-which(is.element(all.files,cdd_files))])
-                
-                # return to the global working directory
-                setwd(file.path(currwd))
-                
-                if(clean_folders)
-                        clean_all_folders(file.path(tempdir(),"_blast_db"))
-                
-                return(hit_table) 
-                
-        }
-        
-        if(sql_database){
-                
-                
-                blast_sql_db <- dplyr::src_sqlite("blast_sql_db.sqlite3", create = TRUE)
-                
-                connect_db <- DBI::dbConnect(RSQLite::SQLite(), dbname = "blast_sql_db.sqlite3")
-                
-                
-                DBI::dbWriteTable(connect_db, 
-                                  name      = "hit_tbl",
-                                  value     = output,
-                                  row.names = FALSE,
-                                  header    = FALSE, 
-                                  sep       = "\t", 
-                                  overwrite = TRUE)
-                
-                on.exit({
-                        
-                        DBI::dbDisconnect(connect_db)
-                        
                 })
-                
-                blast_sqlite <- dplyr::tbl(dplyr::src_sqlite("blast_sql_db.sqlite3"),"hit_tbl")
-                
-#               dplyr::rename(blast_sqlite,)
-
-                # return to the global working directory
-                setwd(file.path(currwd))
-                
-                if(clean_folders){
-                        
-                        warnings("Are you sure you want to clean all folders? The SQLite database
-                                 you want to connect with will be deleted as well.")
-                        clean_all_folders(file.path(tempdir(),"_blast_db"))
-                        
-                        cat("\n")
-                        warnings("Database has been deleted.")
-                }
-                
-                return(blast_sqlite)
-                
         }
         
-        
-        }, error = function(e){ stop("File ",output," could not be read properly, please check whether BLAST ",
-                                   "correctly wrote a resulting BLAST hit table to ",output," .")}
-        )
-} 
-
-if(write.only){
-        
-        stop("Not implemented yet.")
-        
-}
+        if (write.only) {
+                stop("Not implemented yet.")
+                
+        }
 
 
 }
