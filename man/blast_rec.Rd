@@ -101,7 +101,7 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 
 }
 \author{
-Hajk-Georg Drost and Sarah Scharfenberg
+Hajk-Georg Drost
 }
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
