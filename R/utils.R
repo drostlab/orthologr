@@ -65,11 +65,11 @@ is.codon_aln_tool <- function(tool = NULL){
 is.dnds_est_method <- function(method = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator 1.2 program
-        kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","kaks_calc")
+        kaks_calc_methods <- c("MA","MS","NG","LWL","LPB","MLWL","YN","MYN","GY","GMYN","ALL","kaks_calc")
         
         provided <- c("Comeron","Li",kaks_calc_methods)
         
-        if(is.null(method)){
+        if (is.null(method)){
                 print("The followig methods are provided: ")
                 print(provided)
                 return(FALSE)
@@ -82,7 +82,7 @@ is.alignment_search_tool <- function(tool = NULL){
         
         provided <-  c("ggsearch","ssearch")
         
-        if(is.null(tool)){
+        if (is.null(tool)){
                 print("The followig methods are provided: ")
                 print(provided)
                 return(FALSE)
