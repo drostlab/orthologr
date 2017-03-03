@@ -287,8 +287,8 @@ E.g.
 # download KaKs_Calculator
 wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/kaks-calculator/KaKs_Calculator1.2.tar.gz
 # unzip
-gzip –d KaKs_Calculator1.2.tar.gz
-tar –xf KaKs_Calculator1.2.tar
+gzip -d KaKs_Calculator1.2.tar.gz
+tar -xf KaKs_Calculator1.2.tar
 # install
 cd KaKs_Calculator1.2/src
 sudo make
