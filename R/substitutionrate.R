@@ -131,7 +131,9 @@ substitutionrate <- function(file,
                   "YN",
                   "MYN",
                   "GY",
-                  "kaks_calc")
+                  "GMYN",
+                  "kaks_calc",
+                  "ALL")
         
         if (!is.dnds_est_method(est.method))
                 stop("Please choose a dNdS estimation method that is supported by this function.")
@@ -331,7 +333,7 @@ substitutionrate <- function(file,
                                 KaKs_Calculator <- paste0(kaks_calc_path, f_sep, calc)
                         
                         
-                        if (is.null(kaks_calc.params))
+                        if (is.null(kaks_calc.params)) {
                                 system(paste0(
                                         KaKs_Calculator,
                                         " -i ",
@@ -344,13 +346,14 @@ substitutionrate <- function(file,
                                         file.path(
                                                 tempdir(),
                                                 "_calculation",
-                                                paste0(file_name, ".axt.kaks"),
+                                                paste0(file_name, ".axt.kaks")),
                                                 " -m ",
                                                 est.method
-                                        )
-                                ))
+                                        ))
+                        }
+                                
                         
-                        if (!is.null(kaks_calc.params))
+                        if (!is.null(kaks_calc.params)) {
                                 system(paste0(
                                         KaKs_Calculator,
                                         " -i ",
@@ -363,11 +366,12 @@ substitutionrate <- function(file,
                                         file.path(
                                                 tempdir(),
                                                 "_calculation",
-                                                paste0(file_name, ".axt.kaks"),
+                                                paste0(file_name, ".axt.kaks")),
                                                 " ",
                                                 kaks_calc.params
-                                        )
-                                ))
+                                        ))
+                        }
+                                
                         
                 }, error = function(e) {
                         stop(
@@ -386,18 +390,18 @@ substitutionrate <- function(file,
                                         sep = "\t",
                                         header = TRUE
                                 )
-                        kaks_tbl_res <- kaks_tbl[, 1:5]
+                        kaks_tbl_res <- kaks_tbl[ , 1:5]
                         kaks_tbl_res <-
                                 data.frame(
-                                        sapply(kaks_tbl_res[, 1], function(x)
+                                        sapply(kaks_tbl_res[ , 1], function(x)
                                                 unlist(
                                                         strsplit(as.character(x), "-")
                                                 )[1]),
-                                        sapply(kaks_tbl_res[, 1], function(x)
+                                        sapply(kaks_tbl_res[ , 1], function(x)
                                                 unlist(
                                                         strsplit(as.character(x), "-")
                                                 )[2]) ,
-                                        kaks_tbl_res[, c(3:5, 2)]
+                                        kaks_tbl_res[ , c(3:5, 2)]
                                 )
                         
                         names(kaks_tbl_res) <-
