@@ -59,10 +59,10 @@ For example for Linux systems open the `Terminal` application and run (Thanks to
 
 ```
 # download BLAST+ version 2.2.31
-wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.2.31+-x64-linux.tar.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.31/ncbi-blast-2.2.31+-x64-linux.tar.gz
 
 # extract the compiled version of BLAST
-tar zxvpf ncbi-blast+2.2.29-x64-linux.tar.gz
+tar zxvpf ncbi-blast+2.2.31+-x64-linux.tar.gz
 
 # copy BLAST files to `usr/local/bin`
 cp ncbi-blast-2.2.31+/bin/* usr/local/bin
@@ -113,8 +113,8 @@ system("blastp -version")
 ```
 
 ```
-blastp: 2.2.30+
-Package: blast 2.2.30, build Oct 27 2014 17:10:51
+blastp: 2.2.31+
+Package: blast 2.2.31, build Oct 27 2014 17:10:51
 ```
 
 __You should see this output if BLAST was installed correctly.__
@@ -277,3 +277,24 @@ the following dNdS Estimation Methods are available in `orthologr`:
 
 For this purpose you need to have __KaKs_Calculator__ installed on your system and executable from your default `PATH`, e,g, `/usr/local/bin/`.
 
+### Install KaKs_Calculator (For Linux/Unix/OS)
+
+Please go to the [KaKs_Calculator homepage](https://code.google.com/archive/p/kaks-calculator/downloads) and download KaKs_Calculator.
+
+E.g.
+
+```shell
+# download KaKs_Calculator
+wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/kaks-calculator/KaKs_Calculator1.2.tar.gz
+# unzip
+gzip –d KaKs_Calculator1.2.tar.gz
+tar –xf KaKs_Calculator1.2.tar
+# install
+cd KaKs_Calculator1.2/src
+sudo make
+sudo cp KaKs_Calculator /usr/local/bin/
+```
+
+Now you should be able to run KaKs_Calculator via `KaKs_Calculator -h` in your bash or as `system("KaKs_Calculator -h")` in R.
+
+The most recent version `KaKs_Calculator2.0` can be found [here](https://sourceforge.net/projects/kakscalculator2/). 
