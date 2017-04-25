@@ -1,8 +1,6 @@
 orthologr
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
-
 ## Comparative Genomics with R
 
 The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform comparative genomics studies with R and implements R wrapper functions to the most important and most popular genomics and comparative genomics tools.
@@ -30,43 +28,14 @@ Learn `orthologr` by reading these tutorials:
 - [Perform Divergence Stratigraphy](https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd)
 
 
-## Installation Guide
-
-Before you can load and install `orthologr` you need to install the following packages from [Bioconductor](http://www.bioconductor.org/):
-
+## Install
 
 ```r
-# install all Bioconductor packages orthologr depends on
-
-# install Bioconductor base packages
+# first install the devtools package 
+install.packages("devtools")
+# install orthologr on your system
 source("http://bioconductor.org/biocLite.R")
-biocLite()
-
-# install package: Biostrings
-biocLite("Biostrings")
-
-# install package: S4Vectors
-biocLite("S4Vectors")
-
-# install package: XVector
-biocLite("XVector")
-
-```
-
-Users might be asked during the installation process of `Biostrings`, `S4Vectors`, and `IRanges` whether or not they would like to update all package dependencies of the corresponding packages.
-Please type `a` specifying that all package dependencies of the corresponding packages shall be updated. This is important for the sufficient functionality of `orthologr`.
-
-### On Unix Based Systems
-
-Now users can use the `devtools` package to install `orthologr` from GitHub.
-
-```r
-# install.packages("devtools")
-
-# install the current version of orthologr on your system
-library(devtools)
-install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
-
+biocLite("HajkD/orthologr")
 ```
 
 ### On Windows Systems
