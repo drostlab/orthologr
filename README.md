@@ -1,6 +1,8 @@
 orthologr
 =========
 
+[![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
+
 ## Comparative Genomics with R
 
 The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform comparative genomics studies with R and implements R wrapper functions to the most important and most popular genomics and comparative genomics tools.
