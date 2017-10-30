@@ -308,7 +308,7 @@ multi_aln <- function(file,
                                 tempdir(),
                                 "_alignment",
                                 "multi_aln",
-                                paste0(basename(file), "_", multi_aln_name, "_", tool, ".aln")
+                                paste0(multi_aln_name, "_", tool, ".aln")
                         )
         }
         
