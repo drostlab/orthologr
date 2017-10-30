@@ -1,7 +1,7 @@
 Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
-Version: 0.0.2
+Version: 0.0.3
 Date: 2016-03-10
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
@@ -38,4 +38,4 @@ Suggests:
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
