@@ -19,6 +19,7 @@ Depends:
     data.table (>= 1.9.4)
 Imports:
     seqinr,
+    biomartr,
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
     doParallel (>= 1.0.8),
