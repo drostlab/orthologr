@@ -334,7 +334,7 @@ multi_aln <- function(file,
                         call_clustalw <- "clustalw2"
                 
                 if (operating_sys == "Linux")
-                        call_clustalw <- "clustalw"
+                        call_clustalw <- "clustalw2"
                 
                 if (operating_sys == "Windows")
                         call_clustalw <- "clustalw2.exe"
