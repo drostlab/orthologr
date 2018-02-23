@@ -582,7 +582,7 @@ The examples shown above shall demonstrate the use cases that can be performed u
 Another useful analysis can be to take the length of the initial query genes
 into account using the `nchar()` function:
 
-``````{r,eval=FALSE}
+```{r,eval=FALSE}
 # show the length distribution of all genes
 # stored in "Ath.cds"
 Ath.cds[ , nchar(seqs)]
@@ -597,7 +597,7 @@ Ath.cds[ , nchar(seqs)]
 
 Or the length of a specific gene:
 
-``````{r,eval=FALSE}
+```{r,eval=FALSE}
 
 Ath.cds["AT1G01070.1" , nchar(seqs)]
 
