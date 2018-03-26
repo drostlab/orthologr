@@ -64,9 +64,8 @@ map.generator <- function(query_file,
                 stop("your subject.folder ", subjects.folder, " is empty...")
         
         # initialize progress bar
-        if (progress.bar)
-                pb   <-
-                        utils::txtProgressBar(1, length(subj.files), style = 3)
+        if (progress.bar & (length(subj.files) > 1))
+                pb <- utils::txtProgressBar(1, length(subj.files), style = 3)
         
         for (i in 1:length(subj.files)) {
                 # compute pairwise KaKs/divergence maps between query and all subject files
