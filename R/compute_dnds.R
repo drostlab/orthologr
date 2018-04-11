@@ -260,9 +260,8 @@ compute_dnds <- function(complete_tbl,
                 clust <- parallel::makeCluster(comp_cores)
                 
                 ### Perform the sampling process in parallel
-                dNdS_values <-
-                        parallel::parLapply(clust, seq_len(nrow(complete_tbl)), function(i) {
-                                
+                dNdS_values <- parallel::parLapply(clust, seq_len(nrow(complete_tbl)), function(i) {
+                               
                                 # storing the query gene id and subject gene id of the orthologous gene pair
                                 orthologs_names <-
                                         list(complete_tbl[i , query_id], complete_tbl[i, subject_id])
@@ -277,6 +276,8 @@ compute_dnds <- function(complete_tbl,
                                 
                                 #aa_aln_name <- paste0("query_",i,"___","subject_",i)
                                 aa_aln_name <- paste0("q", i)
+                                
+                                message("Processing species '", aa_aln_name, "' ...")
                                 
                                 # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
                                 cds_session_fasta <-
