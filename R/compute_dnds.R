@@ -257,11 +257,17 @@ compute_dnds <- function(complete_tbl,
         if (multicore) {
                 ### Parallellizing the sampling process using the 'doParallel' and 'parallel' package
                 ### register all given cores for parallelization
-                clust <- parallel::makeCluster(comp_cores)
+                # par_cores <- parallel::makeForkCluster(comp_cores)
+                doParallel::registerDoParallel(comp_cores)
                 
                 ### Perform the sampling process in parallel
-                dNdS_values <- parallel::parLapply(clust, seq_len(nrow(complete_tbl)), function(i) {
-                               
+                dNdS_values <-
+                        foreach::foreach(
+                                i              = 1:nrow(complete_tbl),
+                                .combine       = "rbind",
+                                .packages      = c("seqinr", "data.table"),
+                                .errorhandling = "stop"
+                        ) %dopar% {
                                 # storing the query gene id and subject gene id of the orthologous gene pair
                                 orthologs_names <-
                                         list(complete_tbl[i , query_id], complete_tbl[i, subject_id])
@@ -276,8 +282,6 @@ compute_dnds <- function(complete_tbl,
                                 
                                 #aa_aln_name <- paste0("query_",i,"___","subject_",i)
                                 aa_aln_name <- paste0("q", i)
-                                
-                                message("Processing species '", aa_aln_name, "' ...")
                                 
                                 # create cds fasta of orthologous gene pair having session name: 'aa_aln_name'
                                 cds_session_fasta <-
@@ -407,13 +411,17 @@ compute_dnds <- function(complete_tbl,
                                 # return(res)
                                 return(dNdS.table)
 
-                        })
+                        }
                 
-                parallel::stopCluster(clust)
+                parallel::stopCluster(par_cores)
         }
         
         
-        dNdS_tbl <- data.table::as.data.table(do.call(rbind, dNdS_values))
+        if (!multicore)
+                dNdS_tbl <- data.table::as.data.table(do.call(rbind, dNdS_values))
+        
+        if (multicore)
+                dNdS_tbl <- data.table::as.data.table(dNdS_values)
         
         setkeyv(dNdS_tbl, c("query_id", "subject_id"))
         
