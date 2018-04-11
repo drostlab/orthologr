@@ -257,8 +257,8 @@ compute_dnds <- function(complete_tbl,
         if (multicore) {
                 ### Parallellizing the sampling process using the 'doParallel' and 'parallel' package
                 ### register all given cores for parallelization
-                # par_cores <- parallel::makeForkCluster(comp_cores)
-                doParallel::registerDoParallel(comp_cores)
+                par_cores <- parallel::makeForkCluster(comp_cores)
+                doParallel::registerDoParallel(par_cores)
                 
                 ### Perform the sampling process in parallel
                 dNdS_values <-
@@ -413,7 +413,7 @@ compute_dnds <- function(complete_tbl,
 
                         }
                 
-                parallel::stopCluster(comp_cores)
+                parallel::stopCluster(par_cores)
         }
         
         
