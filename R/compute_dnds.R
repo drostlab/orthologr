@@ -413,7 +413,7 @@ compute_dnds <- function(complete_tbl,
 
                         }
                 
-                parallel::stopCluster(par_cores)
+                parallel::stopCluster(comp_cores)
         }
         
         
