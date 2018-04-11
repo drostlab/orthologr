@@ -7,16 +7,28 @@ orthologr
 
 The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform comparative genomics studies with R and implements R wrapper functions to the most important and most popular genomics and comparative genomics tools.
 
-In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) with R.
+In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) __between entire genomes__ with R.
 
-In future versions we will include a vast range of analytics functions to perform state-of-the art and cutting edge comparative genomics studies.
+The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
+for all orthologous genes between two __entire genomes__.
+
 
 ### Citation
 
 **Please cite the following paper when using `orthologr` for your own research. This will allow me to continue
 working on this software tool and will motivate me to extend its functionality and usability. Many thanks in advance :)**
 
-> Drost HG, Gabel A, Grosse I, Quint M. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
+> Drost et al. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
+
+## Install 
+
+```r
+# first install the devtools package 
+install.packages("devtools")
+# install orthologr on your system
+source("http://bioconductor.org/biocLite.R")
+biocLite("HajkD/orthologr")
+```
 
 ## Use Cases
 
@@ -32,6 +44,7 @@ Learn `orthologr` by reading these tutorials:
 
 ## Example
 
+### Small example with internal dataset
 ```r
 library(orthologr)
 
@@ -77,15 +90,33 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 20: AT1G01220.1 470155|PACid:16047984 0.015690 0.1533 0.10230
 ```
 
-## Install
+### Example: Computing dN/dS values for all orthologous genes between two genomes
+
+First, users can retrieve all coding sequences from entire genomes using the [biomartr](https://github.com/ropensci/biomartr) package ([see details here](https://github.com/ropensci/biomartr/blob/master/vignettes/Sequence_Retrieval.Rmd#cds-retrieval)).
 
 ```r
-# first install the devtools package 
-install.packages("devtools")
-# install orthologr on your system
-source("http://bioconductor.org/biocLite.R")
-biocLite("HajkD/orthologr")
+install.packages("biomartr")
+library(biomartr)
+# download all coding sequences for Mus musculus
+Mmusculus_file <- biomartr::getCDS(organism = "Mus musculus", path = getwd())
+# download all coding sequences for Homo sapiens
+Hsapiens_file <- biomartr::getCDS(organism = "Homo sapiens", path = getwd())
+# compute dN/dS values for Homo sapiens versus Mus musculus
+Hs_vs_Mm_dNdS <- 
+  dNdS(query_file      = Hsapiens_file,
+       subject_file    = Mmusculus_file,
+       ortho_detection = "RBH", 
+       aa_aln_type     = "pairwise",
+       aa_aln_tool     = "NW", 
+       codon_aln_tool  = "pal2nal", 
+       dnds_est.method = "Comeron", 
+       comp_cores      = 1 )
+# store result in Excel readable csv file
+install.packages("readr")
+readr::write_excel_csv(Hs_vs_Mm_dNdS, "Hs_vs_Mm_dNdS.csv")
 ```
+
+__This way, users can compute dN/dS values for any pairwise genome comparison.__
 
 ### On Windows Systems
 
