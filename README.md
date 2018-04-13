@@ -13,6 +13,8 @@ The most useful implementation in `orthologr` is the ability to compute synonymo
 for all orthologous genes between two __entire genomes__.
 
 
+### A collection of pre-computed `dNdS maps` can be found at https://github.com/HajkD/dNdS_database
+
 ### Citation
 
 **Please cite the following paper when using `orthologr` for your own research. This will allow me to continue
@@ -115,6 +117,8 @@ Hs_vs_Mm_dNdS <-
 install.packages("readr")
 readr::write_excel_csv(Hs_vs_Mm_dNdS, "Hs_vs_Mm_dNdS.csv")
 ```
+
+Users can find the corresponding map at https://github.com/HajkD/dNdS_database.
 
 __This way, users can compute dN/dS values for any pairwise genome comparison.__
 
