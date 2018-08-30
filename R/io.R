@@ -119,7 +119,7 @@ read.proteome <- function(file, format, ...){
 #' sequence as string in the second column.
 #' @export
 
-read.cds <- function(file, format, delete_corrupt = TRUE, ...){
+read.cds <- function(file, format, delete_corrupt = FALSE, ...){
         
         if(!is.element(format,c("fasta","fastq")))
                 stop("Please choose a file format that is supported by this function.")
