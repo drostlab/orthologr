@@ -10,6 +10,7 @@
 #' Default is \code{format} = \code{"fasta"}.
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. 
 #' \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"} .
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
@@ -104,6 +105,7 @@ blast_best <- function(query_file,
                        seq_type        = "cds",
                        format          = "fasta", 
                        blast_algorithm = "blastp", 
+                       delete_corrupt_cds = TRUE,
                        eval            = "1E-5",
                        path            = NULL, 
                        comp_cores      = 1,
@@ -128,6 +130,7 @@ blast_best <- function(query_file,
                              subject_file    = subject_file,
                              eval            = eval,
                              max.target.seqs = 1,
+                             delete_corrupt_cds = delete_corrupt_cds,
                              seq_type        = seq_type,
                              format          = format, 
                              path            = path, 
