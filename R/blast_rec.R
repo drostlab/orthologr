@@ -9,6 +9,7 @@
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
@@ -95,7 +96,8 @@ blast_rec <- function(query_file,
                       subject_file, 
                       seq_type        = "cds",
                       format          = "fasta", 
-                      blast_algorithm = "blastp", 
+                      blast_algorithm = "blastp",
+                      delete_corrupt_cds = TRUE,
                       eval            = "1E-5", 
                       path            = NULL, 
                       comp_cores      = 1, 
@@ -110,6 +112,7 @@ blast_rec <- function(query_file,
                               format          = format, 
                               seq_type        = seq_type,
                               blast_algorithm = blast_algorithm,
+                              delete_corrupt_cds = delete_corrupt_cds,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
@@ -122,6 +125,7 @@ blast_rec <- function(query_file,
                               eval            = eval,
                               format          = format,
                               blast_algorithm = blast_algorithm,
+                              delete_corrupt_cds = delete_corrupt_cds,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
