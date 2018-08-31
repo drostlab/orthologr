@@ -11,7 +11,8 @@
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, 
 #' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
-#' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep. 
+#' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep.
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param remote a boolean value specifying whether a remote BLAST search shall be performed.
 #' In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
 #' since a query of only a few genes against NCBI nr database, can consume a lot of time and might cause
@@ -112,6 +113,7 @@ blast <- function(query_file,
                   blast_algorithm = "blastp",
                   eval            = "1E-5",
                   max.target.seqs = 500,
+                  delete_corrupt_cds = TRUE,
                   remote          = FALSE, 
                   db              = NULL, 
                   path            = NULL,
@@ -139,13 +141,17 @@ blast <- function(query_file,
         # initialize the BLAST search
         query.dt <- set_blast( file     = query_file, 
                                seq_type = seq_type, 
-                               format   = format )[[1]]
+                               format   = format,
+                               delete_corrupt_cds = delete_corrupt_cds
+                               )[[1]]
         
         # make a BLASTable databse of the subject
         database <- set_blast( file     = subject_file, 
                                seq_type = seq_type, 
                                format   = format, 
-                               makedb   = TRUE )[[2]]
+                               makedb   = TRUE ,
+                               delete_corrupt_cds = delete_corrupt_cds
+                               )[[2]]
         
         filename <- unlist(strsplit(query_file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
         filename <- filename[length(filename)]
