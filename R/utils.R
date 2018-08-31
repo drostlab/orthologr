@@ -98,7 +98,7 @@ is.alignment_search_tool <- function(tool = NULL){
 #' @param dt a \code{data.table} object storing cds sequences in a column named \code{seqs}.
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @import data.table
-cds2aa <- function(dt, delete_corrupt_cds = FALSE){
+cds2aa <- function(dt, delete_corrupt_cds = TRUE){
         
         if (!is.data.table(dt))
                 stop("Your CDS file was not corretly transformed into a data.table object.")
