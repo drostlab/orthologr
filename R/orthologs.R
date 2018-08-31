@@ -16,6 +16,7 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
@@ -47,13 +48,10 @@
 #' in the second column and the amino acid sequences in the third column.
 #' @references
 #' 
-#' BLAST: \url{http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml}
+#' BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 #' 
-#' ProteinOrtho: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/}
-#' 
-#' OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
-#' 
-#' GGSearch and SSearch: \url{http://fasta.bioch.virginia.edu/fasta_www2/fasta_intro.shtml}
+#' ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
+#'
 #' @examples \dontrun{
 #' 
 #' 
@@ -116,6 +114,7 @@ orthologs <- function(query_file,
                       eval            = "1E-5", 
                       format          = "fasta",
                       ortho_detection = "RBH",
+                      delete_corrupt_cds = TRUE,
                       cdd.path        = NULL,
                       path            = NULL, 
                       add_params      = NULL,
@@ -142,10 +141,10 @@ orthologs <- function(query_file,
                         ))
                 filename_qry <- filename_qry[length(filename_qry)]
                 
-                write.proteome(proteome  = cds2aa(read.cds(query_file, format = format)),
-                               file.name = file.path(tempdir(), paste0(
-                                       filename_qry, "_translated.fasta"
-                               )))
+                write.proteome(proteome  = cds2aa(
+                        read.cds(query_file, format = format, delete_corrupt_cds = delete_corrupt_cds)
+                ),
+                file.name = file.path(tempdir(), paste0(filename_qry, "_translated.fasta")))
                 
                 if (length(subject_files) > 1) {
                         subj_short.names <- vector("character", length(subject_files))
@@ -168,8 +167,7 @@ orthologs <- function(query_file,
                                 
                                 write.proteome(
                                         proteome  = cds2aa(
-                                                read.cds(subject_files[organism], format = format)
-                                        ),
+                                                read.cds(subject_files[organism], format = format, delete_corrupt_cds = delete_corrupt_cds), delete_corrupt_cds = delete_corrupt_cds),
                                         file.name = file.path(
                                                 tempdir(),
                                                 paste0(short.name, "_translated.fasta")
@@ -196,11 +194,16 @@ orthologs <- function(query_file,
                                 filename_subj[length(filename_subj)]
                         
                         write.proteome(
-                                proteome  = cds2aa(read.cds(subject_files, format = format)),
-                                file.name = file.path(
-                                        tempdir(),
-                                        paste0(filename_subj, "_translated.fasta")
-                                )
+                                proteome  = cds2aa(
+                                        read.cds(
+                                                subject_files,
+                                                format = format,
+                                                delete_corrupt_cds = delete_corrupt_cds
+                                        ),
+                                        delete_corrupt_cds = delete_corrupt_cds
+                                ),
+                                file.name = file.path(tempdir(),
+                                                      paste0(filename_subj, "_translated.fasta"))
                         )
                         
                         subject_files <-
@@ -223,7 +226,8 @@ orthologs <- function(query_file,
                         
                         blast_best(query_file      = query_file, 
                                    subject_file    = subject_files, 
-                                   path            = path, 
+                                   path            = path,
+                                   delete_corrupt_cds = delete_corrupt_cds,
                                    comp_cores      = comp_cores, 
                                    eval            = eval,
                                    blast_params    = add_params, 
@@ -247,7 +251,8 @@ orthologs <- function(query_file,
                         
                         blast_rec( query_file      = query_file, 
                                    subject_file    = subject_files, 
-                                   path            = path, 
+                                   path            = path,
+                                   delete_corrupt_cds = delete_corrupt_cds,
                                    comp_cores      = comp_cores, 
                                    eval            = eval,
                                    blast_params    = add_params, 
