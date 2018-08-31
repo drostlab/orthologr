@@ -49,7 +49,7 @@ set_blast <- function(file,
                       seq_type    = "cds",
                       format      = "fasta", 
                       makedb      = FALSE,
-                      delete_corrupt_cds = FALSE,
+                      delete_corrupt_cds = TRUE,
                       path        = NULL, 
                       makedb_type = "protein",
                       ...){
