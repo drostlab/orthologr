@@ -12,6 +12,7 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
@@ -179,6 +180,7 @@ dNdS <- function(query_file,
                  seq_type        = "protein",
                  format          = "fasta", 
                  ortho_detection = "RBH",
+                 delete_corrupt_cds = TRUE,  
                  cdd.path        = NULL,
                  blast_params    = NULL, 
                  blast_path      = NULL, 
@@ -237,6 +239,7 @@ dNdS <- function(query_file,
                                 query_file   = query_file,
                                 subject_file = subject_file,
                                 blast_params = blast_params,
+                                delete_corrupt_cds = delete_corrupt_cds,
                                 path         = blast_path,
                                 comp_cores   = comp_cores,
                                 seq_type     = "cds",
@@ -246,10 +249,12 @@ dNdS <- function(query_file,
                 )
                 
                 q_cds <- read.cds(file   = query_file,
-                                  format = format)
+                                  format = format,
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 s_cds <- read.cds(file   = subject_file,
-                                  format = format)
+                                  format = format,
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 filename_qry <-
                         unlist(strsplit(
@@ -267,7 +272,8 @@ dNdS <- function(query_file,
                         read.proteome(file = file.path(tempdir(), "_blast_db", input),
                                       format = "fasta")
                 
-                s_aa_tmp <- cds2aa(s_cds)
+                # translate coding sequences to amino acid sequences
+                s_aa_tmp <- cds2aa(s_cds, delete_corrupt_cds = delete_corrupt_cds)
                 
                 filename_subj <-
                         unlist(strsplit(
@@ -302,6 +308,7 @@ dNdS <- function(query_file,
                                 query_file   = query_file,
                                 subject_file = subject_file,
                                 blast_params = blast_params,
+                                delete_corrupt_cds = delete_corrupt_cds,
                                 path         = blast_path,
                                 comp_cores   = comp_cores,
                                 seq_type     = "cds",
@@ -312,11 +319,12 @@ dNdS <- function(query_file,
                 
                 
                 q_cds <- read.cds(file   = query_file,
-                                  format = format)
+                                  format = format,
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 s_cds <- read.cds(file   = subject_file,
-                                  format = format)
-                
+                                  format = format,
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 filename_qry <-
                         unlist(strsplit(
@@ -326,6 +334,7 @@ dNdS <- function(query_file,
                                 perl = TRUE,
                                 useBytes = FALSE
                         ))
+                
                 filename_qry <- filename_qry[length(filename_qry)]
                 
                 input_qry = paste0("query_", filename_qry, ".fasta")
@@ -374,14 +383,16 @@ dNdS <- function(query_file,
                 
                 
                 q_cds <- read.cds(file   = query_file,
-                                  format = format)
+                                  format = format, 
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 s_cds <- read.cds(file   = subject_file,
-                                  format = format)
+                                  format = format, 
+                                  delete_corrupt_cds = delete_corrupt_cds)
                 
                 
-                q_aa_tmp <- cds2aa(q_cds)
-                s_aa_tmp <- cds2aa(s_cds)
+                q_aa_tmp <- cds2aa(q_cds, delete_corrupt_cds = delete_corrupt_cds)
+                s_aa_tmp <- cds2aa(s_cds, delete_corrupt_cds = delete_corrupt_cds)
                 
                 filename_qry <-
                         unlist(strsplit(
@@ -406,15 +417,15 @@ dNdS <- function(query_file,
                 
                 seqinr::write.fasta(
                         sequences = as.list(q_aa_tmp[, aa]),
-                        names     = q_aa_tmp[, geneids],
+                        names     = q_aa_tmp[ , geneids],
                         nbchar    = 80,
                         open      = "w",
                         file.out  = file.path(tempdir(), filename_qry)
                 )
                 
                 seqinr::write.fasta(
-                        sequences = as.list(s_aa_tmp[, aa]),
-                        names     = s_aa_tmp[, geneids],
+                        sequences = as.list(s_aa_tmp[ , aa]),
+                        names     = s_aa_tmp[ , geneids],
                         nbchar    = 80,
                         open      = "w",
                         file.out  = file.path(tempdir(), filename_subj)
