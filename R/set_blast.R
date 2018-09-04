@@ -79,7 +79,7 @@ set_blast <- function(file,
                 # read cds file
                 # copy the data.table due to this discussion:
                 # http://stackoverflow.com/questions/8030452/pass-by-reference-the-operator-in-the-data-table-package
-                dt <- data.table::copy(read.cds(file = file, format = "fasta", ...))
+                dt <- data.table::copy(read.cds(file = file, format = "fasta", delete_corrupt_cds = delete_corrupt_cds, ...))
                 
                 if(!is.data.table(dt))
                         stop("Your CDS file was not corretly transformed into a data.table object.")
