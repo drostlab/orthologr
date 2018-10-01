@@ -10,6 +10,7 @@
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".
 #' @param makedb TRUE or FALSE whether a database should be created or not (BLAST parameter 'makeblastdb').
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param makedb_type a character string specifying the sequence type stored in the BLAST database
 #' that is generated using 'makeblastdb'. Options are: "protein" and "nucleotide". Default is \code{makedb_type} = "protein".
@@ -48,6 +49,7 @@ set_blast <- function(file,
                       seq_type    = "cds",
                       format      = "fasta", 
                       makedb      = FALSE,
+                      delete_corrupt_cds = TRUE,
                       path        = NULL, 
                       makedb_type = "protein",
                       ...){
@@ -77,7 +79,7 @@ set_blast <- function(file,
                 # read cds file
                 # copy the data.table due to this discussion:
                 # http://stackoverflow.com/questions/8030452/pass-by-reference-the-operator-in-the-data-table-package
-                dt <- data.table::copy(read.cds(file = file, format = "fasta", ...))
+                dt <- data.table::copy(read.cds(file = file, format = "fasta", delete_corrupt_cds = delete_corrupt_cds, ...))
                 
                 if(!is.data.table(dt))
                         stop("Your CDS file was not corretly transformed into a data.table object.")
@@ -91,8 +93,10 @@ set_blast <- function(file,
                 # omit empty sequences
                 dt <- dt[ ,.SD[sapply(seqs,function(x){return(! (is.na(x) || x=="") )})]]
                 
-                # omit sequences taht are not multiples of 3
-                dt <- dt[ ,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
+                if (delete_corrupt_cds) {
+                        # omit sequences that are not multiples of 3
+                        dt <- dt[ ,.SD[sapply(seqs,function(x){return(nchar(x)%%3==0)})]]
+                }
                 
                 # omit sequences consisting of others than ACGT
                 dt <- dt[ ,.SD[sapply(seqs,is.dnaSequence)]]

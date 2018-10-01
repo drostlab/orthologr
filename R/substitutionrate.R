@@ -198,7 +198,7 @@ substitutionrate <- function(file,
                         hit.table[which(hit.table[, dNdS == 999]), dNdS := NA]
                         
                         if (!quiet) {
-                                print("Substitutionrate successfully calculated by gestimator")
+                                print("Substitutionrate successfully calculated by gestimator.")
                         }
                         
                         return(hit.table)

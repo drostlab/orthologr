@@ -96,8 +96,9 @@ is.alignment_search_tool <- function(tool = NULL){
 #' translates the cds sequences stored as \code{seqs} column into the corresponding amino acid
 #' sequence.
 #' @param dt a \code{data.table} object storing cds sequences in a column named \code{seqs}.
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @import data.table
-cds2aa <- function(dt){
+cds2aa <- function(dt, delete_corrupt_cds = TRUE){
         
         if (!is.data.table(dt))
                 stop("Your CDS file was not corretly transformed into a data.table object.")
@@ -116,10 +117,12 @@ cds2aa <- function(dt){
                 return(!(is.na(x) || x == ""))
         })]]
         
-        # omit sequences taht are not multiples of 3
-        dt <- dt[ , .SD[sapply(seqs, function(x) {
-                return(nchar(x) %% 3 == 0)
-        })]]
+        if (delete_corrupt_cds) {
+                # omit sequences that are not multiples of 3
+                dt <- dt[ , .SD[sapply(seqs, function(x) {
+                        return(nchar(x) %% 3 == 0)
+                })]]
+        }
         
         # omit sequences consisting of others than ACGT
         dt <- dt[ , .SD[sapply(seqs, is.dnaSequence)]]

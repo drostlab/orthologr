@@ -9,7 +9,10 @@
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".
 #' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
+#' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep.
+#' Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
@@ -95,8 +98,10 @@ blast_rec <- function(query_file,
                       subject_file, 
                       seq_type        = "cds",
                       format          = "fasta", 
-                      blast_algorithm = "blastp", 
-                      eval            = "1E-5", 
+                      blast_algorithm = "blastp",
+                      delete_corrupt_cds = TRUE,
+                      eval            = "1E-5",
+                      max.target.seqs = 500,
                       path            = NULL, 
                       comp_cores      = 1, 
                       blast_params    = NULL, 
@@ -107,9 +112,11 @@ blast_rec <- function(query_file,
         orthoA <- blast_best( query_file      = query_file,
                               subject_file    = subject_file, 
                               eval            = eval,
+                              max.target.seqs = max.target.seqs,
                               format          = format, 
                               seq_type        = seq_type,
                               blast_algorithm = blast_algorithm,
+                              delete_corrupt_cds = delete_corrupt_cds,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
@@ -120,8 +127,10 @@ blast_rec <- function(query_file,
                               subject_file    = query_file,
                               seq_type        = seq_type,
                               eval            = eval,
+                              max.target.seqs = max.target.seqs,
                               format          = format,
                               blast_algorithm = blast_algorithm,
+                              delete_corrupt_cds = delete_corrupt_cds,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,

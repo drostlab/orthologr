@@ -60,11 +60,12 @@ library(orthologr)
 # 5) multi-core processing 'comp_cores = 1'
 dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-     ortho_detection = "RBH", 
-     aa_aln_type     = "pairwise",
-     aa_aln_tool     = "NW", 
-     codon_aln_tool  = "pal2nal", 
-     dnds_est.method = "Comeron", 
+     delete_corrupt_cds = TRUE, # coding sequences that cannot be divided by 3 (triplets) will be removed
+     ortho_detection = "RBH", # perform BLAST best reciprocal hit orthology inference
+     aa_aln_type     = "pairwise", # perform pairwise global alignments of AA seqs 
+     aa_aln_tool     = "NW", # using Needleman-Wunsch
+     codon_aln_tool  = "pal2nal", # perform codon alignments using the tool Pal2Nal
+     dnds_est.method = "Comeron", # use Comeron's method for dN/dS inference
      comp_cores      = 1 )
 ```
 
