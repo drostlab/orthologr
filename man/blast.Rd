@@ -6,8 +6,9 @@
 \usage{
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", eval = "1E-5", max.target.seqs = 500,
-  remote = FALSE, db = NULL, path = NULL, comp_cores = 1,
-  blast_params = NULL, clean_folders = FALSE, save.output = NULL)
+  delete_corrupt_cds = TRUE, remote = FALSE, db = NULL, path = NULL,
+  comp_cores = 1, blast_params = NULL, clean_folders = FALSE,
+  save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -27,7 +28,10 @@ e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"b
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
-\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep.}
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep.
+Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .}
+
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
 \item{remote}{a boolean value specifying whether a remote BLAST search shall be performed.
 In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
@@ -114,9 +118,6 @@ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ortholo
 }
 
 }
-\author{
-Hajk-Georg Drost and Sarah Scharfenberg
-}
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 
@@ -141,4 +142,6 @@ http://blast.ncbi.nlm.nih.gov/Blast.cgi
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 }
-
+\author{
+Hajk-Georg Drost and Sarah Scharfenberg
+}

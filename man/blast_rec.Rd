@@ -5,9 +5,10 @@
 \title{Perform a BLAST+ reciprocal best hit (RBH) search}
 \usage{
 blast_rec(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", eval = "1E-5", path = NULL,
-  comp_cores = 1, blast_params = NULL, detailed_output = FALSE,
-  clean_folders = FALSE, save.output = NULL)
+  blast_algorithm = "blastp", delete_corrupt_cds = TRUE, eval = "1E-5",
+  max.target.seqs = 500, path = NULL, comp_cores = 1,
+  blast_params = NULL, detailed_output = FALSE, clean_folders = FALSE,
+  save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -23,7 +24,12 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, e.g. "blastp","blastn","tblastn",... .}
 
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
+
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep.
+Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
@@ -100,9 +106,6 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 }
 
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 
@@ -123,4 +126,6 @@ Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madde
 \seealso{
 \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 }
-
+\author{
+Hajk-Georg Drost
+}
