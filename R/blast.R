@@ -12,6 +12,7 @@
 #' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep.
+#' Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param remote a boolean value specifying whether a remote BLAST search shall be performed.
 #' In case \code{remote} = \code{TRUE}, please specify the \code{db} argument. This feature is very experimental,
