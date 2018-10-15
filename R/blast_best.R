@@ -123,12 +123,11 @@ blast_best <- function(query_file,
         evalue <- NULL
 
         # default parameters for best hit filtering
-        default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
+        # default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
         
         
         # performing a BLAST search from query against subject: blast(query,subject)
-        # using the BLAST parameter: '-max_target_seqs 1' allows to retain
-        # only the best hit result and therefore, speeds up the BLAST search process
+        
         hit_tbl.dt <- blast( query_file      = query_file,
                              subject_file    = subject_file,
                              eval            = eval,
@@ -138,14 +137,14 @@ blast_best <- function(query_file,
                              format          = format, 
                              path            = path, 
                              comp_cores      = comp_cores,
-                             blast_params    = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), default_pars),
+                             blast_params    = ifelse(!is.null(blast_params), blast_params, ""),
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         
         if (!detailed_output) {
                 tryCatch({
                         besthit_tbl <-
-                                hit_tbl.dt[, sapply(.SD[, evalue], min)[1], by = key(hit_tbl.dt)]
+                                hit_tbl.dt[ , sapply(.SD[, evalue], min)[1], by = key(hit_tbl.dt)]
                         
                         #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
                         data.table::setnames(besthit_tbl,
