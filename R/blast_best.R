@@ -109,7 +109,7 @@ blast_best <- function(query_file,
                        blast_algorithm = "blastp", 
                        delete_corrupt_cds = TRUE,
                        eval            = "1E-5",
-                       max.target.seqs = 500,
+                       max.target.seqs = 50,
                        path            = NULL, 
                        comp_cores      = 1,
                        blast_params    = NULL, 
@@ -123,7 +123,7 @@ blast_best <- function(query_file,
         evalue <- NULL
 
         # default parameters for best hit filtering
-        # default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
+         default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
         
         
         # performing a BLAST search from query against subject: blast(query,subject)
@@ -137,7 +137,7 @@ blast_best <- function(query_file,
                              format          = format, 
                              path            = path, 
                              comp_cores      = comp_cores,
-                             blast_params    = ifelse(!is.null(blast_params), blast_params, ""),
+                             blast_params    = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), blast_params),
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         
