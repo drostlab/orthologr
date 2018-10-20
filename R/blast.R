@@ -113,7 +113,7 @@ blast <- function(query_file,
                   format          = "fasta",
                   blast_algorithm = "blastp",
                   eval            = "1E-5",
-                  max.target.seqs = 500,
+                  max.target.seqs = 5000,
                   delete_corrupt_cds = TRUE,
                   remote          = FALSE, 
                   db              = NULL, 
@@ -220,7 +220,7 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                paste0("blastp -db ",database," -query ",input,
-                                                      " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                      " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
                                                       " -num_threads ", comp_cores)
                                                )
                                 } else {
@@ -228,7 +228,7 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("blastp -db ",database," -query ",input,
-                                                       " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                       " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )   
                                         
@@ -245,7 +245,7 @@ blast <- function(query_file,
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
                                                        database," -query ",input," -evalue ",
-                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
                                                        " -num_threads ", comp_cores)
                                               )
                                 } else {
@@ -254,7 +254,7 @@ blast <- function(query_file,
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
                                                        database," -query ",input," -evalue ",
-                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )
                                         
