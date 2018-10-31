@@ -8,8 +8,7 @@
 #' translated to protein sequences. Default is \code{seq_type} = "cds".
 #' @param format a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}.
 #' Default is \code{format} = \code{"fasta"}.
-#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, 
-#' e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.
+#' @param blast_algorithm a character string specifying the BLAST algorithm that shall be used, option is: \code{blast_algorithm} = \code{"blastp"}
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep.
 #' Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
@@ -113,7 +112,7 @@ blast <- function(query_file,
                   format          = "fasta",
                   blast_algorithm = "blastp",
                   eval            = "1E-5",
-                  max.target.seqs = 5000,
+                  max.target.seqs = 10000,
                   delete_corrupt_cds = TRUE,
                   remote          = FALSE, 
                   db              = NULL, 
@@ -123,15 +122,15 @@ blast <- function(query_file,
                   clean_folders   = FALSE,
                   save.output     = NULL){
         
-        if(!is.element(blast_algorithm,c("blastp","deltablast","tblastn","blastn")))
-                stop("Please choose a valid BLAST mode.")
+        if(!is.element(blast_algorithm,c("blastp")))
+                stop("Please choose a valid BLAST mode. Only 'blastp' is available for this function.", call. = FALSE)
         
         if(remote & is.null(db))
-                stop("To use the remote option of blast() please specify the 'db' argument, e.g. db = 'nr'")
+                stop("To use the remote option of blast() please specify the 'db' argument, e.g. db = 'nr'", call. = FALSE)
         
         if(!is.null(db)){
                 if(!is.element(db,c("nr","plaza")))
-                        stop("Please choose a database that is supported by remote BLAST.")
+                        stop("Please choose a database that is supported by remote BLAST.", call. = FALSE)
         }
                 
         # due to the discussion of no visible binding for global variable for
@@ -220,7 +219,7 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                paste0("blastp -db ",database," -query ",input,
-                                                      " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
+                                                      " -max_hsps 1 -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                       " -num_threads ", comp_cores)
                                                )
                                 } else {
@@ -228,7 +227,7 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("blastp -db ",database," -query ",input,
-                                                       " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
+                                                       " -max_hsps 1 -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )   
                                         
@@ -244,8 +243,8 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                                       database," -query ",input," -evalue ",
-                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
+                                                       database," -query ",input," -max_hsps 1 -evalue ",
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores)
                                               )
                                 } else {
@@ -253,8 +252,8 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                                       database," -query ",input," -evalue ",
-                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -max_hsps 1 -outfmt 6", 
+                                                       database," -query ",input," -max_hsps 1 -evalue ",
+                                                       eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )
                                         
