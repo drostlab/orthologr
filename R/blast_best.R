@@ -137,7 +137,7 @@ blast_best <- function(query_file,
                              format          = format, 
                              path            = path, 
                              comp_cores      = comp_cores,
-                             blast_params    = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), blast_params),
+                             blast_params    = ifelse(!is.null(blast_params), paste0(blast_params," ",default_pars), default_pars),
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         

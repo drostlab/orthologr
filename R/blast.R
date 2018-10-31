@@ -219,7 +219,7 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                paste0("blastp -db ",database," -query ",input,
-                                                      " -max_hsps 1 -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                      " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                       " -num_threads ", comp_cores)
                                                )
                                 } else {
@@ -227,7 +227,7 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("blastp -db ",database," -query ",input,
-                                                       " -max_hsps 1 -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
+                                                       " -evalue ",eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )   
                                         
@@ -243,7 +243,7 @@ blast <- function(query_file,
                                         # use the default parameters when running blastp
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                                       database," -query ",input," -max_hsps 1 -evalue ",
+                                                       database," -query ",input," -evalue ",
                                                        eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores)
                                               )
@@ -252,7 +252,7 @@ blast <- function(query_file,
                                         # add additional parameters when running blastp
                                         system(
                                                 paste0("export PATH=$PATH:",path,"; blastp -db ",
-                                                       database," -query ",input," -max_hsps 1 -evalue ",
+                                                       database," -query ",input," -evalue ",
                                                        eval," -max_target_seqs ",max.target.seqs," -out ", output ," -outfmt 6", 
                                                        " -num_threads ", comp_cores," ",blast_params)
                                         )
