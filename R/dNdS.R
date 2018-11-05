@@ -234,7 +234,7 @@ dNdS <- function(query_file,
         # use BLAST best hit as orthology inference method
         if (ortho_detection == "BH") {
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
-                hit.table <- data.table::copy(
+                hit.table <- 
                         blast_best(
                                 query_file   = query_file,
                                 subject_file = subject_file,
@@ -246,7 +246,9 @@ dNdS <- function(query_file,
                                 eval         = eval,
                                 format       = format
                         )
-                )
+                
+                data.table::setDT(hit.table)
+                data.table::setkeyv(hit.table, c("query_id","subject_id"))
                 
                 q_cds <- read.cds(file   = query_file,
                                   format = format,
@@ -303,7 +305,7 @@ dNdS <- function(query_file,
         # use BLAST best reciprocal hit as orthology inference method
         if (ortho_detection == "RBH") {
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
-                hit.table <- data.table::copy(
+                hit.table <-
                         blast_rec(
                                 query_file   = query_file,
                                 subject_file = subject_file,
@@ -315,8 +317,9 @@ dNdS <- function(query_file,
                                 eval         = eval,
                                 format       = format
                         )
-                )
                 
+                data.table::setDT(hit.table)
+                data.table::setkeyv(hit.table, c("query_id","subject_id"))
                 
                 q_cds <- read.cds(file   = query_file,
                                   format = format,
@@ -375,7 +378,6 @@ dNdS <- function(query_file,
                                 comp_cores      = comp_cores,
                                 seq_type        = "cds",
                                 format          = format,
-                                detailed_output = FALSE,
                                 quiet           = quiet,
                                 clean_folders   = FALSE
                         )
@@ -457,18 +459,23 @@ dNdS <- function(query_file,
                 stop("No orthologs could be found! Please check your input files!")
         
         
+        dNdS_tbl <- compute_dnds( complete_tbl    = final_tbl,
+                                  aa_aln_type     = aa_aln_type,
+                                  aa_aln_tool     = aa_aln_tool,
+                                  aa_aln_path     = aa_aln_path,
+                                  codon_aln_tool  = codon_aln_tool, 
+                                  kaks_calc_path  = kaks_calc_path, 
+                                  dnds_est.method = dnds_est.method, 
+                                  quiet           = quiet,
+                                  comp_cores      = comp_cores, 
+                                  clean_folders   = clean_folders )
+        
+        subject_id <- NULL
+        hit.table_selected <- dplyr::select(hit.table, -subject_id)
+        
+        res <- dplyr::inner_join(dNdS_tbl, hit.table_selected, by = "query_id")
        # return the dNdS table for all query_ids and subject_ids
-           return( compute_dnds( complete_tbl    = final_tbl,
-                                 aa_aln_type     = aa_aln_type,
-                                 aa_aln_tool     = aa_aln_tool,
-                                 aa_aln_path     = aa_aln_path,
-                                 codon_aln_tool  = codon_aln_tool, 
-                                 kaks_calc_path  = kaks_calc_path, 
-                                 dnds_est.method = dnds_est.method, 
-                                 quiet           = quiet,
-                                 comp_cores      = comp_cores, 
-                                 clean_folders   = clean_folders )
-                  )   
+           return(res)   
 }
 
 
