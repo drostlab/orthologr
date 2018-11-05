@@ -22,8 +22,6 @@
 #' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
 #' @param add_params a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 #' Default is \code{add_params} = \code{NULL}.
-#' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs. 
-#' Default is \code{detailed_output} = \code{TRUE}.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
@@ -84,25 +82,6 @@
 #'           
 #'           
 #'           
-#' ### DELTA-BLAST Reciprocal Best Hit
-#' 
-#' # perform orthology inference using DELTA-BLAST reciprocal best hit
-#' # and fasta sequence files storing protein sequences
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "DELTA",
-#'           cdd.path        = "path/to/cdd/database/folder")
-#'           
-#'           
-#' # multicore version          
-#' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'           seq_type        = "protein", 
-#'           ortho_detection = "DELTA",
-#'           cdd.path        = "path/to/cdd/database/folder", 
-#'           comp_cores      = 2)          
-#'                      
 #' }
 #' @seealso \code{\link{blast_rec}}, \code{\link{dNdS}}
 #' @export
@@ -118,7 +97,6 @@ orthologs <- function(query_file,
                       cdd.path        = NULL,
                       path            = NULL, 
                       add_params      = NULL,
-                      detailed_output = TRUE, 
                       comp_cores      = 1,
                       quiet           = FALSE, 
                       clean_folders   = FALSE){
@@ -232,7 +210,6 @@ orthologs <- function(query_file,
                                    eval            = eval,
                                    blast_params    = add_params, 
                                    seq_type        = seq_type, 
-                                   detailed_output = detailed_output, 
                                    format          = format )
                         
                 )
@@ -257,7 +234,6 @@ orthologs <- function(query_file,
                                    eval            = eval,
                                    blast_params    = add_params, 
                                    seq_type        = seq_type, 
-                                   detailed_output = detailed_output, 
                                    format          = format )
                         
                         )
@@ -349,7 +325,5 @@ orthologs <- function(query_file,
                 
         }
         
-        
         return(ortho_tbl)
-        
 }
