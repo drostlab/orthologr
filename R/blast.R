@@ -309,6 +309,9 @@ blast <- function(query_file,
                           
                   }
                   
+                  
+                  hit_table <- tibble::as_tibble(dtplyr::tbl_dt(hit_table))
+                  
                   return(hit_table)
                   
          }, error = function(e){ stop("File ",output, " could not be read correctly.",
