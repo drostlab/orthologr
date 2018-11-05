@@ -78,9 +78,6 @@ codon_aln <- codon_aln(file_aln = system.file('seqs/aa_seqs.aln', package = 'ort
 }
                        
 }
-\author{
-Sarah Scharfenberg and Hajk-Georg Drost
-}
 \references{
 Mikita Suyama, David Torrents, and Peer Bork (2006)
 PAL2NAL: robust conversion of protein sequence alignments into the corresponding codon alignments. Nucleic Acids Res. 34, W609-W612.
@@ -95,4 +92,6 @@ http://abacus.gene.ucl.ac.uk/software/paml.html
 \code{\link{pairwise_aln}}, \code{\link{multi_aln}}, \code{\link{substitutionrate}},
  \code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}
 }
-
+\author{
+Sarah Scharfenberg and Hajk-Georg Drost
+}

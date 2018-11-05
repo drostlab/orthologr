@@ -25,10 +25,9 @@ DNA <- c("ACCGGTTTAAAGGCGTTA")
 transl(DNA)
 
 }
-\author{
-Hajk-Georg Drost and Sarah Scharfenberg
-}
 \references{
 \code{\link[seqinr]{translate}}
 }
-
+\author{
+Hajk-Georg Drost and Sarah Scharfenberg
+}

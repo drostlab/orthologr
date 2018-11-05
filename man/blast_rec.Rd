@@ -6,9 +6,8 @@
 \usage{
 blast_rec(query_file, subject_file, seq_type = "cds", format = "fasta",
   blast_algorithm = "blastp", delete_corrupt_cds = TRUE, eval = "1E-5",
-  max.target.seqs = 500, path = NULL, comp_cores = 1,
-  blast_params = NULL, detailed_output = FALSE, clean_folders = FALSE,
-  save.output = NULL)
+  max.target.seqs = 10000, path = NULL, comp_cores = 1,
+  blast_params = NULL, clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -37,9 +36,6 @@ Please be aware that \code{max.target.seqs} selects best hits based on the datab
 
 \item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
-
-\item{detailed_output}{a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
-ortholog pairs.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}

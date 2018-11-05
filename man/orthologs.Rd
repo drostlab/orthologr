@@ -6,9 +6,9 @@
 \usage{
 orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, eval = "1E-5", format = "fasta",
-  ortho_detection = "RBH", cdd.path = NULL, path = NULL,
-  add_params = NULL, detailed_output = TRUE, comp_cores = 1,
-  quiet = FALSE, clean_folders = FALSE)
+  ortho_detection = "RBH", delete_corrupt_cds = TRUE, cdd.path = NULL,
+  path = NULL, add_params = NULL, comp_cores = 1, quiet = FALSE,
+  clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -32,6 +32,8 @@ This argument is only used by \code{InParanoid}.}
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.}
 
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
+
 \item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
@@ -39,9 +41,6 @@ For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": 
 
 \item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
 Default is \code{add_params} = \code{NULL}.}
-
-\item{detailed_output}{a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding ortholog pairs. 
-Default is \code{detailed_output} = \code{TRUE}.}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
@@ -106,40 +105,16 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           
           
           
-### DELTA-BLAST Reciprocal Best Hit
-
-# perform orthology inference using DELTA-BLAST reciprocal best hit
-# and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "DELTA",
-          cdd.path        = "path/to/cdd/database/folder")
-          
-          
-# multicore version          
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "DELTA",
-          cdd.path        = "path/to/cdd/database/folder", 
-          comp_cores      = 2)          
-                     
 }
-}
-\author{
-Hajk-Georg Drost
 }
 \references{
-BLAST: \url{http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml}
+BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 
-ProteinOrtho: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/}
-
-OrthoMCL: \url{http://www.orthomcl.org/orthomcl/}
-
-GGSearch and SSearch: \url{http://fasta.bioch.virginia.edu/fasta_www2/fasta_intro.shtml}
+ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 }
 \seealso{
 \code{\link{blast_rec}}, \code{\link{dNdS}}
 }
-
+\author{
+Hajk-Georg Drost
+}

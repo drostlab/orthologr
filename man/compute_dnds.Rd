@@ -65,13 +65,12 @@ the query_id and subject_id (file two). These fasta files are then used to pass 
 
 3) dNdS estimation of the codon alignment returned by 2)
 }
-\author{
-Hajk-Georg Drost and Sarah Scharfenberg
-}
 \references{
 \url{http://www.r-bloggers.com/the-wonders-of-foreach/}
 }
 \seealso{
 \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 }
-
+\author{
+Hajk-Georg Drost and Sarah Scharfenberg
+}

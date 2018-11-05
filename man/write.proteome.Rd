@@ -41,4 +41,3 @@ write.proteome(Ath.proteome, "test_proteome.fasta")
 \author{
 Hajk-Georg Drost
 }
-

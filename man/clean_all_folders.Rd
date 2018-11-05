@@ -31,11 +31,10 @@ to be cleaned by hand, meaning that when using a specific function or pipeline f
 you must specify \code{clean_folders} = \code{TRUE} in case you want to remove all internal folders
 after pipeline processing.
 }
-\author{
-Hajk-Georg Drost
-}
 \seealso{
 \code{\link{divergence_stratigraphy}}, \code{\link{blast}}, \code{\link{blast_best}}, 
 \code{\link{blast_rec}}, \code{\link{dNdS}}
 }
-
+\author{
+Hajk-Georg Drost
+}

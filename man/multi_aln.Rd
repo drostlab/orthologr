@@ -242,9 +242,6 @@ multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
                                                                                   
 }
 }
-\author{
-Hajk-Georg Drost and Sarah Scharfenberg
-}
 \references{
 \itemize{
 \item CLUSTALW:
@@ -301,4 +298,6 @@ MAFFT multiple sequence alignment software version 7: improvements in performanc
 
 }
 }
-
+\author{
+Hajk-Georg Drost and Sarah Scharfenberg
+}

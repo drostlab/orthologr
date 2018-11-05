@@ -38,4 +38,3 @@ Ath.genome <- read.genome(system.file('seqs/ortho_thal_cds.fasta', package = 'or
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg
 }
-

@@ -117,9 +117,6 @@ substitutionrate(
                                           
 }
 }
-\author{
-Hajk-Georg Drost and Sarah Scharfenberg
-}
 \references{
 Li, W.-H. (1993) Unbiased estimation of the rates of synonymous and nonsynonymous substitution. J. Mol. Evol., 36:96-99.
 
@@ -138,4 +135,6 @@ https://code.google.com/p/kaks-calculator/wiki/AXT
 \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 \code{\link{blast_rec}}, \code{\link{read.cds}}
 }
-
+\author{
+Hajk-Georg Drost and Sarah Scharfenberg
+}

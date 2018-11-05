@@ -5,7 +5,7 @@
 \title{Perform a BLAST+ search}
 \usage{
 blast(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", eval = "1E-5", max.target.seqs = 500,
+  blast_algorithm = "blastp", eval = "1E-5", max.target.seqs = 10000,
   delete_corrupt_cds = TRUE, remote = FALSE, db = NULL, path = NULL,
   comp_cores = 1, blast_params = NULL, clean_folders = FALSE,
   save.output = NULL)
@@ -23,8 +23,7 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{format}{a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}.
 Default is \code{format} = \code{"fasta"}.}
 
-\item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, 
-e.g. \code{blast_algorithm} = \code{"blastp"}, \code{blast_algorithm} = \code{"blastn"}, \code{blast_algorithm} = \code{"tblastn"}.}
+\item{blast_algorithm}{a character string specifying the BLAST algorithm that shall be used, option is: \code{blast_algorithm} = \code{"blastp"}}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 

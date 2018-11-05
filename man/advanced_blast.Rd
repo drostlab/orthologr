@@ -193,9 +193,6 @@ advanced_blast(
 }
 
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 BLAST Command Line Applications User Manual: \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/}
 
@@ -221,4 +218,6 @@ Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., and Mad
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
 }
-
+\author{
+Hajk-Georg Drost
+}

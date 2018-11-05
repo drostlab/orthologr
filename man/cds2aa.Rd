@@ -4,14 +4,15 @@
 \alias{cds2aa}
 \title{Translate CDS file to Amino Acids file}
 \usage{
-cds2aa(dt)
+cds2aa(dt, delete_corrupt_cds = TRUE)
 }
 \arguments{
 \item{dt}{a \code{data.table} object storing cds sequences in a column named \code{seqs}.}
+
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 }
 \description{
 This function takes a \code{data.table} object as input and
 translates the cds sequences stored as \code{seqs} column into the corresponding amino acid
 sequence.
 }
-

@@ -53,13 +53,12 @@ This function provides users an R interface to perform BLASTP searches against t
 }
 
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/}
 }
 \seealso{
 \code{\link{delta.blast}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_blast}}
 }
-
+\author{
+Hajk-Georg Drost
+}

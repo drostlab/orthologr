@@ -61,13 +61,12 @@ delta.blast(
             cdd.path     = "path/to/cdd/database/folder" )
 }
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 \url{http://www.ncbi.nlm.nih.gov/books/NBK1763/#CmdLineAppsManual.Performing_a_DELTABLAS}
 }
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_blast}}
 }
-
+\author{
+Hajk-Georg Drost
+}

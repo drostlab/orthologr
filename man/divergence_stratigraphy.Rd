@@ -150,9 +150,6 @@ on an 8 core machine can take up to 1,5 - 2 hours.
  }
  
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature (490): 98-101.
  
@@ -162,4 +159,6 @@ Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature
 \code{\link{dNdS}}, \code{\link{DivergenceMap}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
 }
-
+\author{
+Hajk-Georg Drost
+}

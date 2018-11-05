@@ -39,4 +39,3 @@ Ath.proteome <- read.proteome(system.file('seqs/ortho_thal_aa.fasta', package = 
 \author{
 Hajk-Georg Drost
 }
-

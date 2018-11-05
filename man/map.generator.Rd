@@ -70,4 +70,3 @@ map.generator(
 \author{
 Hajk-Georg Drost
 }
-

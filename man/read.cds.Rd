@@ -4,14 +4,14 @@
 \alias{read.cds}
 \title{Read the CDS of a given organism}
 \usage{
-read.cds(file, format, delete_corrupt = TRUE, ...)
+read.cds(file, format, delete_corrupt_cds = TRUE, ...)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the CDS.}
 
 \item{format}{a character string specifying the file format used to store the CDS, e.g. "fasta", "fatsq".}
 
-\item{delete_corrupt}{a logical value indicating whether corrupt base triplets should be removed from the input \code{file}.}
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
 \item{...}{additional arguments that are used by the \code{\link[Biostrings]{readDNAStringSet}} function.}
 }
@@ -41,4 +41,3 @@ Ath.cds <- read.cds(system.file('seqs/ortho_thal_cds.fasta', package = 'ortholog
 \author{
 Hajk-Georg Drost
 }
-

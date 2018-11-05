@@ -5,7 +5,7 @@
 \title{Create a BLASTable database with makeblastdb}
 \usage{
 set_blast(file, seq_type = "cds", format = "fasta", makedb = FALSE,
-  path = NULL, makedb_type = "protein", ...)
+  delete_corrupt_cds = TRUE, path = NULL, makedb_type = "protein", ...)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences of interest.}
@@ -18,6 +18,8 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{format}{a character string specifying the file format used to store the genome, e.g. "fasta", "gbk".}
 
 \item{makedb}{TRUE or FALSE whether a database should be created or not (BLAST parameter 'makeblastdb').}
+
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
 \item{path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
@@ -43,9 +45,6 @@ This function reads a file storing a specific sequence type, such as "cds", "pro
  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 }
 }
-\author{
-Sarah Scharfenberg and Hajk-Georg Drost
-}
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 
@@ -66,4 +65,6 @@ Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madde
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}, \code{\link{advanced_makedb}}
 }
-
+\author{
+Sarah Scharfenberg and Hajk-Georg Drost
+}

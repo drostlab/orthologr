@@ -5,12 +5,12 @@
 \title{Compute dNdS values for two organisms}
 \usage{
 dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
-  ortho_detection = "RBH", cdd.path = NULL, blast_params = NULL,
-  blast_path = NULL, eval = "1E-5", ortho_path = NULL,
-  aa_aln_type = "multiple", aa_aln_tool = "clustalw", aa_aln_path = NULL,
-  aa_aln_params = NULL, codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
-  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE,
-  clean_folders = FALSE)
+  ortho_detection = "RBH", delete_corrupt_cds = TRUE, cdd.path = NULL,
+  blast_params = NULL, blast_path = NULL, eval = "1E-5",
+  ortho_path = NULL, aa_aln_type = "multiple", aa_aln_tool = "clustalw",
+  aa_aln_path = NULL, aa_aln_params = NULL, codon_aln_tool = "pal2nal",
+  kaks_calc_path = NULL, dnds_est.method = "YN", comp_cores = 1,
+  quiet = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -28,6 +28,8 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).}
+
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
 \item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
 
@@ -190,9 +192,6 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 
 }
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 seqinr: \url{http://seqinr.r-forge.r-project.org/}
 
@@ -213,4 +212,6 @@ matching algorithms. R package version 2.32.1.
 \code{\link{divergence_stratigraphy}}, \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
 \code{\link{blast_rec}}, \code{\link{read.cds}}
 }
-
+\author{
+Hajk-Georg Drost
+}

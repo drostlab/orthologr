@@ -58,4 +58,3 @@ pairwise_aln( file     = system.file('seqs/aa_seqs.fasta', package = 'orthologr'
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost
 }
-

@@ -49,10 +49,9 @@ divMap <- DivergenceMap( dNdS_tbl = dNdS_tbl, subject.id = TRUE)
 
 }
 }
-\author{
-Hajk-Georg Drost
-}
 \seealso{
 \code{\link{divergence_stratigraphy}}
 }
-
+\author{
+Hajk-Georg Drost
+}

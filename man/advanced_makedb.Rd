@@ -33,9 +33,6 @@ advanced_makedb( database_file = system.file('seqs/ortho_thal_aa.fasta', package
                  
 }
 }
-\author{
-Hajk-Georg Drost
-}
 \references{
 Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 
@@ -60,4 +57,6 @@ http://blast.ncbi.nlm.nih.gov/Blast.cgi
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}, \code{\link{set_blast}}, \code{\link{advanced_blast}}
 }
-
+\author{
+Hajk-Georg Drost
+}
