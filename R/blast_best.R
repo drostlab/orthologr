@@ -18,8 +18,6 @@
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
-#' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
@@ -74,11 +72,6 @@
 #' 
 #' 
 #' 
-#' # getting the entire BLAST table as output using the argument 'detailed_output = TRUE'
-#' blast_best(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'            subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'            detailed_output = TRUE)
-#' 
 #' 
 #' 
 #' # use multicore processing
@@ -113,7 +106,6 @@ blast_best <- function(query_file,
                        path            = NULL, 
                        comp_cores      = 1,
                        blast_params    = NULL, 
-                       detailed_output = FALSE,
                        clean_folders   = FALSE,
                        save.output     = NULL){
         
@@ -128,7 +120,7 @@ blast_best <- function(query_file,
         
         # performing a BLAST search from query against subject: blast(query,subject)
         
-        hit_tbl.dt <- blast( query_file      = query_file,
+        hit_tbl <- blast( query_file      = query_file,
                              subject_file    = subject_file,
                              eval            = eval,
                              max.target.seqs = max.target.seqs,
@@ -141,33 +133,8 @@ blast_best <- function(query_file,
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         
-        if (!detailed_output) {
-                tryCatch({
-                        besthit_tbl <-
-                                hit_tbl.dt[ , sapply(.SD[, evalue], min)[1], by = key(hit_tbl.dt)]
-                        
-                        #data.table::setnames(besthit_tbl, old = c("V1","V2"), new = c("subject_id","evalue"))
-                        data.table::setnames(besthit_tbl,
-                                             old = c("V1"),
-                                             new = c("evalue"))
-                        
-                        data.table::setkeyv(besthit_tbl, c("query_id", "subject_id"))
-                        
-                        
-                        # return a data.table storing only the best hits from the resulting
-                        # BLAST search
-                        return(besthit_tbl)
-                        
-                }, error = function(e) {
-                        stop(
-                                "The BLAST output couldn't be read properly, maybe a problem occured when
-                                selecting best hits from the resulting BLAST hit table."
-                        )
-                })
-                
-                } else {
-                        return(hit_tbl.dt)
-                        
-                }
+        query_id <- NULL
+        hit_tbl <- dplyr::do(dplyr::group_by(hit_tbl, query_id), filter_best_hits(.))
+        return(hit_tbl)
 }
 
