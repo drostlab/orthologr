@@ -17,8 +17,6 @@
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore BLAST computations.
 #' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @param detailed_output a boolean value specifying whether a detailed BLAST table shall be returned or only the evalue of the corresponding
-#' ortholog pairs.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
@@ -105,7 +103,6 @@ blast_rec <- function(query_file,
                       path            = NULL, 
                       comp_cores      = 1, 
                       blast_params    = NULL, 
-                      detailed_output = FALSE, 
                       clean_folders   = FALSE,
                       save.output     = NULL){
         
@@ -120,7 +117,6 @@ blast_rec <- function(query_file,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
-                              detailed_output = detailed_output,
                               save.output     = save.output )
         
         orthoB <- blast_best( query_file      = subject_file,
@@ -134,20 +130,15 @@ blast_rec <- function(query_file,
                               path            = path, 
                               comp_cores      = comp_cores, 
                               blast_params    = blast_params,
-                              detailed_output = detailed_output,
                               clean_folders   = clean_folders,
                               save.output     = save.output )
         
-        data.table::setnames(
-                orthoB,
-                old = c("query_id", "subject_id"),
-                new = c("subject_id", "query_id")
-        )
+        colnames(orthoB)[1:2] <- c("subject_id", "query_id")
         
         tryCatch({
                 return(dplyr::semi_join(
-                        dtplyr::tbl_dt(orthoA),
-                        dtplyr::tbl_dt(orthoB),
+                        orthoA,
+                        orthoB,
                         by = c("query_id", "subject_id")
                 ))
                 
