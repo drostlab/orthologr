@@ -47,6 +47,9 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
         query_id <- subject_id <- divergence_strata <- NULL
         
+        data.table::setDT(dNdS_tbl)
+        data.table::setkeyv(dNdS_tbl, c("query_id","subject_id"))
+        
         dNdS_tbl_divMap <-
                 dplyr::select(dtplyr::tbl_dt(dNdS_tbl), dNdS, query_id, subject_id)
         
