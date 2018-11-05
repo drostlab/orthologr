@@ -433,6 +433,7 @@ compute_dnds <- function(complete_tbl,
                         file.path(tempdir(), "_calculation")
                 ))
         
+        dNdS_tbl <- tibble::as_tibble(dtplyr::tbl_dt(dNdS_tbl))
         # returning the dNdS table as data.table object
         return(dNdS_tbl)
         
