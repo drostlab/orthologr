@@ -169,6 +169,8 @@ select_orthologs <-
                                 by = c("query_id", "subject_id")
                         )
                 
+                print(final_join_dnds_annotation_tbl)
+                
                 if (collapse_by == "gene_locus") {
                         
                         message("Select splice variant with smallest e-value for each gene locus of query species ...")
@@ -181,6 +183,9 @@ select_orthologs <-
                                         ),
                                         filter_best_hits(.)
                                 )
+                        
+                        print(res_qry)
+                        
                         message("Select splice variant with smallest e-value for each gene locus of subject species ...")
                         res_sbj <-
                                 dplyr::do(
@@ -192,9 +197,9 @@ select_orthologs <-
                                 )
                         
                         res_sbj <- dplyr::select(res_sbj, "query_id",
-                                                 "subject_id",
-                                                 "subject_gene_id",
-                                                 "subject_gene_locus_id")
+                                                 "subject_id")
+                        
+                        print(res_sbj)
                         
                         res <- dplyr::inner_join(res_qry,
                                                  res_sbj,
