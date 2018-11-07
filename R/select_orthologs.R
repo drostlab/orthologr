@@ -154,7 +154,6 @@ select_orthologs <-
                         dplyr::select(
                                 joined_dnds_annotation_tbl_sbj,
                                 "query_id",
-                                "subject_id",
                                 "subject_gene_id",
                                 "subject_gene_locus_id"
                         )
@@ -166,7 +165,7 @@ select_orthologs <-
                         dplyr::inner_join(
                                 joined_dnds_annotation_tbl_qry,
                                 joined_dnds_annotation_tbl_sbj,
-                                by = c("query_id", "subject_id")
+                                by = "query_id")
                         )
                 
                 print(final_join_dnds_annotation_tbl)
@@ -196,14 +195,13 @@ select_orthologs <-
                                         filter_best_hits(.)
                                 )
                         
-                        res_sbj <- dplyr::select(res_sbj, "query_id",
-                                                 "subject_id")
+                        res_sbj <- dplyr::select(res_sbj, "query_id")
                         
                         print(res_sbj)
                         
                         res <- dplyr::inner_join(res_qry,
                                                  res_sbj,
-                                                 by = c("query_id", "subject_id"))
+                                                 by = "query_id")
                 }
                 
                 if (collapse_by == "splice_variant") {
