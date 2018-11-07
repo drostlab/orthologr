@@ -170,6 +170,8 @@ select_orthologs <-
                         )
                 
                 if (collapse_by == "gene_locus") {
+                        
+                        message("Select splice variant with smallest e-value for each gene locus of query species ...")
                         query_gene_locus_id <- subject_gene_locus_id <- NULL
                         res_qry <-
                                 dplyr::do(
@@ -179,7 +181,7 @@ select_orthologs <-
                                         ),
                                         filter_best_hits(.)
                                 )
-                        
+                        message("Select splice variant with smallest e-value for each gene locus of subject species ...")
                         res_sbj <-
                                 dplyr::do(
                                         dplyr::group_by(
@@ -188,6 +190,11 @@ select_orthologs <-
                                         ),
                                         filter_best_hits(.)
                                 )
+                        
+                        res_sbj <- dplyr::select(res_sbj, "query_id",
+                                                 "subject_id",
+                                                 "subject_gene_id",
+                                                 "subject_gene_locus_id")
                         
                         res <- dplyr::inner_join(res_qry,
                                                  res_sbj,
