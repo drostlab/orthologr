@@ -1,6 +1,6 @@
 #' @title Select orthologs based on either gene locus or splice variant
-#' @description This function ...
-#' @param dnds_tbl
+#' @description This function selects orthologs based on either gene locus or splice variant.
+#' @param dnds_tbl a tibble returned by \code{link{dNdS}}.
 #' @param annotation_file_query file path to query annotation file in either \code{gtf} or \code{gff} format.
 #' @param annotation_file_subject file path to query annotation file in either \code{gtf} or \code{gff} format.
 #' @param collapse_by locus type by which orthologs should be determined. Options are:
@@ -51,129 +51,172 @@ select_orthologs <-
                                 call. = FALSE
                         )
                 
-                message("Start ortholog selection process by ",
-                        collapse_by,
-                        " ...")
+                temp_store <-
+                        file.path(tempdir(),
+                                  paste0(
+                                          "final_join_dnds_annotation_tbl_",
+                                          basename(annotation_file_query)
+                                  ))
                 
-                message(
-                        "Import query annotation file '",
-                        annotation_file_query,
-                        "' using format ",
-                        format[1],
-                        " ..."
-                )
-                
-                # import annotation for query
-                imported_annotation_qry <-
-                        tibble::as_tibble(rtracklayer::import.gff(annotation_file_query, format = format[1]))
-                message("Select orthologs in query species ...")
-                
-                if (format[1] == "gff") {
-                        Name <- NULL
-                        extracted_features_qry <-
-                                dplyr::do(
-                                        dplyr::group_by(imported_annotation_qry, Name),
-                                        extract_features(. , format = format[1])
-                                )
-                        colnames(extracted_features_qry)[1] <-
-                                "query_Name"
-                }
-                
-                if (format[1] == "gtf") {
-                        gene_id <- NULL
-                        extracted_features_qry <-
-                                dplyr::do(
-                                        dplyr::group_by(imported_annotation_qry, gene_id),
-                                        extract_features(. , format = format[1])
-                                )
-                        colnames(extracted_features_qry)[1] <-
-                                "query_Name"
-                }
-                
-                message(
-                        "Import subject annotation file '",
-                        annotation_file_subject,
-                        "' using format ",
-                        format[2],
-                        " ..."
-                )
-                # import annotation for subjecy
-                imported_annotation_sbj <-
-                        tibble::as_tibble(rtracklayer::import.gff(annotation_file_subject, format = format[2]))
-                
-                message("Select orthologs in subject species ...")
-                
-                if (format[2] == "gff") {
-                        Name <- NULL
-                        extracted_features_sbj <-
-                                dplyr::do(
-                                        dplyr::group_by(imported_annotation_sbj, Name),
-                                        extract_features(. , format = format[2])
-                                )
-                        colnames(extracted_features_sbj)[1] <-
-                                "subject_Name"
-                        colnames(extracted_features_sbj)[3] <-
-                                "subject_id"
-                }
-                
-                if (format[2] == "gtf") {
-                        gene_id <- NULL
-                        extracted_features_sbj <-
-                                dplyr::do(
-                                        dplyr::group_by(imported_annotation_sbj, gene_id),
-                                        extract_features(. , format = format[2])
-                                )
-                        colnames(extracted_features_sbj)[1] <-
-                                "subject_gene_id"
-                        colnames(extracted_features_sbj)[3] <-
-                                "subject_id"
-                }
-                
-                message("Join dnds and annotation tables ...")
-                # join dnds tbl with query annotation
-                joined_dnds_annotation_tbl_qry <-
-                        dplyr::inner_join(dnds_tbl,
-                                          extracted_features_qry,
-                                          by = "query_id")
-                
-                names(joined_dnds_annotation_tbl_qry)[length(joined_dnds_annotation_tbl_qry)] <-
-                        "query_gene_locus_id"
-                
-                print(joined_dnds_annotation_tbl_qry)
-                
-                # join dnds tbl with subject annotation
-                joined_dnds_annotation_tbl_sbj <-
-                        dplyr::inner_join(dnds_tbl,
-                                          extracted_features_sbj,
-                                          by = "subject_id")
-                
-                names(joined_dnds_annotation_tbl_sbj)[length(joined_dnds_annotation_tbl_sbj)] <-
-                        "subject_gene_locus_id"
-                
-                joined_dnds_annotation_tbl_sbj <-
-                        dplyr::select(
-                                joined_dnds_annotation_tbl_sbj,
-                                "query_id",
-                                "subject_gene_id",
-                                "subject_gene_locus_id"
+                if (file.exists(temp_store)) {
+                        message("Import pre-computed file final_join_dnds_annotation_tbl ...")
+                        final_join_dnds_annotation_tbl <-
+                                readRDS(temp_store)
+                        
+                } else {
+                        message("Start ortholog selection process by ",
+                                collapse_by,
+                                " ...")
+                        
+                        message(
+                                "Import query annotation file '",
+                                annotation_file_query,
+                                "' using format ",
+                                format[1],
+                                " ..."
                         )
-                
-                print(joined_dnds_annotation_tbl_sbj)
-                
-                # join query and subject tables
-                final_join_dnds_annotation_tbl <-
-                        dplyr::inner_join(
-                                joined_dnds_annotation_tbl_qry,
-                                joined_dnds_annotation_tbl_sbj,
-                                by = "query_id")
+                        
+                        # import annotation for query
+                        imported_annotation_qry <-
+                                tibble::as_tibble(rtracklayer::import.gff(annotation_file_query, format = format[1]))
+                        
+                        message("Select orthologs in query species ...")
+                        
+                        if (format[1] == "gff") {
+                                Name <- NULL
+                                extracted_features_qry <-
+                                        dplyr::do(
+                                                dplyr::group_by(imported_annotation_qry, Name),
+                                                extract_features(. , format = format[1])
+                                        )
+                                colnames(extracted_features_qry)[2] <-
+                                        "query_gene_locus_id"
+                                
+                                extracted_features_qry <-
+                                        dplyr::select(
+                                                dplyr::ungroup(extracted_features_qry),
+                                                "query_gene_locus_id",
+                                                "query_id"
+                                        )
+                                
+                        }
+                        
+                        if (format[1] == "gtf") {
+                                gene_id <- NULL
+                                extracted_features_qry <-
+                                        dplyr::do(
+                                                dplyr::group_by(imported_annotation_qry, gene_id),
+                                                extract_features(. , format = format[1])
+                                        )
+                                colnames(extracted_features_qry)[2] <-
+                                        "query_gene_locus_id"
+                                
+                                extracted_features_qry <-
+                                        dplyr::select(
+                                                dplyr::ungroup(extracted_features_qry),
+                                                "query_gene_locus_id",
+                                                "query_id"
+                                        )
+                        }
+                        
+                        message(
+                                "Import subject annotation file '",
+                                annotation_file_subject,
+                                "' using format ",
+                                format[2],
+                                " ..."
                         )
-                
-                print(final_join_dnds_annotation_tbl)
+                        # import annotation for subjecy
+                        imported_annotation_sbj <-
+                                tibble::as_tibble(
+                                        rtracklayer::import.gff(annotation_file_subject, format = format[2])
+                                )
+                        
+                        message("Select orthologs in subject species ...")
+                        
+                        if (format[2] == "gff") {
+                                Name <- NULL
+                                extracted_features_sbj <-
+                                        dplyr::do(
+                                                dplyr::group_by(imported_annotation_sbj, Name),
+                                                extract_features(. , format = format[2])
+                                        )
+                                colnames(extracted_features_sbj)[2] <-
+                                        "subject_gene_locus_id"
+                                colnames(extracted_features_sbj)[3] <-
+                                        "subject_id"
+                                
+                                extracted_features_sbj <-
+                                        dplyr::select(
+                                                dplyr::ungroup(extracted_features_sbj),
+                                                "subject_gene_locus_id",
+                                                "subject_id"
+                                        )
+                                
+                        }
+                        
+                        if (format[2] == "gtf") {
+                                gene_id <- NULL
+                                extracted_features_sbj <-
+                                        dplyr::do(
+                                                dplyr::group_by(imported_annotation_sbj, gene_id),
+                                                extract_features(. , format = format[2])
+                                        )
+                                colnames(extracted_features_sbj)[2] <-
+                                        "subject_gene_locus_id"
+                                colnames(extracted_features_sbj)[3] <-
+                                        "subject_id"
+                                
+                                extracted_features_sbj <-
+                                        dplyr::select(
+                                                dplyr::ungroup(extracted_features_sbj),
+                                                "subject_gene_locus_id",
+                                                "subject_id"
+                                        )
+                        }
+                        
+                        message("Join dnds and annotation tables ...")
+                        # join dnds tbl with query annotation
+                        joined_dnds_annotation_tbl_qry <-
+                                dplyr::inner_join(dnds_tbl,
+                                                  extracted_features_qry,
+                                                  by = "query_id")
+                        
+                        
+                        # join dnds tbl with subject annotation
+                        joined_dnds_annotation_tbl_sbj <-
+                                dplyr::inner_join(dnds_tbl,
+                                                  extracted_features_sbj,
+                                                  by = "subject_id")
+                        
+                        joined_dnds_annotation_tbl_sbj <-
+                                dplyr::select(
+                                        joined_dnds_annotation_tbl_sbj,
+                                        "query_id",
+                                        "subject_gene_locus_id",
+                                        "subject_id"
+                                )
+                        
+                        # join query and subject tables
+                        final_join_dnds_annotation_tbl <-
+                                dplyr::inner_join(
+                                        joined_dnds_annotation_tbl_qry,
+                                        joined_dnds_annotation_tbl_sbj,
+                                        by = c("query_id", "subject_id")
+                                )
+                        
+                        if (!file.exists(temp_store)) {
+                                saveRDS(final_join_dnds_annotation_tbl,
+                                        temp_store)
+                        }
+                }
                 
                 if (collapse_by == "gene_locus") {
-                        
-                        message("Select splice variant with smallest e-value for each gene locus of query species ...")
-                        query_gene_locus_id <- subject_gene_locus_id <- NULL
+                        message(
+                                "Select splice variant with smallest e-value for each gene locus of query species ..."
+                        )
+                        query_gene_locus_id <-
+                                subject_gene_locus_id <- NULL
                         res_qry <-
                                 dplyr::do(
                                         dplyr::group_by(
@@ -183,30 +226,105 @@ select_orthologs <-
                                         filter_best_hits(.)
                                 )
                         
-                        print(res_qry)
-                        
-                        message("Select splice variant with smallest e-value for each gene locus of subject species ...")
+                        message(
+                                "Select splice variant with smallest e-value for each gene locus of subject species ..."
+                        )
                         res_sbj <-
-                                dplyr::do(
+                                dplyr::ungroup(dplyr::do(
                                         dplyr::group_by(
                                                 final_join_dnds_annotation_tbl,
                                                 subject_gene_locus_id
                                         ),
                                         filter_best_hits(.)
+                                ))
+                        
+                        res_sbj <-
+                                dplyr::select(dplyr::ungroup(res_sbj),
+                                              "query_id",
+                                              "subject_id")
+                        
+                        res <-
+                                dplyr::inner_join(dplyr::ungroup(res_qry),
+                                                  res_sbj,
+                                                  by = c("query_id", "subject_id"))
+                        
+                        if (length(unique(res$query_id)) == length(unique(res$query_gene_locus_id))) {
+                                message("Good News: ")
+                                message(
+                                        "Number of unique query_ids matches the number of unique query_gene_locus_ids. Thus, each gene locus has now a representative splice variant. The one having the smallest evalue and longest alignment length if two splice variants have the same evalue."
+                                )
+                                message("\n")
+                        } else {
+                                message(
+                                        "Please check your input data. It seems that the number of unique query_ids DOES NOT match the number of unique query_gene_locus_ids. Thus, some query gene loci seem to have multiple splice variants as representatives."
+                                )
+                                message("\n")
+                        }
+                        
+                        if (length(unique(res$subject_id)) == length(unique(res$subject_gene_locus_id))) {
+                                message("Good news:")
+                                message(
+                                        "Number of unique subject_ids matches the number of unique subject_gene_locus_ids Thus, each gene locus has now a representative splice variant. The one having the smallest evalue and longest alignment length if two splice variants have the same evalue."
+                                )
+                                message("\n")
+                        } else {
+                                message(
+                                        "Please check your input data. It seems that the number of unique subject_ids DOES NOT match the number of unique subject_gene_locus_ids Thus, some subject gene loci seem to have multiple splice variants as representatives."
+                                )
+                                message("\n")
+                        }
+                        
+                        if (length(unique(dnds_tbl$query_id)) < length(unique(res$query_id)))
+                                stop(
+                                        "Something must have gone wrong... The unique number of query_ids in the dNdS_tbl is smaller than the unique number of query_ids in the collapsed output file. Please check your input data.",
+                                        call. = FALSE
                                 )
                         
-                        res_sbj <- dplyr::select(res_sbj, "query_id")
-                        
-                        print(res_sbj)
-                        
-                        res <- dplyr::inner_join(res_qry,
-                                                 res_sbj,
-                                                 by = "query_id")
                 }
                 
                 if (collapse_by == "splice_variant") {
                         res <- final_join_dnds_annotation_tbl
+                        query_id <- subject_id <- NULL
+                        res <- dplyr::distinct(
+                                res,
+                                query_id,
+                                query_gene_locus_id,
+                                subject_id,
+                                subject_gene_locus_id,
+                                .keep_all = TRUE
+                        )
                 }
+                
+                qry_species_name <-
+                        unlist(stringr::str_split(basename(annotation_file_query), "_"))[1]
+                sbj_species_name <-
+                        unlist(stringr::str_split(basename(annotation_file_subject), "_"))[1]
+                res <-
+                        dplyr::mutate(
+                                res,
+                                qry_species = rep(qry_species_name, nrow(res)),
+                                subject_species = rep(sbj_species_name, nrow(res))
+                        )
+                
+                evalue <- bit_score <- perc_identity <- NULL
+                s_end <-
+                        dN <-
+                        dS <- qry_species <- subject_species <- NULL
+                res <- dplyr::select(
+                        res,
+                        qry_species,
+                        subject_species,
+                        query_id,
+                        query_gene_locus_id,
+                        subject_id,
+                        subject_gene_locus_id,
+                        dN,
+                        dS,
+                        dNdS,
+                        evalue,
+                        bit_score,
+                        perc_identity:s_end
+                )
                 
                 message("... orthology inference finished successfully!")
                 return(res)
