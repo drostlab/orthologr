@@ -1,4 +1,8 @@
-#' @title Helper fucntion to extract gene locu and splice variant IDs from GFF files
+#' @title Helper fucntion to extract gene loci and splice variant IDs from GFF files
+#' @description Extract gene loci and splice variant IDs from GFF files.
+#' @param x a data.frame converted from a \code{gff} or \code{gtf} file.
+#' @param format either \code{format = "gtf"} or \code{format = "gff"}.
+#' @export
 extract_features <- function(x, format) {
         
         if (!is.element(format, c("gtf", "gff")))
@@ -10,8 +14,8 @@ extract_features <- function(x, format) {
                 
                 if (nrow(get_gene_id) > 0 & nrow(get_mRNA_id) > 0) {
                         
-                        res <- tibble::tibble(gene_locus_id = rep(get_gene_id$gene_id, length(get_mRNA_id$transcript_id)),
-                                              query_id = get_mRNA_id$transcript_id)
+                        res <- tibble::tibble(gene_locus_id = rep(get_gene_id$gene_id, length(unique(get_mRNA_id$transcript_id))),
+                                              query_id = unique(get_mRNA_id$transcript_id))
                         
                 } else {
                         res <- tibble::tibble(gene_locus_id = NA, query_id = NA)
@@ -24,26 +28,15 @@ extract_features <- function(x, format) {
                 
                 if (nrow(get_gene_id) > 0 & nrow(get_mRNA_id) > 0) {
                         
-                        res <- tibble::tibble(gene_locus_id = rep(get_gene_id$ID, length(get_mRNA_id$ID)),
-                                              query_id = get_mRNA_id$ID)
+                        res <- tibble::tibble(gene_locus_id = rep(get_gene_id$ID, length(unique(get_mRNA_id$ID))),
+                                              query_id = unique(get_mRNA_id$ID))
                         
                 } else {
                         res <- tibble::tibble(gene_locus_id = NA, query_id = NA)
                 }
         }
         
-        if (format == "gff") {
-                get_gene_id <- dplyr::filter(x, type == "gene")
-                get_mRNA_id <- dplyr::filter(x, type == "CDS")
-                
-                if (nrow(get_gene_id) > 0 & nrow(get_mRNA_id) > 0) {
-                        
-                        res <- tibble::tibble(gene_locus_id = rep(get_gene_id$ID, length(get_mRNA_id$ID)),
-                                              query_id = get_mRNA_id$ID)
-                        
-                } else {
-                        res <- tibble::tibble(gene_locus_id = NA, query_id = NA)
-                }
-        }
+        gene_locus_id <- query_id <- NULL
+        res <- dplyr::filter(res, !is.na(gene_locus_id), !is.na(query_id))
         return(res)
 }
