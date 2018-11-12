@@ -30,7 +30,7 @@ read.dnds.tbl <- function(file) {
         if (!file.exists(file))
                 stop("The file '",file,"' does not seem to exist. Please specify a valid path to your dnds table.", call. = FALSE)
         
-        res <- readr::read_delim(
+        res <- tibble::as_tibble(readr::read_delim(
                 file,
                 col_names = TRUE,
                 delim = ";",
@@ -49,7 +49,7 @@ read.dnds.tbl <- function(file) {
                                         "s_end" = readr::col_integer(),
                                         "evalue" = readr::col_double(),
                                         "bit_score" = readr::col_double()
-                                        )
+                                        ))
         )
         
         return(res)
