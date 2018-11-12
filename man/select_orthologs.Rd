@@ -8,6 +8,8 @@ select_orthologs(dnds_tbl, annotation_file_query, annotation_file_subject,
   collapse_by = "gene_locus", format = c("gtf", "gtf"))
 }
 \arguments{
+\item{dnds_tbl}{a tibble returned by \code{link{dNdS}}.}
+
 \item{annotation_file_query}{file path to query annotation file in either \code{gtf} or \code{gff} format.}
 
 \item{annotation_file_subject}{file path to query annotation file in either \code{gtf} or \code{gff} format.}
@@ -21,7 +23,7 @@ select_orthologs(dnds_tbl, annotation_file_query, annotation_file_subject,
 \item{format}{a vector of length 2 storing the annotation file formats of the query annotation file and subject annotation file: either \code{gtf} or \code{gff} format. E.g. \code{format = c("gtf","gtf")}.}
 }
 \description{
-This function ...
+This function selects orthologs based on either gene locus or splice variant.
 }
 \author{
 Hajk-Georg Drost
