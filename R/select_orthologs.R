@@ -270,7 +270,7 @@ select_orthologs <-
                         if (length(unique(res$subject_id)) == length(unique(res$subject_gene_locus_id))) {
                                 message("Good news:")
                                 message(
-                                        "Number of unique subject_ids matches the number of unique subject_gene_locus_ids Thus, each gene locus has now a representative splice variant. The one having the smallest evalue and longest alignment length if two splice variants have the same evalue."
+                                        "Number of unique subject_ids matches the number of unique subject_gene_locus_ids. Thus, each gene locus has now a representative splice variant. The one having the smallest evalue and longest alignment length if two splice variants have the same evalue."
                                 )
                                 message("\n")
                         } else {
