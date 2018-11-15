@@ -55,10 +55,16 @@ select_orthologs <-
                         file.path(tempdir(),
                                   paste0(
                                           "final_join_dnds_annotation_tbl_",
-                                          basename(annotation_file_query)
+                                          basename(annotation_file_query),
+                                          "_vs_",
+                                          basename(annotation_file_subject)
                                   ))
                 
                 if (file.exists(temp_store)) {
+                        message("Start ortholog selection process by ",
+                                collapse_by,
+                                " ...")
+                        
                         message("Import pre-computed file final_join_dnds_annotation_tbl ...")
                         final_join_dnds_annotation_tbl <-
                                 readRDS(temp_store)
@@ -296,23 +302,23 @@ select_orthologs <-
                 }
                 
                 qry_species_name <-
-                        unlist(stringr::str_split(basename(annotation_file_query), "_"))[1]
+                        unlist(stringr::str_split(basename(annotation_file_query), "[.]"))[1]
                 sbj_species_name <-
-                        unlist(stringr::str_split(basename(annotation_file_subject), "_"))[1]
+                        unlist(stringr::str_split(basename(annotation_file_subject), "[.]"))[1]
                 res <-
                         dplyr::mutate(
                                 res,
-                                qry_species = rep(qry_species_name, nrow(res)),
+                                query_species = rep(qry_species_name, nrow(res)),
                                 subject_species = rep(sbj_species_name, nrow(res))
                         )
                 
                 evalue <- bit_score <- perc_identity <- NULL
                 s_end <-
                         dN <-
-                        dS <- qry_species <- subject_species <- NULL
+                        dS <- query_species <- subject_species <- NULL
                 res <- dplyr::select(
                         res,
-                        qry_species,
+                        query_species,
                         subject_species,
                         query_id,
                         query_gene_locus_id,
