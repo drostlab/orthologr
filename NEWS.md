@@ -2,6 +2,9 @@
 
 ### New Features
 
+- `read.cds()` now trimms corrupted CDS (= CDS not divisible by 3) when `delete_corrupt_cds = FALSE` is specified
+- the new default value of argument `delete_corrupt_cds` in `dNdS()` is now `FALSE`.
+Thus, given the new trimming feature in `read.cds()`, corrupted CDS equences will be trimmed before being translated.
 
 
 ## `orthologr` version  0.0.5
