@@ -40,4 +40,4 @@ Suggests:
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
