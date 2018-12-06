@@ -5,7 +5,8 @@
 \title{Compute a Codon Alignment}
 \usage{
 codon_aln(file_aln, file_nuc, format = "clustal", tool = "pal2nal",
-  params = NULL, codon_aln_name = NULL, get_aln = FALSE, quiet = FALSE)
+  params = NULL, codon_aln_name = NULL, get_aln = FALSE,
+  quiet = FALSE)
 }
 \arguments{
 \item{file_aln}{a character string specifying the path to the file storing the protein alignment in CLUSTAL or FASTA format.}

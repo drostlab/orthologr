@@ -4,9 +4,9 @@
 \alias{ProteinOrtho}
 \title{Orthology Inference with ProteinOrtho}
 \usage{
-ProteinOrtho(query_file, subject_files, po_params = NULL, eval = "1E-5",
-  seq_type = "protein", format = "fasta", po_path = NULL,
-  comp_cores = 1, delete_files = FALSE)
+ProteinOrtho(query_file, subject_files, po_params = NULL,
+  eval = "1E-5", seq_type = "protein", format = "fasta",
+  po_path = NULL, comp_cores = 1, delete_files = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}

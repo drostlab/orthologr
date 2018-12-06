@@ -4,11 +4,11 @@
 \alias{advanced_blast}
 \title{Perform an advanced BLAST+ search}
 \usage{
-advanced_blast(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", path = NULL, blast_params = NULL,
-  makedb_type = "protein", taxonomy = FALSE, db_path = NULL,
-  sql_database = FALSE, session_name = NULL, write.only = FALSE,
-  clean_folders = FALSE)
+advanced_blast(query_file, subject_file, seq_type = "cds",
+  format = "fasta", blast_algorithm = "blastp", path = NULL,
+  blast_params = NULL, makedb_type = "protein", taxonomy = FALSE,
+  db_path = NULL, sql_database = FALSE, session_name = NULL,
+  write.only = FALSE, clean_folders = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}

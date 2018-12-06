@@ -5,8 +5,8 @@
 \title{Perform a BLASTP search against NCBI nr}
 \usage{
 blast.nr(query_file, nr.path = NULL, seq_type = "protein",
-  format = "fasta", eval = "1E-5", max.target.seqs = 500, path = NULL,
-  blast_params = NULL, comp_cores = 1)
+  format = "fasta", eval = "1E-5", max.target.seqs = 500,
+  path = NULL, blast_params = NULL, comp_cores = 1)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the query file of interest (query organism).}

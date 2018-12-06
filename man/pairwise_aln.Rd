@@ -4,8 +4,9 @@
 \alias{pairwise_aln}
 \title{Compute Pairwise Alignments}
 \usage{
-pairwise_aln(file, tool = "NW", seq_type = "protein", get_aln = FALSE,
-  pairwise_aln_name = NULL, path = NULL, quiet = FALSE)
+pairwise_aln(file, tool = "NW", seq_type = "protein",
+  get_aln = FALSE, pairwise_aln_name = NULL, path = NULL,
+  quiet = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}

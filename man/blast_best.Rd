@@ -4,10 +4,11 @@
 \alias{blast_best}
 \title{Perform a BLAST+ best hit search}
 \usage{
-blast_best(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", delete_corrupt_cds = TRUE, eval = "1E-5",
-  max.target.seqs = 10000, path = NULL, comp_cores = 1,
-  blast_params = NULL, clean_folders = FALSE, save.output = NULL)
+blast_best(query_file, subject_file, seq_type = "cds",
+  format = "fasta", blast_algorithm = "blastp",
+  delete_corrupt_cds = TRUE, eval = "1E-5", max.target.seqs = 10000,
+  path = NULL, comp_cores = 1, blast_params = NULL,
+  clean_folders = FALSE, save.output = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}

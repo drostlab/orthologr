@@ -5,7 +5,8 @@
 \title{Create a BLASTable database with makeblastdb}
 \usage{
 set_blast(file, seq_type = "cds", format = "fasta", makedb = FALSE,
-  delete_corrupt_cds = TRUE, path = NULL, makedb_type = "protein", ...)
+  delete_corrupt_cds = TRUE, path = NULL, makedb_type = "protein",
+  ...)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences of interest.}

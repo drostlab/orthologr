@@ -4,9 +4,10 @@
 \alias{delta.blast}
 \title{Perform a DELTA-BLAST Search}
 \usage{
-delta.blast(query_file, subject_file, cdd.path = NULL, seq_type = "cds",
-  format = "fasta", eval = "1E-5", max.target.seqs = 500, path = NULL,
-  blast_params = NULL, comp_cores = 1, makedb_type = "protein")
+delta.blast(query_file, subject_file, cdd.path = NULL,
+  seq_type = "cds", format = "fasta", eval = "1E-5",
+  max.target.seqs = 500, path = NULL, blast_params = NULL,
+  comp_cores = 1, makedb_type = "protein")
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the query file of interest (query organism).}

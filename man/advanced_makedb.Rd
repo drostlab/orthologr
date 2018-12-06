@@ -4,7 +4,8 @@
 \alias{advanced_makedb}
 \title{Create a BLASTable database with makeblastdb (advanced options)}
 \usage{
-advanced_makedb(database_file, params, folder = "_blast_db/", path = NULL)
+advanced_makedb(database_file, params, folder = "_blast_db/",
+  path = NULL)
 }
 \arguments{
 \item{database_file}{a character string specifying the path to the input file

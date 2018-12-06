@@ -6,3 +6,6 @@
 \usage{
 filter_best_hits(x)
 }
+\description{
+Helper function to select best BLAST hit based on min evalue
+}
