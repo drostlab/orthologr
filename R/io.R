@@ -149,6 +149,7 @@ read.cds <- function(file, format, delete_corrupt_cds = TRUE, ...) {
                 
                 all_triplets <- cds.dt[, mod3(seqs)]
                 
+                n_seqs <- nrow(cds.dt)
                 
         }, error = function(e) {
                 stop(
@@ -178,7 +179,7 @@ read.cds <- function(file, format, delete_corrupt_cds = TRUE, ...) {
                         file.path(getwd(), corrupted_file),
                         "'."
                 )
-                
+                message("\n")
                 corrupted_seqs <- as.data.frame(cds.dt[which(!all_triplets)])
                 seq_vector <- corrupted_seqs$seqs
                 names(seq_vector) <- corrupted_seqs$geneids
@@ -187,19 +188,70 @@ read.cds <- function(file, format, delete_corrupt_cds = TRUE, ...) {
                 
                 if (delete_corrupt_cds) {
                         message(
-                                "You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed. If after consulting the file '",
+                                "You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.",
+                                "If after consulting the file '",
                                 corrupted_file,
                                 "' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'."
                         )
+                        message("\n")
                         return(cds.dt[-which(!all_triplets) , list(geneids, seqs)])
                 }
                 
                 if (!delete_corrupt_cds) {
                         message(
-                                "You chose option 'delete_corrupt_cds = FALSE', thus corrupted coding sequences were retained for subsequent analyses. If after consulting the file '",
+                                "You chose option 'delete_corrupt_cds = FALSE', thus corrupted coding sequences were retained for subsequent analyses.")
+                        message(
+                                "The following modifications were made to the CDS sequences that were not divisible by 3:")
+                        message(
+                                "- If the sequence had 1 residue nucleotide then the last nucleotide of the sequence was removed.")
+                        message(
+                                "- If the sequence had 2 residue nucleotides then the last two nucleotides of the sequence were removed.")
+                        message(
+                                "If after consulting the file '",
                                 corrupted_file,
                                 "' you wish to remove all corrupted coding sequences please specify the argument 'delete_corrupt_cds = TRUE'."
                         )
+                        
+                        mod3_residue_1 <-
+                                function(x) {
+                                        return((nchar(x) %% 3) == 1)
+                                }
+                        
+                        mod3_residue_2 <-
+                                function(x) {
+                                        return((nchar(x) %% 3) == 2)
+                                }
+                        
+                        residue_1 <- cds.dt[ , mod3_residue_1(seqs)]
+                        residue_2 <- cds.dt[ , mod3_residue_2(seqs)]
+                        
+                        residue_1_seqs <- as.character(cds.dt[which(residue_1) , seqs])
+                        residue_2_seqs <- as.character(cds.dt[which(residue_2) , seqs])
+                        
+                        residue_1_seqs_vec <- as.character(sapply(residue_1_seqs, function(x) {
+                                stringr::str_sub(x, 1, nchar(x) - 1)
+                        }))
+                
+                        residue_2_seqs_vec <- as.character(sapply(residue_2_seqs, function(x) {
+                                stringr::str_sub(x, 1, nchar(x) - 2)
+                        }))
+                        
+                        cds.dt[which(residue_1) , seqs := residue_1_seqs_vec]
+                        cds.dt[which(residue_2) , seqs := residue_2_seqs_vec]
+                        
+                        all_triplets_new <- cds.dt[ , mod3(seqs)]
+                        
+                        if (any(!all_triplets_new)) {
+                                stop("Something went wring during the trimming process. Not all sequences were trimmed properly.", call. = FALSE)
+                        } else {
+                                message("All corrupted CDS were trimmed.")
+                        }
+                        
+                        n_seqs_new <- nrow(cds.dt)
+                        
+                        if(!(n_seqs == n_seqs_new))
+                                stop("After trimming corrupted CDS some sequences seem to be lost. Please check what might have gone wrong with the sequence trimming.", call. = FALSE)
+                        
                         return(cds.dt)
                 }
                 
