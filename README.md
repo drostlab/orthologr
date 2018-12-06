@@ -111,6 +111,7 @@ Hsapiens_file <- biomartr::getCDS(organism = "Homo sapiens", path = getwd())
 Hs_vs_Mm_dNdS <- 
   dNdS(query_file      = Hsapiens_file,
        subject_file    = Mmusculus_file,
+       delete_corrupt_cds = FALSE,
        ortho_detection = "RBH", 
        aa_aln_type     = "pairwise",
        aa_aln_tool     = "NW", 
