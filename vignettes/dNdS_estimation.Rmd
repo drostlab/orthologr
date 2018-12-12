@@ -39,8 +39,17 @@ __Note:__ the following dNdS estimation methods are based on KaKs_Calculator:
 
 * "MYN" (Modified YN): Zhang, Z., et al. (2006)
 
+* "GMYN": Wang, D.P., et al. Biology Direct. (2009)
+
+* "GY": Goldman, N. and Yang, Z. (1994)
+
+* "MS": (Model Selection): based on a set of candidate models, Posada, D. (2003) 
+* "MA" (Model Averaging): based on a set of candidate models, Posada, D. (2003)
+
+* "ALL": All models toghether 
+
 It is assumed that when you choose one of these dNdS estimation methods you have
-[KaKs_Calculator](https://code.google.com/archive/p/kaks-calculator/) installed on your machine and it can be executed from the
+[KaKs_Calculator 2](https://sourceforge.net/projects/kakscalculator2/) installed on your machine and it can be executed from the
 default execution `PATH`.
 
 The following pipeline resembles an example dNdS estimation procedure:
