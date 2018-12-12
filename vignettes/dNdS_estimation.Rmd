@@ -25,7 +25,7 @@ The `orthologr` package provides a function named `dNdS()` to perform dNdS estim
 The `dNdS()` function takes the CDS files of two organisms of interest (`query_file` and `subject_file`) 
 and computes the dNdS estimation values for orthologous gene pairs between these organisms.
 
-__Note:__ the following dNdS estimation methods are based on KaKs_Calculator:
+__Note:__ the following dNdS estimation methods are based on KaKs_Calculator 2:
 
 * "NG": Nei, M. and Gojobori, T. (1986)
 
