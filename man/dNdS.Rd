@@ -5,7 +5,7 @@
 \title{Compute dNdS values for two organisms}
 \usage{
 dNdS(query_file, subject_file, seq_type = "protein", format = "fasta",
-  ortho_detection = "RBH", delete_corrupt_cds = TRUE,
+  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
   cdd.path = NULL, blast_params = NULL, blast_path = NULL,
   eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
