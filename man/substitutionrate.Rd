@@ -62,12 +62,16 @@ Approximate Methods:
 
 \item "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
 
-\item "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+\item "MLWL": (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
 
 \item "YN": Yang, Z. and Nielsen, R. (2000)
 
-\item "MYN" (Modified YN): Zhang, Z., et al. (2006)
+\item "MYN": (Modified YN): Zhang, Z., et al. (2006)
 
+\item "GMYN": Wang, D.P., et al. Biology Direct. (2009)
+\item "GY": Goldman, N. and Yang, Z. (1994)
+\item "MS": (Model Selection)
+\item "MA": (Model Averaging): based on a set of candidate models, Posada, D. (2003)
 }
 
 Maximum-Likelihood Methods:
