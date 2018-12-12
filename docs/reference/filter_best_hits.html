@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Save a proteome in fasta format — write.proteome • orthologr</title>
+<title>Helper function to select best BLAST hit based on min evalue — filter_best_hits • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Save a proteome in fasta format — write.proteome" />
+<meta property="og:title" content="Helper function to select best BLAST hit based on min evalue — filter_best_hits" />
 
-<meta property="og:description" content="This function takes a proteome (in data.table notation) as returned by 
-read.proteome and saves it to your hard drive." />
+<meta property="og:description" content="Helper function to select best BLAST hit based on min evalue" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,72 +129,26 @@ read.proteome and saves it to your hard drive." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Save a proteome in fasta format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/write.proteome.R'><code>R/write.proteome.R</code></a></small>
-    <div class="hidden name"><code>write.proteome.Rd</code></div>
+    <h1>Helper function to select best BLAST hit based on min evalue</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/filter_best_hit.R'><code>R/filter_best_hit.R</code></a></small>
+    <div class="hidden name"><code>filter_best_hits.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function takes a proteome (in data.table notation) as returned by 
-<code><a href='read.proteome.html'>read.proteome</a></code> and saves it to your hard drive.</p>
+    <p>Helper function to select best BLAST hit based on min evalue</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>write.proteome</span>(<span class='no'>proteome</span>, <span class='no'>file.name</span>, <span class='kw'>nbchar</span> <span class='kw'>=</span> <span class='fl'>80</span>, <span class='kw'>open</span> <span class='kw'>=</span> <span class='st'>"w"</span>,
-  <span class='kw'>as.string</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>proteome</th>
-      <td><p>a data.table object storing amino acid sequences in the first column
-and gene ids in the second column. See <code><a href='read.proteome.html'>read.proteome</a></code> for details.</p></td>
-    </tr>
-    <tr>
-      <th>file.name</th>
-      <td><p>a character string specifying the name of the fasta output file.</p></td>
-    </tr>
-    <tr>
-      <th>nbchar</th>
-      <td><p>number of characters per line.</p></td>
-    </tr>
-    <tr>
-      <th>open</th>
-      <td><p>mode to open the output file, you can choose from "w" to write into a new file, or "a" to append at the end of an already existing file.</p></td>
-    </tr>
-    <tr>
-      <th>as.string</th>
-      <td><p>when set to TRUE sequences are in the form of strings instead of vectors of single characters.</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>filter_best_hits</span>(<span class='no'>x</span>)</pre>
+        
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='co'># read an example proteome</span>
-<span class='no'>Ath.proteome</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read.proteome.html'>read.proteome</a></span>(
-                      <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-                      <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>)
-
-<span class='co'># use the write.proteome function to store it on your hard drive</span>
-<span class='fu'>write.proteome</span>(<span class='no'>Ath.proteome</span>, <span class='st'>"test_proteome.fasta"</span>)
-
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
-    <h2>Author</h2>
-    <p>Hajk-Georg Drost</p>
   </div>
 </div>
 
