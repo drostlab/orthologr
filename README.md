@@ -96,6 +96,9 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 #   evalue <dbl>, bit_score <dbl>
 ```
 
+When running your own query file, please specify `query_file = "path/to/your/cds.fasta` instead of `system.file(..., package = "orthologr")`. The command `system.file(..., package = "orthologr")` merely references the path to the example file stored in the `orthologr` package itself.
+
+
 ### Example: Computing dN/dS values for all orthologous genes between two genomes
 
 First, users can retrieve all coding sequences from entire genomes using the [biomartr](https://github.com/ropensci/biomartr) package ([see details here](https://ropensci.github.io/biomartr/articles/Sequence_Retrieval.html#cds-retrieval)).
