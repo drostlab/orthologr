@@ -1,0 +1,60 @@
+#' @title Retrieve the longest isoforms from a proteome file and save results as fasta file
+#' @description Based on a fasta file storing the peptide isoforms of gene loci and
+#' an annotation file in \code{gtf} file format, this function extracts the longest
+#' isoform per gene locus and stores the results in a new \code{fasta} file.
+#' This procedure enables easier downstream analyses such as orthology inference etc
+#' when dealing with proteome \code{fasta} files which usually include isoform peptides.
+#' @param proteome_file file path to proteome in \code{fasta} file format.
+#' @param gtf_file file path to the corresponding annotation file in \code{gtf} file format.
+#' @param new_file file path to new file storing only peptide sequences of the longest isoforms.
+#' @author Hajk-Georg Drost
+#' @examples \dontrun{
+#' # retrieve example data from ENSEMBLGENOMES
+#' proteome <- biomartr::getProteome(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
+#' biomartr::getGTF(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
+#' R.utils::gunzip("ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf.gz")
+#' annotation <- "ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf"
+#' # retrieve longest isoforms and store in new file
+#' retrieve_longest_isoforms(proteome_file = proteome, 
+#'                           gtf_file = annotation, 
+#'                           new_file = "Athaliana_pep_longest.fa")
+#' # import new file into R session                          
+#' Athaliana_pep_longest <- Biostrings::readAAStringSet("Athaliana_pep_longest.fa")
+#' }
+#' @export
+retrieve_longest_isoforms <- function(proteome_file, gtf_file, new_file) {
+        
+        if (!fs::file_exists(proteome_file))
+                stop("File ", proteome_file, " seems to not exist.", call. = FALSE)
+        if (!fs::file_exists(gtf_file))
+                stop("File ", gtf_file, " seems to not exist.", call. = FALSE)
+        
+        message("Extracting longest isoform from ", basename(proteome_file), " ...")
+        message("Importing proteome file ", basename(proteome_file), " ...")
+        pep_file <- Biostrings::readAAStringSet(proteome_file)
+        new_names <- unlist(lapply(pep_file@ranges@NAMES, function(x) {
+                unlist(stringr::str_split(x," "))[1]
+        }))
+        names(pep_file) <- new_names
+        pep_file_tibble <- tibble::tibble(transcript_id = new_names, width = pep_file@ranges@width)
+        message("Importing gtf file ", basename(gtf_file), " ...")
+        gtf_import <- tibble::as_tibble(rtracklayer::import(gtf_file))
+        gene_biotype <- gene_id <- transcript_id <- NULL
+        gtf_import <- dplyr::filter(gtf_import, gene_biotype == "protein_coding", type == "transcript")
+        gtf_import <- dplyr::select(gtf_import, gene_id, transcript_id)
+        # join transcript_ids from annotation file with peptide sequence file
+        pep_file_tibble_joined <- dplyr::inner_join(pep_file_tibble, gtf_import, by = "transcript_id")   
+        pep_file_tibble_joined <- dplyr::filter(pep_file_tibble_joined, !is.na(transcript_id), !is.na(width), !is.na(gene_id))
+        
+        extract_longest_transcript <- function(x) {
+                pos <- which.max(x$width)[1]
+                return(dplyr::slice(x, pos))
+        }
+        message("Retrieving longest isoforms ...")
+        res <- dplyr::do(dplyr::group_by(pep_file_tibble_joined, gene_id), extract_longest_transcript(.))
+        matched_ids <- na.omit(match(res$transcript_id, pep_file@ranges@NAMES))
+        message("\n")
+        message("Writing ", length(matched_ids), " longest peptide sequences (from initially ", length(pep_file), " isoforms) to new fasta file ", new_file, " ...")
+        Biostrings::writeXStringSet(pep_file[matched_ids], new_file)
+        message("Retrieval finished successfully.")
+}
