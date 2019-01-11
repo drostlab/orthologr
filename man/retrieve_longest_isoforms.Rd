@@ -4,14 +4,21 @@
 \alias{retrieve_longest_isoforms}
 \title{Retrieve the longest isoforms from a proteome file and save results as fasta file}
 \usage{
-retrieve_longest_isoforms(proteome_file, gtf_file, new_file)
+retrieve_longest_isoforms(proteome_file, annotation_file, new_file,
+  annotation_format = "gtf")
 }
 \arguments{
 \item{proteome_file}{file path to proteome in \code{fasta} file format.}
 
-\item{gtf_file}{file path to the corresponding annotation file in \code{gtf} file format.}
+\item{annotation_file}{file path to the corresponding annotation file in \code{gtf} file format.}
 
 \item{new_file}{file path to new file storing only peptide sequences of the longest isoforms.}
+
+\item{annotation_format}{format of \code{annotation_file}. Options are:
+\itemize{
+\item \code{annotation_file = "gtf"} (default)
+\item \code{annotation_file = "gff"}
+}}
 }
 \description{
 Based on a fasta file storing the peptide isoforms of gene loci and
@@ -29,7 +36,7 @@ R.utils::gunzip("ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenome
 annotation <- "ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf"
 # retrieve longest isoforms and store in new file
 retrieve_longest_isoforms(proteome_file = proteome, 
-                          gtf_file = annotation, 
+                          annotation_file = annotation, 
                           new_file = "Athaliana_pep_longest.fa")
 # import new file into R session                          
 Athaliana_pep_longest <- Biostrings::readAAStringSet("Athaliana_pep_longest.fa")
