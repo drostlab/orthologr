@@ -37,15 +37,17 @@ retrieve_longest_isoforms <- function(proteome_file, gtf_file, new_file) {
         }))
         names(pep_file) <- new_names
         pep_file_tibble <- tibble::tibble(transcript_id = new_names, width = pep_file@ranges@width)
+        #print(pep_file_tibble)
         message("Importing gtf file ", basename(gtf_file), " ...")
         gtf_import <- tibble::as_tibble(rtracklayer::import(gtf_file))
         gene_biotype <- gene_id <- transcript_id <- NULL
         gtf_import <- dplyr::filter(gtf_import, gene_biotype == "protein_coding", type == "transcript")
         gtf_import <- dplyr::select(gtf_import, gene_id, transcript_id)
+        #print(gtf_import)
         # join transcript_ids from annotation file with peptide sequence file
         pep_file_tibble_joined <- dplyr::inner_join(pep_file_tibble, gtf_import, by = "transcript_id")   
         pep_file_tibble_joined <- dplyr::filter(pep_file_tibble_joined, !is.na(transcript_id), !is.na(width), !is.na(gene_id))
-        
+        #print(pep_file_tibble_joined)
         extract_longest_transcript <- function(x) {
                 pos <- which.max(x$width)[1]
                 return(dplyr::slice(x, pos))
