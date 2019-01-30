@@ -1,4 +1,4 @@
-#' @title Helper function to select best BLAST hit based on min evalue
+#' @title Helper function to select best BLAST hit based on minimum evalue
 filter_best_hits <- function(x) {
         
         min_val <- min(x$evalue)
