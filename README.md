@@ -5,15 +5,14 @@ orthologr
 
 ## Comparative Genomics with R
 
-The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform comparative genomics studies with R and implements R wrapper functions to the most important and most popular genomics and comparative genomics tools.
+The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform __large scale__ comparative genomics studies with R. 
 
-In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) __between entire genomes__ with R.
+`Orthologr` aims to be as easy to use as possible - from genomic data retrieval to dNdS estimation.
+
+In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) __between multiple genomes__ with R.
 
 The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
 for all orthologous genes between two __entire genomes__.
-
-
-### A collection of pre-computed `dNdS maps` can be found at https://github.com/HajkD/dNdS_database
 
 ### Citation
 
