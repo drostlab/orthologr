@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_features.R
 \name{extract_features}
 \alias{extract_features}
-\title{Helper fucntion to extract gene loci and splice variant IDs from GFF files}
+\title{Helper function to extract gene loci and splice variant IDs from GFF files}
 \usage{
 extract_features(x, format)
 }
