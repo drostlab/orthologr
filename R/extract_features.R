@@ -1,4 +1,4 @@
-#' @title Helper fucntion to extract gene loci and splice variant IDs from GFF files
+#' @title Helper function to extract gene loci and splice variant IDs from GFF files
 #' @description Extract gene loci and splice variant IDs from GFF files.
 #' @param x a data.frame converted from a \code{gff} or \code{gtf} file.
 #' @param format either \code{format = "gtf"} or \code{format = "gff"}.
