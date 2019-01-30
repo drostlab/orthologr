@@ -2,10 +2,10 @@
 % Please edit documentation in R/filter_best_hit.R
 \name{filter_best_hits}
 \alias{filter_best_hits}
-\title{Helper function to select best BLAST hit based on min evalue}
+\title{Helper function to select best BLAST hit based on minimum evalue}
 \usage{
 filter_best_hits(x)
 }
 \description{
-Helper function to select best BLAST hit based on min evalue
+Helper function to select best BLAST hit based on minimum evalue
 }
