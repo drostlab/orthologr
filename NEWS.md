@@ -1,3 +1,13 @@
+## `orthologr` version  0.2.0
+
+### New Features
+
+- new function `retrieve_longest_isoforms()` which enables retrieval of the longest isoforms from a proteome file and save results as fasta file for downstream analyses
+- new function `OF2CoreOrthologs()` to retrieve core orthologs across multiple species from Orthofinder2 output
+- new function `extract_features()`: Helper function to extract gene loci and splice variant IDs from GFF files
+- new function `filter_best_hits()`: Helper function to select best BLAST hit based on minimum evalue
+- new function `generate_ortholog_tables()`: Generate ortholog tables by gene locus and splice varaint
+
 ## `orthologr` version  0.1.0
 
 ### New Features
