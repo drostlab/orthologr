@@ -2,14 +2,13 @@ Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
 Version: 0.1.0
-Date: 2018-11-04
+Date: 2019-01-30
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
             )
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
-Description: Perform BLAST searches, pairwise and multiple sequence alignments, orthology inference, and
-    population genomics for life science research.
+Description: Large scale orthology inference and dN/dS estimation between multiple species. 
 License: GPL-2
 SystemRequirements: C++11, Perl
 VignetteBuilder: knitr
@@ -20,6 +19,7 @@ Depends:
 Imports:
     seqinr,
     biomartr,
+    fs,
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
     doParallel (>= 1.0.8),
