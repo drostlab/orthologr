@@ -102,7 +102,7 @@ orthologs <- function(query_file,
                       clean_folders   = FALSE){
         
         if(!is.element(ortho_detection,
-                       c("BH", "RBH", "PO", "OrthoMCL", "GGSEARCH", "SSEARCH", "DELTA")))
+                       c("BH", "RBH", "Orthofinder2")))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
         i <- query_id <- subject_id <- evalue <- NULL
@@ -303,25 +303,25 @@ orthologs <- function(query_file,
                 
         }
         
-        if(ortho_detection == "PO"){
+        if(ortho_detection == "Orthofinder2"){
                 
-                
-                ortho_tbl <- data.table::copy(
-                        
-                        ProteinOrtho( query_file    = query_file,
-                                      subject_files = subject_files, 
-                                      po_path       = path, 
-                                      eval          = eval, 
-                                      comp_cores    = comp_cores,
-                                      po_params     = add_params, 
-                                      seq_type      = seq_type, 
-                                      format        = format )
-                        
-                        )
-                
-               
-                if(clean_folders)
-                        clean_all_folders(file.path(tempdir(),"_ProteinOrtho"))
+                message("This option is currently under development and will be available soon.")
+                # ortho_tbl <- data.table::copy(
+                #         
+                #         ProteinOrtho( query_file    = query_file,
+                #                       subject_files = subject_files, 
+                #                       po_path       = path, 
+                #                       eval          = eval, 
+                #                       comp_cores    = comp_cores,
+                #                       po_params     = add_params, 
+                #                       seq_type      = seq_type, 
+                #                       format        = format )
+                #         
+                #         )
+                # 
+                # 
+                # if(clean_folders)
+                #         clean_all_folders(file.path(tempdir(),"_ProteinOrtho"))
                 
         }
         
