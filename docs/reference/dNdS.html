@@ -179,7 +179,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
       <td><p>a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:</p><ul>
 <li><p><code>ortho_detection ="BH"</code>: BLAST unidirectional best hit.</p></li>
 <li><p><code>ortho_detection = "RBH"</code>: BLAST reciprocal/bidirectional best hit (Default).</p></li>
-<li><p><code>ortho_detection = "orthofinder2"</code>: single copy core orthologs between multiple species proteome comparisons.</p></li>
+<li><p><code>ortho_detection = "Orthofinder2"</code>: single copy core orthologs between multiple species proteome comparisons.</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -204,7 +204,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     </tr>
     <tr>
       <th>ortho_path</th>
-      <td><p>a character string specifying the path to the orthology inference program such as <code><a href='ProteinOrtho.html'>ProteinOrtho</a></code>, etc. (in case you don't use the default path).</p></td>
+      <td><p>a character string specifying the path to the orthology inference program such as <code>Orthofinder2</code>, etc. (in case you don't use the default path).</p></td>
     </tr>
     <tr>
       <th>aa_aln_type</th>
@@ -284,8 +284,7 @@ via the <code>aa_aln_path</code> or <code>blast_path</code> argument that can be
 <li><p><code>ortho_detection</code> :</p><ul>
 <li><p><code>"RBH"</code> (BLAST best reciprocal hit)</p></li>
 <li><p><code>"BH"</code> (BLAST best hit)</p></li>
-<li><p><code>"DELTA"</code> (DELTA-BLAST best reciprocal hit)</p></li>
-<li><p><code>"PO"</code> (ProteinOrtho)</p></li>
+<li><p><code>"Orthofinder2"</code></p></li>
 </ul></li>
 <li><p><code>aa_aln_type</code> :</p><ul>
 <li><p><code>"multiple"</code></p></li>

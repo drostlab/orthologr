@@ -44,7 +44,7 @@ dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
-\item{ortho_path}{a character string specifying the path to the orthology inference program such as \code{\link{Orthofinder2}}, etc. (in case you don't use the default path).}
+\item{ortho_path}{a character string specifying the path to the orthology inference program such as \code{Orthofinder2}, etc. (in case you don't use the default path).}
 
 \item{aa_aln_type}{a character string specifying the amino acid alignement type:
 \itemize{ 

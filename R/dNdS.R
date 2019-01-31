@@ -21,7 +21,7 @@
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
-#' @param ortho_path a character string specifying the path to the orthology inference program such as \code{\link{Orthofinder2}}, etc. (in case you don't use the default path).
+#' @param ortho_path a character string specifying the path to the orthology inference program such as \code{Orthofinder2}, etc. (in case you don't use the default path).
 #' @param aa_aln_type a character string specifying the amino acid alignement type:
 #' \itemize{ 
 #' \item \code{aa_aln_type} = "multiple" (Default)
