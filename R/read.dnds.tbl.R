@@ -3,7 +3,7 @@
 #' generated with \code{\link{dNdS}}.
 #' @param file file path to dNdS table with \code{;} separated columns.
 #' @author Hajk-Georg Drost
-#' @examples 
+#' @examples \dontrun{ 
 #' # generate dNdS table
 #' dNdS_tbl <- dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #' subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
@@ -24,6 +24,7 @@
 #' 
 #' # import dNdS table into R session
 #' dNdS_tbl_import <- read.dnds.tbl(file.path(tempdir(), "dNdS_tbl.csv"))
+#' }
 #' @export
 read.dnds.tbl <- function(file) {
         
