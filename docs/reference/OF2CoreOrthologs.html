@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import a dNdS table generated with <code>dNdS</code> — read.dnds.tbl • orthologr</title>
+<title>Retrieve core orthologs across multiple species from Orthofinder2 output — OF2CoreOrthologs • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Import a dNdS table generated with <code>dNdS</code> — read.dnds.tbl" />
+<meta property="og:title" content="Retrieve core orthologs across multiple species from Orthofinder2 output — OF2CoreOrthologs" />
 
-<meta property="og:description" content="This function reads a file that stores a dnds table
-generated with dNdS." />
+<meta property="og:description" content="Retrieve core orthologs (= single copy orthologs) across multiple species
+from a Orthofinder2 output." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,61 +130,40 @@ generated with dNdS." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import a dNdS table generated with <code>dNdS</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/read.dnds.tbl.R'><code>R/read.dnds.tbl.R</code></a></small>
-    <div class="hidden name"><code>read.dnds.tbl.Rd</code></div>
+    <h1>Retrieve core orthologs across multiple species from Orthofinder2 output</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/OF2CoreOrthologs.R'><code>R/OF2CoreOrthologs.R</code></a></small>
+    <div class="hidden name"><code>OF2CoreOrthologs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function reads a file that stores a dnds table
-generated with <code><a href='dNdS.html'>dNdS</a></code>.</p>
+    <p>Retrieve core orthologs (= single copy orthologs) across multiple species
+from a Orthofinder2 output.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read.dnds.tbl</span>(<span class='no'>file</span>)</pre>
+    <pre class="usage"><span class='fu'>OF2CoreOrthologs</span>(<span class='no'>orthogroups_file</span>, <span class='no'>single_copy_file</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>file path to dNdS table with <code>;</code> separated columns.</p></td>
+      <th>orthogroups_file</th>
+      <td><p>file path to Orthofinder2 output file named <code>Orthogroups.csv</code>.</p></td>
+    </tr>
+    <tr>
+      <th>single_copy_file</th>
+      <td><p>file path to Orthofinder2 output file named <code>SingleCopyOrthogroups.txt</code>.</p></td>
     </tr>
     </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># generate dNdS table</span>
-<span class='no'>dNdS_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dNdS.html'>dNdS</a></span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-<span class='kw'>subject_file</span>    <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-<span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
-<span class='kw'>aa_aln_type</span>     <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
-<span class='kw'>aa_aln_tool</span>     <span class='kw'>=</span> <span class='st'>"NW"</span>,
-<span class='kw'>codon_aln_tool</span>  <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
-<span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
-<span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span> )
-
-<span class='co'># save dNdS table as ';' column separated file</span>
-<span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/write.table'>write.table</a></span>(
-<span class='no'>dNdS_tbl</span>,
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"dNdS_tbl.csv"</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>,
-<span class='kw'>col.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-<span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-<span class='kw'>quote</span>     <span class='kw'>=</span> <span class='fl'>FALSE</span> )
-
-<span class='co'># import dNdS table into R session</span>
-<span class='no'>dNdS_tbl_import</span> <span class='kw'>&lt;-</span> <span class='fu'>read.dnds.tbl</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"dNdS_tbl.csv"</span>))
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
     <h2>Author</h2>
     <p>Hajk-Georg Drost</p>

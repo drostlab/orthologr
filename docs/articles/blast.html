@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>BLAST searches using orthologr</h1>
             
-            <h4 class="date">2018-12-18</h4>
+            <h4 class="date">2019-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd"><code>vignettes/blast.Rmd</code></a></small>
       <div class="hidden name"><code>blast.Rmd</code></div>
@@ -136,7 +136,7 @@ hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bla
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 
 
-<span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
+<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
@@ -253,10 +253,10 @@ rel_hit_tbl</code></pre></div>
 </code></pre>
 <p>Now you can sort genes into classes: <code>one-to-one</code> and <code>one-to-many</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># classify into 'one-to-one' relationships</span>
-one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl,n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl,n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 
 <span class="co"># classify into 'one-to-many' relationships</span>
-one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl,n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl,n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at one_to_one</span>
 one_to_one </code></pre></div>
 <pre><code>      query_id n_genes
@@ -291,7 +291,7 @@ one_to_many</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#one-to-one-genes" class="anchor"></a>one-to-one genes</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span>
-oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl,query_id <span class="op">%in%</span><span class="st"> </span>one_to_one[ , <span class="st">"query_id"</span>])
+oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl,query_id <span class="op">%in%</span><span class="st"> </span>one_to_one[ , <span class="st">"query_id"</span>])
 
 oo_genes[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(query_id,subject_id,evalue,perc_identity,alig_length)]</code></pre></div>
 <pre><code>      query_id            subject_id evalue perc_identity alig_length
@@ -310,9 +310,9 @@ oo_genes[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/ba
 </code></pre>
 <p>Now you could filter for additional criteria to define a first set of true orthologs. In this example we define true orthologs as <code>one_to_one</code> genes having a minimum alignment length of 300, a perc_identity of &gt; 80 percent and an e-value &lt; 1E-5.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span>
-oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl,query_id <span class="op">%in%</span><span class="st"> </span>one_to_one[ , <span class="st">"query_id"</span>])
+oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl,query_id <span class="op">%in%</span><span class="st"> </span>one_to_one[ , <span class="st">"query_id"</span>])
 
-true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes,evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
+true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes,evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
 
 true_orthologs[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(query_id,subject_id,evalue,perc_identity,alig_length)]</code></pre></div>
 <pre><code>      query_id            subject_id evalue perc_identity alig_length
@@ -515,7 +515,7 @@ best_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
                            <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                            <span class="dt">detailed_output =</span> <span class="ot">TRUE</span>)
 
-dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
@@ -568,7 +568,7 @@ rbh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_r
                  <span class="dt">detailed_output =</span> <span class="ot">TRUE</span>)
 
 
-dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(rbh)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(rbh)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
