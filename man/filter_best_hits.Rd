@@ -6,6 +6,16 @@
 \usage{
 filter_best_hits(x)
 }
+\arguments{
+\item{x}{a tibble storing gene locus ids, splice variant ids, and blast output for filtering}
+}
 \description{
 Helper function to select best BLAST hit based on minimum evalue
+}
+\details{
+Extracts the best hit based on lowest e-value and longest splice variant 
+when e-values are equal
+}
+\author{
+Hajk-Georg Drost
 }
