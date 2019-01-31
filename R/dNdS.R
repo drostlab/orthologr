@@ -3,23 +3,30 @@
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms. 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
-#' @param seq_type a character string specifying the sequence type stored in the input file.
-#' Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-#' in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-#' translated to protein sequences. Default is \code{seq_type} = "cds".
-#' @param format a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". See \code{\link{read.cds}},
+#' @param seq_type a character string specifying the sequence type stored in the input file.Options are are: 
+#' \itemize{
+#' \item \code{seq_type = "cds"} (Default): sequence are translated to protein sequences
+#' \item \code{seq_type = "protein"}: orthology inference is performed using protein sequences directly.
+#' }
+#' @param format a character string specifying the file format of the sequence file, e.g. \code{format = "fasta"}, \code{format = "gbk"}. See \code{\link{read.cds}},
 #' \code{\link{read.genome}}, \code{\link{read.proteome}} for more details.
-#' @param ortho_detection a character string specifying the orthology inference method that shall be performed
-#' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-#' Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).
+#' @param ortho_detection a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:
+#' \itemize{
+#' \item \code{ortho_detection ="BH"}: BLAST unidirectional best hit.
+#' \item \code{ortho_detection = "RBH"}: BLAST reciprocal/bidirectional best hit (Default).
+#' \item \code{ortho_detection = "Orthofinder2"}: single copy core orthologs between multiple species proteome comparisons.
+#' }
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
-#' @param ortho_path a character string specifying the path to the orthology inference program such as \code{\link{ProteinOrtho}}, etc. (in case you don't use the default path).
-#' @param aa_aln_type a character string specifying the amino acid alignement type: \code{aa_aln_type} = "multiple" or \code{aa_aln_type} = "pairwise".
-#' Default is \code{aa_aln_type} = "multiple".
+#' @param ortho_path a character string specifying the path to the orthology inference program such as \code{\link{Orthofinder2}}, etc. (in case you don't use the default path).
+#' @param aa_aln_type a character string specifying the amino acid alignement type:
+#' \itemize{ 
+#' \item \code{aa_aln_type} = "multiple" (Default)
+#' \item \code{aa_aln_type} = "pairwise"
+#' }.
 #' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
 #' @param aa_aln_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
 #' @param aa_aln_params  a character string specifying additional parameters that shall be passed to the selected alignment tool. Default is \code{aa_aln_params} = \code{NULL} 
@@ -72,8 +79,7 @@
 #'    \itemize{  
 #'    \item \code{"RBH"} (BLAST best reciprocal hit)
 #'    \item \code{"BH"} (BLAST best hit)
-#'    \item \code{"DELTA"} (DELTA-BLAST best reciprocal hit) 
-#'    \item \code{"PO"} (ProteinOrtho) 
+#'    \item \code{"Orthofinder2"}
 #'      }
 #'      
 #' \item \code{aa_aln_type} : 
@@ -177,7 +183,7 @@
 
 dNdS <- function(query_file, 
                  subject_file, 
-                 seq_type        = "protein",
+                 seq_type        = "cds",
                  format          = "fasta", 
                  ortho_detection = "RBH",
                  delete_corrupt_cds = FALSE,  
@@ -242,7 +248,7 @@ dNdS <- function(query_file,
                                 delete_corrupt_cds = delete_corrupt_cds,
                                 path         = blast_path,
                                 comp_cores   = comp_cores,
-                                seq_type     = "cds",
+                                seq_type     = seq_type,
                                 eval         = eval,
                                 format       = format
                         )
@@ -313,7 +319,7 @@ dNdS <- function(query_file,
                                 delete_corrupt_cds = delete_corrupt_cds,
                                 path         = blast_path,
                                 comp_cores   = comp_cores,
-                                seq_type     = "cds",
+                                seq_type     = seq_type,
                                 eval         = eval,
                                 format       = format
                         )
@@ -376,7 +382,7 @@ dNdS <- function(query_file,
                                 path            = ortho_path,
                                 cdd.path        = cdd.path,
                                 comp_cores      = comp_cores,
-                                seq_type        = "cds",
+                                seq_type        = seq_type,
                                 format          = format,
                                 quiet           = quiet,
                                 clean_folders   = FALSE
