@@ -31,7 +31,7 @@ dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
 \itemize{
 \item \code{ortho_detection ="BH"}: BLAST unidirectional best hit.
 \item \code{ortho_detection = "RBH"}: BLAST reciprocal/bidirectional best hit (Default).
-\item \code{ortho_detection = "orthofinder2"}: single copy core orthologs between multiple species proteome comparisons.
+\item \code{ortho_detection = "Orthofinder2"}: single copy core orthologs between multiple species proteome comparisons.
 }}
 
 \item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
@@ -44,7 +44,7 @@ dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
-\item{ortho_path}{a character string specifying the path to the orthology inference program such as \code{\link{ProteinOrtho}}, etc. (in case you don't use the default path).}
+\item{ortho_path}{a character string specifying the path to the orthology inference program such as \code{\link{Orthofinder2}}, etc. (in case you don't use the default path).}
 
 \item{aa_aln_type}{a character string specifying the amino acid alignement type:
 \itemize{ 
@@ -117,8 +117,7 @@ The \code{dNdS()} function can be used choosing the folllowing options:
    \itemize{  
    \item \code{"RBH"} (BLAST best reciprocal hit)
    \item \code{"BH"} (BLAST best hit)
-   \item \code{"DELTA"} (DELTA-BLAST best reciprocal hit) 
-   \item \code{"PO"} (ProteinOrtho) 
+   \item \code{"Orthofinder2"}
      }
      
 \item \code{aa_aln_type} : 

@@ -142,7 +142,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     
     </div>
 
-    <pre class="usage"><span class='fu'>dNdS</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"protein"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
+    <pre class="usage"><span class='fu'>dNdS</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"cds"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>cdd.path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"multiple"</span>,
@@ -164,21 +164,23 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     </tr>
     <tr>
       <th>seq_type</th>
-      <td><p>a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-translated to protein sequences. Default is <code>seq_type</code> = "cds".</p></td>
+      <td><p>a character string specifying the sequence type stored in the input file.Options are are:</p><ul>
+<li><p><code>seq_type = "cds"</code> (Default): sequence are translated to protein sequences</p></li>
+<li><p><code>seq_type = "protein"</code>: orthology inference is performed using protein sequences directly.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>format</th>
-      <td><p>a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". See <code><a href='read.cds.html'>read.cds</a></code>,
+      <td><p>a character string specifying the file format of the sequence file, e.g. <code>format = "fasta"</code>, <code>format = "gbk"</code>. See <code><a href='read.cds.html'>read.cds</a></code>,
 <code><a href='read.genome.html'>read.genome</a></code>, <code><a href='read.proteome.html'>read.proteome</a></code> for more details.</p></td>
     </tr>
     <tr>
       <th>ortho_detection</th>
-      <td><p>a character string specifying the orthology inference method that shall be performed
-to detect orthologous genes. Default is <code>ortho_detection</code> = "RBH" (BLAST reciprocal best hit).
-Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), "OrthoMCL, "IP" (InParanoid).</p></td>
+      <td><p>a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:</p><ul>
+<li><p><code>ortho_detection ="BH"</code>: BLAST unidirectional best hit.</p></li>
+<li><p><code>ortho_detection = "RBH"</code>: BLAST reciprocal/bidirectional best hit (Default).</p></li>
+<li><p><code>ortho_detection = "orthofinder2"</code>: single copy core orthologs between multiple species proteome comparisons.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>delete_corrupt_cds</th>
@@ -206,8 +208,10 @@ Further methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit), "
     </tr>
     <tr>
       <th>aa_aln_type</th>
-      <td><p>a character string specifying the amino acid alignement type: <code>aa_aln_type</code> = "multiple" or <code>aa_aln_type</code> = "pairwise".
-Default is <code>aa_aln_type</code> = "multiple".</p></td>
+      <td><p>a character string specifying the amino acid alignement type:</p><ul>
+<li><p><code>aa_aln_type</code> = "multiple" (Default)</p></li>
+<li><p><code>aa_aln_type</code> = "pairwise"</p></li>
+</ul><p>.</p></td>
     </tr>
     <tr>
       <th>aa_aln_tool</th>
