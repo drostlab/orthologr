@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Main Orthology Inference Function — orthologs • orthologr</title>
+<title>Orthology Inference of lncRNAs — orthologs.lnc • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Main Orthology Inference Function — orthologs" />
+<meta property="og:title" content="Orthology Inference of lncRNAs — orthologs.lnc" />
 
 <meta property="og:description" content="This function takes nucleotide or protein sequences for a set of organisms 
 and performs orthology inference to detect orthologous genes within the given organisms
@@ -131,9 +131,9 @@ based on selected orthology inference programs." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Main Orthology Inference Function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/orthologs.R'><code>R/orthologs.R</code></a></small>
-    <div class="hidden name"><code>orthologs.Rd</code></div>
+    <h1>Orthology Inference of lncRNAs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/orthologs.lnc.R'><code>R/orthologs.lnc.R</code></a></small>
+    <div class="hidden name"><code>orthologs.lnc.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -144,11 +144,10 @@ based on selected orthology inference programs.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>orthologs</span>(<span class='no'>query_file</span>, <span class='no'>subject_files</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"protein"</span>,
-  <span class='kw'>outgroup_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
-  <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cdd.path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>add_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>orthologs.lnc</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>,
+  <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>max.target.seqs</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>output.path</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,66 +157,29 @@ based on selected orthology inference programs.</p>
       <td><p>a character string specifying the path to the sequence file of interest (query organism).</p></td>
     </tr>
     <tr>
-      <th>subject_files</th>
-      <td><p>a character string specifying the paths to the sequence files of interest (subject organisms).
-Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).</p></td>
-    </tr>
-    <tr>
-      <th>seq_type</th>
-      <td><p>a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-translated to protein sequences. Default is <code>seq_type</code> = "protein".</p></td>
-    </tr>
-    <tr>
-      <th>outgroup_file</th>
-      <td><p>a character string specifying the paths to the sequence files of interest (outgroup organisms).
-This argument is only used by <code>InParanoid</code>.</p></td>
+      <th>subject_file</th>
+      <td><p>a character string specifying the paths to the sequence files of interest (subject organisms).</p></td>
     </tr>
     <tr>
       <th>eval</th>
       <td><p>a numeric value specifying the E-Value cutoff for BLAST hit detection.</p></td>
     </tr>
     <tr>
-      <th>format</th>
-      <td><p>a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".</p></td>
-    </tr>
-    <tr>
       <th>ortho_detection</th>
       <td><p>a character string specifying the orthology inference method that shall be performed
-to detect orthologous genes. Default is <code>ortho_detection</code> = "RBH" (BLAST reciprocal best hit).
-Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.</p></td>
-    </tr>
-    <tr>
-      <th>delete_corrupt_cds</th>
-      <td><p>a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></td>
-    </tr>
-    <tr>
-      <th>cdd.path</th>
-      <td><p>path to the cdd database folder (specify when using <code>ortho_detection</code> = <code>"DELTA"</code>).</p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.</p></td>
-    </tr>
-    <tr>
-      <th>add_params</th>
-      <td><p>a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
-Default is <code>add_params</code> = <code>NULL</code>.</p></td>
+to detect orthologous genes. Options are:</p><ul>
+<li><p><code>ortho_detection = "RBH"</code> (BLAST reciprocal best hit) (Default)</p></li>
+<li><p><code>ortho_detection = "BH"</code> (BLAST best hit)</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>comp_cores</th>
       <td><p>a numeric value specifying the number of cores to be used for multicore computations.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p>a logical value specifying whether a successful interface call shall be printed out.</p></td>
-    </tr>
-    <tr>
-      <th>clean_folders</th>
-      <td><p>a boolean value spefiying whether all internall folders storing the output of used programs
-shall be removed. Default is <code>clean_folders</code> = <code>FALSE</code>.</p></td>
+      <th>path</th>
+      <td><p>a character string specifying the path to the corresponding orthology inference tool.
+For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.</p></td>
     </tr>
     </table>
     
@@ -235,7 +197,6 @@ using a defined orthology inference method to dectect orthologous genes.</p>
 <ul>
 <li><p>BLAST best hit (BH)</p></li>
 <li><p>BLAST reciprocal best hit (RBH)</p></li>
-<li><p>DELTA-BLAST reciprocal best hit (DELTA)</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -250,31 +211,25 @@ using a defined orthology inference method to dectect orthologous genes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-
-<span class='co'>### BLAST Best Hit</span>
-
-<span class='co'># perform orthology inference using BLAST best hit</span>
-<span class='co'># and fasta sequence files storing protein sequences</span>
-<span class='fu'>orthologs</span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>subject_files</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>seq_type</span>        <span class='kw'>=</span> <span class='st'>"protein"</span>,
-          <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"BH"</span>)
-
-
 <span class='co'>### BLAST Reciprocal Best Hit</span>
-
 <span class='co'># perform orthology inference using BLAST reciprocal best hit</span>
 <span class='co'># and fasta sequence files storing protein sequences</span>
-<span class='fu'>orthologs</span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>subject_files</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>seq_type</span>        <span class='kw'>=</span> <span class='st'>"protein"</span>,
+<span class='fu'>orthologs.lnc</span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+          <span class='kw'>subject_file</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
           <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>)
 
 
+<span class='co'>### BLAST Best Hit</span>
+<span class='co'># perform orthology inference using BLAST best hit</span>
+<span class='co'># and fasta sequence files storing protein sequences</span>
+<span class='fu'>orthologs.lnc</span>(<span class='kw'>query_file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+          <span class='kw'>subject_file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+          <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"BH"</span>)
+
+
 <span class='co'># multicore version          </span>
-<span class='fu'>orthologs</span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>subject_files</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_aa.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-          <span class='kw'>seq_type</span>        <span class='kw'>=</span> <span class='st'>"protein"</span>,
+<span class='fu'>orthologs.lnc</span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+          <span class='kw'>subject_file</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
           <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
           <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>2</span>)
 

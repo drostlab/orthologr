@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import a dNdS table generated with <code>dNdS</code> — read.dnds.tbl • orthologr</title>
+<title>Infer orthologous lncRNAs between muliple species — map.generator.lnc • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Import a dNdS table generated with <code>dNdS</code> — read.dnds.tbl" />
+<meta property="og:title" content="Infer orthologous lncRNAs between muliple species — map.generator.lnc" />
 
-<meta property="og:description" content="This function reads a file that stores a dnds table
-generated with dNdS." />
+<meta property="og:description" content="Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+ The corresponding orthologous tables are then stored in an output folder." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,59 +130,92 @@ generated with dNdS." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import a dNdS table generated with <code>dNdS</code></h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/read.dnds.tbl.R'><code>R/read.dnds.tbl.R</code></a></small>
-    <div class="hidden name"><code>read.dnds.tbl.Rd</code></div>
+    <h1>Infer orthologous lncRNAs between muliple species</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/map.generator.lnc.R'><code>R/map.generator.lnc.R</code></a></small>
+    <div class="hidden name"><code>map.generator.lnc.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function reads a file that stores a dnds table
-generated with <code><a href='dNdS.html'>dNdS</a></code>.</p>
+    <p>Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+ The corresponding orthologous tables are then stored in an output folder.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>read.dnds.tbl</span>(<span class='no'>file</span>)</pre>
+    <pre class="usage"><span class='fu'>map.generator.lnc</span>(<span class='no'>query_file</span>, <span class='no'>subjects.folder</span>, <span class='no'>output.folder</span>,
+  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>file path to dNdS table with <code>;</code> separated columns.</p></td>
+      <th>query_file</th>
+      <td><p>a character string specifying the path to the lncRNAs file of the query organism in <code>fasta</code> format.</p></td>
+    </tr>
+    <tr>
+      <th>subjects.folder</th>
+      <td><p>a character string specifying the path to the folder where lncRNAs files in <code>fasta</code> format of the subject organisms are stored.</p></td>
+    </tr>
+    <tr>
+      <th>output.folder</th>
+      <td><p>a character string specifying the path to the folder where output orthologous tables should be stored.</p></td>
+    </tr>
+    <tr>
+      <th>eval</th>
+      <td><p>a character string specifying the e-value for BLAST based orthology inference. Please use the scientific notation.</p></td>
+    </tr>
+    <tr>
+      <th>ortho_detection</th>
+      <td><p>a character string specifying the Orthology Inference method that shall be used to perform
+dNdS computations. Possible options are:</p><ul>
+<li><p><code>ortho_detection = "BH"</code>: BLAST best unidirectional hit</p></li>
+<li><p><code>ortho_detection = "RBH"</code>: BLAST best reciprocal hit</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>comp_cores</th>
+      <td><p>number of computing cores that shall be used to perform parallelized computations.</p></td>
+    </tr>
+    <tr>
+      <th>progress.bar</th>
+      <td><p>should a progress bar be shown. Default is <code>progress.bar = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>sep</th>
+      <td><p>a file separator that is used to store maps as csv file.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional parameters that shall be passed to  <code><a href='dNdS.html'>dNdS</a></code>.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Given a query organism and a set of subject organsisms that are stored in the same folder,
+this function crawls through all subject organsism and infers the lncRNA homologs in
+pairwise species comparisons.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># generate dNdS table</span>
-<span class='no'>dNdS_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dNdS.html'>dNdS</a></span>(<span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-<span class='kw'>subject_file</span>    <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_lyra_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-<span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
-<span class='kw'>aa_aln_type</span>     <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
-<span class='kw'>aa_aln_tool</span>     <span class='kw'>=</span> <span class='st'>"NW"</span>,
-<span class='kw'>codon_aln_tool</span>  <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
-<span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
-<span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span> )
-
-<span class='co'># save dNdS table as ';' column separated file</span>
-<span class='kw pkg'>utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/write.table'>write.table</a></span>(
-<span class='no'>dNdS_tbl</span>,
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"dNdS_tbl.csv"</span>), <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>,
-<span class='kw'>col.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-<span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-<span class='kw'>quote</span>     <span class='kw'>=</span> <span class='fl'>FALSE</span> )
-
-<span class='co'># import dNdS table into R session</span>
-<span class='no'>dNdS_tbl_import</span> <span class='kw'>&lt;-</span> <span class='fu'>read.dnds.tbl</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span>(), <span class='st'>"dNdS_tbl.csv"</span>))
+<span class='fu'>map.generator.lnc</span>(
+   <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>subjects.folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>output.folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
+   <span class='kw'>quiet</span>           <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span>
+)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
