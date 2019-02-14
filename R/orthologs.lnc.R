@@ -1,9 +1,9 @@
-#' @title Main Orthology Inference Function
+#' @title Orthology Inference of lncRNAs
 #' @description This function takes nucleotide or protein sequences for a set of organisms 
 #' and performs orthology inference to detect orthologous genes within the given organisms
 #' based on selected orthology inference programs.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
-#' @param subject_files a character string specifying the paths to the sequence files of interest (subject organisms).
+#' @param subject_file a character string specifying the paths to the sequence files of interest (subject organisms).
 #' Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).
 #' @param outgroup_file a character string specifying the paths to the sequence files of interest (outgroup organisms).
 #' This argument is only used by \code{InParanoid}.
@@ -58,7 +58,7 @@
 #' # perform orthology inference using BLAST best hit
 #' # and fasta sequence files storing protein sequences
 #' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type        = "protein", 
 #'           ortho_detection = "BH")
 #' 
@@ -68,14 +68,14 @@
 #' # perform orthology inference using BLAST reciprocal best hit
 #' # and fasta sequence files storing protein sequences
 #' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type        = "protein", 
 #'           ortho_detection = "RBH")
 #'           
 #'           
 #' # multicore version          
 #' orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'           subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'           seq_type        = "protein", 
 #'           ortho_detection = "RBH", 
 #'           comp_cores      = 2)          
@@ -90,8 +90,8 @@ orthologs.lnc <- function(query_file,
                       subject_file, 
                       eval            = "1E-5", 
                       ortho_detection = "RBH",
-                      path            = NULL, 
-                      add_params      = NULL,
+                      max.target.seqs = 10000,
+                      output.path = getwd(),
                       comp_cores      = 1,
                       quiet           = FALSE, 
                       clean_folders   = FALSE) {
@@ -103,21 +103,18 @@ orthologs.lnc <- function(query_file,
         if (ortho_detection == "BH") {
                 
                 if (length(subject_file) > 1)
-                        stop("The BLAST best hit method is only defined for pairwise comparisons.")
+                        stop("The BLAST best hit method is only defined for pairwise comparisons.", call. = FALSE)
                 
-                ortho_tbl <- data.table::copy(
-                        
-                        blast_best(query_file      = query_file, 
-                                   subject_file    = subject_file, 
-                                   path            = path,
-                                   delete_corrupt_cds = delete_corrupt_cds,
-                                   comp_cores      = comp_cores, 
-                                   eval            = eval,
-                                   blast_params    = add_params, 
-                                   seq_type        = seq_type, 
-                                   format          = format )
-                        
+                metablastr::blast_best(
+                        query      = query_file,
+                        subject =  subject_file,
+                        cores = comp_cores,
+                        task = "blastn",
+                        evalue = eval, 
+                        output.path = output.path,
+                        max.target.seqs = max.target.seqs 
                 )
+                        
                 if (clean_folders)
                         clean_all_folders(file.path(tempdir(),"_blast_db"))
                 
@@ -126,24 +123,19 @@ orthologs.lnc <- function(query_file,
         
         if(ortho_detection == "RBH"){
                 
-                if(length(subject_files) > 1)
+                if (length(subject_file) > 1)
                         stop("The BLAST best reciprocal hit method is only defined for pairwise comparisons.")
                 
-                ortho_tbl <- data.table::copy(
-                        
-                        blast_rec( query_file      = query_file, 
-                                   subject_file    = subject_files, 
-                                   path            = path,
-                                   delete_corrupt_cds = delete_corrupt_cds,
-                                   comp_cores      = comp_cores, 
-                                   eval            = eval,
-                                   blast_params    = add_params, 
-                                   seq_type        = seq_type, 
-                                   format          = format )
-                        
+                metablastr::blast_rec(
+                        query      = query_file,
+                        subject =  subject_file,
+                        cores = comp_cores,
+                        task = "blastn",
+                        evalue = eval, 
+                        output.path = output.path,
+                        max.target.seqs = max.target.seqs 
                 )
-                
-                
+
                 if(clean_folders)
                         clean_all_folders(file.path(tempdir(),"_blast_db"))
                 
@@ -158,7 +150,7 @@ orthologs.lnc <- function(query_file,
                 ortho_tbl_A <- data.table::copy(
                         
                         advanced_blast( query_file      = query_file, 
-                                        subject_file    = subject_files,
+                                        subject_file    = subject_file,
                                         blast_algorithm = "deltablast",
                                         db_path         = cdd.path,
                                         path            = path, 
@@ -170,7 +162,7 @@ orthologs.lnc <- function(query_file,
                 
                 ortho_tbl_B <- data.table::copy(
                         
-                        advanced_blast( query_file      = subject_files, 
+                        advanced_blast( query_file      = subject_file, 
                                         subject_file    = query_file,
                                         blast_algorithm = "deltablast",
                                         db_path         = cdd.path,
@@ -200,7 +192,7 @@ orthologs.lnc <- function(query_file,
                         
                         
                 }, error = function(e){ stop("The BLAST tables resulting from ",query_file, " and ",
-                                             subject_files," could not be joined properly to select only the reciprocal best hits.")}
+                                             subject_file," could not be joined properly to select only the reciprocal best hits.")}
                 )
                 
                 if(clean_folders)
@@ -214,7 +206,7 @@ orthologs.lnc <- function(query_file,
                 # ortho_tbl <- data.table::copy(
                 #         
                 #         ProteinOrtho( query_file    = query_file,
-                #                       subject_files = subject_files, 
+                #                       subject_file = subject_file, 
                 #                       po_path       = path, 
                 #                       eval          = eval, 
                 #                       comp_cores    = comp_cores,
