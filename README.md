@@ -9,6 +9,8 @@ The comparative method is a powerful approach in genomics research. Based on our
 
 `Orthologr` aims to be as easy to use as possible - from genomic data retrieval to dNdS estimation.
 
+### Large scale orthology inference and dN/dS estimation between multiple species
+
 In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) __between multiple genomes__ with R.
 
 The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
