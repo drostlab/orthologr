@@ -102,13 +102,13 @@ orthologs.lnc <- function(query_file,
         
         if (ortho_detection == "BH") {
                 
-                if (length(subject_files) > 1)
+                if (length(subject_file) > 1)
                         stop("The BLAST best hit method is only defined for pairwise comparisons.")
                 
                 ortho_tbl <- data.table::copy(
                         
                         blast_best(query_file      = query_file, 
-                                   subject_file    = subject_files, 
+                                   subject_file    = subject_file, 
                                    path            = path,
                                    delete_corrupt_cds = delete_corrupt_cds,
                                    comp_cores      = comp_cores, 
