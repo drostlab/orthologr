@@ -12,41 +12,21 @@ orthologs.lnc(query_file, subject_file, eval = "1E-5",
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
-\item{subject_file}{a character string specifying the paths to the sequence files of interest (subject organisms).
-Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).}
+\item{subject_file}{a character string specifying the paths to the sequence files of interest (subject organisms).}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
-to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.}
+to detect orthologous genes. Options are:
+\itemize{
+\item \code{ortho_detection = "RBH"} (BLAST reciprocal best hit) (Default)
+\item \code{ortho_detection = "BH"} (BLAST best hit)
+}}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
-\item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
-
-\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
-shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
-
-\item{outgroup_file}{a character string specifying the paths to the sequence files of interest (outgroup organisms).
-This argument is only used by \code{InParanoid}.}
-
-\item{seq_type}{a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
-translated to protein sequences. Default is \code{seq_type} = "protein".}
-
-\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
-
-\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
-
-\item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
-
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
 For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
-
-\item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
-Default is \code{add_params} = \code{NULL}.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
@@ -68,37 +48,30 @@ BLAST based methods:
 \itemize{
   \item BLAST best hit (BH) 
   \item BLAST reciprocal best hit (RBH)
-  \item DELTA-BLAST reciprocal best hit (DELTA)
 }
 }
 \examples{
 \dontrun{
 
-
-### BLAST Best Hit
-
-# perform orthology inference using BLAST best hit
-# and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "BH")
-
-
 ### BLAST Reciprocal Best Hit
-
 # perform orthology inference using BLAST reciprocal best hit
 # and fasta sequence files storing protein sequences
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
+orthologs.lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file   = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
           ortho_detection = "RBH")
           
           
+### BLAST Best Hit
+# perform orthology inference using BLAST best hit
+# and fasta sequence files storing protein sequences
+orthologs.lnc(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+          ortho_detection = "BH")
+
+
 # multicore version          
-orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-          subject_file   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
+orthologs.lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+          subject_file   = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
           ortho_detection = "RBH", 
           comp_cores      = 2)          
           
