@@ -6,8 +6,7 @@
 \usage{
 orthologs.lnc(query_file, subject_file, eval = "1E-5",
   ortho_detection = "RBH", max.target.seqs = 10000,
-  output.path = getwd(), comp_cores = 1, quiet = FALSE,
-  clean_folders = FALSE)
+  output.path = getwd(), comp_cores = 1, path = NULL)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
