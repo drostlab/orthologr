@@ -67,6 +67,11 @@ map.generator <- function(query_file,
         if (progress.bar & (length(subj.files) > 1))
                 pb <- utils::txtProgressBar(1, length(subj.files), style = 3)
         
+        
+        if (!file.exists(output.folder))
+                dir.create(output.folder)
+        
+        
         for (i in 1:length(subj.files)) {
                 # compute pairwise KaKs/divergence maps between query and all subject files
                 OrgQuery_vs_OrgSubj <- dNdS(
