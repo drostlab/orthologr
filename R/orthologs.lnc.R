@@ -74,8 +74,7 @@ orthologs.lnc <- function(query_file,
                       max.target.seqs = 10000,
                       output.path = getwd(),
                       comp_cores      = 1,
-                      quiet           = FALSE, 
-                      clean_folders   = FALSE) {
+                      path = NULL) {
         
         if (!is.element(ortho_detection,
                        c("BH", "RBH")))
@@ -93,8 +92,9 @@ orthologs.lnc <- function(query_file,
                         cores = comp_cores,
                         task = "blastn",
                         evalue = eval, 
-                        output.path = output.path,
-                        max.target.seqs = max.target.seqs 
+                        output.path = tempdir(),
+                        max.target.seqs = max.target.seqs,
+                        blast.path = path
                 )
                 
         }
@@ -111,12 +111,11 @@ orthologs.lnc <- function(query_file,
                         cores = comp_cores,
                         task = "blastn",
                         evalue = eval, 
-                        output.path = output.path,
-                        max.target.seqs = max.target.seqs 
+                        output.path = tempdir(),
+                        max.target.seqs = max.target.seqs,
+                        blast.path = path
                 )
 
-                
-                
         }
         
         return(ortho_tbl)
