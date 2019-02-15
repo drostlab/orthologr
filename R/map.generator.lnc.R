@@ -57,6 +57,9 @@ map.generator.lnc <- function(query_file,
         if (progress.bar & (length(subj.files) > 1))
                 pb <- utils::txtProgressBar(1, length(subj.files), style = 3)
         
+        if (!file.exists(output.folder))
+                dir.create(output.folder)
+        
         for (i in seq_len(length(subj.files))) {
                 
                 message("LncRNA orthology inference between ", basename(query_file), " and ", subj.files[i], " (",i ,"/", length(subj.files),")")
