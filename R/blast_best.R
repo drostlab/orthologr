@@ -108,11 +108,6 @@ blast_best <- function(query_file,
                        blast_params    = NULL, 
                        clean_folders   = FALSE,
                        save.output     = NULL){
-        
-        # due to the discussion of no visible binding for global variable for
-        # data.table objects see:
-        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
-        evalue <- NULL
 
         # default parameters for best hit filtering
          default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
@@ -133,7 +128,7 @@ blast_best <- function(query_file,
                              clean_folders   = clean_folders,
                              save.output     = save.output)
         
-        query_id <- NULL
+        query_id <- '.' <- NULL
         hit_tbl <- dplyr::do(dplyr::group_by(hit_tbl, query_id), filter_best_hits(.))
         return(hit_tbl)
 }
