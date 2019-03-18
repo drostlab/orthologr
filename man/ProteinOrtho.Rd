@@ -14,7 +14,7 @@ ProteinOrtho(query_file, subject_files, po_params = NULL,
 \item{subject_files}{a character string specifying the paths to the sequence files of interest (subject organisms).}
 
 \item{po_params}{a character string specifying additional parameters that shall be handed to the ProteinOrtho call,
-e.g. \code{po_params} = \code{"-identity=35 -cov=75"}. See https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html
+e.g. \code{po_params} = \code{"-identity=35 -cov=75"}. See \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}
 for parameter details.}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
@@ -47,7 +47,7 @@ and performs orthology inference using the ProteinOrtho methodology.
 ProteinOrtho is a orthology inference program to detect orthologous genes within different species. 
 For this purpose it compares similarities of given gene sequences and clusters them to find significant groups. 
 To enhance the prediction accuracy, the relative order of genes (synteny) can be used as additional feature for the discrimination of orthologs.
-(source: https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html).
+(source: \url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}).
 }
 \examples{
 \dontrun{
@@ -120,7 +120,7 @@ ProteinOrtho(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'ort
 \references{
 Lechner M et al. (2011) Proteinortho: Detection of (Co-)orthologs in large-scale analysis. BMC Bioinformatics 2011, 12:124.
 
-https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html
+\url{https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html}
 }
 \seealso{
 \code{\link{orthologs}}
