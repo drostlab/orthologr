@@ -103,9 +103,10 @@ orthologs <- function(query_file,
         
         if(!is.element(ortho_detection,
                        c("BH", "RBH", "Orthofinder2")))
-                stop("Please choose a orthology detection method that is supported by this function.")
+                stop("Please choose a orthology detection method that is supported by this function.", call. = FALSE)
         
-        i <- query_id <- subject_id <- evalue <- NULL
+        i <- NULL
+        
         if (seq_type == "cds") {
                 f_sep <- .Platform$file.sep
                 
@@ -198,7 +199,7 @@ orthologs <- function(query_file,
         if (ortho_detection == "BH") {
                 
                 if (length(subject_files) > 1)
-                        stop("The BLAST best hit method is only defined for pairwise comparisons.")
+                        stop("The BLAST best hit method is only defined for pairwise comparisons.", call. = FALSE)
                 
                 ortho_tbl <- data.table::copy(
                         
@@ -221,8 +222,8 @@ orthologs <- function(query_file,
         
         if(ortho_detection == "RBH"){
                 
-                if(length(subject_files) > 1)
-                        stop("The BLAST best reciprocal hit method is only defined for pairwise comparisons.")
+                if (length(subject_files) > 1)
+                        stop("The BLAST best reciprocal hit method is only defined for pairwise comparisons.", call. = FALSE)
                 
                 ortho_tbl <- data.table::copy(
                         
@@ -239,73 +240,16 @@ orthologs <- function(query_file,
                         )
                 
                 
-                if(clean_folders)
+                if (clean_folders)
                         clean_all_folders(file.path(tempdir(),"_blast_db"))
                 
         }
         
         
-        if(ortho_detection == "DELTA"){
-                
-                pars <- paste0(add_params," -evalue ",eval," -num_threads ",comp_cores,
-                               " -best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1")
-                
-                ortho_tbl_A <- data.table::copy(
-                        
-                        advanced_blast( query_file      = query_file, 
-                                        subject_file    = subject_files,
-                                        blast_algorithm = "deltablast",
-                                        db_path         = cdd.path,
-                                        path            = path, 
-                                        blast_params    = pars, 
-                                        seq_type        = seq_type,  
-                                        format          = format )
-                        
-                )
-                
-                ortho_tbl_B <- data.table::copy(
-                        
-                        advanced_blast( query_file      = subject_files, 
-                                        subject_file    = query_file,
-                                        blast_algorithm = "deltablast",
-                                        db_path         = cdd.path,
-                                        path            = path, 
-                                        blast_params    = pars, 
-                                        seq_type        = seq_type,  
-                                        format          = format )
-                        
-                )
-                
-                data.table::setnames(ortho_tbl_B, old = c("query_id","subject_id"), new = c("subject_id","query_id"))
-                
-                tryCatch({       
-                        
-                        delta_rec_tbl <- dplyr::semi_join(dplyr::tbl_dt(ortho_tbl_A), dplyr::tbl_dt(ortho_tbl_B),
-                                                          by = c("query_id","subject_id"))
-                        
-                        if(detailed_output){
-                                
-                                return ( delta_rec_tbl )
-                        }
-                        
-                        if(!detailed_output){
-                                
-                                return ( delta_rec_tbl[ ,list(query_id,subject_id,evalue)] )
-                        }
-                        
-                        
-                }, error = function(e){ stop("The BLAST tables resulting from ",query_file, " and ",
-                                             subject_files," could not be joined properly to select only the reciprocal best hits.")}
-                )
-                
-                if(clean_folders)
-                        clean_all_folders(file.path(tempdir(),"_blast_db"))
-                
-        }
         
-        if(ortho_detection == "Orthofinder2"){
+        if (ortho_detection == "Orthofinder2") {
                 
-                message("This option is currently under development and will be available soon.")
+                message("This option is currently under development and will be available soon.", call. = FALSE)
                 # ortho_tbl <- data.table::copy(
                 #         
                 #         ProteinOrtho( query_file    = query_file,
