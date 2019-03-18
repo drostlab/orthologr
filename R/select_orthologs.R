@@ -51,6 +51,8 @@ select_orthologs <-
                                 call. = FALSE
                         )
                 
+                '.' <- NULL
+                
                 temp_store <-
                         file.path(tempdir(),
                                   paste0(
