@@ -8,3 +8,5 @@ README.Rmd
 COPYING
 ^\.travis\.yml$
 ^\.httr-oauth$
+docs
+LICENSE
