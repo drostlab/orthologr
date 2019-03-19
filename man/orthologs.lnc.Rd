@@ -22,6 +22,11 @@ to detect orthologous genes. Options are:
 \item \code{ortho_detection = "BH"} (BLAST best hit)
 }}
 
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep. Please be aware that max.target.seqs selects best hits based on the database entry and not by the best e-value. 
+See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .}
+
+\item{output.path}{path to which output shall be stored.}
+
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
