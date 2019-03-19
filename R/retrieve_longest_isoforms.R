@@ -69,7 +69,7 @@ retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, 
                 }
                 message("Retrieving longest isoforms ...")
                 res <- dplyr::do(dplyr::group_by(pep_file_tibble_joined, gene_id), extract_longest_transcript(.))
-                matched_ids <- na.omit(match(res$transcript_id, pep_file@ranges@NAMES))
+                matched_ids <- stats::na.omit(match(res$transcript_id, pep_file@ranges@NAMES))
                 
                 if (length(matched_ids) == 0)
                         stop("Gene_ID or Peptide_IDs between the gtf file and the headers of the fasta file did not match!",
