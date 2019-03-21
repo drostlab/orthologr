@@ -161,7 +161,7 @@ glimpse(hit_tbl)
 ```
 
 ```
-bservations: 20
+Observations: 20
 Variables: 12
 $ query_id      <chr> "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010…
 $ subject_id    <chr> "333554|PACid:16033839", "470181|PACid:16064328", "47…
@@ -337,7 +337,7 @@ A tibble: 12 x 13
 10 AT1G011…       1 909860|PA…          92.6         310         20
 11 AT1G012…       1 311313|PA…          95.3         107          5
 12 AT1G012…       1 470155|PA…          96.7        1056         35
- … with 7 more variables: gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
+ with 7 more variables: gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
    s_start <dbl>, s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
@@ -597,8 +597,8 @@ blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'o
 ```
 
 ```
- A tibble: 20 x 12
- Groups:   query_id [20]
+A tibble: 20 x 12
+Groups:   query_id [20]
    query_id subject_id perc_identity alig_length mismatches gap_openings
    <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -621,7 +621,7 @@ blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'o
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
- … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
+ with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
    s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
@@ -673,7 +673,7 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 
 ```
  A tibble: 20 x 12
- Groups:   query_id [?]
+ Groups:   query_id 
    query_id subject_id perc_identity alig_length mismatches gap_openings
    <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -696,7 +696,7 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
- … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
+ with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
    s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
