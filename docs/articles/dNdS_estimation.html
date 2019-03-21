@@ -147,7 +147,7 @@
      <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, 
      <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, 
      <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
-<pre><code> # A tibble: 20 x 15
+<pre><code>  A tibble: 20 x 15
    query_id subject_id      dN    dS   dNdS perc_identity alig_length
    &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
  1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0         469
@@ -170,9 +170,9 @@
 18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8         238
 19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3         107
 20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7        1056
-# … with 8 more variables: mismatches &lt;dbl&gt;, gap_openings &lt;dbl&gt;,
-#   q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;dbl&gt;</code></pre>
+ … with 8 more variables: mismatches &lt;dbl&gt;, gap_openings &lt;dbl&gt;,
+   q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
+   bit_score &lt;dbl&gt;</code></pre>
 <p>Some outputs include <code>NA</code> values. To filter for <code>NA</code> values or a specific <code>dnds.threshold</code>, you can use the <code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function. The <code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function takes the output data.table returned by <code><a href="../reference/dNdS.html">dNdS()</a></code> and filters the output by the following criteria:</p>
 <ol style="list-style-type: decimal">
 <li><p>all dN values having an NA value are omitted</p></li>
@@ -194,70 +194,35 @@ Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <span class="co"># 2) all dS values having an NA value are omitted</span>
 <span class="co"># 3) all dNdS values &gt;= 2 are omitted</span>
 <span class="kw"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span>(Ath_Aly_dnds, <span class="dt">dnds.threshold =</span> <span class="dv">2</span>)</code></pre></div>
-<pre><code>
-      query_id            subject_id         dN        dS      dNdS method
-1  AT1G01010.1 333554|PACid_16033839 0.10581700 0.2844350 0.3720250     YN
-2  AT1G01020.1 470181|PACid_16064328 0.04164150 0.0951677 0.4375590     YN
-3  AT1G01030.1 470180|PACid_16054974 0.01664670 0.1163900 0.1430260     YN
-4  AT1G01040.1 333551|PACid_16057793 0.01421700 0.1314360 0.1081670     YN
-5  AT1G01060.3 470177|PACid_16043374 0.04387800 0.1131710 0.3877130     YN
-6  AT1G01070.1 918864|PACid_16052578 0.02028020 0.0960773 0.2110820     YN
-7  AT1G01080.1 909871|PACid_16053217 0.03930610 0.0995795 0.3947210     YN
-8  AT1G01090.1 470171|PACid_16052860 0.00992436 0.2496940 0.0397461     YN
-9  AT1G01110.2 333544|PACid_16034284 0.03292970 0.1293160 0.2546450     YN
-10 AT1G01120.1 918858|PACid_16049140 0.00356132 0.1225410 0.0290623     YN
-11 AT1G01140.3 470161|PACid_16036015 0.00582238 0.1354990 0.0429699     YN
-12 AT1G01150.1 918855|PACid_16037307 0.13565500 0.1962460 0.6912480     YN
-13 AT1G01160.1 918854|PACid_16044153 0.11558300 0.1929560 0.5990120     YN
-14 AT1G01170.2 311317|PACid_16052302 0.00557175 0.2903370 0.0191906     YN
-15 AT1G01180.1 909860|PACid_16056125 0.04065370 0.1557400 0.2610360     YN
-16 AT1G01190.1 311315|PACid_16059488 0.02849220 0.1538610 0.1851810     YN
-17 AT1G01200.1 470156|PACid_16041002 0.01983450 0.1512510 0.1311360     YN
-18 AT1G01210.1 311313|PACid_16057125 0.02106910 0.1433630 0.1469630     YN
-19 AT1G01220.1 470155|PACid_16047984 0.01530070 0.1446480 0.1057780     YN
-</code></pre>
-<p>Instead of using a multiple alignment tool for pairwise alignments you can also choose a global pairwise alignment of orthologous genes based on the Needleman-Wunsch algorithm. For this purpose the argument <code>aa_aln_type</code> must be set to <code>aa_aln_type = "pairwise"</code> and <code>aa_aln_tool = "NW"</code> for Needleman-Wunsch.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># get a dNdS table using:</span>
-<span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span>
-<span class="co"># 2) pairwise amino acid alignments using Needleman-Wunsch</span>
-<span class="co"># 3) pal2nal for codon alignments</span>
-<span class="co"># 4) Comeron (1995) for dNdS estimation</span>
-<span class="co"># 5) single core processing 'comp_cores = 1'</span>
-<span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>( <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-      <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>,
-      <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, 
-      <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, 
-      <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, 
-      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
-      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>, 
-      <span class="dt">quiet           =</span> <span class="ot">TRUE</span> )</code></pre></div>
-<pre><code>
-       query_id            subject_id       dN     dS    dNdS
- 1: AT1G01010.1 333554|PACid:16033839 0.106400 0.2537 0.41950
- 2: AT1G01020.1 470181|PACid:16064328 0.040230 0.1037 0.38790
- 3: AT1G01030.1 470180|PACid:16054974 0.014990 0.1265 0.11850
- 4: AT1G01040.1 333551|PACid:16057793 0.013470 0.1165 0.11560
- 5: AT1G01050.1 909874|PACid:16064489 0.000000 0.1750 0.00000
- 6: AT1G01060.3 470177|PACid:16043374 0.044950 0.1133 0.39670
- 7: AT1G01070.1 918864|PACid:16052578 0.018300 0.1059 0.17280
- 8: AT1G01080.1 909871|PACid:16053217 0.033980 0.1056 0.32170
- 9: AT1G01090.1 470171|PACid:16052860 0.009104 0.2181 0.04174
-10: AT1G01110.2 333544|PACid:16034284 0.032480 0.1220 0.26620
-11: AT1G01120.1 918858|PACid:16049140 0.003072 0.1326 0.02317
-12: AT1G01140.3 470161|PACid:16036015 0.005672 0.1312 0.04324
-13: AT1G01150.1 918855|PACid:16037307 0.130000 0.2028 0.64120
-14: AT1G01160.1 918854|PACid:16044153 0.104600 0.2804 0.37310
-15: AT1G01170.2 311317|PACid:16052302 0.000000 0.3064 0.00000
-16: AT1G01180.1 909860|PACid:16056125 0.029680 0.1763 0.16830
-17: AT1G01190.1 311315|PACid:16059488 0.028690 0.1618 0.17730
-18: AT1G01200.1 470156|PACid:16041002 0.019050 0.1675 0.11370
-19: AT1G01210.1 311313|PACid:16057125 0.020670 0.1540 0.13420
-20: AT1G01220.1 470155|PACid:16047984 0.015690 0.1533 0.10230
-</code></pre>
+<pre><code>Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...
+Initial input contains 20 rows.
+Filtering done. New output table contains 20 rows.
+ A tibble: 20 x 15
+   query_id subject_id      dN    dS   dNdS perc_identity alig_length
+   &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0         469
+ 2 AT1G010… 470181|PA… 0.0402  0.104 0.388           91.1         246
+ 3 AT1G010… 470180|PA… 0.0150  0.126 0.118           95.5         359
+ 4 AT1G010… 333551|PA… 0.0135  0.116 0.116           92.0        1970
+ 5 AT1G010… 909874|PA… 0       0.175 0              100           213
+ 6 AT1G010… 470177|PA… 0.0449  0.113 0.397           89.5         648
+ 7 AT1G010… 918864|PA… 0.0183  0.106 0.173           95.1         366
+ 8 AT1G010… 909871|PA… 0.0340  0.106 0.322           90.3         300
+ 9 AT1G010… 470171|PA… 0.00910 0.218 0.0417          96.8         434
+10 AT1G011… 333544|PA… 0.0325  0.122 0.266           93.6         528
+11 AT1G011… 918858|PA… 0.00307 0.133 0.0232          99.2         529
+12 AT1G011… 470161|PA… 0.00567 0.131 0.0432          98.5         453
+13 AT1G011… 918855|PA… 0.13    0.203 0.641           72.6         285
+14 AT1G011… 918854|PA… 0.105   0.280 0.373           84.9         179
+15 AT1G011… 311317|PA… 0       0.306 0               85.6          97
+16 AT1G011… 909860|PA… 0.0297  0.176 0.168           92.6         310
+17 AT1G011… 311315|PA… 0.0287  0.162 0.177           94.2         533
+18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8         238
+19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3         107
+20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7        1056
+ … with 8 more variables: mismatches &lt;dbl&gt;, gap_openings &lt;dbl&gt;,
+   q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
+   bit_score &lt;dbl&gt;</code></pre>
 <p>The <code><a href="../reference/dNdS.html">dNdS()</a></code> function can be used choosing the following options:</p>
 <ul>
 <li>
@@ -277,7 +242,6 @@ Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
 <p>Please see <code><a href="../reference/dNdS.html">?dNdS</a></code> for details.</p>
 <p>In case your BLAST program, or multiple alignment program can not be executed from the default execution <code>PATH</code> you can specify the <code>aa_aln_path</code> or <code>blast_path</code> arguments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
 <span class="co"># using the `aa_aln_path` or `blast_path` arguments</span>
 <span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>( <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
       <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
@@ -289,15 +253,13 @@ Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
       <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, 
       <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, 
       <span class="dt">comp_cores      =</span> <span class="dv">1</span>, 
-      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>, 
-      <span class="dt">quiet           =</span> <span class="ot">TRUE</span> )</code></pre></div>
+      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div id="advanced-options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#advanced-options" class="anchor"></a>Advanced options</h2>
 <p>Additional arguments can be passed to <code><a href="../reference/dNdS.html">dNdS()</a></code>. This allows you to use more advanced options of several interface programs.</p>
 <p>To pass additional parameters to the interface programs, you can use the <code>blast_params</code> and <code>aa_aln_params</code> arguments. The <code>aa_aln_params</code> argument assumes that when you chose e.g. <code>aa_aln_tool = "mafft"</code> you will pass the corresponding additional parameters in MAFFT notation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
 <span class="co"># get dNdS estimated for orthologous genes between A. thaliana and A. lyrata</span>
 <span class="co"># using additional parameters:</span>
 
@@ -311,6 +273,7 @@ Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
                       <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                       <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,
                       <span class="dt">blast_params    =</span> <span class="st">"-matrix BLOSUM80"</span>,
+                      <span class="dt">aa_aln_type     =</span> <span class="st">"multiple"</span>,
                       <span class="dt">aa_aln_tool     =</span> <span class="st">"mafft"</span>,
                       <span class="dt">aa_aln_params   =</span> <span class="st">"--maxiterate 1 --clustalout"</span>,
                       <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>,
@@ -318,12 +281,10 @@ Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../referenc
                       <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>, 
                       <span class="dt">quiet           =</span> <span class="ot">TRUE</span> )
 
-        
 <span class="co"># filter for:</span>
 <span class="co"># 1) all dN values having an NA value are omitted</span>
 <span class="co"># 2) all dS values having an NA value are omitted</span>
 <span class="co"># 3) all dNdS values &gt;= 0.1 are omitted</span>
-
 <span class="kw"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span>(Ath_Aly_dnds, <span class="dt">dnds.threshold =</span> <span class="fl">0.1</span>)</code></pre></div>
 <pre><code>
      query_id      subject_id       dN     dS    dNdS

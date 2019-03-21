@@ -145,11 +145,11 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     <pre class="usage"><span class='fu'>dNdS</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"cds"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>cdd.path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"multiple"</span>,
-  <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"clustalw"</span>, <span class='kw'>aa_aln_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
+  <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>, <span class='kw'>aa_aln_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>, <span class='kw'>kaks_calc_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"YN"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_citation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,6 +253,10 @@ Default is <code>quiet</code> = <code>FALSE</code>.</p></td>
       <th>clean_folders</th>
       <td><p>a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is <code>clean_folders</code> = <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>print_citation</th>
+      <td><p>a logical value indicating whether or not the citation message shall be printed.</p></td>
     </tr>
     </table>
     
