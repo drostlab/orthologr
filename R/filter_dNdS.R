@@ -55,16 +55,13 @@
 #'                dnds.threshold  = 2)
 #'                   
 #' }
-#' @seealso \code{\link{divergence_stratigraphy}}
+#' @seealso \code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}
 #' @export
-
-filter_dNdS <- function(dNdS_tbl,dnds.threshold = 2){
-        
-        # due to the discussion of no visible binding for global variable for
-        # data.table objects see:
-        # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
+filter_dNdS <- function(dNdS_tbl, dnds.threshold = 2){
         dN <- dS <- NULL
-        
-        return( dplyr::filter(dNdS_tbl,!is.na(dN), !is.na(dS), dNdS <= dnds.threshold) )
-        
+        message("Filtering out NA values in dN or dS and all values with dNdS > ", dnds.threshold, " ...")
+        message("Initial input contains ", nrow(dNdS_tbl), " rows.")
+        res <- dplyr::filter(dNdS_tbl,!is.na(dN), !is.na(dS), dNdS <= dnds.threshold)
+        message("Filtering done. New output table contains ", nrow(res), " rows.")
+        return(res)
 }
