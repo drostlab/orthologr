@@ -26,11 +26,13 @@ working on this software tool and will motivate me to extend its functionality a
 ## Install 
 
 ```r
-# first install the devtools package 
-install.packages("devtools")
-# install orthologr on your system
-source("http://bioconductor.org/biocLite.R")
-biocLite("HajkD/orthologr")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install()
+# Install package dependencies
+BiocManager::install("Biostrings", version = "3.8")
+# install orthologr from GitHub
+BiocManager::install("HajkD/orthologr")
 ```
 
 ## Use Cases
