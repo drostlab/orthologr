@@ -7,11 +7,11 @@
 dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
   ortho_detection = "RBH", delete_corrupt_cds = FALSE,
   cdd.path = NULL, blast_params = NULL, blast_path = NULL,
-  eval = "1E-5", ortho_path = NULL, aa_aln_type = "multiple",
-  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
+  eval = "1E-5", ortho_path = NULL, aa_aln_type = "pairwise",
+  aa_aln_tool = "NW", aa_aln_path = NULL, aa_aln_params = NULL,
   codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
-  dnds_est.method = "YN", comp_cores = 1, quiet = FALSE,
-  clean_folders = FALSE)
+  dnds_est.method = "Comeron", comp_cores = 1, quiet = TRUE,
+  clean_folders = FALSE, print_citation = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -74,6 +74,8 @@ Default is \code{quiet} = \code{FALSE}.}
 
 \item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
+
+\item{print_citation}{a logical value indicating whether or not the citation message shall be printed.}
 }
 \value{
 A data.table storing the dNdS values of the correspnding genes.
