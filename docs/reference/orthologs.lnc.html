@@ -80,33 +80,6 @@ based on selected orthology inference programs." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Install.html">Installing Prerequisite Tools</a>
-    </li>
-    <li>
-      <a href="../articles/blast.html">BLAST searches using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/dNdS_estimation.html">dNdS estimation using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a>
-    </li>
-    <li>
-      <a href="../articles/orthology_inference.html">Orthology Inference using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a>
-    </li>
-  </ul>
-</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -170,6 +143,15 @@ to detect orthologous genes. Options are:</p><ul>
 <li><p><code>ortho_detection = "RBH"</code> (BLAST reciprocal best hit) (Default)</p></li>
 <li><p><code>ortho_detection = "BH"</code> (BLAST best hit)</p></li>
 </ul></td>
+    </tr>
+    <tr>
+      <th>max.target.seqs</th>
+      <td><p>a numeric value specifying the number of aligned sequences to keep. Please be aware that max.target.seqs selects best hits based on the database entry and not by the best e-value. 
+See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .</p></td>
+    </tr>
+    <tr>
+      <th>output.path</th>
+      <td><p>path to which output shall be stored.</p></td>
     </tr>
     <tr>
       <th>comp_cores</th>

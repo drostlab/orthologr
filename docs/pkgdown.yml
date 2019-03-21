@@ -1,11 +1,5 @@
 pandoc: 1.19.2.1
 pkgdown: 1.3.0
 pkgdown_sha: ~
-articles:
-  Install: Install.html
-  blast: blast.html
-  dNdS_estimation: dNdS_estimation.html
-  divergence_stratigraphy: divergence_stratigraphy.html
-  orthology_inference: orthology_inference.html
-  sequence_alignments: sequence_alignments.html
+articles: {}
 
