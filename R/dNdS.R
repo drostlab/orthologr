@@ -41,9 +41,9 @@
 #' Default is \code{quiet} = \code{FALSE}.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
+#' @param print_citation a logical value indicating whether or not the citation message shall be printed.
 #' @author Hajk-Georg Drost
 #' @details 
-#' 
 #' 
 #' The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
 #' This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral
@@ -192,51 +192,64 @@ dNdS <- function(query_file,
                  blast_path      = NULL, 
                  eval            = "1E-5", 
                  ortho_path      = NULL, 
-                 aa_aln_type     = "multiple", 
-                 aa_aln_tool     = "clustalw", 
+                 aa_aln_type     = "pairwise", 
+                 aa_aln_tool     = "NW", 
                  aa_aln_path     = NULL, 
                  aa_aln_params   = NULL, 
                  codon_aln_tool  = "pal2nal", 
                  kaks_calc_path  = NULL, 
-                 dnds_est.method = "YN", 
+                 dnds_est.method = "Comeron", 
                  comp_cores      = 1, 
-                 quiet           = FALSE, 
-                 clean_folders   = FALSE){
+                 quiet           = TRUE, 
+                 clean_folders   = FALSE,
+                 print_citation = TRUE
+                 ){
+        
+        message("Starting orthology inference (",ortho_detection, ") and dNdS estimation (",dnds_est.method,") using the follwing parameters:")
+        message("query = '", basename(query_file), "'")
+        message("subject = '", basename(subject_file), "'")
+        message("seq_type = '", seq_type, "'")
+        message("e-value: ", eval)
+        message("aa_aln_type = '", aa_aln_type, "'")
+        message("aa_aln_tool = '", aa_aln_tool, "'")
+        message("\n")
+        
         
         # determine the file seperator of the current OS
         f_sep <- .Platform$file.sep
         
         if (!is.ortho_detection_method(ortho_detection))
-                stop("Please choose a orthology detection method that is supported by this function.")
+                stop("Please choose a orthology detection method that is supported by this function.", call. = FALSE)
         
         if (!is.element(aa_aln_type, c("multiple", "pairwise")))
-                stop("Please choose a supported alignement type: 'multiple' or 'pairwise'")
+                stop("Please choose a supported alignement type: 'multiple' or 'pairwise'", call. = FALSE)
         
         if (aa_aln_type == "multiple") {
                 if (!is.multiple_aln_tool(aa_aln_tool))
                         stop(
-                                "Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type = 'pairwise'."
+                                "Please choose a multiple alignment tool that is supported by this function or try to choose aa_aln_type = 'pairwise'." , call. = FALSE
                         )
         }
         
         if (aa_aln_type == "pairwise") {
                 if (!is.pairwise_aln_tool(aa_aln_tool))
                         stop(
-                                "Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type = 'multiple'."
+                                "Please choose a pairwise alignment tool that is supported by this function or try to choose aa_aln_type = 'multiple'." , call. = FALSE
                         )
         }
         
         if (!is.codon_aln_tool(codon_aln_tool))
-                stop("Please choose a codon alignment tool that is supported by this function.")
+                stop("Please choose a codon alignment tool that is supported by this function.", call. = FALSE)
         
         if (!is.dnds_est_method(dnds_est.method))
-                stop("Please choose a dNdS estimation method that is supported by this function.")
+                stop("Please choose a dNdS estimation method that is supported by this function.", call. = FALSE)
         
         aa <- geneids <- NULL
         
         # blast each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
+        message("Starting Orthology Inference ...")
         # use BLAST best hit as orthology inference method
         if (ortho_detection == "BH") {
                 # seq_type = "cds" -> dNdS() needs CDS files as input!
@@ -462,9 +475,11 @@ dNdS <- function(query_file,
         final_tbl <- dplyr::inner_join(dtplyr::tbl_dt(joint_query_tbl), dtplyr::tbl_dt(joint_subject_tbl), by = c("query_id","subject_id"))
         
         if (nrow(final_tbl) == 0)
-                stop("No orthologs could be found! Please check your input files!")
+                stop("No orthologs could be found! Please check your input files!", call. = FALSE)
         
         
+        message("Orthology Inference Completed.")
+        message("Starting dN/dS Estimation ...")
         dNdS_tbl <- compute_dnds( complete_tbl    = final_tbl,
                                   aa_aln_type     = aa_aln_type,
                                   aa_aln_tool     = aa_aln_tool,
@@ -480,6 +495,16 @@ dNdS <- function(query_file,
         hit.table_selected <- dplyr::select(hit.table, -subject_id)
         
         res <- dplyr::inner_join(dNdS_tbl, hit.table_selected, by = "query_id")
+        
+        message("dN/dS Estimation Completed.")
+        
+        if (print_citation) {
+                message("\n")
+                message("Please cite the following paper when using orthologr for your own research:")
+                message("Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. 32 (5): 1221-1231.")
+                message("\n")
+        }
+        
        # return the dNdS table for all query_ids and subject_ids
            return(res)   
 }
