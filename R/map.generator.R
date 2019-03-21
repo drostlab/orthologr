@@ -55,13 +55,11 @@ map.generator <- function(query_file,
                            progress.bar     = TRUE,
                            sep              = ";",
                           ... ){
-        
-        
         # retrieve all subject files within a given folder
         subj.files <- list.files(subjects.folder)
         
         if (length(subj.files) == 0)
-                stop("your subject.folder ", subjects.folder, " is empty...")
+                stop("Your subject.folder ", subjects.folder, " seems to be empty...", call. = FALSE)
         
         # initialize progress bar
         if (progress.bar & (length(subj.files) > 1))
@@ -83,6 +81,7 @@ map.generator <- function(query_file,
                         aa_aln_tool     = aa_aln_tool,
                         dnds_est.method = dnds_est.method,
                         comp_cores      = comp_cores,
+                        print_citation = FALSE,
                         ...
                 )
                 
@@ -112,7 +111,10 @@ map.generator <- function(query_file,
                         utils::setTxtProgressBar(pb, i)
                 
         }
-        cat("\n")
+        message("\n")
+        message("\n")
+        message("Please cite the following paper when using orthologr for your own research:")
+        message("Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. 32 (5): 1221-1231.")
         cat("\n")
         cat(paste0("All maps are stored in ", output.folder, "."))
         
