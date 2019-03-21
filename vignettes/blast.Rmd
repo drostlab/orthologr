@@ -322,7 +322,7 @@ oo_genes
 ```
 
 ```
-# A tibble: 12 x 13
+A tibble: 12 x 13
    query_id n_genes subject_id perc_identity alig_length mismatches
    <chr>      <int> <chr>              <dbl>       <dbl>      <dbl>
  1 AT1G010…       1 470181|PA…          91.1         246         22
@@ -337,8 +337,8 @@ oo_genes
 10 AT1G011…       1 909860|PA…          92.6         310         20
 11 AT1G012…       1 311313|PA…          95.3         107          5
 12 AT1G012…       1 470155|PA…          96.7        1056         35
-# … with 7 more variables: gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
-#   s_start <dbl>, s_end <dbl>, evalue <dbl>, bit_score <dbl>
+ … with 7 more variables: gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
+   s_start <dbl>, s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
 This way, users will have all blast information of `one_to_one` hits available.
@@ -393,7 +393,7 @@ one_to_many
 ```
 
 ```
-# A tibble: 8 x 2
+ A tibble: 8 x 2
   query_id    n_genes
   <chr>         <int>
 1 AT1G01010.1       4
@@ -416,7 +416,7 @@ dplyr::select(dplyr::filter(hit_tbl, query_id == "AT1G01200.1"), query_id, subje
 
 
 ```
-# A tibble: 7 x 5
+ A tibble: 7 x 5
   query_id    subject_id               evalue perc_identity alig_length
   <chr>       <chr>                     <dbl>         <dbl>       <dbl>
 1 AT1G01200.1 470156|PACid:16041002 1.87e-172          95.8         238
@@ -447,8 +447,8 @@ dplyr::select(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_len
 ```
 
 ```
-# A tibble: 20 x 5
-# Groups:   query_id [20]
+ A tibble: 20 x 5
+ Groups:   query_id [20]
    query_id    subject_id               evalue perc_identity alig_length
    <chr>       <chr>                     <dbl>         <dbl>       <dbl>
  1 AT1G01010.1 333554|PACid:16033839 0.                 74.0         469
@@ -597,8 +597,8 @@ blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'o
 ```
 
 ```
-# A tibble: 20 x 12
-# Groups:   query_id [20]
+ A tibble: 20 x 12
+ Groups:   query_id [20]
    query_id subject_id perc_identity alig_length mismatches gap_openings
    <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -621,8 +621,8 @@ blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'o
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
-# … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
-#   s_end <dbl>, evalue <dbl>, bit_score <dbl>
+ … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
+   s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
 The `blast_best()` function returns: `query_id`, `subject_id`, and `eval`.
@@ -673,7 +673,7 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 
 ```
  A tibble: 20 x 12
-# Groups:   query_id [?]
+ Groups:   query_id [?]
    query_id subject_id perc_identity alig_length mismatches gap_openings
    <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -696,8 +696,8 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
-# … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
-#   s_end <dbl>, evalue <dbl>, bit_score <dbl>
+ … with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
+   s_end <dbl>, evalue <dbl>, bit_score <dbl>
 ```
 
 ### The set_blast() function

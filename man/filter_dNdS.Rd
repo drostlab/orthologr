@@ -67,7 +67,7 @@ filter_dNdS( dNdS( query_file      =
 }
 }
 \seealso{
-\code{\link{divergence_stratigraphy}}
+\code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}
 }
 \author{
 Hajk-Georg Drost
