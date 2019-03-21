@@ -19,14 +19,19 @@ knitr::opts_chunk$set(
 * [1. Getting started with BLAST](#getting-started)
 * [2. Core BLAST+ Functionality](#using-orthologr-to-perform-blast-searches)
     - [2.1 The blast() function](#the-blast-function)
-    
+        - [2.1.1 Inferring with one-to-one homologous hits](#working-with-one-to-one-hits)
+        - [2.1.2 Inferring with one-to-many homologous hits](#working-with-one-to-many-hits)
+    - [2.2 The blast_best() function](#the-blast_best-function)
+    - [2.3 The blast_rec() function](#the-blast_rec-function)
+    - [2.4 The set_blast() function](#the-set_blast-function)
+* [3. Perform BLAST+ Searches between Genomes](#perform-bast-searches-between-genomes)
 
 ## Getting Started
 
 The `orthologr` package provides several interface functions to perform
 BLAST searches.
 
-First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
+First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.md#install-blast) instructions to install BLAST on your manine.
 
 ## Performing BLAST Searches
 
@@ -376,7 +381,7 @@ Note, that you can perform self-BLAST searches `blast(query,query)` and `blast(s
 
 Now we continue with the `one_to_many` class of genes.
 
-### Working with one-to-many genes
+### Working with one-to-many hits
 
 Here we want to address the question how to deal with multiple hits returned by `BLAST+`.
 
@@ -750,4 +755,10 @@ MAASEHRCVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAINPATVNIQHL
 LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLVWEFPMSVIFF
 VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*
 ```
+
+## Perform BLAST Searches between Genomes
+
+
+
+
 
