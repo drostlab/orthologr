@@ -123,7 +123,12 @@
 <li><a href="#the-set_blast-function">2.4 The set_blast() function</a></li>
 </ul>
 </li>
-<li><a href="#perform-bast-searches-between-genomes">3. Perform BLAST+ Searches between Genomes</a></li>
+<li>
+<a href="#perform-bast-searches-between-genomes-or-proteomes">3. Perform BLAST+ Searches between Genomes or Proteomes</a>
+<ul>
+<li><a href="#genome-and-proteome-retrieval">3.1 Genome and Proteome Retrieval</a></li>
+</ul>
+</li>
 </ul>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -637,9 +642,15 @@ LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLV
 VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</code></pre>
 </div>
 </div>
-<div id="perform-blast-searches-between-genomes" class="section level2">
+<div id="perform-blast-searches-between-genomes-or-proteomes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#perform-blast-searches-between-genomes" class="anchor"></a>Perform BLAST Searches between Genomes</h2>
+<a href="#perform-blast-searches-between-genomes-or-proteomes" class="anchor"></a>Perform BLAST Searches between Genomes or Proteomes</h2>
+<p>For large-scale applications of <code>orthologr</code>, users may wish to perform BLAST+ searches between entire genomes. For very large-scale BLAST+ searches between genomes we recommend the user to use the <a href="https://github.com/HajkD/metablastr">metablastr</a> package which aims to provide an easy-to-use BLAST search framework for massive genome comparisons.</p>
+<p>For pairwise genome comparisons however, users can use the following functions to BLAST one genome against another.</p>
+<div id="genome-and-proteome-retrieval" class="section level3">
+<h3 class="hasAnchor">
+<a href="#genome-and-proteome-retrieval" class="anchor"></a>Genome and Proteome Retrieval</h3>
+</div>
 </div>
   </div>
 
@@ -653,7 +664,7 @@ VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</code></pre>
       <li><a href="#using-orthologr-to-perform-blast-searches">Using orthologr to perform BLAST searches</a></li>
       <li><a href="#the-blast_best-function">The blast_best() function</a></li>
       <li><a href="#the-blast_rec-function">The blast_rec() function</a></li>
-      <li><a href="#perform-blast-searches-between-genomes">Perform BLAST Searches between Genomes</a></li>
+      <li><a href="#perform-blast-searches-between-genomes-or-proteomes">Perform BLAST Searches between Genomes or Proteomes</a></li>
       </ul>
 </div>
       </div>
