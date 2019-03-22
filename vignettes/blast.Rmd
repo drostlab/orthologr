@@ -24,7 +24,10 @@ knitr::opts_chunk$set(
     - [2.2 The blast_best() function](#the-blast_best-function)
     - [2.3 The blast_rec() function](#the-blast_rec-function)
     - [2.4 The set_blast() function](#the-set_blast-function)
-* [3. Perform BLAST+ Searches between Genomes](#perform-bast-searches-between-genomes)
+* [3. Perform BLAST+ Searches between Genomes or Proteomes](#perform-bast-searches-between-genomes-or-proteomes)
+    - [3.1 Genome and Proteome Retrieval](#genome-and-proteome-retrieval)
+
+
 
 ## Getting Started
 
@@ -757,9 +760,18 @@ LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLV
 VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*
 ```
 
-## Perform BLAST Searches between Genomes
+## Perform BLAST Searches between Genomes or Proteomes
 
+For large-scale applications of `orthologr`, users may wish to perform BLAST+
+searches between entire genomes. For very large-scale BLAST+ searches
+between genomes we recommend the user to use the [metablastr](https://github.com/HajkD/metablastr) package
+which aims to provide an easy-to-use BLAST search framework
+for massive genome comparisons.
 
+For pairwise genome comparisons however, users can use the following
+functions to BLAST one genome against another.
+
+### Genome and Proteome Retrieval
 
 
 
