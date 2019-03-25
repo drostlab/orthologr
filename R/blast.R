@@ -132,7 +132,9 @@ blast <- function(query_file,
                 if(!is.element(db,c("nr","plaza")))
                         stop("Please choose a database that is supported by remote BLAST.", call. = FALSE)
         }
-                
+        
+        is_installed_blast()
+        message("Running ", system("blastp -version", intern = TRUE)[1], " ...")
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
@@ -163,7 +165,7 @@ blast <- function(query_file,
         output = paste0("blastresult_",filename,".csv")
         
         
-        if(!file.exists(file.path(tempdir(),"_blast_db"))){
+        if (!file.exists(file.path(tempdir(),"_blast_db"))){
                 
                 dir.create(file.path(tempdir(),"_blast_db"))
         }
@@ -175,7 +177,7 @@ blast <- function(query_file,
         cores <- parallel::detectCores()
         
         # in case one tries to use more cores than are available
-        if(comp_cores > cores)
+        if (comp_cores > cores)
                 stop("You chose more cores than are available on your machine.")
         
 #         write_AA <- as.list(query.dt[ ,aa])
