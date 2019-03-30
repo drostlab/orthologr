@@ -1,29 +1,53 @@
 orthologr
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/HajkD/orthologr.svg?branch=master)](https://travis-ci.org/HajkD/orthologr)
-
 ## Comparative Genomics with R
 
-The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform __large scale__ comparative genomics studies with R. 
+### Motivation
 
-`Orthologr` aims to be as easy to use as possible - from genomic data retrieval to dNdS estimation.
+The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The `orthologr` package aims to provide a framework to perform __large scale__ comparative genomics studies with R. `Orthologr` aims to be as easy to use as possible - from genomic data retrieval to orthology inference and dNdS estimation between several genomes.
 
-### Large scale orthology inference and dN/dS estimation between multiple species
-
-In detail, `orthologr` allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and [divergence stratigraphy](https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd) __between multiple genomes__ with R.
-
-The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
-for all orthologous genes between two __entire genomes__.
+In combination with the R package [biomartr](https://github.com/ropensci/biomartr), users can retrieve genomes, proteomes, or coding sequences for several species and use them as input
+for orthology inference and dN/dS estimation with `orthologr`. The advantage of using `biomartr` in combination with `orthologr` is that
+users can join the new wave of research that promotes and facilitates
+[computational reproducibility in genomics studies](https://github.com/ropensci/biomartr#short-package-description) and solve the
+issue of comparing genomes with different genome assembly qualities (also referred to as [genome version crisis](https://github.com/ropensci/biomartr#short-package-description)).
 
 ### Citation
 
-**Please cite the following paper when using `orthologr` for your own research. This will allow me to continue
-working on this software tool and will motivate me to extend its functionality and usability. Many thanks in advance :)**
+**Please cite the following paper in which I introduce `orthologr` when using this package for your own research. This will allow me to continue
+working on this software tool and will motivate me to extend its functionality and usability in the next years. Many thanks in advance :)**
 
 > Drost et al. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
 
-## Install 
+### Short package description
+
+In detail, `orthologr` allows users to perform orthology inference and dN/dS estimation between two genomes or between several genomes. The following methods
+to infer orthologous relationships between genes of entire genomes are available in this package:
+
+- [__BLAST best hit__](https://hajkd.github.io/orthologr/articles/blast.html#the-blast_best-function)
+- [__BLAST best reciprocal hit__](https://hajkd.github.io/orthologr/articles/blast.html#the-blast_rec-function)
+- [__OrthoFinder2__](https://hajkd.github.io/orthologr/articles/orthology_inference.html)
+
+The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
+for all orthologous genes between two __entire genomes__.
+Available dN/dS estimation methods are:
+
+- "NG": Nei, M. and Gojobori, T. (1986)
+- "LWL": Li, W.H., et al. (1985)
+- "LPB": Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+- "MLWL" (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+- "YN": Yang, Z. and Nielsen, R. (2000)
+- "MYN" (Modified YN): Zhang, Z., et al. (2006)
+- "GMYN": Wang, D.P., et al. Biology Direct. (2009)
+- "GY": Goldman, N. and Yang, Z. (1994)
+- "MS": (Model Selection): based on a set of candidate models, Posada, D. (2003) 
+- "MA" (Model Averaging): based on a set of candidate models, Posada, D. (2003)
+- "ALL": All models toghether 
+
+Please find more details [here](https://hajkd.github.io/orthologr/articles/dNdS_estimation.html).
+
+## Install `orthologr`
 
 ```r
 if (!requireNamespace("BiocManager", quietly = TRUE))
