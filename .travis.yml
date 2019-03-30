@@ -3,7 +3,7 @@ bioc_required: true
 bioc_packages: 
    - IRanges
    - Biostrings
-warnings_are_errors: true
+warnings_are_errors: false
 sudo: false
 cache: packages
 r_check_revdep: false
