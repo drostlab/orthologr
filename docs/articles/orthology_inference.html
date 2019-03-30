@@ -250,7 +250,7 @@
 <ol style="list-style-type: decimal">
 <li><p><code>bh_A &lt;- best_hit(A,B)</code></p></li>
 <li><p><code>bh_B &lt;- best_hit(B,A)</code></p></li>
-<li><p><code><a href="https://www.rdocumentation.org/packages/dplyr/topics/join">join(bh_A,bh_B)</a></code> by tupel <code>(query_id, subject_id)</code></p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/join.html">join(bh_A,bh_B)</a></code> by tupel <code>(query_id, subject_id)</code></p></li>
 </ol>
 <p>In other words, only in case the tuple <code>(query_id, subject_id)</code> is returned as best hit based on the <code>e-value</code> in both BLAST directions, the corresponding tupel <code>(query_id, subject_id)</code> is retained as orthologous gene pair.</p>
 <p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code> using <code>ortho_detection = "RBH"</code> and one computing core <code>comp_core = 1</code> can be performed as follows:</p>
@@ -302,7 +302,7 @@ RBH &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ortholo
           <span class="dt">comp_cores        =</span> <span class="dv">1</span>)
 
 
-<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(RBH)</code></pre></div>
+<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(RBH)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1"...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|...
@@ -330,7 +330,7 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
 <ol style="list-style-type: decimal">
 <li><p><code>bh_A &lt;- delta.blast(A,B)</code></p></li>
 <li><p><code>bh_B &lt;- delta.blast(B,A)</code></p></li>
-<li><p><code><a href="https://www.rdocumentation.org/packages/dplyr/topics/join">join(bh_A,bh_B)</a></code> by tupel <code>(query_id, subject_id)</code></p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/join.html">join(bh_A,bh_B)</a></code> by tupel <code>(query_id, subject_id)</code></p></li>
 </ol>
 <p>In other words, only in case the tuple <code>(query_id, subject_id)</code> is returned as best hit based on the <code>e-value</code> in both DELTA-BLAST directions, the corresponding tupel <code>(query_id, subject_id)</code> is retained as orthologous gene pair.</p>
 <p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code> using <code>ortho_detection = "DELTA"</code>, the <code>cdd.path = "path/to/cdd_database/folder"</code>, and one computing core <code>comp_core = 1</code> can be performed as follows:</p>
@@ -383,7 +383,7 @@ DELTA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ortho
           <span class="dt">comp_cores        =</span> <span class="dv">1</span>)
 
 
-<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(DELTA)</code></pre></div>
+<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(DELTA)</code></pre></div>
 <pre><code>Variables:
 $ query_id                (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1", "...
 $ subject_id              (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|PAC...

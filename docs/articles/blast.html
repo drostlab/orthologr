@@ -123,7 +123,12 @@
 <li><a href="#the-set_blast-function">2.4 The set_blast() function</a></li>
 </ul>
 </li>
-<li><a href="#perform-blast-searches-between-genomes">3. Perform BLAST+ searches between genomes</a></li>
+<li>
+<a href="#perform-blast-searches-between-genomes">3. Perform BLAST+ searches between genomes</a>
+<ul>
+<li><a href="#genome-and-proteome-retrieval">3.1 Genome and Proteome Retrieval</a></li>
+</ul>
+</li>
 </ul>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -157,7 +162,7 @@
 hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(hit_tbl)</code></pre></div>
+<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
@@ -182,7 +187,7 @@ hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bla
 
 hit_tbl</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># access columns: query_id, subject_id, evalue, and bit_score</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</code></pre></div>
 <pre><code>       query_id            subject_id evalue bit_score
  1: AT1G01010.1 333554|PACid:16033839  0e+00       627
  2: AT1G01020.1 470181|PACid:16064328 7e-166       454
@@ -208,21 +213,22 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">blast_params =</span> <span class="st">"-qcov_hsp_perc 0.9"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(hit_tbl)</code></pre></div>
-<pre><code>Observations: 20
-Variables: 12
-$ query_id      &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010…
-$ subject_id    &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:16064328", "47…
-$ perc_identity &lt;dbl&gt; 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 95.0…
-$ alig_length   &lt;dbl&gt; 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 52…
-$ mismatches    &lt;dbl&gt; 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0…
-$ gap_openings  &lt;dbl&gt; 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0…
-$ q_start       &lt;dbl&gt; 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1,…
-$ q_end         &lt;dbl&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52…
-$ s_start       &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1…
-$ s_end         &lt;dbl&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52…
-$ evalue        &lt;dbl&gt; 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162, 0…
-$ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1…</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
+<pre><code>A tibble: 78 x 12
+   query_id subject_id perc_identity alig_length mismatches gap_openings
+   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+ 1 AT1G010... 311334|PA...          43.6         165         81            4
+ 2 AT1G010... 333554|PA...          74.0         469         80            8
+ 3 AT1G010... 909883|PA...          34.5         354        162           12
+ 4 AT1G010... 918785|PA...          33.8         160         80            6
+ 5 AT1G010... 470181|PA...          91.1         246         22            0
+ 6 AT1G010... 470180|PA...          95.5         359         12            2
+ 7 AT1G010... 333551|PA...          92.0        1970         85           10
+ 8 AT1G010... 909874|PA...         100           213          0            0
+ 9 AT1G010... 311286|PA...          64.5          62         22            0
+10 AT1G010... 470177|PA...          89.5         648         58            5
+ with 68 more rows, and 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
+ s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>In all cases the default <code>e-value</code> BLAST+ searches is <code>1E-5</code> and the default <code>blast_algorithm</code> is <code>blastp</code>.</p>
 <p>Since BLAST+ searches can be computationally expensive, it is possible to specify the <code>comp_cores</code> argument when working with an multicore machine.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># BLAST computations using the comp_cores parameter: here with 2 cores</span>
@@ -255,7 +261,7 @@ hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bla
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 
 <span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span>
-rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/summarise">summarize</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/group_by">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/n">n</a></span>())
+rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>())
 <span class="co"># look at results</span>
 rel_hit_tbl</code></pre></div>
 <pre><code>A tibble: 20 x 2
@@ -283,9 +289,9 @@ rel_hit_tbl</code></pre></div>
 20 AT1G01220.1       1</code></pre>
 <p>Now you can sort genes into classes: <code>one-to-one</code> and <code>one-to-many</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># classify into 'one-to-one' relationships</span>
-one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="co"># classify into 'one-to-many' relationships</span>
-one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at one_to_one</span>
 one_to_one </code></pre></div>
 <pre><code>A tibble: 12 x 2
@@ -323,23 +329,23 @@ one_to_many</code></pre></div>
 <a href="#working-with-one-to-one-hits" class="anchor"></a>Working with one-to-one hits</h3>
 <p>We can now retrieve the blast hit entries for the one-to-one hits by joining the tables <code>one_to_one</code> and <code>hit_tbl</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span>
-oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/join">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)
+oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)
 oo_genes</code></pre></div>
 <pre><code>A tibble: 12 x 13
    query_id n_genes subject_id perc_identity alig_length mismatches
    &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
- 1 AT1G010…       1 470181|PA…          91.1         246         22
- 2 AT1G010…       1 470180|PA…          95.5         359         12
- 3 AT1G010…       1 333551|PA…          92.0        1970         85
- 4 AT1G010…       1 909874|PA…         100           213          0
- 5 AT1G010…       1 470171|PA…          96.8         434          8
- 6 AT1G011…       1 333544|PA…          93.6         528         34
- 7 AT1G011…       1 918855|PA…          72.6         285         68
- 8 AT1G011…       1 918854|PA…          84.9         179         19
- 9 AT1G011…       1 311317|PA…          85.6          97          0
-10 AT1G011…       1 909860|PA…          92.6         310         20
-11 AT1G012…       1 311313|PA…          95.3         107          5
-12 AT1G012…       1 470155|PA…          96.7        1056         35
+ 1 AT1G010...       1 470181|PA...          91.1         246         22
+ 2 AT1G010...       1 470180|PA...          95.5         359         12
+ 3 AT1G010...       1 333551|PA...          92.0        1970         85
+ 4 AT1G010...       1 909874|PA...         100           213          0
+ 5 AT1G010...       1 470171|PA...          96.8         434          8
+ 6 AT1G011...       1 333544|PA...          93.6         528         34
+ 7 AT1G011...       1 918855|PA...          72.6         285         68
+ 8 AT1G011...       1 918854|PA...          84.9         179         19
+ 9 AT1G011...       1 311317|PA...          85.6          97          0
+10 AT1G011...       1 909860|PA...          92.6         310         20
+11 AT1G012...       1 311313|PA...          95.3         107          5
+12 AT1G012...       1 470155|PA...          96.7        1056         35
  with 7 more variables: gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
    s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>This way, users will have all blast information of <code>one_to_one</code> hits available.</p>
@@ -350,9 +356,9 @@ oo_genes</code></pre></div>
 <p>Using the <code>oo_genes</code> dataset above, users can use this <code>one_to_one</code> hits strategy to detect homologous genes between species.</p>
 <p>For example, we could restrict <code>one_to_one</code> hits to fulfill certain (stringent) criteria to identify as a homologous hit. Here we choose the following parameter constellation to achieve this goal: <code>one_to_one</code> genes must have a minimum <code>alignment length of 300</code>, a p<code>erc_identity of &gt; 80 percent</code> and an <code>e-value &lt; 1E-5</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># filter for 'homologous' hits</span>
-true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
+true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code>      query_id            subject_id evalue perc_identity alig_length
 1: AT1G01030.1 470180|PACid:16054974      0         95.54         359
 2: AT1G01040.1 333551|PACid:16057793      0         91.98        1970
@@ -385,7 +391,7 @@ one_to_many</code></pre></div>
 8 AT1G01200.1       7</code></pre>
 <p>When looking at gene_id <code>AT1G01200.1</code> we see that it was found 7 times in the corresponding subject set of <em>A. lyrata</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at all 7 hits found</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code> A tibble: 7 x 5
   query_id    subject_id               evalue perc_identity alig_length
   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
@@ -404,7 +410,7 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 rbh_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                          <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code> A tibble: 20 x 5
  Groups:   query_id [20]
    query_id    subject_id               evalue perc_identity alig_length
@@ -455,7 +461,7 @@ atggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Biostrings)
 <span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span>
 <span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, 
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, 
        <span class="dt">pattern =</span> Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs], <span class="dt">type    =</span> <span class="st">"global"</span> )</code></pre></div>
 <pre><code>$...
 Global PairwiseAlignmentsSingleSubject (1 of 1)
@@ -507,26 +513,26 @@ Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/bas
 Groups:   query_id [20]
    query_id subject_id perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
- 1 AT1G010… 333554|PA…          74.0         469         80            8
- 2 AT1G010… 470181|PA…          91.1         246         22            0
- 3 AT1G010… 470180|PA…          95.5         359         12            2
- 4 AT1G010… 333551|PA…          92.0        1970         85           10
- 5 AT1G010… 909874|PA…         100           213          0            0
- 6 AT1G010… 470177|PA…          89.5         648         58            5
- 7 AT1G010… 918864|PA…          95.1         366         14            2
- 8 AT1G010… 909871|PA…          90.3         300         22            2
- 9 AT1G010… 470171|PA…          96.8         434          8            3
-10 AT1G011… 333544|PA…          93.6         528         34            0
-11 AT1G011… 918858|PA…          99.2         529          4            0
-12 AT1G011… 470161|PA…          98.5         453          6            1
-13 AT1G011… 918855|PA…          72.6         285         68            3
-14 AT1G011… 918854|PA…          84.9         179         19            2
-15 AT1G011… 311317|PA…          85.6          97          0            1
-16 AT1G011… 909860|PA…          92.6         310         20            1
-17 AT1G011… 311315|PA…          94.2         533         30            1
-18 AT1G012… 470156|PA…          95.8         238         10            0
-19 AT1G012… 311313|PA…          95.3         107          5            0
-20 AT1G012… 470155|PA…          96.7        1056         35            0
+ 1 AT1G010... 333554|PA...          74.0         469         80            8
+ 2 AT1G010... 470181|PA...          91.1         246         22            0
+ 3 AT1G010... 470180|PA...          95.5         359         12            2
+ 4 AT1G010... 333551|PA...          92.0        1970         85           10
+ 5 AT1G010... 909874|PA...         100           213          0            0
+ 6 AT1G010... 470177|PA...          89.5         648         58            5
+ 7 AT1G010... 918864|PA...          95.1         366         14            2
+ 8 AT1G010... 909871|PA...          90.3         300         22            2
+ 9 AT1G010... 470171|PA...          96.8         434          8            3
+10 AT1G011... 333544|PA...          93.6         528         34            0
+11 AT1G011... 918858|PA...          99.2         529          4            0
+12 AT1G011... 470161|PA...          98.5         453          6            1
+13 AT1G011... 918855|PA...          72.6         285         68            3
+14 AT1G011... 918854|PA...          84.9         179         19            2
+15 AT1G011... 311317|PA...          85.6          97          0            1
+16 AT1G011... 909860|PA...          92.6         310         20            1
+17 AT1G011... 311315|PA...          94.2         533         30            1
+18 AT1G012... 470156|PA...          95.8         238         10            0
+19 AT1G012... 311313|PA...          95.3         107          5            0
+20 AT1G012... 470155|PA...          96.7        1056         35            0
  with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
    s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>The <code><a href="../reference/blast_best.html">blast_best()</a></code> function returns: <code>query_id</code>, <code>subject_id</code>, and <code>eval</code>.</p>
@@ -535,22 +541,22 @@ Groups:   query_id [20]
 best_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                            <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(best_hit_tbl)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</code></pre></div>
 <pre><code>Observations: 20
 Variables: 12
 Groups: query_id [20]
-$ query_id      &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010…
-$ subject_id    &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:16064328", "47…
-$ perc_identity &lt;dbl&gt; 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 95.0…
-$ alig_length   &lt;dbl&gt; 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 52…
-$ mismatches    &lt;dbl&gt; 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0…
-$ gap_openings  &lt;dbl&gt; 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0…
-$ q_start       &lt;dbl&gt; 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1,…
-$ q_end         &lt;dbl&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52…
-$ s_start       &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1…
-$ s_end         &lt;dbl&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52…
-$ evalue        &lt;dbl&gt; 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162, 0…
-$ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1…</code></pre>
+$ query_id      &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010...
+$ subject_id    &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:16064328", "47...
+$ perc_identity &lt;dbl&gt; 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 95.0...
+$ alig_length   &lt;dbl&gt; 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 52...
+$ mismatches    &lt;dbl&gt; 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0...
+$ gap_openings  &lt;dbl&gt; 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0...
+$ q_start       &lt;dbl&gt; 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1,...
+$ q_end         &lt;dbl&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52...
+$ s_start       &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1...
+$ s_end         &lt;dbl&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52...
+$ evalue        &lt;dbl&gt; 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162, 0...
+$ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1...</code></pre>
 </div>
 <div id="the-blast_rec-function" class="section level2">
 <h2 class="hasAnchor">
@@ -564,26 +570,26 @@ $ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 
  Groups:   query_id 
    query_id subject_id perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
- 1 AT1G010… 333554|PA…          74.0         469         80            8
- 2 AT1G010… 470181|PA…          91.1         246         22            0
- 3 AT1G010… 470180|PA…          95.5         359         12            2
- 4 AT1G010… 333551|PA…          92.0        1970         85           10
- 5 AT1G010… 909874|PA…         100           213          0            0
- 6 AT1G010… 470177|PA…          89.5         648         58            5
- 7 AT1G010… 918864|PA…          95.1         366         14            2
- 8 AT1G010… 909871|PA…          90.3         300         22            2
- 9 AT1G010… 470171|PA…          96.8         434          8            3
-10 AT1G011… 333544|PA…          93.6         528         34            0
-11 AT1G011… 918858|PA…          99.2         529          4            0
-12 AT1G011… 470161|PA…          98.5         453          6            1
-13 AT1G011… 918855|PA…          72.6         285         68            3
-14 AT1G011… 918854|PA…          84.9         179         19            2
-15 AT1G011… 311317|PA…          85.6          97          0            1
-16 AT1G011… 909860|PA…          92.6         310         20            1
-17 AT1G011… 311315|PA…          94.2         533         30            1
-18 AT1G012… 470156|PA…          95.8         238         10            0
-19 AT1G012… 311313|PA…          95.3         107          5            0
-20 AT1G012… 470155|PA…          96.7        1056         35            0
+ 1 AT1G010... 333554|PA...          74.0         469         80            8
+ 2 AT1G010... 470181|PA...          91.1         246         22            0
+ 3 AT1G010... 470180|PA...          95.5         359         12            2
+ 4 AT1G010... 333551|PA...          92.0        1970         85           10
+ 5 AT1G010... 909874|PA...         100           213          0            0
+ 6 AT1G010... 470177|PA...          89.5         648         58            5
+ 7 AT1G010... 918864|PA...          95.1         366         14            2
+ 8 AT1G010... 909871|PA...          90.3         300         22            2
+ 9 AT1G010... 470171|PA...          96.8         434          8            3
+10 AT1G011... 333544|PA...          93.6         528         34            0
+11 AT1G011... 918858|PA...          99.2         529          4            0
+12 AT1G011... 470161|PA...          98.5         453          6            1
+13 AT1G011... 918855|PA...          72.6         285         68            3
+14 AT1G011... 918854|PA...          84.9         179         19            2
+15 AT1G011... 311317|PA...          85.6          97          0            1
+16 AT1G011... 909860|PA...          92.6         310         20            1
+17 AT1G011... 311315|PA...          94.2         533         30            1
+18 AT1G012... 470156|PA...          95.8         238         10            0
+19 AT1G012... 311313|PA...          95.3         107          5            0
+20 AT1G012... 470155|PA...          96.7        1056         35            0
  with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
    s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <div id="the-set_blast-function" class="section level3">
@@ -636,9 +642,15 @@ LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLV
 VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</code></pre>
 </div>
 </div>
-<div id="perform-blast-searches-between-genomes" class="section level2">
+<div id="perform-blast-searches-between-genomes-or-proteomes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#perform-blast-searches-between-genomes" class="anchor"></a>Perform BLAST Searches between Genomes</h2>
+<a href="#perform-blast-searches-between-genomes-or-proteomes" class="anchor"></a>Perform BLAST Searches between Genomes or Proteomes</h2>
+<p>For large-scale applications of <code>orthologr</code>, users may wish to perform BLAST+ searches between entire genomes. For very large-scale BLAST+ searches between genomes we recommend the user to use the <a href="https://github.com/HajkD/metablastr">metablastr</a> package which aims to provide an easy-to-use BLAST search framework for massive genome comparisons.</p>
+<p>For pairwise genome comparisons however, users can use the following functions to BLAST one genome against another.</p>
+<div id="genome-and-proteome-retrieval" class="section level3">
+<h3 class="hasAnchor">
+<a href="#genome-and-proteome-retrieval" class="anchor"></a>Genome and Proteome Retrieval</h3>
+</div>
 </div>
   </div>
 
@@ -652,7 +664,7 @@ VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</code></pre>
       <li><a href="#using-orthologr-to-perform-blast-searches">Using orthologr to perform BLAST searches</a></li>
       <li><a href="#the-blast_best-function">The blast_best() function</a></li>
       <li><a href="#the-blast_rec-function">The blast_rec() function</a></li>
-      <li><a href="#perform-blast-searches-between-genomes">Perform BLAST Searches between Genomes</a></li>
+      <li><a href="#perform-blast-searches-between-genomes-or-proteomes">Perform BLAST Searches between Genomes or Proteomes</a></li>
       </ul>
 </div>
       </div>
