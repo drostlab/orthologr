@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
     - [2.2 The blast_best() function](#the-blast_best-function)
     - [2.3 The blast_rec() function](#the-blast_rec-function)
     - [2.4 The set_blast() function](#the-set_blast-function)
-* [3. Perform BLAST+ Searches between Genomes](#perform-bast-searches-between-genomes)
+* [3. Perform BLAST+ searches between genomes](#perform-blast-searches-between-genomes)
 
 ## Getting Started
 
