@@ -97,30 +97,53 @@
 <div id="orthologr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#orthologr" class="anchor"></a>orthologr</h1></div>
-
 <div id="comparative-genomics-with-r" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparative-genomics-with-r" class="anchor"></a>Comparative Genomics with R</h2>
-<p>The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The <code>orthologr</code> package aims to provide a framework to perform <strong>large scale</strong> comparative genomics studies with R.</p>
-<p><code>Orthologr</code> aims to be as easy to use as possible - from genomic data retrieval to dNdS estimation.</p>
-<div id="large-scale-orthology-inference-and-dnds-estimation-between-multiple-species" class="section level3">
+<div id="motivation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#large-scale-orthology-inference-and-dnds-estimation-between-multiple-species" class="anchor"></a>Large scale orthology inference and dN/dS estimation between multiple species</h3>
-<p>In detail, <code>orthologr</code> allows users to perform BLAST searches, orthology inference methods, multiple sequence alignments, codon alignments, dNdS estimation, and <a href="https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd">divergence stratigraphy</a> <strong>between multiple genomes</strong> with R.</p>
-<p>The most useful implementation in <code>orthologr</code> is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS) for all orthologous genes between two <strong>entire genomes</strong>.</p>
+<a href="#motivation" class="anchor"></a>Motivation</h3>
+<p>The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The <code>orthologr</code> package aims to provide a framework to perform <strong>large scale</strong> comparative genomics studies with R. <code>Orthologr</code> aims to be as easy to use as possible - from genomic data retrieval to orthology inference and dNdS estimation between several genomes.</p>
+<p>In combination with the R package <a href="https://github.com/ropensci/biomartr">biomartr</a>, users can retrieve genomes, proteomes, or coding sequences for several species and use them as input for orthology inference and dN/dS estimation with <code>orthologr</code>. The advantage of using <code>biomartr</code> in combination with <code>orthologr</code> is that users can join the new wave of research that promotes and facilitates <a href="https://github.com/ropensci/biomartr#short-package-description">computational reproducibility in genomics studies</a> and solve the issue of comparing genomes with different genome assembly qualities (also referred to as <a href="https://github.com/ropensci/biomartr#short-package-description">genome version crisis</a>).</p>
 </div>
 <div id="citation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h3>
-<p><strong>Please cite the following paper when using <code>orthologr</code> for your own research. This will allow me to continue working on this software tool and will motivate me to extend its functionality and usability. Many thanks in advance :)</strong></p>
+<p><strong>Please cite the following paper in which I introduce <code>orthologr</code> when using this package for your own research. This will allow me to continue working on this software tool and will motivate me to extend its functionality and usability in the next years. Many thanks in advance :)</strong></p>
 <blockquote>
 <p>Drost et al. 2015. <strong>Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis</strong>. <em>Mol. Biol. Evol.</em> 32 (5): 1221-1231. <a href="http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46">doi:10.1093/molbev/msv012</a></p>
 </blockquote>
 </div>
+<div id="short-package-description" class="section level3">
+<h3 class="hasAnchor">
+<a href="#short-package-description" class="anchor"></a>Short package description</h3>
+<p>In detail, <code>orthologr</code> allows users to perform orthology inference and dN/dS estimation between two genomes or between several genomes. The following methods to infer orthologous relationships between genes of entire genomes are available in this package:</p>
+<ul>
+<li><a href="https://hajkd.github.io/orthologr/articles/blast.html#the-blast_best-function"><strong>BLAST best hit</strong></a></li>
+<li><a href="https://hajkd.github.io/orthologr/articles/blast.html#the-blast_rec-function"><strong>BLAST best reciprocal hit</strong></a></li>
+<li><a href="https://hajkd.github.io/orthologr/articles/orthology_inference.html"><strong>OrthoFinder2</strong></a></li>
+</ul>
+<p>The most useful implementation in <code>orthologr</code> is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS) for all orthologous genes between two <strong>entire genomes</strong>. Available dN/dS estimation methods are:</p>
+<ul>
+<li>“NG”: Nei, M. and Gojobori, T. (1986)</li>
+<li>“LWL”: Li, W.H., et al. (1985)</li>
+<li>“LPB”: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)</li>
+<li>“MLWL” (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)</li>
+<li>“YN”: Yang, Z. and Nielsen, R. (2000)</li>
+<li>“MYN” (Modified YN): Zhang, Z., et al. (2006)</li>
+<li>“GMYN”: Wang, D.P., et al. Biology Direct. (2009)</li>
+<li>“GY”: Goldman, N. and Yang, Z. (1994)</li>
+<li>“MS”: (Model Selection): based on a set of candidate models, Posada, D. (2003)</li>
+<li>“MA” (Model Averaging): based on a set of candidate models, Posada, D. (2003)</li>
+<li>“ALL”: All models toghether</li>
+</ul>
+<p>Please find more details <a href="https://hajkd.github.io/orthologr/articles/dNdS_estimation.html">here</a>.</p>
 </div>
-<div id="install" class="section level2">
+</div>
+<div id="install-orthologr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#install" class="anchor"></a>Install</h2>
+<a href="#install-orthologr" class="anchor"></a>Install <code>orthologr</code>
+</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))
     <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"BiocManager"</span>)
 BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>()
@@ -397,13 +420,7 @@ https://code.google.com/p/kaks-calculator/
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://travis-ci.org/HajkD/orthologr"><img src="https://travis-ci.org/HajkD/orthologr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
       <footer><div class="copyright">

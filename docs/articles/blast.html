@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>BLAST searches using orthologr</h1>
             
-            <h4 class="date">2019-03-21</h4>
+            <h4 class="date">2019-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd"><code>vignettes/blast.Rmd</code></a></small>
       <div class="hidden name"><code>blast.Rmd</code></div>
@@ -123,7 +123,7 @@
 <li><a href="#the-set_blast-function">2.4 The set_blast() function</a></li>
 </ul>
 </li>
-<li><a href="#perform-bast-searches-between-genomes">3. Perform BLAST+ Searches between Genomes</a></li>
+<li><a href="#perform-blast-searches-between-genomes">3. Perform BLAST+ searches between genomes</a></li>
 </ul>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
@@ -157,7 +157,7 @@
 hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(hit_tbl)</code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
@@ -182,7 +182,7 @@ hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bla
 
 hit_tbl</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># access columns: query_id, subject_id, evalue, and bit_score</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</code></pre></div>
 <pre><code>       query_id            subject_id evalue bit_score
  1: AT1G01010.1 333554|PACid:16033839  0e+00       627
  2: AT1G01020.1 470181|PACid:16064328 7e-166       454
@@ -208,8 +208,8 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                  <span class="dt">blast_params =</span> <span class="st">"-qcov_hsp_perc 0.9"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
-<pre><code>bservations: 20
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(hit_tbl)</code></pre></div>
+<pre><code>Observations: 20
 Variables: 12
 $ query_id      &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010…
 $ subject_id    &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:16064328", "47…
@@ -255,7 +255,7 @@ hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bla
                  <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 
 <span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span>
-rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>())
+rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/summarise">summarize</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/group_by">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/n">n</a></span>())
 <span class="co"># look at results</span>
 rel_hit_tbl</code></pre></div>
 <pre><code>A tibble: 20 x 2
@@ -283,9 +283,9 @@ rel_hit_tbl</code></pre></div>
 20 AT1G01220.1       1</code></pre>
 <p>Now you can sort genes into classes: <code>one-to-one</code> and <code>one-to-many</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># classify into 'one-to-one' relationships</span>
-one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
 <span class="co"># classify into 'one-to-many' relationships</span>
-one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at one_to_one</span>
 one_to_one </code></pre></div>
 <pre><code>A tibble: 12 x 2
@@ -323,7 +323,7 @@ one_to_many</code></pre></div>
 <a href="#working-with-one-to-one-hits" class="anchor"></a>Working with one-to-one hits</h3>
 <p>We can now retrieve the blast hit entries for the one-to-one hits by joining the tables <code>one_to_one</code> and <code>hit_tbl</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span>
-oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)
+oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/join">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)
 oo_genes</code></pre></div>
 <pre><code>A tibble: 12 x 13
    query_id n_genes subject_id perc_identity alig_length mismatches
@@ -340,7 +340,7 @@ oo_genes</code></pre></div>
 10 AT1G011…       1 909860|PA…          92.6         310         20
 11 AT1G012…       1 311313|PA…          95.3         107          5
 12 AT1G012…       1 470155|PA…          96.7        1056         35
- … with 7 more variables: gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
+ with 7 more variables: gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
    s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>This way, users will have all blast information of <code>one_to_one</code> hits available.</p>
 </div>
@@ -350,9 +350,9 @@ oo_genes</code></pre></div>
 <p>Using the <code>oo_genes</code> dataset above, users can use this <code>one_to_one</code> hits strategy to detect homologous genes between species.</p>
 <p>For example, we could restrict <code>one_to_one</code> hits to fulfill certain (stringent) criteria to identify as a homologous hit. Here we choose the following parameter constellation to achieve this goal: <code>one_to_one</code> genes must have a minimum <code>alignment length of 300</code>, a p<code>erc_identity of &gt; 80 percent</code> and an <code>e-value &lt; 1E-5</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># filter for 'homologous' hits</span>
-true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
+true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code>      query_id            subject_id evalue perc_identity alig_length
 1: AT1G01030.1 470180|PACid:16054974      0         95.54         359
 2: AT1G01040.1 333551|PACid:16057793      0         91.98        1970
@@ -385,7 +385,7 @@ one_to_many</code></pre></div>
 8 AT1G01200.1       7</code></pre>
 <p>When looking at gene_id <code>AT1G01200.1</code> we see that it was found 7 times in the corresponding subject set of <em>A. lyrata</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at all 7 hits found</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code> A tibble: 7 x 5
   query_id    subject_id               evalue perc_identity alig_length
   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
@@ -404,7 +404,7 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 rbh_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                          <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
 <pre><code> A tibble: 20 x 5
  Groups:   query_id [20]
    query_id    subject_id               evalue perc_identity alig_length
@@ -455,7 +455,7 @@ atggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Biostrings)
 <span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span>
 <span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, 
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, 
        <span class="dt">pattern =</span> Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs], <span class="dt">type    =</span> <span class="st">"global"</span> )</code></pre></div>
 <pre><code>$...
 Global PairwiseAlignmentsSingleSubject (1 of 1)
@@ -503,8 +503,8 @@ Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/bas
 <span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
            <span class="dt">subject_file  =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
            <span class="dt">clean_folders =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code> A tibble: 20 x 12
- Groups:   query_id [20]
+<pre><code>A tibble: 20 x 12
+Groups:   query_id [20]
    query_id subject_id perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -527,7 +527,7 @@ Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/bas
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
- … with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
+ with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
    s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>The <code><a href="../reference/blast_best.html">blast_best()</a></code> function returns: <code>query_id</code>, <code>subject_id</code>, and <code>eval</code>.</p>
 <p>In case you need more parameters returned by a BLAST+ best hit search, you can specify the <code>detailed_output</code> argument (<code>detailed_output = TRUE</code>).</p>
@@ -535,7 +535,7 @@ Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/bas
 best_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
                            <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
 <span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</code></pre></div>
+dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>(best_hit_tbl)</code></pre></div>
 <pre><code>Observations: 20
 Variables: 12
 Groups: query_id [20]
@@ -561,7 +561,7 @@ $ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 
 <span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
           <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</code></pre></div>
 <pre><code> A tibble: 20 x 12
- Groups:   query_id [?]
+ Groups:   query_id 
    query_id subject_id perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
  1 AT1G010… 333554|PA…          74.0         469         80            8
@@ -584,7 +584,7 @@ $ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 
 18 AT1G012… 470156|PA…          95.8         238         10            0
 19 AT1G012… 311313|PA…          95.3         107          5            0
 20 AT1G012… 470155|PA…          96.7        1056         35            0
- … with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
+ with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;,
    s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <div id="the-set_blast-function" class="section level3">
 <h3 class="hasAnchor">
