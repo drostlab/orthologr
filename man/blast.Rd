@@ -89,20 +89,20 @@ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ortholo
 blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
       seq_type     = "protein")
-      
-      
+
+
 # save the BLAST output table in your current working directory
 blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
       seq_type     = "protein",
-      save.output  = getwd())       
-      
+      save.output  = getwd())
+
 # in case you are working with a multicore machine, you can also run parallel
 # BLAST computations using the comp_cores parameter: here with 2 cores
-blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
       comp_cores   = 2)
-      
+
 
  # running blastp using additional parameters
  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -113,7 +113,7 @@ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ortholo
 # running blastp using additional parameters and an external blastp path
  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
        subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")              
+       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
 }
 
 }
