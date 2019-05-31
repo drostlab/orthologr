@@ -140,10 +140,10 @@ substitutionrate <- function(file,
                   "ALL")
         
         if (!is.dnds_est_method(est.method))
-                stop("Please choose a dNdS estimation method that is supported by this function.")
+                stop("Please choose a dNdS estimation method that is supported by this function.", call. = FALSE)
         
         if (!is.element(format, c("mase", "clustal", "phylip", "fasta" , "msf")))
-                stop("Please choose a format that is supported by seqinr::read.alignment.")
+                stop("Please choose a format that is supported by seqinr::read.alignment.", call. = FALSE)
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -265,6 +265,9 @@ substitutionrate <- function(file,
         }
         
         if (is.element(est.method, kaks_calc_methods)) {
+                
+                is_installed_kaks_calculator()
+                
                 operating_sys <- Sys.info()[1]
                 
                 if (operating_sys == "Darwin") {
