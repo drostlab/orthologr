@@ -8,6 +8,7 @@
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 #' Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).
+#' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
@@ -132,7 +133,8 @@
 divergence_stratigraphy <- function(query_file, 
                                     subject_file, 
                                     eval            = "1E-5",
-                                    ortho_detection = "RBH", 
+                                    ortho_detection = "RBH",
+                                    delete_corrupt_cds = FALSE,
                                     blast_path      = NULL, 
                                     comp_cores      = 1,
                                     dnds.threshold  = 2, 
@@ -152,6 +154,7 @@ divergence_stratigraphy <- function(query_file,
         dNdS_tbl <- filter_dNdS( dNdS( query_file      = query_file,
                                        subject_file    = subject_file,
                                        ortho_detection = ortho_detection,
+                                       delete_corrupt_cds = delete_corrupt_cds,
                                        aa_aln_type     = "pairwise", 
                                        aa_aln_tool     = "NW",
                                        codon_aln_tool  = "pal2nal", 
