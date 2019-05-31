@@ -5,9 +5,10 @@
 \title{Perform Divergence Stratigraphy}
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
-  ortho_detection = "RBH", blast_path = NULL, comp_cores = 1,
-  dnds.threshold = 2, quiet = FALSE, clean_folders = FALSE,
-  ds.values = TRUE, subject.id = FALSE)
+  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
+  blast_path = NULL, comp_cores = 1, dnds.threshold = 2,
+  quiet = FALSE, clean_folders = FALSE, ds.values = TRUE,
+  subject.id = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -19,6 +20,8 @@ divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).}
+
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
 \item{blast_path}{a character string specifying the path to the BLAST program (in case you don't use the default path).}
 
