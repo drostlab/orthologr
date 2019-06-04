@@ -5,10 +5,10 @@
 \title{Perform Divergence Stratigraphy}
 \usage{
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
-  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
-  blast_path = NULL, comp_cores = 1, dnds.threshold = 2,
-  quiet = FALSE, clean_folders = FALSE, ds.values = TRUE,
-  subject.id = FALSE)
+  ortho_detection = "RBH", dnds_est.method = "Comeron",
+  delete_corrupt_cds = FALSE, blast_path = NULL, comp_cores = 1,
+  dnds.threshold = 2, quiet = FALSE, clean_folders = FALSE,
+  ds.values = TRUE, subject.id = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -20,6 +20,19 @@ divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
 \item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
 Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).}
+
+\item{dnds_est.method}{the dNdS estimation method that shall be used.
+Options are:
+\itemize{
+\item \code{dnds_est.method = "Comeron"} (Default): Comeron's method (1995)
+\item \code{dnds_est.method = "Li"}: Li's method (1993)
+\item \code{dnds_est.method = "NG"}: Nei, M. and Gojobori, T. (1986)
+\item \code{dnds_est.method = "LWL"}: Li, W.H., et al. (1985)
+\item \code{dnds_est.method = "LPB"}: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+\item \code{dnds_est.method = "MLWL"}: (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+\item \code{dnds_est.method = "YN"}: Yang, Z. and Nielsen, R. (2000)
+\item \code{dnds_est.method ="MYN"} (Modified YN): Zhang, Z., et al. (2006)
+}}
 
 \item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
 
@@ -80,8 +93,6 @@ on an 8 core machine can take up to 1,5 - 2 hours.
 }
 \examples{
 \dontrun{
- 
- 
  # performing standard divergence stratigraphy
  divergence_stratigraphy(
       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
