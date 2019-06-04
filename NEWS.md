@@ -1,3 +1,15 @@
+## `orthologr` version  0.3.0
+
+### New Features
+
+- in `orthologs()` the default value of `delete_corrupt_cds` changed from `delete_corrupt_cds = TRUE` to `delete_corrupt_cds = FALSE` to be consistent with
+`dNdS()` and `divergence_stratigraphy()`
+
+- the `divergence_stratigraphy()` function received a new argument `dnds_est.method`
+which now allows users to select different dNdS estimation methods when running `divergence_stratigraphy()` (suggested by Momir Futo)
+
+- the `divergence_stratigraphy()` function now allows to change the `eval` argument which wasn't passed down to the `dNdS()` call within the function (Many thanks to Momir Futo) 
+
 ## `orthologr` version  0.2.0
 
 ### New Features
