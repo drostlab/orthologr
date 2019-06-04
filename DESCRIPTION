@@ -1,8 +1,8 @@
 Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
-Version: 0.2.0.9000
-Date: 2019-02-15
+Version: 0.3.0.9000
+Date: 2019-06-04
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
