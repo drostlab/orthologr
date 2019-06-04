@@ -6,7 +6,7 @@
 \usage{
 orthologs(query_file, subject_files, seq_type = "protein",
   outgroup_file = NULL, eval = "1E-5", format = "fasta",
-  ortho_detection = "RBH", delete_corrupt_cds = TRUE,
+  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
   cdd.path = NULL, path = NULL, add_params = NULL, comp_cores = 1,
   quiet = FALSE, clean_folders = FALSE)
 }
