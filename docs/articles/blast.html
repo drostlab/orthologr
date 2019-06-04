@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>BLAST searches using orthologr</h1>
             
-            <h4 class="date">2019-03-30</h4>
+            <h4 class="date">2019-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd"><code>vignettes/blast.Rmd</code></a></small>
       <div class="hidden name"><code>blast.Rmd</code></div>
@@ -142,8 +142,8 @@
 <p>The <code>orthologr</code> package stores 20 example genes (orthologs) between <em>Arabidopsis thaliana</em> and <em>Arabidopsis lyrata</em>. The following example BLAST search shall illustrate a simple search with standard parameters provided by the <code><a href="../reference/blast.html">blast()</a></code> function.</p>
 <p>When running the subsequent functions please make sure you can call BLAST+ from your console either in the standard <code>PATH</code> or in case you have BLAST+ installed in a separate folder, please specify the <code>path</code> argument that can be passed to <code><a href="../reference/blast.html">blast()</a></code>.</p>
 <p>To check whether BLAST+ can be executed from the default <code>PATH</code> (<code>usr/bin/local</code> on UNIX systems), you can run:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># check if blast is installed and if yes, what version of blast</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"blastp -version"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># check if blast is installed and if yes, what version of blast</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"blastp -version"</span>)</a></code></pre></div>
 <p>This should return something like this:</p>
 <pre><code>blastp: 2.8.1+
  Package: blast 2.8.1, build Nov 26 2018 12:45:20</code></pre>
@@ -157,12 +157,12 @@
 <h3 class="hasAnchor">
 <a href="#the-blast-function" class="anchor"></a>The blast() function</h3>
 <p>The <code><a href="../reference/blast.html">blast()</a></code> function provides the easiest way to perform a BLAST search.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
-<span class="co"># performing a BLAST search using blastp (default)</span>
-hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
-<span class="co"># look at results</span>
-<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># performing a BLAST search using blastp (default)</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># look at results</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</a></code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
@@ -179,15 +179,15 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...</code></pr
 <p>As you can see, the hit table shows the output of the BLAST+ search. The <code><a href="../reference/blast.html">blast()</a></code> function runs <code>blastp</code> as default BLAST+ algorithm. Different BLAST+ algorithms can be selected by specifying the <code>blast_algorithm</code> argument, e.g. <code>blast_algorithm = "tblastn"</code>. See <code><a href="../reference/blast.html">?blast</a></code> for further details. The <code><a href="../reference/blast.html">blast()</a></code> function returns the BLAST arguments: <code>query_id</code>, <code>subject_id</code>, <code>perc_identity</code>, <code>alig_length</code>, <code>mismatches</code>, <code>gap_openings</code>, <code>q_start</code>, <code>q_end</code>, <code>s_start</code>, <code>s_end</code>, <code>evalue</code>, and <code>bit_score</code>.</p>
 <p>Since <code><a href="../reference/blast.html">blast()</a></code> stores the hit table returned by BLAST in a data.table object, you can access each column, using the <a href="https://github.com/Rdatatable/data.table/wiki">data.table notation</a>.</p>
 <p>In case you need to specify the <code>PATH</code> to BLAST+ please use the <code>path</code> argument:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># performing a BLAST search using blastp (default)</span>
-hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">path         =</span> <span class="st">"/path/to/blastp"</span>)
-
-
-hit_tbl</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># access columns: query_id, subject_id, evalue, and bit_score</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># performing a BLAST search using blastp (default)</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">                 <span class="dt">path         =</span> <span class="st">"/path/to/blastp"</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">hit_tbl</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># access columns: query_id, subject_id, evalue, and bit_score</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(hit_tbl, query_id, subject_id, evalue, bit_score)</a></code></pre></div>
 <pre><code>       query_id            subject_id evalue bit_score
  1: AT1G01010.1 333554|PACid:16033839  0e+00       627
  2: AT1G01020.1 470181|PACid:16064328 7e-166       454
@@ -210,10 +210,10 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 19: AT1G01210.1 311313|PACid:16057125  7e-76       215
 20: AT1G01220.1 470155|PACid:16047984  0e+00      2106</code></pre>
 <p>The <code><a href="../reference/blast.html">blast()</a></code> function also allows you to pass additional parameters to the BLAST+ search using the <code>blast_params</code> argument. In the following example, a remote BLAST+ search is performed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">blast_params =</span> <span class="st">"-qcov_hsp_perc 0.9"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">                 <span class="dt">blast_params =</span> <span class="st">"-qcov_hsp_perc 0.9"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(hit_tbl)</a></code></pre></div>
 <pre><code>A tibble: 78 x 12
    query_id subject_id perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
@@ -231,10 +231,10 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
  s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>In all cases the default <code>e-value</code> BLAST+ searches is <code>1E-5</code> and the default <code>blast_algorithm</code> is <code>blastp</code>.</p>
 <p>Since BLAST+ searches can be computationally expensive, it is possible to specify the <code>comp_cores</code> argument when working with an multicore machine.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># BLAST computations using the comp_cores parameter: here with 2 cores</span>
-<span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-      <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-      <span class="dt">comp_cores   =</span> <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># BLAST computations using the comp_cores parameter: here with 2 cores</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">      <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">      <span class="dt">comp_cores   =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p>The <code>query_file</code> and <code>subject_file</code> arguments specify the path to the corresponding fasta files storing the <code>CDS</code> files, <code>amino acid</code> files, or <code>genome</code> files of the query organism and subject organism of interest. Make sure that when using <code>CDS</code>files, <code>amino acid</code> files, or <code>genome</code> files the corresponding argument <code>seq_type</code> must be adapted according to the input data format.</p>
 <p>Use :</p>
 <ul>
@@ -255,15 +255,15 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <a href="#using-the-split-apply-combine-strategy-for-a-blast-hit-table" class="anchor"></a>Using the split-apply-combine strategy for a BLAST hit table</h3>
 <p>All <code>blast</code> functions implemented in <code>orthologr</code> can easily be processed using the <a href="http://www.jstatsoft.org/v40/i01/paper">split-apply-combine strategy</a> to detect for example <code>one-to-one</code>, <code>one-to-many</code>, and <code>many-to-many</code> gene homology relationships.</p>
 <p>Here a simple example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
-<span class="co"># perform a blastp search of 20 A. thaliana genes against 1000 A. lyrata genes</span>
-hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
-
-<span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span>
-rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>())
-<span class="co"># look at results</span>
-rel_hit_tbl</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># perform a blastp search of 20 A. thaliana genes against 1000 A. lyrata genes</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast.html">blast</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">                 <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">rel_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(hit_tbl, query_id), <span class="dt">n_genes =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>())</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co"># look at results</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">rel_hit_tbl</a></code></pre></div>
 <pre><code>A tibble: 20 x 2
    query_id    n_genes
    &lt;chr&gt;         &lt;int&gt;
@@ -288,12 +288,12 @@ rel_hit_tbl</code></pre></div>
 19 AT1G01210.1       1
 20 AT1G01220.1       1</code></pre>
 <p>Now you can sort genes into classes: <code>one-to-one</code> and <code>one-to-many</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># classify into 'one-to-one' relationships</span>
-one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
-<span class="co"># classify into 'one-to-many' relationships</span>
-one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at one_to_one</span>
-one_to_one </code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># classify into 'one-to-one' relationships</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">one_to_one &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co"># classify into 'one-to-many' relationships</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">one_to_many &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(rel_hit_tbl, n_genes <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># look at one_to_one</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">one_to_one </a></code></pre></div>
 <pre><code>A tibble: 12 x 2
    query_id    n_genes
    &lt;chr&gt;         &lt;int&gt;
@@ -309,8 +309,8 @@ one_to_one </code></pre></div>
 10 AT1G01180.1       1
 11 AT1G01210.1       1
 12 AT1G01220.1       1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at one_to_many</span>
-one_to_many</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># look at one_to_many</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">one_to_many</a></code></pre></div>
 <pre><code>A tibble: 8 x 2
   query_id    n_genes
   &lt;chr&gt;         &lt;int&gt;
@@ -328,9 +328,9 @@ one_to_many</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#working-with-one-to-one-hits" class="anchor"></a>Working with one-to-one hits</h3>
 <p>We can now retrieve the blast hit entries for the one-to-one hits by joining the tables <code>one_to_one</code> and <code>hit_tbl</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span>
-oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)
-oo_genes</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">oo_genes &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(one_to_one, hit_tbl , <span class="dt">by =</span> <span class="st">"query_id"</span>)</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">oo_genes</a></code></pre></div>
 <pre><code>A tibble: 12 x 13
    query_id n_genes subject_id perc_identity alig_length mismatches
    &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
@@ -355,10 +355,10 @@ oo_genes</code></pre></div>
 <a href="#a-real-world-application-homology-inference" class="anchor"></a>A real world application: Homology Inference</h3>
 <p>Using the <code>oo_genes</code> dataset above, users can use this <code>one_to_one</code> hits strategy to detect homologous genes between species.</p>
 <p>For example, we could restrict <code>one_to_one</code> hits to fulfill certain (stringent) criteria to identify as a homologous hit. Here we choose the following parameter constellation to achieve this goal: <code>one_to_one</code> genes must have a minimum <code>alignment length of 300</code>, a p<code>erc_identity of &gt; 80 percent</code> and an <code>e-value &lt; 1E-5</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># filter for 'homologous' hits</span>
-true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)
-<span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># filter for 'homologous' hits</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">true_orthologs &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(oo_genes, evalue <span class="op">&lt;</span><span class="st"> </span><span class="fl">1e-5</span>, perc_identity <span class="op">&gt;</span><span class="st"> </span><span class="dv">80</span>, alig_length <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span>)</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># look at results</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(true_orthologs, query_id, subject_id, evalue, perc_identity, alig_length)</a></code></pre></div>
 <pre><code>      query_id            subject_id evalue perc_identity alig_length
 1: AT1G01030.1 470180|PACid:16054974      0         95.54         359
 2: AT1G01040.1 333551|PACid:16057793      0         91.98        1970
@@ -376,8 +376,8 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <a href="#working-with-one-to-many-hits" class="anchor"></a>Working with one-to-many hits</h3>
 <p>Here we want to address the question how to deal with multiple hits returned by <code>BLAST+</code>.</p>
 <p>Again we investigate all <code>one_to_many</code> genes:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at results </span>
-one_to_many</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># look at results </span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">one_to_many</a></code></pre></div>
 <pre><code> A tibble: 8 x 2
   query_id    n_genes
   &lt;chr&gt;         &lt;int&gt;
@@ -390,8 +390,8 @@ one_to_many</code></pre></div>
 7 AT1G01190.1       6
 8 AT1G01200.1       7</code></pre>
 <p>When looking at gene_id <code>AT1G01200.1</code> we see that it was found 7 times in the corresponding subject set of <em>A. lyrata</em>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at all 7 hits found</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># look at all 7 hits found</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01200.1"</span>), query_id, subject_id, evalue, perc_identity, alig_length)</a></code></pre></div>
 <pre><code> A tibble: 7 x 5
   query_id    subject_id               evalue perc_identity alig_length
   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
@@ -406,11 +406,11 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 <p>In this example <code>subject_id</code> <code>470156|PACid:16041002</code> has the highest <code>perc_identity</code> as well as the lowest e-value <code>1.87e-172</code>. So a straightforward approach would be to choose subject gene <code>470156|PACid:16041002</code> as potential ortholog of query gene <code>AT1G01200.1</code>.</p>
 <p>We can validate this approach by running a reciprocal best hit search with <code><a href="../reference/blast_rec.html">blast_rec()</a></code>and compare the output of gene <code>AT1G01200.1</code> with our choice <code>470156|PACid:16041002</code>.</p>
 <p>A reciprocal best hit blast approach denotes the search strategy in which query sequences are blasted in one direction to detect matches in subject sequences and then inversely subject sequences are blasted in the other direction to detect matches in the query sequences. Only when both blast seaches in both directions result in the same hit pair: BLAST(A,B) = BLAST(B,A) the hit will be considered as true ortholog relationship.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># run blast best reciprocal hit function</span>
-rbh_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                         <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
-<span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># run blast best reciprocal hit function</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">rbh_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">                         <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="co"># look at results</span></a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(rbh_hit_tbl, query_id, subject_id, evalue, perc_identity, alig_length)</a></code></pre></div>
 <pre><code> A tibble: 20 x 5
  Groups:   query_id [20]
    query_id    subject_id               evalue perc_identity alig_length
@@ -437,12 +437,12 @@ dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse
 20 AT1G01220.1 470155|PACid:16047984 0.                 96.7        1056</code></pre>
 <p>When we now look at gene <code>AT1G01200.1</code> we find that after an reciprocal blast approach subject gene <code>470181|PACid:16064328</code> rather than the subject gene <code>470156|PACid:16041002</code> (= result of unidirectional blast) has been detected as potential ortholog. The example illustrates the importance of using bidirectional blast to determine orthology relationships.</p>
 <p>An alternative analysis that can be performed with these three candidate subject genes is the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># read CDS sequences of the 20 example query genes of A. thaliana</span>
-Ath.cds &lt;-<span class="st"> </span>orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/read.cds">read.cds</a></span>(<span class="dt">file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>), <span class="dt">format =</span> <span class="st">"fasta"</span>)
-<span class="co"># read CDS sequences of the 1000 example subject genes of A. lyrata</span>
-Aly.cds &lt;-<span class="st"> </span>orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/read.cds">read.cds</a></span>(<span class="dt">file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>), <span class="dt">format =</span> <span class="st">"fasta"</span>)
-<span class="co"># show the sequence of gene AT1G01070.1</span>
-Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs]</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># read CDS sequences of the 20 example query genes of A. thaliana</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">Ath.cds &lt;-<span class="st"> </span>orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/read.cds">read.cds</a></span>(<span class="dt">file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>), <span class="dt">format =</span> <span class="st">"fasta"</span>)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="co"># read CDS sequences of the 1000 example subject genes of A. lyrata</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">Aly.cds &lt;-<span class="st"> </span>orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/read.cds">read.cds</a></span>(<span class="dt">file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>), <span class="dt">format =</span> <span class="st">"fasta"</span>)</a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co"># show the sequence of gene AT1G01070.1</span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs]</a></code></pre></div>
 <pre><code>[1] "atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgta
 gcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaat
 ggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaa
@@ -458,11 +458,11 @@ acttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcac
 tagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcagga
 atggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</code></pre>
 <p>Now users can perform a global alignment between the CDS sequences of <code>AT1G01070.1</code> and the three subject genes as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Biostrings)
-<span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span>
-<span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, 
-       <span class="dt">pattern =</span> Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs], <span class="dt">type    =</span> <span class="st">"global"</span> )</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(Biostrings)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(Aly.cds[ <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(hit_tbl, query_id <span class="op">==</span><span class="st"> "AT1G01070.1"</span>), subject_id)), seqs ], pairwiseAlignment, </a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">       <span class="dt">pattern =</span> Ath.cds[<span class="st">"AT1G01070.1"</span> , seqs], <span class="dt">type    =</span> <span class="st">"global"</span> )</a></code></pre></div>
 <pre><code>$...
 Global PairwiseAlignmentsSingleSubject (1 of 1)
 pattern: [1] atggctggagatatgcaaggagtgagagta...aaggataacgactctaagtcgcccgtttaa 
@@ -484,31 +484,31 @@ score: 486.462 </code></pre>
 <p>As you can see, subject gene <code>918864|PACid:16052578</code> also has the highest global alignment score <code>1768.965</code> based on the Needleman-Wunsch algorithm. This strategy might help you to differentiate between border line cases.</p>
 <p>The examples shown above shall demonstrate the use cases that can be performed using the <code>blast</code> functions implemented in <code>orthologr</code>.</p>
 <p>Another useful analysis can be to take the length of the initial query genes into account using the <code><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar()</a></code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show the length distribution of all genes</span>
-<span class="co"># stored in "Ath.cds"</span>
-Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)]</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># show the length distribution of all genes</span></a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># stored in "Ath.cds"</span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)]</a></code></pre></div>
 <pre><code>
 [1] 1290  738 1077 5730  639 1938 1098  882 1287 1584 1587 1356 1038  588  252 1437 1608  714  321 3168
 </code></pre>
 <p>Or the length of a specific gene:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ath.cds[<span class="st">"AT1G01070.1"</span> , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)]</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">Ath.cds[<span class="st">"AT1G01070.1"</span> , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)]</a></code></pre></div>
 <pre><code>[1] 1098</code></pre>
 <p>This way you can easily visualize the length distribution of genes stored in your query organism file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ath.cds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read.cds.html">read.cds</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                    <span class="dt">format =</span> <span class="st">"fasta"</span>)
-                    
-<span class="co"># look at sequence length distributions</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)], <span class="dt">breaks =</span> <span class="dv">100</span>)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">Ath.cds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read.cds.html">read.cds</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds_1000.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">                    <span class="dt">format =</span> <span class="st">"fasta"</span>)</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">                    </a>
+<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="co"># look at sequence length distributions</span></a>
+<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(Ath.cds[ , <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nchar">nchar</a></span>(seqs)], <span class="dt">breaks =</span> <span class="dv">100</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="the-blast_best-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-blast_best-function" class="anchor"></a>The blast_best() function</h2>
 <p>For some analyses it is sufficient to perform BLAST+ best hit searches. The <code><a href="../reference/blast_best.html">blast_best()</a></code> function is optimized to perform BLAST+ best hit searches (only based on the minimum e-value) and returns the best hit when performing a BLAST+ search of a query organisms (or set of query genes) against a subject organism (or set of subject genes).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># performing gene orthology inference using the best hit (BH) method</span>
-<span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-           <span class="dt">subject_file  =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-           <span class="dt">clean_folders =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># performing gene orthology inference using the best hit (BH) method</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">           <span class="dt">subject_file  =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4">           <span class="dt">clean_folders =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>A tibble: 20 x 12
 Groups:   query_id [20]
    query_id subject_id perc_identity alig_length mismatches gap_openings
@@ -537,11 +537,11 @@ Groups:   query_id [20]
    s_end &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
 <p>The <code><a href="../reference/blast_best.html">blast_best()</a></code> function returns: <code>query_id</code>, <code>subject_id</code>, and <code>eval</code>.</p>
 <p>In case you need more parameters returned by a BLAST+ best hit search, you can specify the <code>detailed_output</code> argument (<code>detailed_output = TRUE</code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># BLAST+ best hit search</span>
-best_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                           <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
-<span class="co"># look at results</span>
-dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># BLAST+ best hit search</span></a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">best_hit_tbl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blast_best.html">blast_best</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">                           <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="co"># look at results</span></a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(best_hit_tbl)</a></code></pre></div>
 <pre><code>Observations: 20
 Variables: 12
 Groups: query_id [20]
@@ -563,9 +563,9 @@ $ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 
 <a href="#the-blast_rec-function" class="anchor"></a>The blast_rec() function</h2>
 <p>The <code><a href="../reference/blast_rec.html">blast_rec()</a></code> function was implemented to optimize BLAST+ reciprocal best hit searches (only based on the minimum e-value). BLAST+ reciprocal best hit searches are used to perform orthology inference.</p>
 <p>Running <code><a href="../reference/blast_rec.html">blast_rec()</a></code> using default parameter settings:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># performing gene orthology inference using the reciprocal best hit (RBH) method</span>
-<span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># performing gene orthology inference using the reciprocal best hit (RBH) method</span></a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw"><a href="../reference/blast_rec.html">blast_rec</a></span>(<span class="dt">query_file   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb42-3" data-line-number="3">          <span class="dt">subject_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a></code></pre></div>
 <pre><code> A tibble: 20 x 12
  Groups:   query_id 
    query_id subject_id perc_identity alig_length mismatches gap_openings
@@ -596,8 +596,8 @@ $ bit_score     &lt;dbl&gt; 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 
 <h3 class="hasAnchor">
 <a href="#the-set_blast-function" class="anchor"></a>The set_blast() function</h3>
 <p>The <code><a href="../reference/set_blast.html">set_blast()</a></code>function reads a file storing a specific sequence type, such as “cds”, “protein”, or “dna” in a standard sequence file format such as “fasta”, etc. and depending of the makedb parameter either creates a blast-able database, or returns the corresponding protein sequences as data.table object for further BLAST searches.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using set_blast() to generate a blastable sequence database</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/set_blast.html">set_blast</a></span>(<span class="dt">file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))[[<span class="dv">1</span>]] , <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co"># using set_blast() to generate a blastable sequence database</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="kw"><a href="../reference/set_blast.html">set_blast</a></span>(<span class="dt">file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))[[<span class="dv">1</span>]] , <span class="dv">2</span>)</a></code></pre></div>
 <pre><code>
        geneids
 1: AT1G01010.1

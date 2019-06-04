@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -111,7 +111,7 @@
 <a href="#citation" class="anchor"></a>Citation</h3>
 <p><strong>Please cite the following paper in which I introduce <code>orthologr</code> when using this package for your own research. This will allow me to continue working on this software tool and will motivate me to extend its functionality and usability in the next years. Many thanks in advance :)</strong></p>
 <blockquote>
-<p>Drost et al. 2015. <strong>Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis</strong>. <em>Mol. Biol. Evol.</em> 32 (5): 1221-1231. <a href="http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46">doi:10.1093/molbev/msv012</a></p>
+<p>Drost et al. 2015. <strong>Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis</strong>. <em>Mol. Biol. Evol.</em> 32 (5): 1221-1231. <a href="http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46">doi:10.1093/molbev/msv012</a></p>
 </blockquote>
 </div>
 <div id="short-package-description" class="section level3">
@@ -131,7 +131,7 @@
 <li>“MLWL” (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)</li>
 <li>“YN”: Yang, Z. and Nielsen, R. (2000)</li>
 <li>“MYN” (Modified YN): Zhang, Z., et al. (2006)</li>
-<li>“GMYN”: Wang, D.P., et al. Biology Direct. (2009)</li>
+<li>“GMYN”: Wang, D.P., et al. Biology Direct. (2009)</li>
 <li>“GY”: Goldman, N. and Yang, Z. (1994)</li>
 <li>“MS”: (Model Selection): based on a set of candidate models, Posada, D. (2003)</li>
 <li>“MA” (Model Averaging): based on a set of candidate models, Posada, D. (2003)</li>
@@ -144,13 +144,13 @@
 <h2 class="hasAnchor">
 <a href="#install-orthologr" class="anchor"></a>Install <code>orthologr</code>
 </h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))
-    <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"BiocManager"</span>)
-BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>()
-<span class="co"># Install package dependencies</span>
-BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"Biostrings"</span>, <span class="dt">version =</span> <span class="st">"3.8"</span>)
-<span class="co"># install orthologr from GitHub</span>
-BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"HajkD/orthologr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"BiocManager"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>()</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># Install package dependencies</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"Biostrings"</span>, <span class="dt">version =</span> <span class="st">"3.8"</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># install orthologr from GitHub</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/BiocManager/topics/install">install</a></span>(<span class="st">"HajkD/orthologr"</span>)</a></code></pre></div>
 </div>
 <div id="use-cases" class="section level2">
 <h2 class="hasAnchor">
@@ -171,25 +171,25 @@ BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocu
 <div id="small-example-with-internal-dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#small-example-with-internal-dataset" class="anchor"></a>Small example with internal dataset</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># Detect orthologous genes between a query species and a subject species</span>
-<span class="co"># and compute the synonymous versus non-synonymous substitution rates (dN/dS)</span>
-<span class="co"># following this paradigm:</span>
-<span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span>
-<span class="co"># 2) Needleman-Wunsch for pairwise amino acid alignments</span>
-<span class="co"># 3) pal2nal for codon alignments</span>
-<span class="co"># 4) Comeron for dNdS estimation</span>
-<span class="co"># 5) multi-core processing 'comp_cores = 1'</span>
-<span class="kw"><a href="reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-     <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-     <span class="dt">delete_corrupt_cds =</span> <span class="ot">TRUE</span>, <span class="co"># coding sequences that cannot be divided by 3 (triplets) will be removed</span>
-     <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, <span class="co"># perform BLAST best reciprocal hit orthology inference</span>
-     <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>, <span class="co"># perform pairwise global alignments of AA seqs </span>
-     <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, <span class="co"># using Needleman-Wunsch</span>
-     <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, <span class="co"># perform codon alignments using the tool Pal2Nal</span>
-     <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, <span class="co"># use Comeron's method for dN/dS inference</span>
-     <span class="dt">comp_cores      =</span> <span class="dv">1</span> )</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Detect orthologous genes between a query species and a subject species</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># and compute the synonymous versus non-synonymous substitution rates (dN/dS)</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># following this paradigm:</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># 2) Needleman-Wunsch for pairwise amino acid alignments</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># 3) pal2nal for codon alignments</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># 4) Comeron for dNdS estimation</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># 5) multi-core processing 'comp_cores = 1'</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw"><a href="reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">     <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">     <span class="dt">delete_corrupt_cds =</span> <span class="ot">TRUE</span>, <span class="co"># coding sequences that cannot be divided by 3 (triplets) will be removed</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">     <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, <span class="co"># perform BLAST best reciprocal hit orthology inference</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">     <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>, <span class="co"># perform pairwise global alignments of AA seqs </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">     <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, <span class="co"># using Needleman-Wunsch</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">     <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, <span class="co"># perform codon alignments using the tool Pal2Nal</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">     <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, <span class="co"># use Comeron's method for dN/dS inference</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">     <span class="dt">comp_cores      =</span> <span class="dv">1</span> )</a></code></pre></div>
 <pre><code>   query_id subject_id      dN    dS   dNdS perc_identity alig_length mismatches gap_openings
    &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
  1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0         469         80            8
@@ -220,26 +220,26 @@ BiocManager<span class="op">::</span><span class="kw"><a href="https://www.rdocu
 <h3 class="hasAnchor">
 <a href="#example-computing-dnds-values-for-all-orthologous-genes-between-two-genomes" class="anchor"></a>Example: Computing dN/dS values for all orthologous genes between two genomes</h3>
 <p>First, users can retrieve all coding sequences from entire genomes using the <a href="https://github.com/ropensci/biomartr">biomartr</a> package (<a href="https://ropensci.github.io/biomartr/articles/Sequence_Retrieval.html#cds-retrieval">see details here</a>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"biomartr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(biomartr)
-<span class="co"># download all coding sequences for Mus musculus</span>
-Mmusculus_file &lt;-<span class="st"> </span>biomartr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/biomartr/topics/getCDS">getCDS</a></span>(<span class="dt">organism =</span> <span class="st">"Mus musculus"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>())
-<span class="co"># download all coding sequences for Homo sapiens</span>
-Hsapiens_file &lt;-<span class="st"> </span>biomartr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/biomartr/topics/getCDS">getCDS</a></span>(<span class="dt">organism =</span> <span class="st">"Homo sapiens"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>())
-<span class="co"># compute dN/dS values for Homo sapiens versus Mus musculus</span>
-Hs_vs_Mm_dNdS &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> Hsapiens_file,
-       <span class="dt">subject_file    =</span> Mmusculus_file,
-       <span class="dt">delete_corrupt_cds =</span> <span class="ot">FALSE</span>,
-       <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-       <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>,
-       <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, 
-       <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, 
-       <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, 
-       <span class="dt">comp_cores      =</span> <span class="dv">1</span> )
-<span class="co"># store result in Excel readable csv file</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"readr"</span>)
-readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_excel_csv</a></span>(Hs_vs_Mm_dNdS, <span class="st">"Hs_vs_Mm_dNdS.csv"</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"biomartr"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(biomartr)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># download all coding sequences for Mus musculus</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">Mmusculus_file &lt;-<span class="st"> </span>biomartr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/biomartr/topics/getCDS">getCDS</a></span>(<span class="dt">organism =</span> <span class="st">"Mus musculus"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>())</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># download all coding sequences for Homo sapiens</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">Hsapiens_file &lt;-<span class="st"> </span>biomartr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/biomartr/topics/getCDS">getCDS</a></span>(<span class="dt">organism =</span> <span class="st">"Homo sapiens"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>())</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># compute dN/dS values for Homo sapiens versus Mus musculus</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">Hs_vs_Mm_dNdS &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> Hsapiens_file,</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">       <span class="dt">subject_file    =</span> Mmusculus_file,</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">       <span class="dt">delete_corrupt_cds =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">       <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">       <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>,</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">       <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, </a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">       <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, </a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">       <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, </a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">       <span class="dt">comp_cores      =</span> <span class="dv">1</span> )</a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co"># store result in Excel readable csv file</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"readr"</span>)</a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_excel_csv</a></span>(Hs_vs_Mm_dNdS, <span class="st">"Hs_vs_Mm_dNdS.csv"</span>)</a></code></pre></div>
 <p>Users can find the corresponding map at <a href="https://github.com/HajkD/dNdS_database" class="uri">https://github.com/HajkD/dNdS_database</a>.</p>
 <p><strong>This way, users can compute dN/dS values for any pairwise genome comparison.</strong></p>
 </div>
@@ -247,19 +247,19 @@ readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse
 <h3 class="hasAnchor">
 <a href="#on-windows-systems" class="anchor"></a>On Windows Systems</h3>
 <p>In some cases (when working with <strong>WINDOWS</strong> machines), the installation via <code>devtools</code> will not work properly. In this case users can try the follwing steps:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># On Windows, this won't work - see ?build_github_devtools</span>
-<span class="kw">install_github</span>(<span class="st">"HajkD/orthologr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># When working with Windows, first users need to install the</span>
-<span class="co"># R package: rtools -&gt; install.packages("rtools")</span>
-
-<span class="co"># Afterwards users can install devtools -&gt; install.packages("devtools")</span>
-<span class="co"># and then they can run:</span>
-
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"HajkD/orthologr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
-
-<span class="co"># and then call it from the library</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"orthologr"</span>, <span class="dt">lib.loc =</span> <span class="st">"C:/Program Files/R/R-3.1.1/library"</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># On Windows, this won't work - see ?build_github_devtools</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">install_github</span>(<span class="st">"HajkD/orthologr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># When working with Windows, first users need to install the</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co"># R package: rtools -&gt; install.packages("rtools")</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># Afterwards users can install devtools -&gt; install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co"># and then they can run:</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"HajkD/orthologr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># and then call it from the library</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"orthologr"</span>, <span class="dt">lib.loc =</span> <span class="st">"C:/Program Files/R/R-3.1.1/library"</span>)</a></code></pre></div>
 </div>
 <div id="troubleshooting-on-windows-machines" class="section level3">
 <h3 class="hasAnchor">

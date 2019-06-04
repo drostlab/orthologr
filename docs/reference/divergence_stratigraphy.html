@@ -65,7 +65,7 @@ closely related subject organism." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -145,7 +145,8 @@ closely related subject organism.</p>
     </div>
 
     <pre class="usage"><span class='fu'>divergence_stratigraphy</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>,
-  <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
+  <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>dnds.threshold</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ds.values</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>subject.id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
@@ -169,6 +170,24 @@ closely related subject organism.</p>
       <td><p>a character string specifying the orthology inference method that shall be performed
 to detect orthologous genes. Default is <code>ortho_detection</code> = "RBH" (BLAST reciprocal best hit).
 Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).</p></td>
+    </tr>
+    <tr>
+      <th>dnds_est.method</th>
+      <td><p>the dNdS estimation method that shall be used.
+Options are:</p><ul>
+<li><p><code>dnds_est.method = "Comeron"</code> (Default): Comeron's method (1995)</p></li>
+<li><p><code>dnds_est.method = "Li"</code>: Li's method (1993)</p></li>
+<li><p><code>dnds_est.method = "NG"</code>: Nei, M. and Gojobori, T. (1986)</p></li>
+<li><p><code>dnds_est.method = "LWL"</code>: Li, W.H., et al. (1985)</p></li>
+<li><p><code>dnds_est.method = "LPB"</code>: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)</p></li>
+<li><p><code>dnds_est.method = "MLWL"</code>: (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)</p></li>
+<li><p><code>dnds_est.method = "YN"</code>: Yang, Z. and Nielsen, R. (2000)</p></li>
+<li><p><code>dnds_est.method ="MYN"</code> (Modified YN): Zhang, Z., et al. (2006)</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>delete_corrupt_cds</th>
+      <td><p>a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></td>
     </tr>
     <tr>
       <th>blast_path</th>
@@ -244,8 +263,6 @@ on an 8 core machine can take up to 1,5 - 2 hours.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-
-
  <span class='co'># performing standard divergence stratigraphy</span>
  <span class='fu'>divergence_stratigraphy</span>(
       <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),

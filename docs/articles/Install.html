@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>Installing Prerequisite Tools</h1>
             
-            <h4 class="date">2019-03-30</h4>
+            <h4 class="date">2019-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd"><code>vignettes/Install.Rmd</code></a></small>
       <div class="hidden name"><code>Install.Rmd</code></div>
@@ -176,8 +176,8 @@ blastp -version</code></pre>
 </code></pre>
 <p>Next, copy/paste the <code>blastp</code>, <code>makeblastdb</code>, etc files (BLAST executables) from your BLAST folder to <code>/usr/local/bin</code>. To do so you will need to enter the system password to allow the copy process.</p>
 <p>After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># test whether blastp is correctly installed on your machine</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"blastp -version"</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># test whether blastp is correctly installed on your machine</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"blastp -version"</span>)</a></code></pre></div>
 <pre><code>blastp: 2.2.31+
 Package: blast 2.2.31, build Oct 27 2014 17:10:51</code></pre>
 <p><strong>You should see this output if BLAST was installed correctly.</strong></p>
@@ -279,17 +279,22 @@ cp clustalw2 usr/local/bin</code></pre>
 <li><p>Unzip the file.</p></li>
 <li><p>Run within the argtable folder:</p></li>
 </ol>
-<p>``` ./configure</p>
-<p>make</p>
-<p>make check</p>
-<p>sudo make install ```</p>
+<pre><code>./configure
+
+make
+
+make check
+
+sudo make install</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li><p>Download <a href="http://www.clustal.org/omega/">ClustalO</a>.</p></li>
 <li><p>Unzip the folder and run within the folder:</p></li>
 </ol>
-<p>``` ./configure</p>
-<p>make</p>
-<p>sudo make install ```</p>
+<pre><code>./configure
+
+make
+
+sudo make install</code></pre>
 </div>
 <div id="install-mafft" class="section level3">
 <h3 class="hasAnchor">

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>Orthology Inference using orthologr</h1>
             
-            <h4 class="date">2019-03-30</h4>
+            <h4 class="date">2019-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd"><code>vignettes/orthology_inference.Rmd</code></a></small>
       <div class="hidden name"><code>orthology_inference.Rmd</code></div>
@@ -120,15 +120,15 @@
 </ul>
 <p>Using a simple example stored in the package environment of <code>orthologr</code> you can get an impression on how to use the <code><a href="../reference/orthologs.html">orthologs()</a></code> function.</p>
 <p><strong>Note:</strong> it is assumed that when using <code><a href="../reference/orthologs.html">orthologs()</a></code> all corresponding programs you want to use are already installed on your machine and are executable via either the default execution PATH or you specifically define the location of the executable file via the <code>path</code> argument that can be passed to <code><a href="../reference/orthologs.html">orthologs()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using BLAST reciprocal best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>      query_id            subject_id evalue
 1  AT1G01010.1 333554|PACid:16033839  0e+00
 2  AT1G01020.1 470181|PACid:16064328 7e-166
@@ -154,26 +154,26 @@
 <p>This small example returns 20 orthologous genes between <em>Arabidopsis thaliana</em> and <em>Arabidopsis lyrata</em>. As you can see, the <code>query_file</code> and <code>subject_files</code> arguments take the proteomes of <em>Arabidopsis thaliana</em> (<code>query_file</code>) and <em>Arabidopsis lyrata</em> (<code>subject_files</code>) stored in fasta files. The <code>seq_type</code> argument specifies that you will pass protein sequences (proteomes) to the <code><a href="../reference/orthologs.html">orthologs()</a></code> function. In case you only have either genomes (DNA sequences) or CDS files, you can modify the <code>seq_type</code> argument to <code>seq_type = "dna"</code> (when working with only genome data) or <code>seq_type = "cds"</code> (when working with CDS files). Internally the <code><a href="../reference/orthologs.html">orthologs()</a></code> function will perform a CDS prediction using <code>predict_cds()</code> and will furthermore translate the predicted CDS sequences into protein sequences. Analogously when <code>seq_type = "cds"</code> is specified, internally the <code><a href="../reference/orthologs.html">orthologs()</a></code> function will translate all CDS sequences into protein sequences to run orthology inference based on protein sequences.</p>
 <p><strong>Note</strong>: future versions of <code>orthologr</code> will allow to perform orthology inference using DNA sequences. Nevertheless, since most orthology inference methods or paradigms rely on protein sequences, the first version of <code>orthologr</code> will follow this paradigm.</p>
 <p>In case you have to specify the path to the corresponding orthology inference method you can use the <code>path</code> argument as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># using an external execution path</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-          <span class="dt">path            =</span> <span class="st">"here/path/to/blastp"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># using an external execution path</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">          <span class="dt">path            =</span> <span class="st">"here/path/to/blastp"</span>, </a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p>When you are working on a multicore machine, you can also specify the <code>comp_cores</code> argument that will allow you to run all analyses in parallel (to speed up computations).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># running orthology inference in parallel using 2 cores</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># running orthology inference in parallel using 2 cores</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <pre><code>
       query_id            subject_id evalue
 1  AT1G01010.1 333554|PACid:16033839  0e+00
@@ -208,17 +208,17 @@
 <a href="#blastp-best-hit" class="anchor"></a>BLASTp best hit</h3>
 <p>The BLASTp best hit method is a uni-directional BLAST best hit search of a <code>query organism A</code> against a <code>subject organism B</code> based on the <code>e-value</code>.</p>
 <p>Orthology Inference using BLASTp best hit can be performed by specifying the argument <code>ortho_detection = "BH"</code> and one computing core <code>comp_core = 1</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using BLAST best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"BH"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>,
-          <span class="dt">detailed_output =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># perform orthology inference using BLAST best hit</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"BH"</span>, </a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">          <span class="dt">detailed_output =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <pre><code>       query_id            subject_id evalue
  1: AT1G01010.1 333554|PACid:16033839  0e+00
  2: AT1G01020.1 470181|PACid:16064328 7e-166
@@ -254,16 +254,16 @@
 </ol>
 <p>In other words, only in case the tuple <code>(query_id, subject_id)</code> is returned as best hit based on the <code>e-value</code> in both BLAST directions, the corresponding tupel <code>(query_id, subject_id)</code> is retained as orthologous gene pair.</p>
 <p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code> using <code>ortho_detection = "RBH"</code> and one computing core <code>comp_core = 1</code> can be performed as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using BLAST reciprocal best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <pre><code>
       query_id            subject_id evalue
 1  AT1G01010.1 333554|PACid:16033839  0e+00
@@ -288,21 +288,21 @@
 20 AT1G01220.1 470155|PACid:16047984  0e+00
 </code></pre>
 <p>When you need more parameters returned by <code>RBH</code>, you can specify the <code>detailed_output = TRUE</code> argument to obtain all BLAST parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
-
-<span class="co"># perform orthology inference using BLAST reciprocal best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-RBH &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type          =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection   =</span> <span class="st">"RBH"</span>,
-          <span class="dt">detailed_output   =</span> <span class="ot">TRUE</span>, 
-          <span class="dt">clean_folders     =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores        =</span> <span class="dv">1</span>)
-
-
-<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(RBH)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">RBH &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">          <span class="dt">seq_type          =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">          <span class="dt">ortho_detection   =</span> <span class="st">"RBH"</span>,</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">          <span class="dt">detailed_output   =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">          <span class="dt">clean_folders     =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">          <span class="dt">comp_cores        =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(RBH)</a></code></pre></div>
 <pre><code>Variables:
 $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1"...
 $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|...
@@ -334,18 +334,18 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
 </ol>
 <p>In other words, only in case the tuple <code>(query_id, subject_id)</code> is returned as best hit based on the <code>e-value</code> in both DELTA-BLAST directions, the corresponding tupel <code>(query_id, subject_id)</code> is retained as orthologous gene pair.</p>
 <p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code> using <code>ortho_detection = "DELTA"</code>, the <code>cdd.path = "path/to/cdd_database/folder"</code>, and one computing core <code>comp_core = 1</code> can be performed as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using DELTA-BLAST reciprocal best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"DELTA"</span>,
-          <span class="dt">cdd.path        =</span> <span class="st">"path/to/cdd_database/folder"</span>,
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,
-          <span class="dt">detailed_output =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># perform orthology inference using DELTA-BLAST reciprocal best hit</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"DELTA"</span>,</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">          <span class="dt">cdd.path        =</span> <span class="st">"path/to/cdd_database/folder"</span>,</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">          <span class="dt">detailed_output =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <pre><code>      query_id            subject_id evalue
 1  AT1G01010.1 333554|PACid:16033839  0e+00
 2  AT1G01020.1 470181|PACid:16064328  3e-88
@@ -368,22 +368,22 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
 19 AT1G01210.1 311313|PACid:16057125  2e-40
 20 AT1G01220.1 470155|PACid:16047984  0e+00</code></pre>
 <p>When you need more parameters returned by <code>DELTA-BLAST</code>, you can specify the <code>detailed_output = TRUE</code> argument to obtain all DELTA-BLAST parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
-
-<span class="co"># perform orthology inference using DELTA-BLAST reciprocal best hit</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-DELTA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type          =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection   =</span> <span class="st">"DELTA"</span>,
-          <span class="dt">cdd.path          =</span> <span class="st">"path/to/cdd_database/folder"</span>,
-          <span class="dt">detailed_output   =</span> <span class="ot">TRUE</span>, 
-          <span class="dt">clean_folders     =</span> <span class="ot">FALSE</span>,
-          <span class="dt">comp_cores        =</span> <span class="dv">1</span>)
-
-
-<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(DELTA)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># perform orthology inference using DELTA-BLAST reciprocal best hit</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">DELTA &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">          <span class="dt">seq_type          =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">          <span class="dt">ortho_detection   =</span> <span class="st">"DELTA"</span>,</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">          <span class="dt">cdd.path          =</span> <span class="st">"path/to/cdd_database/folder"</span>,</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11">          <span class="dt">detailed_output   =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">          <span class="dt">clean_folders     =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">          <span class="dt">comp_cores        =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(DELTA)</a></code></pre></div>
 <pre><code>Variables:
 $ query_id                (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1", "...
 $ subject_id              (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|PAC...
@@ -412,7 +412,7 @@ $ query_coverage_per_subj (dbl) 100, 100, 100, 99, 100, 100, 100, 100, 100, 100,
 <p>Please follow the <a href="https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html">installation instructions</a> from the ProteinOrtho web page.</p>
 <p>When you have ProteinOrtho installed on your machine, make sure that you can execute the file <code>proteinortho5.pl</code> from your default execution <code>PATH</code>, e.g. <code>/usr/local/bin/</code> (MacOS, Linux).</p>
 <p>You can test whether ProteinOrtho can be executed properly by typing the following command in your R session:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"proteinortho5.pl -h"</span>)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"proteinortho5.pl -h"</span>)</a></code></pre></div>
 <p>This way you should see the following output:</p>
 <pre><code>Usage: proteinortho5.pl [OPTIONS] FASTA1 FASTA2 [FASTA...]
 Options: -e=          E-value for blast [default: 1e-05]
@@ -473,15 +473,15 @@ Invalid command line option: '-h'!
 <div id="running-orthologs-with-proteinortho" class="section level4">
 <h4 class="hasAnchor">
 <a href="#running-orthologs-with-proteinortho" class="anchor"></a>Running orthologs() with ProteinOrtho</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using ProteinOrtho</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">ortho_detection =</span> <span class="st">"PO"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co"># perform orthology inference using ProteinOrtho</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"PO"</span>, </a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>
       ortho_lyra_aa.fasta ortho_thal_aa.fasta evalue_ab bitscore_ab evalue_ba bitscore_ba
  1: 311313|PACid:16057125         AT1G01210.1     7e-76         215     7e-76         215
@@ -506,27 +506,27 @@ Invalid command line option: '-h'!
 20: 918864|PACid:16052578         AT1G01070.1     0e+00         696     0e+00         696
 </code></pre>
 <p>Again the <code>comp_cores</code> argument can be used to run ProteinOrtho in parallel.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># perform orthology inference using ProteinOrtho</span>
-<span class="co"># and fasta sequence files storing protein sequences</span>
-<span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, 
-          <span class="dt">comp_cores      =</span> <span class="dv">2</span>,
-          <span class="dt">ortho_detection =</span> <span class="st">"PO"</span>, 
-          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co"># perform orthology inference using ProteinOrtho</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
+<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb20-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
+<a class="sourceLine" id="cb20-8" data-line-number="8">          <span class="dt">comp_cores      =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb20-9" data-line-number="9">          <span class="dt">ortho_detection =</span> <span class="st">"PO"</span>, </a>
+<a class="sourceLine" id="cb20-10" data-line-number="10">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>You can run ProteinOrtho with multiple subject organisms.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila</span>
-subject_organisms &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_brapa_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                       <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_alyra_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-                       <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_thalo_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))
-
-<span class="kw"><a href="../reference/ProteinOrtho.html">ProteinOrtho</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_athal_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-          <span class="dt">subject_files =</span> subject_organisms,
-          <span class="dt">seq_type      =</span> <span class="st">"protein"</span>)</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># defining 3 subject organisms: A. lyrata, B. rapa, and T. halophila</span></a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">subject_organisms &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_brapa_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">                       <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_alyra_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">                       <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_thalo_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>))</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="kw"><a href="../reference/ProteinOrtho.html">ProteinOrtho</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/example_athal_aa.faa'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">          <span class="dt">subject_files =</span> subject_organisms,</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">          <span class="dt">seq_type      =</span> <span class="st">"protein"</span>)</a></code></pre></div>
 <pre><code>
 $comparison_1
        # example_athal_aa.faa  example_alyra_aa.faa evalue_ab bitscore_ab evalue_ba bitscore_ba
@@ -712,17 +712,17 @@ $proteinortho_tbl
 </code></pre>
 <p>The resulting output is a list storing all combinations of pairwise comparisons as data frames inside each list element. The last list element defines the gene relationships in terms of gene ids.</p>
 <p>In case you would like to use the <code>synteny</code> option of ProteinOrtho, we refer to the <code><a href="../reference/ProteinOrtho.html">ProteinOrtho()</a></code> function. When performing synteny, a *.gff file needs to be stored in a folder named <code>_ProteinOrtho</code> that needs to be created inside the current working directory of your R session (<code><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create("_ProteinOrtho")</a></code>).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)
-
-<span class="co"># it is also possible to run ProteinOrtho using the synteny option</span>
-<span class="co"># make sure you can provide a *.gff file</span>
-<span class="co"># see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details</span>
-<span class="kw"><a href="../reference/ProteinOrtho.html">ProteinOrtho</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-             <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),
-             <span class="dt">seq_type        =</span> <span class="st">"protein"</span>,
-             <span class="dt">format          =</span> <span class="st">"fasta"</span>,
-             <span class="dt">po_params       =</span> <span class="st">"-synteny"</span>,
-             <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co"># it is also possible to run ProteinOrtho using the synteny option</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="co"># make sure you can provide a *.gff file</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co"># see https://www.bioinf.uni-leipzig.de/Software/proteinortho/manual.html for details</span></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="../reference/ProteinOrtho.html">ProteinOrtho</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">             <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">             <span class="dt">seq_type        =</span> <span class="st">"protein"</span>,</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">             <span class="dt">format          =</span> <span class="st">"fasta"</span>,</a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">             <span class="dt">po_params       =</span> <span class="st">"-synteny"</span>,</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11">             <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 </div>
 </div>
