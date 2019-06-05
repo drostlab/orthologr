@@ -21,6 +21,14 @@ orgs <- c("Arabidopsis thaliana", "Arabidopsis lyrata",
           "Capsella rubella", "Solanum lycopersicum")
 # download proteome files for all species          
 biomartr::getProteomeSet(db = "refseq", organisms = orgs, path = "of_proteomes")
+# download annotation files for all species          
+biomartr::getGFFSet(db = "refseq", organisms = orgs, path = "of_gff")
+# select longest splice variant per gene locus
+dir.create("of_proteomes_longest_sv")
+retrieve_longest_isoforms(proteome_file = "of_proteomes/Alyrata.faa", 
+                          annotation_file = "of_gff/Alyrata.gff",
+                          annotation_format = "gff", 
+                          new_file = "of_proteomes_longest_sv/Alyrata.faa")
 # run orthofinder2 to infer ortho groups for the specified species
 orthofinder2(proteome_folder = "of_proteomes", comp_cores = 4)
 } 
