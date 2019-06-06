@@ -12,11 +12,10 @@
 #' # download annotation files for all species          
 #' biomartr::getGFFSet(db = "refseq", organisms = orgs, path = "of_gff")
 #' # select longest splice variant per gene locus
-#' dir.create("of_proteomes_longest_sv")
-#' retrieve_longest_isoforms(proteome_file = "of_proteomes/Alyrata.faa", 
-#'                           annotation_file = "of_gff/Alyrata.gff",
-#'                           annotation_format = "gff", 
-#'                           new_file = "of_proteomes_longest_sv/Alyrata.faa")
+#' retrieve_longest_isoforms_all(proteome_folder = "of_proteomes", 
+#'                               annotation_folder = "of_gff",
+#'                               annotation_format = "gff", 
+#'                               output_folder = "of_proteomes_longest_sv")
 #' # run orthofinder2 to infer ortho groups for the specified species
 #' orthofinder2(proteome_folder = "of_proteomes", comp_cores = 4)
 #' } 
