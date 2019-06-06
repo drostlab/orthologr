@@ -5,7 +5,7 @@
 \title{Retrieve the longest isoforms from a proteome file and save results as fasta file}
 \usage{
 retrieve_longest_isoforms(proteome_file, annotation_file, new_file,
-  annotation_format = "gtf")
+  annotation_format = "gff")
 }
 \arguments{
 \item{proteome_file}{file path to proteome in \code{fasta} file format.}
@@ -16,8 +16,8 @@ retrieve_longest_isoforms(proteome_file, annotation_file, new_file,
 
 \item{annotation_format}{format of \code{annotation_file}. Options are:
 \itemize{
-\item \code{annotation_file = "gtf"} (default)
-\item \code{annotation_file = "gff"}
+\item \code{annotation_file = "gff"} (default)
+\item \code{annotation_file = "gtf"} 
 }}
 }
 \description{
@@ -30,10 +30,8 @@ when dealing with proteome \code{fasta} files which usually include isoform pept
 \examples{
 \dontrun{
 # retrieve example data from ENSEMBLGENOMES
-proteome <- biomartr::getProteome(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
-biomartr::getGTF(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
-R.utils::gunzip("ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf.gz")
-annotation <- "ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf"
+proteome <- biomartr::getProteome(db = "refseq", organism = "Arabidopsis thaliana")
+annotation <- biomartr::getGFF(db = "refseq", organism = "Arabidopsis thaliana")
 # retrieve longest isoforms and store in new file
 retrieve_longest_isoforms(proteome_file = proteome, 
                           annotation_file = annotation, 
