@@ -149,7 +149,7 @@ when dealing with proteome <code>fasta</code> files which usually include isofor
     </div>
 
     <pre class="usage"><span class='fu'>retrieve_longest_isoforms</span>(<span class='no'>proteome_file</span>, <span class='no'>annotation_file</span>, <span class='no'>new_file</span>,
-  <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gtf"</span>)</pre>
+  <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gff"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,8 +169,8 @@ when dealing with proteome <code>fasta</code> files which usually include isofor
     <tr>
       <th>annotation_format</th>
       <td><p>format of <code>annotation_file</code>. Options are:</p><ul>
-<li><p><code>annotation_file = "gtf"</code> (default)</p></li>
-<li><p><code>annotation_file = "gff"</code></p></li>
+<li><p><code>annotation_file = "gff"</code> (default)</p></li>
+<li><p><code>annotation_file = "gtf"</code></p></li>
 </ul></td>
     </tr>
     </table>
@@ -179,10 +179,8 @@ when dealing with proteome <code>fasta</code> files which usually include isofor
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># retrieve example data from ENSEMBLGENOMES</span>
-<span class='no'>proteome</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getProteome'>getProteome</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"ensemblgenomes"</span>, <span class='kw'>organism</span> <span class='kw'>=</span> <span class='st'>"Arabidopsis thaliana"</span>)
-<span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getGTF'>getGTF</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"ensemblgenomes"</span>, <span class='kw'>organism</span> <span class='kw'>=</span> <span class='st'>"Arabidopsis thaliana"</span>)
-<span class='kw pkg'>R.utils</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/R.utils/topics/compressFile'>gunzip</a></span>(<span class='st'>"ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf.gz"</span>)
-<span class='no'>annotation</span> <span class='kw'>&lt;-</span> <span class='st'>"ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf"</span>
+<span class='no'>proteome</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getProteome'>getProteome</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organism</span> <span class='kw'>=</span> <span class='st'>"Arabidopsis thaliana"</span>)
+<span class='no'>annotation</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getGFF'>getGFF</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organism</span> <span class='kw'>=</span> <span class='st'>"Arabidopsis thaliana"</span>)
 <span class='co'># retrieve longest isoforms and store in new file</span>
 <span class='fu'>retrieve_longest_isoforms</span>(<span class='kw'>proteome_file</span> <span class='kw'>=</span> <span class='no'>proteome</span>,
                           <span class='kw'>annotation_file</span> <span class='kw'>=</span> <span class='no'>annotation</span>,

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface function to Orthofinder2 — orthofinder2 • orthologr</title>
+<title>Retrieve the longest isoforms of several proteome files stored in a folder — retrieve_longest_isoforms_all • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,13 @@
 
 
 
-<meta property="og:title" content="Interface function to Orthofinder2 — orthofinder2" />
+<meta property="og:title" content="Retrieve the longest isoforms of several proteome files stored in a folder — retrieve_longest_isoforms_all" />
 
-<meta property="og:description" content="Run Orthofinder2 from R." />
+<meta property="og:description" content="Based on a fasta file storing the peptide isoforms of gene loci and
+an annotation file in gtf file format, this function extracts the longest
+isoform per gene locus and stores the results in a new fasta file.
+This procedure enables easier downstream analyses such as orthology inference etc
+when dealing with proteome fasta files which usually include isoform peptides." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,49 +133,62 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface function to Orthofinder2</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/orthofinder2.R'><code>R/orthofinder2.R</code></a></small>
-    <div class="hidden name"><code>orthofinder2.Rd</code></div>
+    <h1>Retrieve the longest isoforms of several proteome files stored in a folder</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/retrieve_longest_isoforms_all.R'><code>R/retrieve_longest_isoforms_all.R</code></a></small>
+    <div class="hidden name"><code>retrieve_longest_isoforms_all.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Run Orthofinder2 from R.</p>
+    <p>Based on a fasta file storing the peptide isoforms of gene loci and
+an annotation file in <code>gtf</code> file format, this function extracts the longest
+isoform per gene locus and stores the results in a new <code>fasta</code> file.
+This procedure enables easier downstream analyses such as orthology inference etc
+when dealing with proteome <code>fasta</code> files which usually include isoform peptides.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>orthofinder2</span>(<span class='no'>proteome_folder</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>retrieve_longest_isoforms_all</span>(<span class='no'>proteome_folder</span>, <span class='no'>annotation_folder</span>,
+  <span class='no'>output_folder</span>, <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gff"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>proteome_folder</th>
-      <td><p>file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.</p></td>
+      <td><p>file path to proteome in <code>fasta</code> file format.</p></td>
     </tr>
     <tr>
-      <th>comp_cores</th>
-      <td><p>number of cores that shall be used for parallel processing. Default is <code>cores = 1</code>.</p></td>
+      <th>annotation_folder</th>
+      <td><p>file path to the corresponding annotation file in <code>gtf</code> file format.</p></td>
+    </tr>
+    <tr>
+      <th>output_folder</th>
+      <td><p>file path to new file storing only peptide sequences of the longest isoforms.</p></td>
+    </tr>
+    <tr>
+      <th>annotation_format</th>
+      <td><p>format of <code>annotation_file</code>. Options are:</p><ul>
+<li><p><code>annotation_file = "gff"</code> (default)</p></li>
+<li><p><code>annotation_file = "gtf"</code></p></li>
+</ul></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># specify species names</span>
-<span class='no'>orgs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Arabidopsis thaliana"</span>, <span class='st'>"Arabidopsis lyrata"</span>,
+<span class='no'>orgs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Arabidopsis lyrata"</span>,
           <span class='st'>"Capsella rubella"</span>, <span class='st'>"Solanum lycopersicum"</span>)
 <span class='co'># download proteome files for all species          </span>
 <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getProteomeSet'>getProteomeSet</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organisms</span> <span class='kw'>=</span> <span class='no'>orgs</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>)
 <span class='co'># download annotation files for all species          </span>
 <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getGFFSet'>getGFFSet</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organisms</span> <span class='kw'>=</span> <span class='no'>orgs</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"of_gff"</span>)
 <span class='co'># select longest splice variant per gene locus</span>
-<span class='fu'><a href='retrieve_longest_isoforms_all.html'>retrieve_longest_isoforms_all</a></span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>,
+<span class='fu'>retrieve_longest_isoforms_all</span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>,
                               <span class='kw'>annotation_folder</span> <span class='kw'>=</span> <span class='st'>"of_gff"</span>,
                               <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gff"</span>,
                               <span class='kw'>output_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes_longest_sv"</span>)
-<span class='co'># run orthofinder2 to infer ortho groups for the specified species</span>
-<span class='fu'>orthofinder2</span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
