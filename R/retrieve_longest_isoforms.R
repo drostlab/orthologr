@@ -9,16 +9,14 @@
 #' @param new_file file path to new file storing only peptide sequences of the longest isoforms.
 #' @param annotation_format format of \code{annotation_file}. Options are:
 #' \itemize{
-#' \item \code{annotation_file = "gtf"} (default)
-#' \item \code{annotation_file = "gff"}
+#' \item \code{annotation_file = "gff"} (default)
+#' \item \code{annotation_file = "gtf"} 
 #' }
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' # retrieve example data from ENSEMBLGENOMES
-#' proteome <- biomartr::getProteome(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
-#' biomartr::getGTF(db = "ensemblgenomes", organism = "Arabidopsis thaliana")
-#' R.utils::gunzip("ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf.gz")
-#' annotation <- "ensembl/annotation/Arabidopsis_thaliana.TAIR10.42_ensemblgenomes.gtf"
+#' proteome <- biomartr::getProteome(db = "refseq", organism = "Arabidopsis thaliana")
+#' annotation <- biomartr::getGFF(db = "refseq", organism = "Arabidopsis thaliana")
 #' # retrieve longest isoforms and store in new file
 #' retrieve_longest_isoforms(proteome_file = proteome, 
 #'                           annotation_file = annotation, 
@@ -27,7 +25,7 @@
 #' Athaliana_pep_longest <- Biostrings::readAAStringSet("Athaliana_pep_longest.fa")
 #' }
 #' @export
-retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, annotation_format = "gtf") {
+retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, annotation_format = "gff") {
         
         if (!file.exists(proteome_file))
                 stop("File ", proteome_file, " seems not to exist.", call. = FALSE)
