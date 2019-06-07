@@ -54,13 +54,10 @@ retrieve_longest_isoforms_all <-
                         
                         message("Processing ", org_name, " ...")
                         retrieve_longest_isoforms(proteome_file = proteome_list[i], 
-                                                  annotation_file = annotation_list[i], 
+                                                  annotation_file = annotation_list[i],
+                                                  annotation_format = annotation_format,
                                                   new_file = file.path(output_folder, paste0(org_name,".faa")))
                         
                 }
-                
-                
-                
-                
-                
+
         }
