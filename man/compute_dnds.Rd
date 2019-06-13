@@ -7,8 +7,8 @@
 compute_dnds(complete_tbl, aa_aln_type = "multiple",
   aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
   codon_aln_tool = "pal2nal", dnds_est.method = "YN",
-  kaks_calc_path = NULL, quiet = FALSE, comp_cores = 1,
-  clean_folders = FALSE)
+  store_locally = FALSE, kaks_calc_path = NULL, quiet = FALSE,
+  comp_cores = 1, clean_folders = FALSE)
 }
 \arguments{
 \item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence), 
@@ -26,6 +26,8 @@ Default is \code{aa_aln_type} = "multiple".}
 \item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used for codon alignments. Default is \code{codon_aln_tool} = \code{"pal2nal"}.}
 
 \item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
+
+\item{store_locally}{a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.}
 
 \item{kaks_calc_path}{a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
 (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).}

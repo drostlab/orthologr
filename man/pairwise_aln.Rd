@@ -6,7 +6,7 @@
 \usage{
 pairwise_aln(file, tool = "NW", seq_type = "protein",
   get_aln = FALSE, pairwise_aln_name = NULL, path = NULL,
-  quiet = FALSE)
+  quiet = FALSE, store_locally = FALSE)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}
@@ -25,6 +25,8 @@ Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'tool
 \item{path}{a character string specifying the path to the pairwise alignment program (in case you don't use the default path).}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
+
+\item{store_locally}{a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.}
 }
 \value{
 In case the argument \code{get_aln} is set \code{TRUE}, an object of class alignment of the seqinr package is returned.

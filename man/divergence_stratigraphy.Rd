@@ -7,8 +7,8 @@
 divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
   ortho_detection = "RBH", dnds_est.method = "Comeron",
   delete_corrupt_cds = FALSE, blast_path = NULL, comp_cores = 1,
-  dnds.threshold = 2, quiet = FALSE, clean_folders = FALSE,
-  ds.values = TRUE, subject.id = FALSE)
+  dnds.threshold = 2, store_locally = FALSE, quiet = FALSE,
+  clean_folders = FALSE, ds.values = TRUE, subject.id = FALSE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -43,6 +43,8 @@ parallel computations on a multicore machine.}
 
 \item{dnds.threshold}{a numeric value specifying the dnds threshold for genes that shall be retained.
 Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Default is \code{dnds.threshold} = 2.}
+
+\item{store_locally}{a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out to the console.}
 

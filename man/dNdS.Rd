@@ -6,12 +6,12 @@
 \usage{
 dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
   ortho_detection = "RBH", delete_corrupt_cds = FALSE,
-  cdd.path = NULL, blast_params = NULL, blast_path = NULL,
-  eval = "1E-5", ortho_path = NULL, aa_aln_type = "pairwise",
-  aa_aln_tool = "NW", aa_aln_path = NULL, aa_aln_params = NULL,
-  codon_aln_tool = "pal2nal", kaks_calc_path = NULL,
-  dnds_est.method = "Comeron", comp_cores = 1, quiet = TRUE,
-  clean_folders = FALSE, print_citation = TRUE)
+  store_locally = FALSE, cdd.path = NULL, blast_params = NULL,
+  blast_path = NULL, eval = "1E-5", ortho_path = NULL,
+  aa_aln_type = "pairwise", aa_aln_tool = "NW", aa_aln_path = NULL,
+  aa_aln_params = NULL, codon_aln_tool = "pal2nal",
+  kaks_calc_path = NULL, dnds_est.method = "Comeron", comp_cores = 1,
+  quiet = TRUE, clean_folders = FALSE, print_citation = TRUE)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -35,6 +35,8 @@ dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
 }}
 
 \item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
+
+\item{store_locally}{a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.}
 
 \item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
 
