@@ -11,6 +11,7 @@
 #' Default is \code{pairwise_aln_name} = \code{NULL} denoting a default name: 'toolname_seq_type.aln' .
 #' @param path a character string specifying the path to the pairwise alignment program (in case you don't use the default path).
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
+#' @param store_locally a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @details This function provides an interface between R and common pairwise alignment computation methods.
 #' 
@@ -41,10 +42,11 @@ pairwise_aln <- function(file,
                          get_aln           = FALSE, 
                          pairwise_aln_name = NULL,
                          path              = NULL, 
-                         quiet             = FALSE){
+                         quiet             = FALSE,
+                         store_locally     = FALSE){
         
         
-        if(!is.pairwise_aln_tool(tool))
+        if (!is.pairwise_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         
         if (!is.element(seq_type, c("dna", "cds", "protein")))
@@ -55,19 +57,19 @@ pairwise_aln <- function(file,
         
         if (seq_type == "protein")
                 seqtype <- "AA"
+                
         
-        
-        if (!file.exists(file.path(tempdir(), "_alignment"))) {
-                dir.create(file.path(tempdir(), "_alignment"))
+        if (!file.exists(file.path(ifelse(store_locally, "orthologr_alignment_files", tempdir()), "_alignment"))) {
+                dir.create(file.path(ifelse(store_locally, "orthologr_alignment_files", tempdir()), "_alignment"))
         }
         
-        if (!file.exists(file.path(tempdir(), "_alignment", "pairwise_aln"))) {
-                dir.create(file.path(tempdir(), "_alignment", "pairwise_aln"))
+        if (!file.exists(file.path(ifelse(store_locally, "orthologr_alignment_files", tempdir()), "_alignment", "pairwise_aln"))) {
+                dir.create(file.path(ifelse(store_locally, "orthologr_alignment_files", tempdir()), "_alignment", "pairwise_aln"))
         }
         
         if (is.null(pairwise_aln_name)) {
                 file.out <-
-                        file.path(tempdir(),
+                        file.path(ifelse(store_locally, "orthologr_alignment_files", tempdir()),
                                   "_alignment",
                                   "pairwise_aln",
                                   paste0(tool, "_", seqtype, ".aln"))
@@ -76,7 +78,7 @@ pairwise_aln <- function(file,
         if (!is.null(pairwise_aln_name)) {
                 file.out <-
                         file.path(
-                                tempdir(),
+                                ifelse(store_locally, "orthologr_alignment_files", tempdir()),
                                 "_alignment",
                                 "pairwise_aln",
                                 paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")
@@ -98,9 +100,10 @@ pairwise_aln <- function(file,
                         names <- names(input)
                         seqs <-
                                 lapply(input, function(x) {
-                                        return (Biostrings::DNAString(seqinr::c2s(x)))
+                                        return(Biostrings::DNAString(seqinr::c2s(x)))
                                 })
                 }
+                
                 if (seq_type == "protein") {
                         #                         dt <- read.proteome(file=file, format=format)
                         #                         names <- dt[,geneids]
@@ -113,7 +116,7 @@ pairwise_aln <- function(file,
                         names <- names(input)
                         seqs <-
                                 lapply(input, function(x) {
-                                        return (Biostrings::AAString(seqinr::c2s(x)))
+                                        return(Biostrings::AAString(seqinr::c2s(x)))
                                 })
                 }
                 
@@ -133,7 +136,7 @@ pairwise_aln <- function(file,
                 )
                 
                 if (!quiet) {
-                        print(paste0("File successfully written to ", file.out))
+                        print(paste0("File successfully written to ", file.out, "."))
                 }
                 
                 if (get_aln)
