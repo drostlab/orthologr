@@ -26,6 +26,7 @@
 #'  parallel computations on a multicore machine.
 #' @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
 #' Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Default is \code{dnds.threshold} = 2.
+#' @param store_locally a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 #'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
@@ -148,7 +149,8 @@ divergence_stratigraphy <- function(query_file,
                                     delete_corrupt_cds = FALSE,
                                     blast_path      = NULL, 
                                     comp_cores      = 1,
-                                    dnds.threshold  = 2, 
+                                    dnds.threshold  = 2,
+                                    store_locally   = FALSE,
                                     quiet           = FALSE, 
                                     clean_folders   = FALSE, 
                                     ds.values       = TRUE,
@@ -171,7 +173,8 @@ divergence_stratigraphy <- function(query_file,
                                        codon_aln_tool  = "pal2nal", 
                                        dnds_est.method = dnds_est.method,
                                        eval            = eval,
-                                       comp_cores      = comp_cores, 
+                                       comp_cores      = comp_cores,
+                                       store_locally   = store_locally,
                                        quiet           = quiet ), 
                                        dnds.threshold  = dnds.threshold)
         
