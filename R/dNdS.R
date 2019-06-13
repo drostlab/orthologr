@@ -17,6 +17,7 @@
 #' \item \code{ortho_detection = "Orthofinder2"}: single copy core orthologs between multiple species proteome comparisons.
 #' }
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
+#' @param store_locally a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.
 #' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
 #' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
 #' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
@@ -186,7 +187,8 @@ dNdS <- function(query_file,
                  seq_type        = "cds",
                  format          = "fasta", 
                  ortho_detection = "RBH",
-                 delete_corrupt_cds = FALSE,  
+                 delete_corrupt_cds = FALSE,
+                 store_locally   = FALSE,
                  cdd.path        = NULL,
                  blast_params    = NULL, 
                  blast_path      = NULL, 
@@ -223,6 +225,18 @@ dNdS <- function(query_file,
         
         if (!is.element(aa_aln_type, c("multiple", "pairwise")))
                 stop("Please choose a supported alignement type: 'multiple' or 'pairwise'", call. = FALSE)
+        
+        
+        if (store_locally) {
+                if (file.exists("orthologr_alignment_files")) {
+                        message("The folder 'orthologr_alignment_files' seems to exist already.",
+                                "Please make sure to delete this folder or store the previous results in a different location if you don't want files to be overwritten.",
+                                "The existing folder 'orthologr_alignment_files' is used to store alignment files ...")
+                } else {
+                        message("Creating folder 'orthologr_alignment_files' to store alignment files ...")
+                        dir.create("orthologr_alignment_files")
+                }
+        }
         
         if (aa_aln_type == "multiple") {
                 if (!is.multiple_aln_tool(aa_aln_tool))
@@ -486,6 +500,7 @@ dNdS <- function(query_file,
                                   aa_aln_path     = aa_aln_path,
                                   codon_aln_tool  = codon_aln_tool, 
                                   kaks_calc_path  = kaks_calc_path, 
+                                  store_locally   = store_locally,
                                   dnds_est.method = dnds_est.method, 
                                   quiet           = quiet,
                                   comp_cores      = comp_cores, 
