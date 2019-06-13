@@ -23,6 +23,7 @@
 #' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
 #' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
+#' @param store_locally a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out.
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine.
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
@@ -50,7 +51,8 @@ compute_dnds <- function(complete_tbl,
                          aa_aln_path     = NULL,
                          aa_aln_params   = NULL, 
                          codon_aln_tool  = "pal2nal",
-                         dnds_est.method = "YN", 
+                         dnds_est.method = "YN",
+                         store_locally   = FALSE,
                          kaks_calc_path  = NULL, 
                          quiet           = FALSE, 
                          comp_cores      = 1, 
@@ -200,7 +202,8 @@ compute_dnds <- function(complete_tbl,
                                                 get_aln           = FALSE,
                                                 pairwise_aln_name = aa_aln_name,
                                                 path              = aa_aln_path,
-                                                quiet             = quiet
+                                                quiet             = quiet,
+                                                store_locally     = store_locally
                                         )
                                         
                                         aa_aln_session_name <-
@@ -212,7 +215,7 @@ compute_dnds <- function(complete_tbl,
                                         # align codon -> cds.aln
                                         codon_aln(
                                                 file_aln       = file.path(
-                                                        tempdir(),
+                                                        ifelse(store_locally, "orthologr_alignment_files", tempdir()),
                                                         "_alignment",
                                                         "pairwise_aln",
                                                         paste0(aa_aln_session_name)
@@ -340,7 +343,7 @@ compute_dnds <- function(complete_tbl,
                                         # align codon -> cds.aln
                                         codon_aln(
                                                 file_aln       = file.path(
-                                                        tempdir(),
+                                                        ifelse(store_locally, "orthologr_alignment_files", tempdir()),
                                                         "_alignment",
                                                         "multi_aln",
                                                         aa_aln_session_name
@@ -363,7 +366,8 @@ compute_dnds <- function(complete_tbl,
                                                 get_aln           = FALSE,
                                                 pairwise_aln_name = aa_aln_name,
                                                 path              = aa_aln_path,
-                                                quiet             = quiet
+                                                quiet             = quiet,
+                                                store_locally     = store_locally
                                         )
                                         
                                         aa_aln_session_name <-
@@ -375,7 +379,7 @@ compute_dnds <- function(complete_tbl,
                                         # align codon -> cds.aln
                                         codon_aln(
                                                 file_aln       = file.path(
-                                                        tempdir(),
+                                                        ifelse(store_locally, "orthologr_alignment_files", tempdir()),
                                                         "_alignment",
                                                         "pairwise_aln",
                                                         aa_aln_session_name
