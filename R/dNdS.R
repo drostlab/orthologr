@@ -214,6 +214,7 @@ dNdS <- function(query_file,
         message("e-value: ", eval)
         message("aa_aln_type = '", aa_aln_type, "'")
         message("aa_aln_tool = '", aa_aln_tool, "'")
+        message("comp_cores = '", comp_cores, "'")
         message("\n")
         
         
@@ -238,6 +239,9 @@ dNdS <- function(query_file,
                         dir.create(file.path("orthologr_alignment_files", "_pairwise_alignment_with_score"))
                 }
         }
+        
+        if (!store_locally)
+                dir.create(file.path(tempdir(), "_pairwise_alignment_with_score"))
         
         if (aa_aln_type == "multiple") {
                 if (!is.multiple_aln_tool(aa_aln_tool))
