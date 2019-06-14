@@ -29,7 +29,7 @@ retrieve_longest_isoforms_all(proteome_folder = "of_proteomes",
                               annotation_format = "gff", 
                               output_folder = "of_proteomes_longest_sv")
 # run orthofinder2 to infer ortho groups for the specified species
-orthofinder2(proteome_folder = "of_proteomes", comp_cores = 4)
+orthofinder2(proteome_folder = "of_proteomes_longest_sv", comp_cores = 4)
 } 
 }
 \author{
