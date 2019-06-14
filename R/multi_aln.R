@@ -327,6 +327,7 @@ multi_aln <- function(file,
         # AND RENAME THE NEW ONES
         
         if (tool == "clustalw") {
+                is_installed_clustalw()
                 # find out on what kind of OS ClustalW is running
                 operating_sys <- Sys.info()[1]
                 
@@ -556,6 +557,7 @@ multi_aln <- function(file,
         }
         
         if (tool == "muscle") {
+                is_installed_muscle()
                 # test whether the connection to muscle works
                 tryCatch({
                         if (is.null(path)) {
@@ -670,6 +672,7 @@ multi_aln <- function(file,
         }
         
         if (tool == "clustalo") {
+                is_installed_clustalo()
                 # test whether the connection to clustalo works
                 tryCatch({
                         if (is.null(path)) {
@@ -773,6 +776,7 @@ multi_aln <- function(file,
         }
         
         if (tool == "mafft") {
+                is_installed_mafft()
                 # test whether the connection to mafft works
                 tryCatch({
                         if (is.null(path)) {
