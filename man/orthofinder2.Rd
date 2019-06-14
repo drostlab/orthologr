@@ -17,7 +17,7 @@ Run Orthofinder2 from R.
 \examples{
 \dontrun{
 # specify species names
-orgs <- c("Arabidopsis thaliana", "Arabidopsis lyrata", 
+orgs <- c("Arabidopsis lyrata", 
           "Capsella rubella", "Solanum lycopersicum")
 # download proteome files for all species          
 biomartr::getProteomeSet(db = "refseq", organisms = orgs, path = "of_proteomes")
