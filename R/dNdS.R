@@ -235,6 +235,7 @@ dNdS <- function(query_file,
                 } else {
                         message("Creating folder 'orthologr_alignment_files' to store alignment files ...")
                         dir.create("orthologr_alignment_files")
+                        dir.create(file.path("orthologr_alignment_files", "_pairwise_alignment_with_score"))
                 }
         }
         
