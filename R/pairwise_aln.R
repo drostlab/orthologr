@@ -135,6 +135,14 @@ pairwise_aln <- function(file,
                         file.out  = file.out
                 )
                 
+                if (store_locally) {
+                        local_store_path <- file.path("orthologr_alignment_files", "_pairwise_alignment_with_score")
+                        Biostrings::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
+                } else {
+                        local_store_path <- file.path(tempdir(), "_pairwise_alignment_with_score")
+                        Biostrings::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
+                }
+                
                 if (!quiet) {
                         print(paste0("File successfully written to ", file.out, "."))
                 }
