@@ -17,7 +17,7 @@
 #'                               annotation_format = "gff", 
 #'                               output_folder = "of_proteomes_longest_sv")
 #' # run orthofinder2 to infer ortho groups for the specified species
-#' orthofinder2(proteome_folder = "of_proteomes", comp_cores = 4)
+#' orthofinder2(proteome_folder = "of_proteomes_longest_sv", comp_cores = 4)
 #' } 
 #' @export
 orthofinder2 <- function(proteome_folder, comp_cores = 1) {
@@ -31,7 +31,7 @@ orthofinder2 <- function(proteome_folder, comp_cores = 1) {
         
         files <- list.files(proteome_folder)
         
-        if (stringr::str_detect(files, "documentation")) {
+        if (any(stringr::str_detect(files, "documentation"))) {
                 message("Your species folder '", proteome_folder, " still contains the 'documentation' folder which will be moved from ", proteome_folder, " to ", getwd(), " to enable the Orthofinder2 search.")
                 file.rename(file.path(proteome_folder, "documentation"), file.path(getwd(), "documentation"))
                 unlink(file.path(proteome_folder, "documentation"), recursive = TRUE, force = TRUE)
@@ -49,5 +49,6 @@ orthofinder2 <- function(proteome_folder, comp_cores = 1) {
         
         # output is stored in OrthoFinder/Results_DATE , where DATE is in format: Nov08 for 08 th November
         # or in this case OrthoFinder/Results_DATE_basename(proteome_folder)
-        system(paste0("orthofinder -f ", proteome_folder," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
+        #system(paste0("orthofinder -f ", proteome_folder," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
+        system(paste0("orthofinder -f ", proteome_folder," -t ", cores," -a ", cores," -S diamond"))
 }
