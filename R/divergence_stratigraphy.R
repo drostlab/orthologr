@@ -159,6 +159,8 @@ divergence_stratigraphy <- function(query_file,
         if (!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
         
+        message("Running Divergence Stratigraphy ...")
+        
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
@@ -200,6 +202,7 @@ divergence_stratigraphy <- function(query_file,
         if (!ds.values)
                 colnames(DivergenceMap.DF)[1] <- "dNdS"
         
+        message("Divergence Stratigraphy completed successfully.")
         return( DivergenceMap.DF )
 }
 
