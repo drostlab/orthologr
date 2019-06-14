@@ -36,7 +36,18 @@
 #' Right now only "pal2nal" can be selected as codon alignment tool.
 #' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
 #' (meaning that KaKs_Calculator is stored and executable in your default \code{PATH}).
-#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
+#' @param dnds_est.method the dNdS estimation method that shall be used.
+#' Options are:
+#' \itemize{
+#' \item \code{dnds_est.method = "Comeron"} (Default): Comeron's method (1995)
+#' \item \code{dnds_est.method = "Li"}: Li's method (1993)
+#' \item \code{dnds_est.method = "NG"}: Nei, M. and Gojobori, T. (1986)
+#' \item \code{dnds_est.method = "LWL"}: Li, W.H., et al. (1985)
+#' \item \code{dnds_est.method = "LPB"}: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+#' \item \code{dnds_est.method = "MLWL"}: (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+#' \item \code{dnds_est.method = "YN"}: Yang, Z. and Nielsen, R. (2000)
+#' \item \code{dnds_est.method ="MYN"} (Modified YN): Zhang, Z., et al. (2006)
+#' }
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform parallel computations on a multicore machine. 
 #' @param quiet a logical value specifying whether the output of the corresponding alignment tool shall be printed out to the console.
 #' Default is \code{quiet} = \code{FALSE}.
