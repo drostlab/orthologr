@@ -4,10 +4,24 @@
 \alias{orthofinder2}
 \title{Interface function to Orthofinder2}
 \usage{
-orthofinder2(proteome_folder, comp_cores = 1)
+orthofinder2(proteome_folder, use_existing_output = FALSE,
+  import_type = "", comp_cores = 1)
 }
 \arguments{
 \item{proteome_folder}{file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.}
+
+\item{use_existing_output}{a logical value indicating whether or not an existing \code{Orthofinder2} 
+output folder shall be used fo further import and processing. If \code{use_existing_output = TRUE}
+is selected then please specify the file path to the \code{Orthofinder2} output folder in \code{proteome_folder}.}
+
+\item{import_type}{type of \code{Orthofinder2} output that shall be imported after running \code{Orthofinder2}.
+Options are:
+\itemize{
+\item \code{import_type = ""}
+\item \code{import_type = ""}
+\item \code{import_type = ""}
+\item \code{import_type = ""}
+}}
 
 \item{comp_cores}{number of cores that shall be used for parallel processing. Default is \code{cores = 1}.}
 }
