@@ -53,13 +53,20 @@ retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, 
                 
                 message("Importing gtf file ", basename(annotation_file), " ...")
                 gtf_import <- tibble::as_tibble(rtracklayer::import(annotation_file))
+                message("Filter for gene_biotype == 'protein_coding' AND type == 'transcript' ...")
                 gene_biotype <- gene_id <- transcript_id <- type <- width <- NULL
                 gtf_import <- dplyr::filter(gtf_import, gene_biotype == "protein_coding", type == "transcript")
+                message("After filtering, the gtf file includes ", nrow(gtf_import), " rows.")
                 gtf_import <- dplyr::select(gtf_import, gene_id, transcript_id)
                 #print(gtf_import)
                 # join transcript_ids from annotation file with peptide sequence file
-                pep_file_tibble_joined <- dplyr::inner_join(pep_file_tibble, gtf_import, by = "transcript_id")   
+                message("Join transcript_ids from FASTA header with transcript_ids from GTF annotation file ...")
+                pep_file_tibble_joined <- dplyr::inner_join(pep_file_tibble, gtf_import, by = "transcript_id")
+                message("The joined file contains ", nrow(pep_file_tibble_joined), " rows.")
+                message("Removing rows with NA's in columns 'transcript_id', 'width', and 'gene_id'")
                 pep_file_tibble_joined <- dplyr::filter(pep_file_tibble_joined, !is.na(transcript_id), !is.na(width), !is.na(gene_id))
+                message("After NA removal the file contains ", nrow(pep_file_tibble_joined), " rows.")
+                
                 #print(pep_file_tibble_joined)
                 extract_longest_transcript <- function(x) {
                         pos <- which.max(x$width)[1]
@@ -72,9 +79,11 @@ retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, 
                 if (length(matched_ids) == 0)
                         stop("Gene_ID or Peptide_IDs between the gtf file and the headers of the fasta file did not match!",
                              " Please make sure that the 'transcript_id' column in the gtf file matches the IDs given in the headers of the fasta file.", call. = FALSE)
+                if (length(matched_ids) != length(unique(matched_ids)))
+                        stop("There should only be unique gene_ids in the file, but non-unique IDs were found! Please check what could have gone wrong. with the input files.", call. = FALSE)
                 
                 message("\n")
-                message("Writing ", length(matched_ids), " longest peptide sequences (from initially ", length(pep_file), " isoforms) to new fasta file ", new_file, " ...")
+                message("Writing ", length(matched_ids), " unique longest peptide sequences (from initially ", length(pep_file), " isoforms) to new fasta file ", new_file, " ...")
                 Biostrings::writeXStringSet(pep_file[matched_ids], new_file)
                 message("Retrieval finished successfully.")
         }
@@ -106,8 +115,11 @@ retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, 
                         stop("Gene_ID or Peptide_IDs between the gtf file and the headers of the fasta file did not match!",
                              " Please make sure that the 'protein_id' column in the gtf file matches the IDs given in the headers of the fasta file.", call. = FALSE)
                 
+                if (length(matched_ids) != length(unique(matched_ids)))
+                        stop("There should only be unique gene_ids in the file, but non-unique IDs were found! Please check what could have gone wrong. with the input files.", call. = FALSE)
+                
                 message("\n")
-                message("Writing ", length(matched_ids), " longest peptide sequences (from initially ", length(pep_file), " isoforms) to new fasta file ", new_file, " ...")
+                message("Writing ", length(matched_ids), " unique longest peptide sequences (from initially ", length(pep_file), " isoforms) to new fasta file ", new_file, " ...")
                 Biostrings::writeXStringSet(pep_file[matched_ids], new_file)
                 message("Retrieval finished successfully.")
         }
