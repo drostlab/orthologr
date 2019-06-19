@@ -35,21 +35,34 @@ retrieve_longest_isoforms_all <-
                 
                 if (!file.exists(proteome_folder))
                         stop("Folder ", proteome_folder, " seems not to exist.", call. = FALSE)
-                if (!file.exists(proteome_folder))
+                if (!file.exists(annotation_folder))
                         stop("Folder ", annotation_folder, " seems not to exist.", call. = FALSE)
                 
                 message("Starting retrieval of longest splice variants ...")
-                message("Creating output folder '", output_folder,"' ...")
-                dir.create(output_folder)
+                
+                if (!file.exists(output_folder)) {
+                        message("Creating output folder '", output_folder,"' ...")
+                        dir.create(output_folder)
+                } else {
+                        message("The output folder '", output_folder, "' exists already. Files with longest splice variants will be stored there.")
+                }
+                
                 proteome_list <- file.path(proteome_folder, list.files(proteome_folder))
-                proteome_list <- proteome_list[!stringr::str_detect(proteome_list, "documentation")]
+                found_documentation <- stringr::str_detect(proteome_list, "documentation")
+                if (length(found_documentation) > 0)
+                        proteome_list <- proteome_list[!found_documentation]
+                
                 annotation_list <- file.path(annotation_folder, list.files(annotation_folder))
-                annotation_list <- annotation_list[!stringr::str_detect(annotation_list, "documentation")]
+                found_documentation_anno <- stringr::str_detect(annotation_list, "documentation")
+                if (length(found_documentation_anno) > 0) {
+                        annotation_list <- annotation_list[!found_documentation_anno]
+                }
+                
                 
                 for (i in seq_len(length(proteome_list))) {
                         org_name <- unlist(stringr::str_split(basename(proteome_list[i]), "[.]"))[1]
                         if (org_name != unlist(stringr::str_split(basename(annotation_list[i]), "[.]"))[1])
-                                stop("The proteome file name ",basename(proteome_list[i])," and the annotation file name ", basename(annotation_list[1]), " seem not to match!",
+                                stop("The proteome file name ",basename(proteome_list[i])," and the annotation file name ", basename(annotation_list[i]), " seem not to match!",
                                      "Please make sure that organism file names *.faa and *.gtf/*.gff match so that the correct annotation file is matched with the correct proteome file.", call. = FALSE)
                         
                         message("Processing ", org_name, " ...")
@@ -57,6 +70,7 @@ retrieve_longest_isoforms_all <-
                                                   annotation_file = annotation_list[i],
                                                   annotation_format = annotation_format,
                                                   new_file = file.path(output_folder, paste0(org_name,".faa")))
+                        message("\n")
                         
                 }
 
