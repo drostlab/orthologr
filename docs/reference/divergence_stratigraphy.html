@@ -147,8 +147,8 @@ closely related subject organism.</p>
     <pre class="usage"><span class='fu'>divergence_stratigraphy</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
   <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>dnds.threshold</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ds.values</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>subject.id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>dnds.threshold</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>store_locally</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ds.values</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>subject.id</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,6 +202,10 @@ parallel computations on a multicore machine.</p></td>
       <th>dnds.threshold</th>
       <td><p>a numeric value specifying the dnds threshold for genes that shall be retained.
 Hence all genes having a dNdS value &lt;= <code>dnds.threshold</code> are retained. Default is <code>dnds.threshold</code> = 2.</p></td>
+    </tr>
+    <tr>
+      <th>store_locally</th>
+      <td><p>a logical value indicating whether or not alignment files shall be stored locally rather than in <code><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir()</a></code>.</p></td>
     </tr>
     <tr>
       <th>quiet</th>

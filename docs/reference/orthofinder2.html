@@ -140,7 +140,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>orthofinder2</span>(<span class='no'>proteome_folder</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>orthofinder2</span>(<span class='no'>proteome_folder</span>, <span class='kw'>use_existing_output</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>import_type</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,6 +149,22 @@
     <tr>
       <th>proteome_folder</th>
       <td><p>file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.</p></td>
+    </tr>
+    <tr>
+      <th>use_existing_output</th>
+      <td><p>a logical value indicating whether or not an existing <code>Orthofinder2</code> 
+output folder shall be used fo further import and processing. If <code>use_existing_output = TRUE</code>
+is selected then please specify the file path to the <code>Orthofinder2</code> output folder in <code>proteome_folder</code>.</p></td>
+    </tr>
+    <tr>
+      <th>import_type</th>
+      <td><p>type of <code>Orthofinder2</code> output that shall be imported after running <code>Orthofinder2</code>.
+Options are:</p><ul>
+<li><p><code>import_type = ""</code></p></li>
+<li><p><code>import_type = ""</code></p></li>
+<li><p><code>import_type = ""</code></p></li>
+<li><p><code>import_type = ""</code></p></li>
+</ul></td>
     </tr>
     <tr>
       <th>comp_cores</th>
@@ -159,7 +176,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='co'># specify species names</span>
-<span class='no'>orgs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Arabidopsis thaliana"</span>, <span class='st'>"Arabidopsis lyrata"</span>,
+<span class='no'>orgs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Arabidopsis lyrata"</span>,
           <span class='st'>"Capsella rubella"</span>, <span class='st'>"Solanum lycopersicum"</span>)
 <span class='co'># download proteome files for all species          </span>
 <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getProteomeSet'>getProteomeSet</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organisms</span> <span class='kw'>=</span> <span class='no'>orgs</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>)
@@ -171,7 +188,7 @@
                               <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gff"</span>,
                               <span class='kw'>output_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes_longest_sv"</span>)
 <span class='co'># run orthofinder2 to infer ortho groups for the specified species</span>
-<span class='fu'>orthofinder2</span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='fu'>orthofinder2</span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes_longest_sv"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

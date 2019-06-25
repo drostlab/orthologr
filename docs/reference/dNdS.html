@@ -144,12 +144,12 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 
     <pre class="usage"><span class='fu'>dNdS</span>(<span class='no'>query_file</span>, <span class='no'>subject_file</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"cds"</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cdd.path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
-  <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>, <span class='kw'>aa_aln_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>, <span class='kw'>kaks_calc_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_citation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>store_locally</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cdd.path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>blast_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>blast_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"pairwise"</span>, <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>, <span class='kw'>aa_aln_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>aa_aln_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
+  <span class='kw'>kaks_calc_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print_citation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,6 +185,10 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     <tr>
       <th>delete_corrupt_cds</th>
       <td><p>a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></td>
+    </tr>
+    <tr>
+      <th>store_locally</th>
+      <td><p>a logical value indicating whether or not alignment files shall be stored locally rather than in <code><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir()</a></code>.</p></td>
     </tr>
     <tr>
       <th>cdd.path</th>
@@ -238,7 +242,17 @@ Right now only "pal2nal" can be selected as codon alignment tool.</p></td>
     </tr>
     <tr>
       <th>dnds_est.method</th>
-      <td><p>a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.</p></td>
+      <td><p>the dNdS estimation method that shall be used.
+Options are:</p><ul>
+<li><p><code>dnds_est.method = "Comeron"</code> (Default): Comeron's method (1995)</p></li>
+<li><p><code>dnds_est.method = "Li"</code>: Li's method (1993)</p></li>
+<li><p><code>dnds_est.method = "NG"</code>: Nei, M. and Gojobori, T. (1986)</p></li>
+<li><p><code>dnds_est.method = "LWL"</code>: Li, W.H., et al. (1985)</p></li>
+<li><p><code>dnds_est.method = "LPB"</code>: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)</p></li>
+<li><p><code>dnds_est.method = "MLWL"</code>: (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)</p></li>
+<li><p><code>dnds_est.method = "YN"</code>: Yang, Z. and Nielsen, R. (2000)</p></li>
+<li><p><code>dnds_est.method ="MYN"</code> (Modified YN): Zhang, Z., et al. (2006)</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>comp_cores</th>

@@ -144,7 +144,7 @@ that shall be aligned and computes a paiwise alignment using a defined alignment
 
     <pre class="usage"><span class='fu'>pairwise_aln</span>(<span class='no'>file</span>, <span class='kw'>tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"protein"</span>,
   <span class='kw'>get_aln</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pairwise_aln_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>store_locally</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,6 +179,10 @@ Default is <code>pairwise_aln_name</code> = <code>NULL</code> denoting a default
     <tr>
       <th>quiet</th>
       <td><p>a logical value specifying whether a successful interface call shall be printed out.</p></td>
+    </tr>
+    <tr>
+      <th>store_locally</th>
+      <td><p>a logical value indicating whether or not alignment files shall be stored locally rather than in <code><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir()</a></code>.</p></td>
     </tr>
     </table>
     

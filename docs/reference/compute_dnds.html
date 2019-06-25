@@ -157,8 +157,8 @@ and then runs the following pipieline:</p>
     <pre class="usage"><span class='fu'>compute_dnds</span>(<span class='no'>complete_tbl</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"multiple"</span>,
   <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"clustalw"</span>, <span class='kw'>aa_aln_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>aa_aln_params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>, <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"YN"</span>,
-  <span class='kw'>kaks_calc_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>store_locally</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>kaks_calc_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>clean_folders</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,6 +192,10 @@ Default is <code>aa_aln_type</code> = "multiple".</p></td>
     <tr>
       <th>dnds_est.method</th>
       <td><p>a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.</p></td>
+    </tr>
+    <tr>
+      <th>store_locally</th>
+      <td><p>a logical value indicating whether or not alignment files shall be stored locally rather than in <code><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir()</a></code>.</p></td>
     </tr>
     <tr>
       <th>kaks_calc_path</th>
