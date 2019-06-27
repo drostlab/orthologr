@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface function to Orthofinder2 — orthofinder2 • orthologr</title>
+<title>Translate coding sequences into amino acid sequences for multiple files — translate_cds_to_protein_all • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Interface function to Orthofinder2 — orthofinder2" />
+<meta property="og:title" content="Translate coding sequences into amino acid sequences for multiple files — translate_cds_to_protein_all" />
 
-<meta property="og:description" content="Run Orthofinder2 from R." />
+<meta property="og:description" content="A helper function that takes fasta files storing coding sequences
+as input and translates these coding sequences into amino acid sequences
+storing them as fasta output files." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,67 +131,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface function to Orthofinder2</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/orthofinder2.R'><code>R/orthofinder2.R</code></a></small>
-    <div class="hidden name"><code>orthofinder2.Rd</code></div>
+    <h1>Translate coding sequences into amino acid sequences for multiple files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/translate_cds_to_protein_all.R'><code>R/translate_cds_to_protein_all.R</code></a></small>
+    <div class="hidden name"><code>translate_cds_to_protein_all.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Run Orthofinder2 from R.</p>
+    <p>A helper function that takes <code>fasta</code> files storing coding sequences
+as input and translates these coding sequences into amino acid sequences
+storing them as <code>fasta</code> output files.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>orthofinder2</span>(<span class='no'>proteome_folder</span>, <span class='kw'>use_existing_output</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>import_type</span> <span class='kw'>=</span> <span class='st'>"orthogroups_core"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>translate_cds_to_protein_all</span>(<span class='no'>input_folder</span>, <span class='no'>output_folder</span>,
+  <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>proteome_folder</th>
-      <td><p>file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.</p></td>
+      <th>input_folder</th>
+      <td><p>file path to folder storing the coding sequences <code>fasta</code> files.</p></td>
     </tr>
     <tr>
-      <th>use_existing_output</th>
-      <td><p>a logical value indicating whether or not an existing <code>Orthofinder2</code> 
-output folder shall be used fo further import and processing. If <code>use_existing_output = TRUE</code>
-is selected then please specify the file path to the in <code>proteome_folder</code> where the <code>Orthofinder2</code> output folder can be found.</p></td>
+      <th>output_folder</th>
+      <td><p>name or file path to a folder that that shall be generated to store the output <code>fasta</code> files.</p></td>
     </tr>
     <tr>
-      <th>import_type</th>
-      <td><p>type of <code>Orthofinder2</code> output that shall be imported after running <code>Orthofinder2</code>.
-Options are:</p><ul>
-<li><p><code>import_type = "orthogroups_core"</code></p></li>
-<li><p><code>import_type = "orthogroups_pairwise"</code></p></li>
-<li><p><code>import_type = ""</code></p></li>
-<li><p><code>import_type = ""</code></p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>comp_cores</th>
-      <td><p>number of cores that shall be used for parallel processing. Default is <code>cores = 1</code>.</p></td>
+      <th>delete_corrupt_cds</th>
+      <td><p>delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># specify species names</span>
-<span class='no'>orgs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Arabidopsis lyrata"</span>,
-          <span class='st'>"Capsella rubella"</span>, <span class='st'>"Solanum lycopersicum"</span>)
-<span class='co'># download proteome files for all species          </span>
-<span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getProteomeSet'>getProteomeSet</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organisms</span> <span class='kw'>=</span> <span class='no'>orgs</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>)
-<span class='co'># download annotation files for all species          </span>
-<span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/biomartr/topics/getGFFSet'>getGFFSet</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>, <span class='kw'>organisms</span> <span class='kw'>=</span> <span class='no'>orgs</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"of_gff"</span>)
-<span class='co'># select longest splice variant per gene locus</span>
-<span class='fu'><a href='retrieve_longest_isoforms_all.html'>retrieve_longest_isoforms_all</a></span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes"</span>,
-                              <span class='kw'>annotation_folder</span> <span class='kw'>=</span> <span class='st'>"of_gff"</span>,
-                              <span class='kw'>annotation_format</span> <span class='kw'>=</span> <span class='st'>"gff"</span>,
-                              <span class='kw'>output_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes_longest_sv"</span>)
-<span class='co'># run orthofinder2 to infer ortho groups for the specified species</span>
-<span class='fu'>orthofinder2</span>(<span class='kw'>proteome_folder</span> <span class='kw'>=</span> <span class='st'>"of_proteomes_longest_sv"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'>dontrun{
+# install.packages("biomartr")
+# download coding sequences of Arabidopsis thaliana, Arabidopsis lyrata, and Capsella rubella
+org_list <- c("Arabidopsis thaliana", "Arabidopsis lyrata", "Capsella rubella")
+biomartr::getCDSSet(db = "refseq",
+             organism = org_list,
+             gunzip = TRUE,
+             path = "cds_examples")
+# translate coding sequences into amino acid sequences
+translate_cds_to_protein_all(input_folder = "cds_examples", 
+                             output_folder = "translated_seqs",
+                             delete_corrupt_cds = FALSE)
+}
+</div><div class='output co'>#&gt; <span class='error'>Error: &lt;text&gt;:1:8: unexpected '{'</span>
+#&gt; <span class='error'>1: dontrun{</span>
+#&gt; <span class='error'>           ^</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
