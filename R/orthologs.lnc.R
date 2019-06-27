@@ -70,7 +70,7 @@
 #' @seealso \code{\link{blast_rec}}, \code{\link{dNdS}}
 #' @export
 
-orthologs.lnc <- function(query_file,
+orthologs_lnc <- function(query_file,
                       subject_file, 
                       eval            = "1E-5", 
                       ortho_detection = "RBH",
@@ -78,6 +78,8 @@ orthologs.lnc <- function(query_file,
                       output.path = getwd(),
                       comp_cores      = 1,
                       path = NULL) {
+        
+        message("Starting orthology inference of lncRNAs between query species: ", basename(query_file), " and subject species: ", basename(subject_file))
         
         if (!is.element(ortho_detection,
                        c("BH", "RBH")))
@@ -121,5 +123,6 @@ orthologs.lnc <- function(query_file,
 
         }
         
+        message("Orthology inference finished successsfully. BLAST output tables were stored in at tempdir() -> ", tempdir(), " .")
         return(ortho_tbl)
 }
