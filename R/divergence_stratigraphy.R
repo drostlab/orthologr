@@ -138,7 +138,7 @@
 #'  }
 #'  
 #' @return A data.table storing the divergence map of the query organism.
-#' @seealso \code{\link{dNdS}}, \code{\link{DivergenceMap}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
+#' @seealso \code{\link{dNdS}}, \code{\link{divergence_map}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
 #'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
 #' @export
 divergence_stratigraphy <- function(query_file, 
@@ -182,7 +182,7 @@ divergence_stratigraphy <- function(query_file,
         
         if (ds.values) {
                 # divergence map: standard = col1: divergence stratum, col2: query_id
-                dm_tbl <- DivergenceMap( dNdS_tbl = dNdS_tbl , subject.id = subject.id )
+                dm_tbl <- divergence_map( dNdS_tbl = dNdS_tbl , subject.id = subject.id )
         }
         
         if (!ds.values) {
