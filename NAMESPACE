@@ -2,7 +2,6 @@
 
 export(DivergenceMap)
 export(OF2CoreOrthologs)
-export(ProteinOrtho)
 export(advanced_blast)
 export(advanced_makedb)
 export(blast)
