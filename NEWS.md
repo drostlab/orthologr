@@ -5,6 +5,9 @@
 - new function `retrieve_longest_isoforms_all()` allows users to specify folders
 and retrieve the longest splice variants for all proteomes stored in a folder
 
+- new functions `translate_cds_to_protein()` and `translate_cds_to_protein_all()` which
+translate coding sequences into amino acid sequences for single or multiple files
+
 ### New Features
 
 - in `orthologs()` the default value of `delete_corrupt_cds` changed from `delete_corrupt_cds = TRUE` to `delete_corrupt_cds = FALSE` to be consistent with
@@ -24,6 +27,8 @@ which now allows users to select different dNdS estimation methods when running 
 - the function `DivergenceMap()` was renamed to `divergence_map()` to be more consistent with the notation of other functions
 
 - the function `orthologs.lnc` was renamed to `orthologs_lnc` to be more consistent with the notation of other functions
+
+- the function `OF2CoreOrthologs()` was renamed to `orthofinder2_retrieve_core_orthologs()`
 
 ### Removed Functions
 
