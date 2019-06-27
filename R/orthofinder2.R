@@ -1,18 +1,18 @@
 #' @title Interface function to Orthofinder2
 #' @description Run Orthofinder2 from R.
 #' @param proteome_folder file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.
+#' @param use_existing_output a logical value indicating whether or not an existing \code{Orthofinder2} 
+#' output folder shall be used fo further import and processing. If \code{use_existing_output = TRUE}
+#' is selected then please specify the file path to the in \code{proteome_folder} where the \code{Orthofinder2} output folder can be found.
 #' @param import_type type of \code{Orthofinder2} output that shall be imported after running \code{Orthofinder2}.
 #' Options are:
 #' \itemize{
-#' \item \code{import_type = ""}
-#' \item \code{import_type = ""}
+#' \item \code{import_type = "orthogroups_core"}
+#' \item \code{import_type = "orthogroups_pairwise"}
 #' \item \code{import_type = ""}
 #' \item \code{import_type = ""}
 #' }
 #' @param comp_cores number of cores that shall be used for parallel processing. Default is \code{cores = 1}.
-#' @param use_existing_output a logical value indicating whether or not an existing \code{Orthofinder2} 
-#' output folder shall be used fo further import and processing. If \code{use_existing_output = TRUE}
-#' is selected then please specify the file path to the \code{Orthofinder2} output folder in \code{proteome_folder}.
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
 #' # specify species names
@@ -31,9 +31,13 @@
 #' orthofinder2(proteome_folder = "of_proteomes_longest_sv", comp_cores = 4)
 #' } 
 #' @export
-orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_type = "", comp_cores = 1) {
+
+orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_type = "orthogroups_core", comp_cores = 1) {
         
         is_installed_orthofinder()
+        
+        if (!is.element(import_type, c("orthogroups_core", "orthogroups_pairwise")))
+                stop("The specified 'import_type' is not supported by this function. Please consult the documentation to select a valid Orthofinder2 'import_type'.", call. = FALSE)
         
         ### add here a test that input sequences are amino acid sequences
         
@@ -70,15 +74,15 @@ orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_ty
                 
                 message("Orthofinder2 finished successfully and stored all results in ", ifelse(dirname(proteome_folder) == ".", ws_wrap(file.path(getwd(), proteome_folder)), ws_wrap(proteome_folder)))
                 
-                if (import_type == "") {
-                        
+        }
+                orthofinder2_output_folder <- file.path(proteome_folder, "OrthoFinder", paste0("Results_", basename(proteome_folder)))
+                
+                if (import_type == "orthogroups_core") {
+                        res <- orthofinder2_retrieve_core_orthologs(orthogroups_file = file.path(orthofinder2_output_folder, ""))
                 }
                 
                 
-        } else {
-                
-                
-        }
+        
         
         
         

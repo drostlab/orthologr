@@ -32,7 +32,7 @@
 #' }
 #' @export
 
-map.generator.lnc <- function(query_file, 
+map_generator_lnc <- function(query_file, 
                           subjects.folder,
                           output.folder, 
                           eval             = "1E-5",
@@ -51,7 +51,7 @@ map.generator.lnc <- function(query_file,
         if (length(subj.files) == 0)
                 stop("Your subject.folder ", subjects.folder, " seems to be empty...", call. = FALSE)
         
-        message("Starting orthology inference of lncRNAs for ", length(subj.files) , " subject species ...")
+        message("Starting pairwise orthology inference of lncRNAs between query species: ", basename(query_file), " and subject species: ", paste0(subj.files, collapse = ", "))
         
         # initialize progress bar
         if (progress.bar & (length(subj.files) > 1))
@@ -64,7 +64,7 @@ map.generator.lnc <- function(query_file,
                 
                 message("LncRNA orthology inference between ", basename(query_file), " and ", subj.files[i], " (",i ,"/", length(subj.files),")")
                 # perform pairwise lncRNA orthology inference
-                OrgQuery_vs_OrgSubj <- orthologs.lnc(
+                OrgQuery_vs_OrgSubj <- orthologs_lnc(
                         query_file      = query_file,
                         subject_file    = file.path(subjects.folder, subj.files[i]),
                         eval            = eval,
@@ -102,7 +102,6 @@ map.generator.lnc <- function(query_file,
         message("\n")
         message("All maps are stored in ", output.folder, ".")
         message("Orthology inference finished successfully!")
-        
 }
 
 

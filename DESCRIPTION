@@ -2,13 +2,13 @@ Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
 Version: 0.3.0.9000
-Date: 2019-06-04
+Date: 2019-06-27
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
             )
 Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
-Description: Large scale orthology inference and dN/dS estimation between multiple species. 
+Description: Genome-wide orthology inference and dN/dS estimation between multiple genomes. 
 License: GPL-2
 SystemRequirements: C++11, Perl
 VignetteBuilder: knitr

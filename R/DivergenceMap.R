@@ -28,11 +28,11 @@
 #'               dnds_est.method = "Comeron", 
 #'               comp_cores      = 1 )
 #'                  
-#' divMap <- DivergenceMap( dNdS_tbl )                       
+#' divMap <- divergence_map( dNdS_tbl )                       
 #' 
 #' # in case you want the subject_id as well, you can set
 #' # the argument subject.id = TRUE
-#' divMap <- DivergenceMap( dNdS_tbl = dNdS_tbl, subject.id = TRUE)               
+#' divMap <- divergence_map( dNdS_tbl = dNdS_tbl, subject.id = TRUE)               
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
@@ -40,7 +40,7 @@
 #' @import data.table
 #' @export
 
-DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
+divergence_map <- function(dNdS_tbl, subject.id = FALSE){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -54,14 +54,14 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
                 dplyr::select(dtplyr::tbl_dt(dNdS_tbl), dNdS, query_id, subject_id)
         
         DecileValues <-
-                stats::quantile(dNdS_tbl_divMap[, dNdS],
+                stats::quantile(dNdS_tbl_divMap[ , dNdS],
                                 probs = seq(0.0, 1, 0.1),
                                 na.rm = TRUE)
         
         for (i in length(DecileValues):2) {
                 AllGenesOfDecile_i <-
-                        stats::na.omit(which((dNdS_tbl_divMap[, dNdS] < DecileValues[i]) &
-                                                     (dNdS_tbl_divMap[, dNdS] >= DecileValues[i - 1])
+                        stats::na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) &
+                                                     (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i - 1])
                         ))
                 dNdS_tbl_divMap[AllGenesOfDecile_i, dNdS := (i - 1)]
                 
@@ -70,13 +70,13 @@ DivergenceMap <- function(dNdS_tbl, subject.id = FALSE){
         ## assigning all KaKs values to Decile-Class : 10 which have the exact Kaks-value
         ## as the 100% quantile, because in the loop we tested for < X% leaving out
         ## the exact 100% quantile
-        dNdS_tbl_divMap[which(dNdS_tbl_divMap[, dNdS] == DecileValues[length(DecileValues)]) , 1] <-
+        dNdS_tbl_divMap[which(dNdS_tbl_divMap[ , dNdS] == DecileValues[length(DecileValues)]) , 1] <-
                 10
         
         data.table::setnames(dNdS_tbl_divMap, old = "dNdS", new = "divergence_strata")
         
         if (!subject.id)
-                return(dNdS_tbl_divMap[, list(divergence_strata, query_id)])
+                return(dNdS_tbl_divMap[ , list(divergence_strata, query_id)])
         if (subject.id)
-                return(dNdS_tbl_divMap[, list(divergence_strata, query_id, subject_id)])
+                return(dNdS_tbl_divMap[ , list(divergence_strata, query_id, subject_id)])
 }

@@ -27,7 +27,7 @@
 #' @author Hajk-Georg Drost
 #' @examples
 #' \dontrun{
-#' map.generator(
+#' map_generator(
 #'    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'    subjects.folder = system.file('seqs/map_gen_example', package = 'orthologr'),
 #'    aa_aln_type      = "pairwise",
@@ -42,7 +42,7 @@
 #' }
 #' @export
 
-map.generator <- function(query_file, 
+map_generator <- function(query_file, 
                            subjects.folder,
                            output.folder, 
                            eval             = "1E-5",
@@ -60,6 +60,8 @@ map.generator <- function(query_file,
         
         if (length(subj.files) == 0)
                 stop("Your subject.folder ", subjects.folder, " seems to be empty...", call. = FALSE)
+        
+        message("Starting pairwise genome comparisons (orthology inference and dNdS estimation) between query species: ", basename(query_file), " and subject species: ", paste0(subj.files, collapse = ", "))
         
         # initialize progress bar
         if (progress.bar & (length(subj.files) > 1))

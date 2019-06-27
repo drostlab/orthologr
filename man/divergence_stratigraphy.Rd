@@ -172,7 +172,7 @@ Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature
  Drost HG et al. (2015). Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol Biol Evol. 32 (5): 1221-1231 doi:10.1093/molbev/msv012
 }
 \seealso{
-\code{\link{dNdS}}, \code{\link{DivergenceMap}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
+\code{\link{dNdS}}, \code{\link{divergence_map}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
 }
 \author{
