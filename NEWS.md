@@ -15,6 +15,28 @@ which now allows users to select different dNdS estimation methods when running 
 
 - the `divergence_stratigraphy()` function now allows to change the `eval` argument which wasn't passed down to the `dNdS()` call within the function (Many thanks to Momir Futo) 
 
+- the function `map.generator()` was renamed to `map_generator()` to be more consistent with the notation of other functions
+
+- the function `map.generator.lnc()` was renamed to `map_generator_lnc()` to be more consistent with the notation of other functions
+
+- the function `DivergenceMap()` was renamed to `divergence_map()` to be more consistent with the notation of other functions
+
+- the function `DivergenceMap()` was renamed to `divergence_map()` to be more consistent with the notation of other functions
+
+- the function `orthologs.lnc` was renamed to `orthologs_lnc` to be more consistent with the notation of other functions
+
+### Removed Functions
+
+- the function `advanced_blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+
+- the function `advanced_makedb()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+
+- the function `blast.nr()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+
+- the function `delta.blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+
+- the function `ProteinOrtho()` is not supported anymore and thus is not available to users anymore
+
 
 ## `orthologr` version  0.2.0
 
