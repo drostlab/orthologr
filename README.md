@@ -97,30 +97,33 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 ```
 
 ```
-   query_id subject_id      dN    dS   dNdS perc_identity alig_length mismatches gap_openings
-   <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>       <dbl>      <dbl>        <dbl>
- 1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0         469         80            8
- 2 AT1G010… 470181|PA… 0.0402  0.104 0.388           91.1         246         22            0
- 3 AT1G010… 470180|PA… 0.0150  0.126 0.118           95.5         359         12            2
- 4 AT1G010… 333551|PA… 0.0135  0.116 0.116           92.0        1970         85           10
- 5 AT1G010… 909874|PA… 0       0.175 0              100           213          0            0
- 6 AT1G010… 470177|PA… 0.0449  0.113 0.397           89.5         648         58            5
- 7 AT1G010… 918864|PA… 0.0183  0.106 0.173           95.1         366         14            2
- 8 AT1G010… 909871|PA… 0.0340  0.106 0.322           90.3         300         22            2
- 9 AT1G010… 470171|PA… 0.00910 0.218 0.0417          96.8         434          8            3
-10 AT1G011… 333544|PA… 0.0325  0.122 0.266           93.6         528         34            0
-11 AT1G011… 918858|PA… 0.00307 0.133 0.0232          99.2         529          4            0
-12 AT1G011… 470161|PA… 0.00567 0.131 0.0432          98.4         453          6            1
-13 AT1G011… 918855|PA… 0.13    0.203 0.641           72.6         285         68            3
-14 AT1G011… 918854|PA… 0.105   0.280 0.373           84.9         179         19            2
-15 AT1G011… 311317|PA… 0       0.306 0               85.6          97          0            1
-16 AT1G011… 909860|PA… 0.0297  0.176 0.168           92.6         310         20            1
-17 AT1G011… 311315|PA… 0.0287  0.162 0.177           94.2         533         30            1
-18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8         238         10            0
-19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3         107          5            0
-20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7        1056         35            0
-# ... with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>, s_end <dbl>,
-#   evalue <dbl>, bit_score <dbl>
+# A tibble: 20 x 24
+   query_id subject_id      dN    dS   dNdS perc_identity num_ident_match… alig_length
+   <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>            <int>       <int>
+ 1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0              347         469
+ 2 AT1G010… 470181|PA… 0.0402  0.104 0.388           91.1              224         246
+ 3 AT1G010… 470180|PA… 0.0150  0.126 0.118           95.5              343         359
+ 4 AT1G010… 333551|PA… 0.0135  0.116 0.116           92.0             1812        1970
+ 5 AT1G010… 909874|PA… 0       0.175 0              100                213         213
+ 6 AT1G010… 470177|PA… 0.0449  0.113 0.397           89.5              580         648
+ 7 AT1G010… 918864|PA… 0.0183  0.106 0.173           95.1              348         366
+ 8 AT1G010… 909871|PA… 0.0340  0.106 0.322           90.3              271         300
+ 9 AT1G010… 470171|PA… 0.00910 0.218 0.0417          96.8              420         434
+10 AT1G011… 333544|PA… 0.0325  0.122 0.266           93.6              494         528
+11 AT1G011… 918858|PA… 0.00307 0.133 0.0232          99.2              525         529
+12 AT1G011… 470161|PA… 0.00567 0.131 0.0432          98.5              446         453
+13 AT1G011… 918855|PA… 0.13    0.203 0.641           72.6              207         285
+14 AT1G011… 918854|PA… 0.105   0.280 0.373           84.9              152         179
+15 AT1G011… 311317|PA… 0       0.306 0               85.6               83          97
+16 AT1G011… 909860|PA… 0.0297  0.176 0.168           92.6              287         310
+17 AT1G011… 311315|PA… 0.0287  0.162 0.177           94.2              502         533
+18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8              228         238
+19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3              102         107
+20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7             1021        1056
+# … with 16 more variables: mismatches <int>, gap_openings <int>, n_gaps <int>,
+#   pos_match <int>, ppos <dbl>, q_start <int>, q_end <int>, q_len <int>, qcov <int>,
+#   qcovhsp <int>, s_start <int>, s_end <dbl>, s_len <dbl>, evalue <dbl>, bit_score <dbl>,
+#   score_raw <dbl>
 ```
 
 When running your own query file, please specify `query_file = "path/to/your/cds.fasta` instead of `system.file(..., package = "orthologr")`. The command `system.file(..., package = "orthologr")` merely references the path to the example file stored in the `orthologr` package itself.
