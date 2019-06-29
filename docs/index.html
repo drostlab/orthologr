@@ -190,30 +190,33 @@
 <a class="sourceLine" id="cb2-17" data-line-number="17">     <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, <span class="co"># perform codon alignments using the tool Pal2Nal</span></a>
 <a class="sourceLine" id="cb2-18" data-line-number="18">     <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, <span class="co"># use Comeron's method for dN/dS inference</span></a>
 <a class="sourceLine" id="cb2-19" data-line-number="19">     <span class="dt">comp_cores      =</span> <span class="dv">1</span> )</a></code></pre></div>
-<pre><code>   query_id subject_id      dN    dS   dNdS perc_identity alig_length mismatches gap_openings
-   &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
- 1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0         469         80            8
- 2 AT1G010… 470181|PA… 0.0402  0.104 0.388           91.1         246         22            0
- 3 AT1G010… 470180|PA… 0.0150  0.126 0.118           95.5         359         12            2
- 4 AT1G010… 333551|PA… 0.0135  0.116 0.116           92.0        1970         85           10
- 5 AT1G010… 909874|PA… 0       0.175 0              100           213          0            0
- 6 AT1G010… 470177|PA… 0.0449  0.113 0.397           89.5         648         58            5
- 7 AT1G010… 918864|PA… 0.0183  0.106 0.173           95.1         366         14            2
- 8 AT1G010… 909871|PA… 0.0340  0.106 0.322           90.3         300         22            2
- 9 AT1G010… 470171|PA… 0.00910 0.218 0.0417          96.8         434          8            3
-10 AT1G011… 333544|PA… 0.0325  0.122 0.266           93.6         528         34            0
-11 AT1G011… 918858|PA… 0.00307 0.133 0.0232          99.2         529          4            0
-12 AT1G011… 470161|PA… 0.00567 0.131 0.0432          98.4         453          6            1
-13 AT1G011… 918855|PA… 0.13    0.203 0.641           72.6         285         68            3
-14 AT1G011… 918854|PA… 0.105   0.280 0.373           84.9         179         19            2
-15 AT1G011… 311317|PA… 0       0.306 0               85.6          97          0            1
-16 AT1G011… 909860|PA… 0.0297  0.176 0.168           92.6         310         20            1
-17 AT1G011… 311315|PA… 0.0287  0.162 0.177           94.2         533         30            1
-18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8         238         10            0
-19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3         107          5            0
-20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7        1056         35            0
-# ... with 6 more variables: q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;,
-#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;</code></pre>
+<pre><code># A tibble: 20 x 24
+   query_id subject_id      dN    dS   dNdS perc_identity num_ident_match… alig_length
+   &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 AT1G010… 333554|PA… 0.106   0.254 0.420           74.0              347         469
+ 2 AT1G010… 470181|PA… 0.0402  0.104 0.388           91.1              224         246
+ 3 AT1G010… 470180|PA… 0.0150  0.126 0.118           95.5              343         359
+ 4 AT1G010… 333551|PA… 0.0135  0.116 0.116           92.0             1812        1970
+ 5 AT1G010… 909874|PA… 0       0.175 0              100                213         213
+ 6 AT1G010… 470177|PA… 0.0449  0.113 0.397           89.5              580         648
+ 7 AT1G010… 918864|PA… 0.0183  0.106 0.173           95.1              348         366
+ 8 AT1G010… 909871|PA… 0.0340  0.106 0.322           90.3              271         300
+ 9 AT1G010… 470171|PA… 0.00910 0.218 0.0417          96.8              420         434
+10 AT1G011… 333544|PA… 0.0325  0.122 0.266           93.6              494         528
+11 AT1G011… 918858|PA… 0.00307 0.133 0.0232          99.2              525         529
+12 AT1G011… 470161|PA… 0.00567 0.131 0.0432          98.5              446         453
+13 AT1G011… 918855|PA… 0.13    0.203 0.641           72.6              207         285
+14 AT1G011… 918854|PA… 0.105   0.280 0.373           84.9              152         179
+15 AT1G011… 311317|PA… 0       0.306 0               85.6               83          97
+16 AT1G011… 909860|PA… 0.0297  0.176 0.168           92.6              287         310
+17 AT1G011… 311315|PA… 0.0287  0.162 0.177           94.2              502         533
+18 AT1G012… 470156|PA… 0.0190  0.168 0.114           95.8              228         238
+19 AT1G012… 311313|PA… 0.0207  0.154 0.134           95.3              102         107
+20 AT1G012… 470155|PA… 0.0157  0.153 0.102           96.7             1021        1056
+# … with 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
+#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;int&gt;,
+#   qcovhsp &lt;int&gt;, s_start &lt;int&gt;, s_end &lt;dbl&gt;, s_len &lt;dbl&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;,
+#   score_raw &lt;dbl&gt;</code></pre>
 <p>When running your own query file, please specify <code>query_file = "path/to/your/cds.fasta</code> instead of <code><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file(..., package = "orthologr")</a></code>. The command <code><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file(..., package = "orthologr")</a></code> merely references the path to the example file stored in the <code>orthologr</code> package itself.</p>
 </div>
 <div id="example-computing-dnds-values-for-all-orthologous-genes-between-two-genomes" class="section level3">
