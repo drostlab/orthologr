@@ -257,9 +257,9 @@ blast <- function(query_file,
                                                                 max.target.seqs,
                                                                 " -out ",
                                                                 output ,
-                                                                " -outfmt 6",
                                                                 " -num_threads ",
-                                                                comp_cores
+                                                                comp_cores,
+                                                                " -outfmt '6", " qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
                                                         )
                                                 )
                                         } else {
@@ -276,11 +276,11 @@ blast <- function(query_file,
                                                                 max.target.seqs,
                                                                 " -out ",
                                                                 output ,
-                                                                " -outfmt 6",
                                                                 " -num_threads ",
                                                                 comp_cores,
                                                                 " ",
-                                                                blast_params
+                                                                blast_params,
+                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
                                                         )
                                                 )
                                                 
@@ -305,9 +305,9 @@ blast <- function(query_file,
                                                                 max.target.seqs,
                                                                 " -out ",
                                                                 output ,
-                                                                " -outfmt 6",
                                                                 " -num_threads ",
-                                                                comp_cores
+                                                                comp_cores,
+                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
                                                         )
                                                 )
                                         } else {
@@ -326,15 +326,13 @@ blast <- function(query_file,
                                                                 max.target.seqs,
                                                                 " -out ",
                                                                 output ,
-                                                                " -outfmt 6",
                                                                 " -num_threads ",
                                                                 comp_cores,
                                                                 " ",
-                                                                blast_params
+                                                                blast_params,
+                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
                                                         )
                                                 )
-                                                
-                                                
                                         }
                                 }
                         }
@@ -355,31 +353,64 @@ blast <- function(query_file,
                         "query_id",
                         "subject_id",
                         "perc_identity",
+                        "num_ident_matches",
                         "alig_length",
                         "mismatches",
                         "gap_openings",
+                        "n_gaps",
+                        "pos_match",
+                        "ppos",
                         "q_start",
                         "q_end",
+                        "q_len",
+                        "qcov",
+                        "qcovhsp",
                         "s_start",
                         "s_end",
+                        "s_len",
                         "evalue",
-                        "bit_score"
+                        "bit_score",
+                        "score_raw"
                 )
         
         # define the colClasses for faster file streaming
-        col_Classes <- c(rep("character", 2), rep("numeric", 10))
+        # col_Classes <- c(rep("character", 2), "double", rep("integer", 6), "double", rep("integer", 6), rep("double", 3))
         
         tryCatch({
-                hit_table <- data.table::fread(
-                        input      = output,
-                        sep        = "\t",
-                        header     = FALSE,
-                        colClasses = col_Classes
-                )
+                # hit_table <- data.table::fread(
+                #         input      = output,
+                #         sep        = "\t",
+                #         header     = FALSE,
+                #         colClasses = col_Classes
+                # )
+                
+                hit_table <-  data.table::as.data.table(readr::read_delim(file = output, delim = "\t", 
+                                                                          col_names = FALSE,
+                                                                          col_types = readr::cols(
+                                                                                  "X1" = readr::col_character(),
+                                                                                  "X2" = readr::col_character(),
+                                                                                  "X3" = readr::col_double(),
+                                                                                  "X4" = readr::col_integer(),
+                                                                                  "X5" = readr::col_integer(),
+                                                                                  "X6" = readr::col_integer(),
+                                                                                  "X7" = readr::col_integer(),
+                                                                                  "X8" = readr::col_integer(),
+                                                                                  "X9" = readr::col_integer(),
+                                                                                  "X10" = readr::col_double(),
+                                                                                  "X11" = readr::col_integer(),
+                                                                                  "X12" = readr::col_integer(),
+                                                                                  "X13" = readr::col_integer(),
+                                                                                  "X14" = readr::col_integer(),
+                                                                                  "X15" = readr::col_integer(),
+                                                                                  "X16" = readr::col_integer(),
+                                                                                  "X17" = readr::col_double(),
+                                                                                  "X18" = readr::col_double(),
+                                                                                  "X19" = readr::col_double()
+                                                                          )))
                 
                 data.table::setnames(
                         x   = hit_table,
-                        old = paste0("V", 1:length(blast_table_names)),
+                        old = paste0("X", 1:length(blast_table_names)),
                         new = blast_table_names
                 )
                 
