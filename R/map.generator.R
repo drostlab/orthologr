@@ -6,6 +6,8 @@
 #' @param output.folder a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.
 #' @param eval a character string specifying the e-value for BLAST based Orthology Inference that is performed
 #' in the process of dNdS computations. Please use the scientific notation.
+#' @param min_qry_coverage minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
+#' @param min_qry_perc_identity minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).
 #' @param ortho_detection a character string specifying the Orthology Inference method that shall be used to perform
 #' dNdS computations. Possible options are: \code{ortho_detection} = \code{"BH"} (BLAST best hit), 
 #' \code{ortho_detection} = \code{"RBH"} (BLAST best reciprocal hit), etc.
@@ -42,10 +44,12 @@
 #' }
 #' @export
 
-map_generator <- function(query_file, 
+map_generator_dnds <- function(query_file, 
                            subjects.folder,
                            output.folder, 
                            eval             = "1E-5",
+                           min_qry_coverage = 60,
+                           min_qry_perc_identity = 50,
                            ortho_detection  = "RBH",
                            aa_aln_type      = "pairwise",
                            aa_aln_tool      = "NW", 
@@ -61,6 +65,12 @@ map_generator <- function(query_file,
         if (length(subj.files) == 0)
                 stop("Your subject.folder ", subjects.folder, " seems to be empty...", call. = FALSE)
         
+        if (!dplyr::between(min_qry_coverage, 1, 100))
+                stop("Please provide a valid min_qry_coverage value between 1 and 100.", call. = FALSE)
+        
+        if (!dplyr::between(min_qry_perc_identity, 1, 100))
+                stop("Please provide a valid min_qry_coverage value between 1 and 100.", call. = FALSE)
+        
         message("Starting pairwise genome comparisons (orthology inference and dNdS estimation) between query species: ", basename(query_file), " and subject species: ", paste0(subj.files, collapse = ", "))
         
         # initialize progress bar
@@ -71,6 +81,7 @@ map_generator <- function(query_file,
         if (!file.exists(output.folder))
                 dir.create(output.folder)
         
+        qcovhsp <- perc_identity <- NULL
         
         for (i in 1:length(subj.files)) {
                 # compute pairwise KaKs/divergence maps between query and all subject files
@@ -87,6 +98,9 @@ map_generator <- function(query_file,
                         ...
                 )
                 
+                message("Filtering for BLAST hits with min_qry_coverage >= ", min_qry_coverage, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
+                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage, perc_identity >= min_qry_perc_identity)
+                        
                 utils::write.table(
                         OrgQuery_vs_OrgSubj,
                         file.path(
