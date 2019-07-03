@@ -2,11 +2,11 @@
 #' @description This function allows you to compute dNdS or DS Maps between a query organism
 #' and a set subject organisms stored in the same folder. The corresponding dNdS/DS Maps are then stored in an output folder.
 #' @param query_file a character string specifying the path to the CDS file of the query organism.
-#' @param subjects.folder a character string specifying the path to the folder where CDS files of the subject organisms are stored.
-#' @param output.folder a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.
+#' @param subjects_folder a character string specifying the path to the folder where CDS files of the subject organisms are stored.
+#' @param output_folder a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.
 #' @param eval a character string specifying the e-value for BLAST based Orthology Inference that is performed
 #' in the process of dNdS computations. Please use the scientific notation.
-#' @param min_qry_coverage minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
+#' @param min_qry_coverage_hsp minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
 #' @param min_qry_perc_identity minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).
 #' @param ortho_detection a character string specifying the Orthology Inference method that shall be used to perform
 #' dNdS computations. Possible options are: \code{ortho_detection} = \code{"BH"} (BLAST best hit), 
@@ -16,9 +16,9 @@
 #' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
 #' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used. 
 #' Default is \code{codon_aln_tool = "pal2nal"}. Right now only "pal2nal" can be selected as codon alignment tool.
-#' @param dnds_est.method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
+#' @param dnds_est_method a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
-#' @param progress.bar should a progress bar be shown. Default is \code{progress.bar = TRUE}.
+#' @param progress_bar should a progress bar be shown. Default is \code{progress_bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
 #' @param ... additional parameters that shall be passed to  \code{\link{dNdS}}.
 #' @details
@@ -29,14 +29,14 @@
 #' @author Hajk-Georg Drost
 #' @examples
 #' \dontrun{
-#' map_generator(
+#' map_generator_dnds(
 #'    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'    subjects.folder = system.file('seqs/map_gen_example', package = 'orthologr'),
+#'    subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
 #'    aa_aln_type      = "pairwise",
 #'    aa_aln_tool      = "NW", 
 #'    codon_aln_tool   = "pal2nal", 
-#'    dnds_est.method  = "Comeron",
-#'    output.folder   = getwd(),
+#'    dnds_est_method  = "Comeron",
+#'    output_folder   = getwd(),
 #'    quiet           = TRUE,
 #'    comp_cores      = 1
 #' )
@@ -45,41 +45,41 @@
 #' @export
 
 map_generator_dnds <- function(query_file, 
-                           subjects.folder,
-                           output.folder, 
+                           subjects_folder,
+                           output_folder, 
                            eval             = "1E-5",
-                           min_qry_coverage = 60,
-                           min_qry_perc_identity = 50,
+                           min_qry_coverage_hsp = 50,
+                           min_qry_perc_identity = 30,
                            ortho_detection  = "RBH",
                            aa_aln_type      = "pairwise",
                            aa_aln_tool      = "NW", 
                            codon_aln_tool   = "pal2nal", 
-                           dnds_est.method  = "Comeron", 
+                           dnds_est_method  = "Comeron", 
                            comp_cores       = 1,
-                           progress.bar     = TRUE,
+                           progress_bar     = TRUE,
                            sep              = ";",
                           ... ){
         # retrieve all subject files within a given folder
-        subj.files <- list.files(subjects.folder)
+        subj.files <- list.files(subjects_folder)
         
         if (length(subj.files) == 0)
-                stop("Your subject.folder ", subjects.folder, " seems to be empty...", call. = FALSE)
+                stop("Your subject.folder ", subjects_folder, " seems to be empty...", call. = FALSE)
         
-        if (!dplyr::between(min_qry_coverage, 1, 100))
-                stop("Please provide a valid min_qry_coverage value between 1 and 100.", call. = FALSE)
+        if (!dplyr::between(min_qry_coverage_hsp, 1, 100))
+                stop("Please provide a valid min_qry_coverage_hsp value between 1 and 100.", call. = FALSE)
         
         if (!dplyr::between(min_qry_perc_identity, 1, 100))
-                stop("Please provide a valid min_qry_coverage value between 1 and 100.", call. = FALSE)
+                stop("Please provide a valid min_qry_perc_identity value between 1 and 100.", call. = FALSE)
         
         message("Starting pairwise genome comparisons (orthology inference and dNdS estimation) between query species: ", basename(query_file), " and subject species: ", paste0(subj.files, collapse = ", "))
         
         # initialize progress bar
-        if (progress.bar & (length(subj.files) > 1))
+        if (progress_bar & (length(subj.files) > 1))
                 pb <- utils::txtProgressBar(1, length(subj.files), style = 3)
         
         
-        if (!file.exists(output.folder))
-                dir.create(output.folder)
+        if (!file.exists(output_folder))
+                dir.create(output_folder)
         
         qcovhsp <- perc_identity <- NULL
         
@@ -87,24 +87,24 @@ map_generator_dnds <- function(query_file,
                 # compute pairwise KaKs/divergence maps between query and all subject files
                 OrgQuery_vs_OrgSubj <- dNdS(
                         query_file      = query_file,
-                        subject_file    = file.path(subjects.folder, subj.files[i]),
+                        subject_file    = file.path(subjects_folder, subj.files[i]),
                         eval            = eval,
                         ortho_detection = ortho_detection,
                         aa_aln_type     = aa_aln_type,
                         aa_aln_tool     = aa_aln_tool,
-                        dnds_est.method = dnds_est.method,
+                        dnds_est.method = dnds_est_method,
                         comp_cores      = comp_cores,
                         print_citation = FALSE,
                         ...
                 )
                 
-                message("Filtering for BLAST hits with min_qry_coverage >= ", min_qry_coverage, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
-                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage, perc_identity >= min_qry_perc_identity)
+                message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
+                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity)
                         
                 utils::write.table(
                         OrgQuery_vs_OrgSubj,
                         file.path(
-                                output.folder,
+                                output_folder,
                                 paste0(
                                         "map_q=",
                                         basename(query_file),
@@ -123,7 +123,7 @@ map_generator_dnds <- function(query_file,
                         quote     = FALSE
                 )
                 
-                if (progress.bar)
+                if (progress_bar)
                         utils::setTxtProgressBar(pb, i)
                 
         }
@@ -132,7 +132,7 @@ map_generator_dnds <- function(query_file,
         message("Please cite the following paper when using orthologr for your own research:")
         message("Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. 32 (5): 1221-1231.")
         cat("\n")
-        cat(paste0("All maps are stored in ", output.folder, "."))
+        cat(paste0("All maps are stored in ", output_folder, "."))
         
 }
         
