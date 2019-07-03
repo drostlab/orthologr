@@ -5,8 +5,9 @@
 \title{Infer orthologous lncRNAs between muliple species}
 \usage{
 map_generator_lnc(query_file, subjects_folder, output_folder,
-  eval = "1E-5", ortho_detection = "RBH", comp_cores = 1,
-  progress_bar = TRUE, sep = ";", ...)
+  eval = "1E-5", ortho_detection = "RBH", min_qry_coverage_hsp = 50,
+  min_qry_perc_identity = 30, comp_cores = 1, progress_bar = TRUE,
+  sep = ";", ...)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.}
@@ -23,6 +24,10 @@ dNdS computations. Possible options are:
  \item \code{ortho_detection = "BH"}: BLAST best unidirectional hit
  \item \code{ortho_detection = "RBH"}: BLAST best reciprocal hit
 }}
+
+\item{min_qry_coverage_hsp}{minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).}
+
+\item{min_qry_perc_identity}{minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).}
 
 \item{comp_cores}{number of computing cores that shall be used to perform parallelized computations.}
 
@@ -43,7 +48,7 @@ pairwise species comparisons.
 }
 \examples{
 \dontrun{
-map.generator.lnc(
+map_generator_lnc(
    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
    subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
    output_folder   = getwd(),
