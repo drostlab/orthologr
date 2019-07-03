@@ -142,12 +142,12 @@ and a set subject organisms stored in the same folder. The corresponding dNdS/DS
     
     </div>
 
-    <pre class="usage"><span class='fu'>map_generator_dnds</span>(<span class='no'>query_file</span>, <span class='no'>subjects.folder</span>, <span class='no'>output.folder</span>,
-  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>min_qry_coverage</span> <span class='kw'>=</span> <span class='fl'>60</span>, <span class='kw'>min_qry_perc_identity</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
-  <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>, <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
-  <span class='kw'>dnds_est.method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>map_generator_dnds</span>(<span class='no'>query_file</span>, <span class='no'>subjects_folder</span>, <span class='no'>output_folder</span>,
+  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>min_qry_coverage_hsp</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>min_qry_perc_identity</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
+  <span class='kw'>aa_aln_type</span> <span class='kw'>=</span> <span class='st'>"pairwise"</span>, <span class='kw'>aa_aln_tool</span> <span class='kw'>=</span> <span class='st'>"NW"</span>,
+  <span class='kw'>codon_aln_tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>, <span class='kw'>dnds_est_method</span> <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
+  <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,11 +157,11 @@ and a set subject organisms stored in the same folder. The corresponding dNdS/DS
       <td><p>a character string specifying the path to the CDS file of the query organism.</p></td>
     </tr>
     <tr>
-      <th>subjects.folder</th>
+      <th>subjects_folder</th>
       <td><p>a character string specifying the path to the folder where CDS files of the subject organisms are stored.</p></td>
     </tr>
     <tr>
-      <th>output.folder</th>
+      <th>output_folder</th>
       <td><p>a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.</p></td>
     </tr>
     <tr>
@@ -170,7 +170,7 @@ and a set subject organisms stored in the same folder. The corresponding dNdS/DS
 in the process of dNdS computations. Please use the scientific notation.</p></td>
     </tr>
     <tr>
-      <th>min_qry_coverage</th>
+      <th>min_qry_coverage_hsp</th>
       <td><p>minimum <code>qcovhsp</code> (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).</p></td>
     </tr>
     <tr>
@@ -198,7 +198,7 @@ Default is <code>aa_aln_type = "pairwise"</code>.</p></td>
 Default is <code>codon_aln_tool = "pal2nal"</code>. Right now only "pal2nal" can be selected as codon alignment tool.</p></td>
     </tr>
     <tr>
-      <th>dnds_est.method</th>
+      <th>dnds_est_method</th>
       <td><p>a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.</p></td>
     </tr>
     <tr>
@@ -206,8 +206,8 @@ Default is <code>codon_aln_tool = "pal2nal"</code>. Right now only "pal2nal" can
       <td><p>number of computing cores that shall be used to perform parallelized computations.</p></td>
     </tr>
     <tr>
-      <th>progress.bar</th>
-      <td><p>should a progress bar be shown. Default is <code>progress.bar = TRUE</code>.</p></td>
+      <th>progress_bar</th>
+      <td><p>should a progress bar be shown. Default is <code>progress_bar = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>sep</th>
@@ -229,14 +229,14 @@ in an output folder.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>map_generator</span>(
+<span class='fu'>map_generator_dnds</span>(
    <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-   <span class='kw'>subjects.folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>subjects_folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
    <span class='kw'>aa_aln_type</span>      <span class='kw'>=</span> <span class='st'>"pairwise"</span>,
    <span class='kw'>aa_aln_tool</span>      <span class='kw'>=</span> <span class='st'>"NW"</span>,
    <span class='kw'>codon_aln_tool</span>   <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
-   <span class='kw'>dnds_est.method</span>  <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
-   <span class='kw'>output.folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
+   <span class='kw'>dnds_est_method</span>  <span class='kw'>=</span> <span class='st'>"Comeron"</span>,
+   <span class='kw'>output_folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
    <span class='kw'>quiet</span>           <span class='kw'>=</span> <span class='fl'>TRUE</span>,
    <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span>
 )

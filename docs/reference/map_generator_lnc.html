@@ -142,9 +142,10 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>map_generator_lnc</span>(<span class='no'>query_file</span>, <span class='no'>subjects.folder</span>, <span class='no'>output.folder</span>,
-  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>progress.bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>map_generator_lnc</span>(<span class='no'>query_file</span>, <span class='no'>subjects_folder</span>, <span class='no'>output_folder</span>,
+  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>min_qry_coverage_hsp</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>min_qry_perc_identity</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,11 +155,11 @@
       <td><p>a character string specifying the path to the lncRNAs file of the query organism in <code>fasta</code> format.</p></td>
     </tr>
     <tr>
-      <th>subjects.folder</th>
+      <th>subjects_folder</th>
       <td><p>a character string specifying the path to the folder where lncRNAs files in <code>fasta</code> format of the subject organisms are stored.</p></td>
     </tr>
     <tr>
-      <th>output.folder</th>
+      <th>output_folder</th>
       <td><p>a character string specifying the path to the folder where output orthologous tables should be stored.</p></td>
     </tr>
     <tr>
@@ -174,12 +175,20 @@ dNdS computations. Possible options are:</p><ul>
 </ul></td>
     </tr>
     <tr>
+      <th>min_qry_coverage_hsp</th>
+      <td><p>minimum <code>qcovhsp</code> (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).</p></td>
+    </tr>
+    <tr>
+      <th>min_qry_perc_identity</th>
+      <td><p>minimum <code>perc_identity</code> (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).</p></td>
+    </tr>
+    <tr>
       <th>comp_cores</th>
       <td><p>number of computing cores that shall be used to perform parallelized computations.</p></td>
     </tr>
     <tr>
-      <th>progress.bar</th>
-      <td><p>should a progress bar be shown. Default is <code>progress.bar = TRUE</code>.</p></td>
+      <th>progress_bar</th>
+      <td><p>should a progress bar be shown. Default is <code>progress_bar = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>sep</th>
@@ -200,10 +209,10 @@ pairwise species comparisons.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>map.generator.lnc</span>(
+<span class='fu'>map_generator_lnc</span>(
    <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-   <span class='kw'>subjects.folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-   <span class='kw'>output.folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
+   <span class='kw'>subjects_folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>output_folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
    <span class='kw'>quiet</span>           <span class='kw'>=</span> <span class='fl'>TRUE</span>,
    <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span>
 )

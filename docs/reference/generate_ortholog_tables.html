@@ -145,7 +145,8 @@ file format, this function selects the best BLAST hit to represent either a gene
     </div>
 
     <pre class="usage"><span class='fu'>generate_ortholog_tables</span>(<span class='no'>dNdS_file</span>, <span class='no'>annotation_file_query</span>,
-  <span class='no'>annotation_file_subject</span>, <span class='no'>format</span>)</pre>
+  <span class='no'>annotation_file_subject</span>, <span class='kw'>output_folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(),
+  <span class='kw'>output_type</span> <span class='kw'>=</span> <span class='st'>"gene_locus"</span>, <span class='no'>format</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -162,6 +163,21 @@ stored conform with <code><a href='read.dnds.tbl.html'>read.dnds.tbl</a></code>.
     <tr>
       <th>annotation_file_subject</th>
       <td><p>file path to the annotation file of the subject species in <code>gtf</code> or <code>gff</code> file format.</p></td>
+    </tr>
+    <tr>
+      <th>output_folder</th>
+      <td><p>file path to a folder in which orthologs tables shall be stored.</p></td>
+    </tr>
+    <tr>
+      <th>output_type</th>
+      <td><p>type of ortholog table that shall be printed out (or stored in a variable).
+Available options are:</p><ul>
+<li><p><code>output_type = "gene_locus"</code> (Default): find for each gene locus a representative splice variant that
+maximizes the sequence homology (in terms of smalles e-value and longest splice variant in case of same evalue) 
+to the subject gene locus and its representative splice variant. The output table contains only once representative splice variant per gene locus.</p></li>
+<li><p><code>output_type = "splice_variant"</code>: for each homologous gene locus determine for each splice variant their
+respective splice variant homolog. he output table contains several splice variants and their homologous splice variants per gene locus.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>format</th>
