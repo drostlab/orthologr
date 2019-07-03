@@ -11,6 +11,8 @@
 #'  \item \code{ortho_detection = "BH"}: BLAST best unidirectional hit
 #'  \item \code{ortho_detection = "RBH"}: BLAST best reciprocal hit
 #' }
+#' @param min_qry_coverage_hsp minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
+#' @param min_qry_perc_identity minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
 #' @param progress_bar should a progress bar be shown. Default is \code{progress_bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
@@ -22,7 +24,7 @@
 #' @author Hajk-Georg Drost
 #' @examples
 #' \dontrun{
-#' map.generator.lnc(
+#' map_generator_lnc(
 #'    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'    subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
 #'    output_folder   = getwd(),
@@ -37,6 +39,8 @@ map_generator_lnc <- function(query_file,
                           output_folder, 
                           eval             = "1E-5",
                           ortho_detection  = "RBH",
+                          min_qry_coverage_hsp = 50,
+                          min_qry_perc_identity = 30,
                           comp_cores       = 1,
                           progress_bar     = TRUE,
                           sep              = ";",
@@ -60,6 +64,8 @@ map_generator_lnc <- function(query_file,
         if (!file.exists(output_folder))
                 dir.create(output_folder)
         
+        qcovhsp <- perc_identity <- NULL
+        
         for (i in seq_len(length(subj.files))) {
                 
                 message("LncRNA orthology inference between ", basename(query_file), " and ", subj.files[i], " (",i ,"/", length(subj.files),")")
@@ -72,6 +78,9 @@ map_generator_lnc <- function(query_file,
                         comp_cores      = comp_cores,
                         ...
                 )
+                
+                message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
+                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity)
                 
                 utils::write.table(
                         OrgQuery_vs_OrgSubj,
