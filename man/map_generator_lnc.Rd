@@ -4,16 +4,16 @@
 \alias{map_generator_lnc}
 \title{Infer orthologous lncRNAs between muliple species}
 \usage{
-map_generator_lnc(query_file, subjects.folder, output.folder,
+map_generator_lnc(query_file, subjects_folder, output_folder,
   eval = "1E-5", ortho_detection = "RBH", comp_cores = 1,
-  progress.bar = TRUE, sep = ";", ...)
+  progress_bar = TRUE, sep = ";", ...)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.}
 
-\item{subjects.folder}{a character string specifying the path to the folder where lncRNAs files in \code{fasta} format of the subject organisms are stored.}
+\item{subjects_folder}{a character string specifying the path to the folder where lncRNAs files in \code{fasta} format of the subject organisms are stored.}
 
-\item{output.folder}{a character string specifying the path to the folder where output orthologous tables should be stored.}
+\item{output_folder}{a character string specifying the path to the folder where output orthologous tables should be stored.}
 
 \item{eval}{a character string specifying the e-value for BLAST based orthology inference. Please use the scientific notation.}
 
@@ -26,7 +26,7 @@ dNdS computations. Possible options are:
 
 \item{comp_cores}{number of computing cores that shall be used to perform parallelized computations.}
 
-\item{progress.bar}{should a progress bar be shown. Default is \code{progress.bar = TRUE}.}
+\item{progress_bar}{should a progress bar be shown. Default is \code{progress_bar = TRUE}.}
 
 \item{sep}{a file separator that is used to store maps as csv file.}
 
@@ -45,8 +45,8 @@ pairwise species comparisons.
 \dontrun{
 map.generator.lnc(
    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-   subjects.folder = system.file('seqs/map_gen_example', package = 'orthologr'),
-   output.folder   = getwd(),
+   subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
+   output_folder   = getwd(),
    quiet           = TRUE,
    comp_cores      = 1
 )

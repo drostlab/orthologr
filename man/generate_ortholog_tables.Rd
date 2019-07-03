@@ -5,7 +5,8 @@
 \title{Generate ortholog tables by gene locus and splice varaint}
 \usage{
 generate_ortholog_tables(dNdS_file, annotation_file_query,
-  annotation_file_subject, format)
+  annotation_file_subject, output_folder = getwd(),
+  output_type = "gene_locus", format)
 }
 \arguments{
 \item{dNdS_file}{file path to a \code{dNdS_tbl} generated with \code{\link{dNdS}} and
@@ -14,6 +15,18 @@ stored conform with \code{\link{read.dnds.tbl}}.}
 \item{annotation_file_query}{file path to the annotation file of the query species in \code{gtf} or \code{gff} file format.}
 
 \item{annotation_file_subject}{file path to the annotation file of the subject species in \code{gtf} or \code{gff} file format.}
+
+\item{output_folder}{file path to a folder in which orthologs tables shall be stored.}
+
+\item{output_type}{type of ortholog table that shall be printed out (or stored in a variable).
+Available options are:
+\itemize{
+\item \code{output_type = "gene_locus"} (Default): find for each gene locus a representative splice variant that
+maximizes the sequence homology (in terms of smalles e-value and longest splice variant in case of same evalue) 
+to the subject gene locus and its representative splice variant. The output table contains only once representative splice variant per gene locus.
+\item \code{output_type = "splice_variant"}: for each homologous gene locus determine for each splice variant their
+respective splice variant homolog. he output table contains several splice variants and their homologous splice variants per gene locus.
+}}
 
 \item{format}{a vector of length 2 storing the annotation file formats of the query annotation file and subject annotation file: either \code{gtf} or \code{gff} format. E.g. \code{format = c("gtf","gtf")}.}
 }

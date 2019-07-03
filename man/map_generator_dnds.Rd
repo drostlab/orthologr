@@ -4,24 +4,24 @@
 \alias{map_generator_dnds}
 \title{Generate dNdS Maps Between a Query Organism and Multiple Subject Organisms}
 \usage{
-map_generator_dnds(query_file, subjects.folder, output.folder,
-  eval = "1E-5", min_qry_coverage = 60, min_qry_perc_identity = 50,
-  ortho_detection = "RBH", aa_aln_type = "pairwise",
-  aa_aln_tool = "NW", codon_aln_tool = "pal2nal",
-  dnds_est.method = "Comeron", comp_cores = 1, progress.bar = TRUE,
-  sep = ";", ...)
+map_generator_dnds(query_file, subjects_folder, output_folder,
+  eval = "1E-5", min_qry_coverage_hsp = 50,
+  min_qry_perc_identity = 30, ortho_detection = "RBH",
+  aa_aln_type = "pairwise", aa_aln_tool = "NW",
+  codon_aln_tool = "pal2nal", dnds_est_method = "Comeron",
+  comp_cores = 1, progress_bar = TRUE, sep = ";", ...)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of the query organism.}
 
-\item{subjects.folder}{a character string specifying the path to the folder where CDS files of the subject organisms are stored.}
+\item{subjects_folder}{a character string specifying the path to the folder where CDS files of the subject organisms are stored.}
 
-\item{output.folder}{a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.}
+\item{output_folder}{a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.}
 
 \item{eval}{a character string specifying the e-value for BLAST based Orthology Inference that is performed
 in the process of dNdS computations. Please use the scientific notation.}
 
-\item{min_qry_coverage}{minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).}
+\item{min_qry_coverage_hsp}{minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).}
 
 \item{min_qry_perc_identity}{minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).}
 
@@ -37,11 +37,11 @@ Default is \code{aa_aln_type = "pairwise"}.}
 \item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used. 
 Default is \code{codon_aln_tool = "pal2nal"}. Right now only "pal2nal" can be selected as codon alignment tool.}
 
-\item{dnds_est.method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
+\item{dnds_est_method}{a character string specifying the dNdS estimation method, e.g. "Comeron","Li", "YN", etc. See Details for all options.}
 
 \item{comp_cores}{number of computing cores that shall be used to perform parallelized computations.}
 
-\item{progress.bar}{should a progress bar be shown. Default is \code{progress.bar = TRUE}.}
+\item{progress_bar}{should a progress bar be shown. Default is \code{progress_bar = TRUE}.}
 
 \item{sep}{a file separator that is used to store maps as csv file.}
 
@@ -59,14 +59,14 @@ in an output folder.
 }
 \examples{
 \dontrun{
-map_generator(
+map_generator_dnds(
    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-   subjects.folder = system.file('seqs/map_gen_example', package = 'orthologr'),
+   subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
    aa_aln_type      = "pairwise",
    aa_aln_tool      = "NW", 
    codon_aln_tool   = "pal2nal", 
-   dnds_est.method  = "Comeron",
-   output.folder   = getwd(),
+   dnds_est_method  = "Comeron",
+   output_folder   = getwd(),
    quiet           = TRUE,
    comp_cores      = 1
 )
