@@ -121,6 +121,7 @@ blast <- function(query_file,
                   blast_params    = NULL,
                   clean_folders   = FALSE,
                   save.output     = NULL) {
+        
         if (!is.element(blast_algorithm, c("blastp")))
                 stop(
                         "Please choose a valid BLAST mode. Only 'blastp' is available for this function.",
