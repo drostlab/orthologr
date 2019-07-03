@@ -6,6 +6,16 @@
 #' stored conform with \code{\link{read.dnds.tbl}}.
 #' @param annotation_file_query file path to the annotation file of the query species in \code{gtf} or \code{gff} file format.
 #' @param annotation_file_subject file path to the annotation file of the subject species in \code{gtf} or \code{gff} file format.
+#' @param output_folder file path to a folder in which orthologs tables shall be stored.
+#' @param output_type type of ortholog table that shall be printed out (or stored in a variable).
+#' Available options are:
+#' \itemize{
+#' \item \code{output_type = "gene_locus"} (Default): find for each gene locus a representative splice variant that
+#' maximizes the sequence homology (in terms of smalles e-value and longest splice variant in case of same evalue) 
+#' to the subject gene locus and its representative splice variant. The output table contains only once representative splice variant per gene locus.
+#' \item \code{output_type = "splice_variant"}: for each homologous gene locus determine for each splice variant their
+#' respective splice variant homolog. he output table contains several splice variants and their homologous splice variants per gene locus.
+#' }
 #' @param format a vector of length 2 storing the annotation file formats of the query annotation file and subject annotation file: either \code{gtf} or \code{gff} format. E.g. \code{format = c("gtf","gtf")}.
 #' @author Hajk-Georg Drost
 #' @export
@@ -13,9 +23,27 @@ generate_ortholog_tables <-
         function(dNdS_file,
                  annotation_file_query,
                  annotation_file_subject,
+                 output_folder = getwd(),
+                 output_type = "gene_locus",
                  format) {
+                
                 if (!file.exists(dNdS_file))
                         stop("Please provide a valid path to the dNdS_file.", call. = FALSE)
+                
+                if (!file.exists(annotation_file_query))
+                        stop("Please provide a valid path to the annotation_file_query", call. = FALSE)
+                
+                if (!file.exists(annotation_file_subject))
+                        stop("Please provide a valid path to the annotation_file_subject", call. = FALSE)
+                
+                if (!file.exists(output_folder))
+                        stop("Please provide a valid path to the output_folder", call. = FALSE)
+                
+                if (!is.element(output_type, c("gene_locus", "splice_variant")))
+                        stop("Please specify an output_type that is supported by this function.", call. = FALSE)
+                
+                
+                message("Generating orthologs table for ", basename(annotation_file_query), " vs ", basename(annotation_file_subject), " ...")
                 
                 qry_species_name <-
                         unlist(stringr::str_split(basename(annotation_file_query), "[.]"))[1]
@@ -60,8 +88,11 @@ generate_ortholog_tables <-
                         format = format
                 )
                 
-                by_gene_output_folder <- paste0("orthologs_by_gene_locus_qry_", stringr::str_to_lower(qry_species_name))
-                by_splice_variant_output_folder <- paste0("orthologs_by_splice_variant_qry_", stringr::str_to_lower(qry_species_name))
+                if (!file.exists(output_folder))
+                        dir.create(output_folder)
+                
+                by_gene_output_folder <- file.path(output_folder, paste0("orthologs_by_gene_locus_qry_", stringr::str_to_lower(qry_species_name)))
+                by_splice_variant_output_folder <- file.path(output_folder, paste0("orthologs_by_splice_variant_qry_", stringr::str_to_lower(qry_species_name)))
                 
                 message("\n")
                 message(
@@ -97,4 +128,9 @@ generate_ortholog_tables <-
                         col_names = TRUE,
                         delim = ";"
                 )
+                
+                if (output_type == "gene_locus")
+                        return(select_orthologs_by_gene_locus)
+                if (output_type == "splice_variant")
+                        return(select_orthologs_splice_variant)
         }
