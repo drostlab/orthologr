@@ -2,6 +2,10 @@
 
 ### New Functions
 
+- new function `retrieve_core_orthologs()` allows users to retrieve a core set of orthologous gene loci from several pairwise ortholog tables
+
+- new functions `generate_ortholog_tables()` and `generate_ortholog_tables_all()` allow users to generate ortholog tables by gene locus and splice varaint for a set of species
+
 - new function `retrieve_longest_isoforms_all()` allows users to specify folders
 and retrieve the longest splice variants for all proteomes stored in a folder
 
