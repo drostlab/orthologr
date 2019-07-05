@@ -11,8 +11,8 @@ is_installed_clustalw <- function() {
                 call_clustalw <- "clustalw2.exe"
         
         tryCatch({
-                sys_out <-
-                        system(paste0(call_clustalw, " -help"), intern = TRUE)
+                suppressWarnings(sys_out <-
+                        system(paste0(call_clustalw, " -help"), intern = TRUE))
         }, error = function(e)
                 stop(
                         "It seems like you don't have ClustalW installed locally on your machine or the PATH variable to the ClustalW program is not set correctly.",
