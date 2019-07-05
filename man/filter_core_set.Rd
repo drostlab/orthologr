@@ -2,10 +2,10 @@
 % Please edit documentation in R/filter_core_set.R
 \name{filter_core_set}
 \alias{filter_core_set}
-\title{#' @title Helper function to extract a core set of orthologous gene loci}
+\title{Helper function to extract a core set of orthologous gene loci}
 \usage{
 filter_core_set(x, order_species)
 }
 \description{
-#' @title Helper function to extract a core set of orthologous gene loci
+Helper function to extract a core set of orthologous gene loci
 }
