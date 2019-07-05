@@ -1,11 +1,12 @@
-#' #' @title Helper function to extract a core set of orthologous gene loci
+#' @title Helper function to extract a core set of orthologous gene loci
 filter_core_set <- function(x, order_species) {
-        if (identical(
-                sort(as.character(unique(names(table(
-                        x$subject_species
-                ))))),
-                sort(order_species)
-        )) {
+        
+        subset_species <- sort(as.character(names(table(
+                x$subject_species
+        ))))
+        general_species <- sort(order_species)
+        
+        if (identical(subset_species, general_species)) {
                 return(x)
         } else {
                 return(
