@@ -8,6 +8,10 @@
 #' @export
 
 retrieve_core_orthologs <- function(ortho_tables, species_order) {
+        
+        if (length(names(table(ortho_tables$subject_species))) != length(species_order))
+                stop("The number of different species specified in 'ortho_tables' does not match with the number of different species specified in 'species_order'.", call. = FALSE)
+        
         message("Retrieving core orthologs that are present in all pairwise species comparisons: ", paste0(names(table(ortho_tables$subject_species)), collapse = ", "))
         q_len <- alig_length <- query_gene_locus_id <- NULL
         ortho_tables <-
@@ -16,25 +20,22 @@ retrieve_core_orthologs <- function(ortho_tables, species_order) {
                         scope = 1 - (abs(q_len - alig_length) / q_len)
                 )
         message("The species order in terms of phylogenetic distance from ",unique(ortho_tables$query_species)," was set to: ", paste0(species_order, collapse = ", "))
-        ortho_tables$subject_species <- factor(
-                ortho_tables$subject_species,
-                levels = species_order
-        )
-        
-        
+     
+        ortho_table_core <-
+                dplyr::bind_rows(dplyr::group_map(
+                        .tbl = dplyr::group_by(ortho_tables, query_gene_locus_id),
+                        ~ filter_core_set(., order_species = species_order),
+                        keep = TRUE
+                ))
         
         ortho_table_core <-
-                dplyr::do(
-                        dplyr::group_by(ortho_tables, query_gene_locus_id),
-                        filter_core_set(. , order_species = species_order)
-                )
+                dplyr::filter(ortho_table_core, !is.na(query_gene_locus_id))
+
+        core_grouped <- dplyr::summarize(dplyr::group_by(ortho_table_core, query_gene_locus_id), n = dplyr::n())
         
-        ortho_table_core <-
-                dplyr::filter(ortho_tables,!is.na(query_gene_locus_id))
-        # 
-        # if (anyDuplicated.default(ortho_tables$query_gene_locus_id))
-        #         stop("Somehow there seem to be non-unique query_gene_locus_id's in the core set. Please check what could have gone wrong.", call. = FALSE)
-        # 
-        message("Core orthologs (n = ", nrow(ortho_table_core), " loci) were successfully retrieved.")
+        if (!all(core_grouped$n == length(species_order)))
+                stop("Somehow there seem to be non-unique query_gene_locus_id's in the core set. Please check what could have gone wrong.", call. = FALSE)
+
+        message("Core orthologs (n = ", nrow(core_grouped), " loci) were successfully retrieved.")
         return(ortho_table_core)
 }
