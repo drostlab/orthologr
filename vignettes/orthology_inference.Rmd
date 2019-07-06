@@ -22,12 +22,12 @@ the [most accurate](https://www.biostars.org/p/7568/) or [the fastest](https://w
 
 >1) orthology inference based on 1-1 orthology relationship using `BLAST reciprocal best hit` 
 >
->2) orthology inference based on 1-many homology relationship using orthologous groups
+>2) orthology inference based on 1-many homology relationship using orthologous groups (OrthoFinder2)
 
 
 To perform orthology inference you can start with the `orthologs()` function provided by `orthologr`.
-The `orthologs()` function takes nucleotide or protein sequences stored in fasta files for a set of organisms 
-and performs orthology inference to detect orthologous genes within the given organisms based on selected orthology inference programs.
+The `orthologs()` function takes nucleotide or protein sequences stored in fasta files for a set of organisms as input
+and performs orthology inference to detect orthologous genes or orthologous groups within the given organisms based on selected orthology inference programs.
 
 The following interfaces are (yet) implemented in the `orthologs()` function:
 
@@ -79,42 +79,60 @@ orthologr::orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', packag
 
 
 ```
-Building a new DB, current time: 06/26/2019 17:48:17
-New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
+Running blastp: 2.9.0+ ...
+
+
+Building a new DB, current time: 07/06/2019 16:22:29
+New DB name:   blastdb_ortho_lyra_aa.fasta_protein.fasta
+New DB title:  blastdb_ortho_lyra_aa.fasta_protein.fasta
 Sequence type: Protein
+Deleted existing BLAST database with identical name.
 Keep Linkouts: T
 Keep MBits: T
 Maximum file size: 1000000000B
-Adding sequences from FASTA; added 20 sequences in 0.0038321 seconds.
-# A tibble: 20 x 12
+Adding sequences from FASTA; added 20 sequences in 0.00440097 seconds.
+Running blastp: 2.9.0+ ...
+
+
+Building a new DB, current time: 07/06/2019 16:22:30
+New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
+New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
+Sequence type: Protein
+Deleted existing BLAST database with identical name.
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
+# A tibble: 20 x 21
 # Groups:   query_id [20]
-   query_id subject_id perc_identity alig_length
-   <chr>    <chr>              <dbl>       <dbl>
- 1 AT1G010… 333554|PA…          74.0         469
- 2 AT1G010… 470181|PA…          91.1         246
- 3 AT1G010… 470180|PA…          95.5         359
- 4 AT1G010… 333551|PA…          92.0        1970
- 5 AT1G010… 909874|PA…         100           213
- 6 AT1G010… 470177|PA…          89.5         648
- 7 AT1G010… 918864|PA…          95.1         366
- 8 AT1G010… 909871|PA…          90.3         300
- 9 AT1G010… 470171|PA…          96.8         434
-10 AT1G011… 333544|PA…          93.6         528
-11 AT1G011… 918858|PA…          99.2         529
-12 AT1G011… 470161|PA…          98.4         453
-13 AT1G011… 918855|PA…          72.6         285
-14 AT1G011… 918854|PA…          84.9         179
-15 AT1G011… 311317|PA…          85.6          97
-16 AT1G011… 909860|PA…          92.6         310
-17 AT1G011… 311315|PA…          94.2         533
-18 AT1G012… 470156|PA…          95.8         238
-19 AT1G012… 311313|PA…          95.3         107
-20 AT1G012… 470155|PA…          96.7        1056
-# … with 8 more variables: mismatches <dbl>,
-#   gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
-#   s_start <dbl>, s_end <dbl>, evalue <dbl>,
-#   bit_score <dbl>
+   query_id subject_id perc_identity num_ident_match… alig_length
+   <chr>    <chr>              <dbl>            <int>       <int>
+ 1 AT1G010… 333554|PA…          74.0              347         469
+ 2 AT1G010… 470181|PA…          91.1              224         246
+ 3 AT1G010… 470180|PA…          95.5              343         359
+ 4 AT1G010… 333551|PA…          92.0             1812        1970
+ 5 AT1G010… 909874|PA…         100                213         213
+ 6 AT1G010… 470177|PA…          89.5              580         648
+ 7 AT1G010… 918864|PA…          95.1              348         366
+ 8 AT1G010… 909871|PA…          90.3              271         300
+ 9 AT1G010… 470171|PA…          96.8              420         434
+10 AT1G011… 333544|PA…          93.6              494         528
+11 AT1G011… 918858|PA…          99.2              525         529
+12 AT1G011… 470161|PA…          98.4              446         453
+13 AT1G011… 918855|PA…          72.6              207         285
+14 AT1G011… 918854|PA…          84.9              152         179
+15 AT1G011… 311317|PA…          85.6               83          97
+16 AT1G011… 909860|PA…          92.6              287         310
+17 AT1G011… 311315|PA…          94.2              502         533
+18 AT1G012… 470156|PA…          95.8              228         238
+19 AT1G012… 311313|PA…          95.3              102         107
+20 AT1G012… 470155|PA…          96.7             1021        1056
+# … with 16 more variables: mismatches <int>, gap_openings <int>,
+#   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
+#   q_end <int>, q_len <int>, qcov <int>, qcovhsp <int>,
+#   s_start <int>, s_end <dbl>, s_len <dbl>, evalue <dbl>,
+#   bit_score <chr>, score_raw <dbl>
+>
 ```
 
 
