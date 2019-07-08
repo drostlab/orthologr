@@ -47,8 +47,8 @@ generate_ortholog_tables_all <-
                 if (length(annotation_file_query) > 1)
                         stop("This function only supports one query annotation file as input.", call. = FALSE)
                 
-                if (!stringr::str_detect(annotation_file_query, sbj_species[1]))
-                        warning("It seems like your dnds files do not have ", qry_species, " as query species ... Please have a look", call. = FALSE)
+                if (!stringr::str_detect(sbj_species[1], qry_species))
+                        warning("It seems like your dnds files do not have ", qry_species, " as query species ... Please have a look ... ", call. = FALSE)
                 
                 res <- vector("list", length = length(dnds_files))
                 
