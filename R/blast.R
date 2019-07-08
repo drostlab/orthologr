@@ -248,40 +248,40 @@ blast <- function(query_file,
                                                 # use the default parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                "blastp -db ",
+                                                                'blastp -db ',
                                                                 database,
-                                                                " -query ",
+                                                                ' -query ',
                                                                 input,
-                                                                " -evalue ",
+                                                                ' -evalue ',
                                                                 eval,
-                                                                " -max_target_seqs ",
+                                                                ' -max_target_seqs ',
                                                                 max.target.seqs,
-                                                                " -out ",
+                                                                ' -out ',
                                                                 output ,
-                                                                " -num_threads ",
+                                                                ' -num_threads ',
                                                                 comp_cores,
-                                                                " -outfmt '6", " qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
+                                                                ' -outfmt "6', ' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score"'
                                                         )
                                                 )
                                         } else {
                                                 # add additional parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                "blastp -db ",
+                                                                'blastp -db ',
                                                                 database,
-                                                                " -query ",
+                                                                ' -query ',
                                                                 input,
-                                                                " -evalue ",
+                                                                ' -evalue ',
                                                                 eval,
-                                                                " -max_target_seqs ",
+                                                                ' -max_target_seqs ',
                                                                 max.target.seqs,
-                                                                " -out ",
+                                                                ' -out ',
                                                                 output ,
-                                                                " -num_threads ",
+                                                                ' -num_threads ',
                                                                 comp_cores,
-                                                                " ",
+                                                                ' ',
                                                                 blast_params,
-                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
+                                                                ' -outfmt 6"',' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score"'
                                                         )
                                                 )
                                                 
@@ -294,44 +294,44 @@ blast <- function(query_file,
                                                 # use the default parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                "export PATH=$PATH:",
+                                                                'export PATH=$PATH:',
                                                                 path,
-                                                                "; blastp -db ",
+                                                                '; blastp -db ',
                                                                 database,
-                                                                " -query ",
+                                                                ' -query ',
                                                                 input,
-                                                                " -evalue ",
+                                                                ' -evalue ',
                                                                 eval,
-                                                                " -max_target_seqs ",
+                                                                ' -max_target_seqs ',
                                                                 max.target.seqs,
-                                                                " -out ",
+                                                                ' -out ',
                                                                 output ,
-                                                                " -num_threads ",
+                                                                ' -num_threads ',
                                                                 comp_cores,
-                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
+                                                                ' -outfmt 6"',' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score"'
                                                         )
                                                 )
                                         } else {
                                                 # add additional parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                "export PATH=$PATH:",
+                                                                'export PATH=$PATH:',
                                                                 path,
-                                                                "; blastp -db ",
+                                                                '; blastp -db ',
                                                                 database,
-                                                                " -query ",
+                                                                ' -query ',
                                                                 input,
-                                                                " -evalue ",
+                                                                ' -evalue ',
                                                                 eval,
-                                                                " -max_target_seqs ",
+                                                                ' -max_target_seqs ',
                                                                 max.target.seqs,
-                                                                " -out ",
+                                                                ' -out ',
                                                                 output ,
-                                                                " -num_threads ",
+                                                                ' -num_threads ',
                                                                 comp_cores,
-                                                                " ",
+                                                                ' ',
                                                                 blast_params,
-                                                                " -outfmt '6"," qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'"
+                                                                ' -outfmt 6"',' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score"'
                                                         )
                                                 )
                                         }
