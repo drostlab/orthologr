@@ -97,7 +97,7 @@
     <div class="page-header toc-ignore">
       <h1>Orthology Inference using orthologr</h1>
             
-            <h4 class="date">2019-07-05</h4>
+            <h4 class="date">2019-07-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd"><code>vignettes/orthology_inference.Rmd</code></a></small>
       <div class="hidden name"><code>orthology_inference.Rmd</code></div>
@@ -110,10 +110,10 @@
 <blockquote>
 <ol style="list-style-type: decimal">
 <li><p>orthology inference based on 1-1 orthology relationship using <code>BLAST reciprocal best hit</code></p></li>
-<li><p>orthology inference based on 1-many homology relationship using orthologous groups</p></li>
+<li><p>orthology inference based on 1-many homology relationship using orthologous groups (OrthoFinder2)</p></li>
 </ol>
 </blockquote>
-<p>To perform orthology inference you can start with the <code><a href="../reference/orthologs.html">orthologs()</a></code> function provided by <code>orthologr</code>. The <code><a href="../reference/orthologs.html">orthologs()</a></code> function takes nucleotide or protein sequences stored in fasta files for a set of organisms and performs orthology inference to detect orthologous genes within the given organisms based on selected orthology inference programs.</p>
+<p>To perform orthology inference you can start with the <code><a href="../reference/orthologs.html">orthologs()</a></code> function provided by <code>orthologr</code>. The <code><a href="../reference/orthologs.html">orthologs()</a></code> function takes nucleotide or protein sequences stored in fasta files for a set of organisms as input and performs orthology inference to detect orthologous genes or orthologous groups within the given organisms based on selected orthology inference programs.</p>
 <p>The following interfaces are (yet) implemented in the <code><a href="../reference/orthologs.html">orthologs()</a></code> function:</p>
 <div id="blast-based-methods" class="section level3">
 <h3 class="hasAnchor">
@@ -161,42 +161,60 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<pre><code>Building a new DB, current time: 06/26/2019 17:48:17
-New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
+<pre><code>Running blastp: 2.9.0+ ...
+
+
+Building a new DB, current time: 07/06/2019 16:22:29
+New DB name:   blastdb_ortho_lyra_aa.fasta_protein.fasta
+New DB title:  blastdb_ortho_lyra_aa.fasta_protein.fasta
 Sequence type: Protein
+Deleted existing BLAST database with identical name.
 Keep Linkouts: T
 Keep MBits: T
 Maximum file size: 1000000000B
-Adding sequences from FASTA; added 20 sequences in 0.0038321 seconds.
-# A tibble: 20 x 12
+Adding sequences from FASTA; added 20 sequences in 0.00440097 seconds.
+Running blastp: 2.9.0+ ...
+
+
+Building a new DB, current time: 07/06/2019 16:22:30
+New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
+New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
+Sequence type: Protein
+Deleted existing BLAST database with identical name.
+Keep Linkouts: T
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
+# A tibble: 20 x 21
 # Groups:   query_id [20]
-   query_id subject_id perc_identity alig_length
-   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;
- 1 AT1G010… 333554|PA…          74.0         469
- 2 AT1G010… 470181|PA…          91.1         246
- 3 AT1G010… 470180|PA…          95.5         359
- 4 AT1G010… 333551|PA…          92.0        1970
- 5 AT1G010… 909874|PA…         100           213
- 6 AT1G010… 470177|PA…          89.5         648
- 7 AT1G010… 918864|PA…          95.1         366
- 8 AT1G010… 909871|PA…          90.3         300
- 9 AT1G010… 470171|PA…          96.8         434
-10 AT1G011… 333544|PA…          93.6         528
-11 AT1G011… 918858|PA…          99.2         529
-12 AT1G011… 470161|PA…          98.4         453
-13 AT1G011… 918855|PA…          72.6         285
-14 AT1G011… 918854|PA…          84.9         179
-15 AT1G011… 311317|PA…          85.6          97
-16 AT1G011… 909860|PA…          92.6         310
-17 AT1G011… 311315|PA…          94.2         533
-18 AT1G012… 470156|PA…          95.8         238
-19 AT1G012… 311313|PA…          95.3         107
-20 AT1G012… 470155|PA…          96.7        1056
-# … with 8 more variables: mismatches &lt;dbl&gt;,
-#   gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
-#   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;dbl&gt;</code></pre>
+   query_id subject_id perc_identity num_ident_match… alig_length
+   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
+ 1 AT1G010… 333554|PA…          74.0              347         469
+ 2 AT1G010… 470181|PA…          91.1              224         246
+ 3 AT1G010… 470180|PA…          95.5              343         359
+ 4 AT1G010… 333551|PA…          92.0             1812        1970
+ 5 AT1G010… 909874|PA…         100                213         213
+ 6 AT1G010… 470177|PA…          89.5              580         648
+ 7 AT1G010… 918864|PA…          95.1              348         366
+ 8 AT1G010… 909871|PA…          90.3              271         300
+ 9 AT1G010… 470171|PA…          96.8              420         434
+10 AT1G011… 333544|PA…          93.6              494         528
+11 AT1G011… 918858|PA…          99.2              525         529
+12 AT1G011… 470161|PA…          98.4              446         453
+13 AT1G011… 918855|PA…          72.6              207         285
+14 AT1G011… 918854|PA…          84.9              152         179
+15 AT1G011… 311317|PA…          85.6               83          97
+16 AT1G011… 909860|PA…          92.6              287         310
+17 AT1G011… 311315|PA…          94.2              502         533
+18 AT1G012… 470156|PA…          95.8              228         238
+19 AT1G012… 311313|PA…          95.3              102         107
+20 AT1G012… 470155|PA…          96.7             1021        1056
+# … with 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
+#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;int&gt;, qcovhsp &lt;int&gt;,
+#   s_start &lt;int&gt;, s_end &lt;dbl&gt;, s_len &lt;dbl&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;chr&gt;, score_raw &lt;dbl&gt;
+&gt;</code></pre>
 <p>This small example returns 20 orthologous genes between <em>Arabidopsis thaliana</em> and <em>Arabidopsis lyrata</em>. As you can see, the <code>query_file</code> and <code>subject_files</code> arguments take the proteomes of <em>Arabidopsis thaliana</em> (<code>query_file</code>) and <em>Arabidopsis lyrata</em> (<code>subject_files</code>) stored in fasta files. The <code>seq_type</code> argument specifies that you will pass protein sequences (proteomes) to the <code><a href="../reference/orthologs.html">orthologs()</a></code> function. In case you only have either genomes (DNA sequences) or CDS files, you can modify the <code>seq_type</code> argument to <code>seq_type = "dna"</code> (when working with only genome data) or <code>seq_type = "cds"</code> (when working with CDS files). Internally the <code><a href="../reference/orthologs.html">orthologs()</a></code> function will perform a CDS prediction using <code>predict_cds()</code> and will furthermore translate the predicted CDS sequences into protein sequences. Analogously when <code>seq_type = "cds"</code> is specified, internally the <code><a href="../reference/orthologs.html">orthologs()</a></code> function will translate all CDS sequences into protein sequences to run orthology inference based on protein sequences.</p>
 <p><strong>The advantage of this type of output is that in addition to having the orthology relationship between genes from two different genomes, users also retrieve the BLAST results of the respective orthology relationship which allows them to perform subsequent filtering for either more conservative or more liberal orthology relationships.</strong></p>
 <p><strong>Note</strong>: future versions of <code>orthologr</code> will allow to perform orthology inference using DNA sequences. Nevertheless, since most orthology inference methods or paradigms rely on protein sequences, the first version of <code>orthologr</code> will follow this paradigm.</p>
