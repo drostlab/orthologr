@@ -59,7 +59,6 @@ plot_pairwise_orthologs <- function(ortho_tables, species_order, xlab = "Subject
                 ) +
                 ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 1, hjust = 1))
         
-        
         return(p)
 }
 
