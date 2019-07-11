@@ -317,7 +317,7 @@ select_orthologs <-
                 evalue <- bit_score <- perc_identity <- NULL
                 s_end <-
                         dN <-
-                        dS <- query_species <- subject_species <- NULL
+                        dS <- query_species <- subject_species <- score_raw <- NULL
                 res <- dplyr::select(
                         res,
                         query_species,
@@ -331,7 +331,7 @@ select_orthologs <-
                         dNdS,
                         evalue,
                         bit_score,
-                        perc_identity:s_end
+                        perc_identity:score_raw
                 )
                 
                 message("... orthology inference finished successfully!")
