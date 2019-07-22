@@ -401,13 +401,14 @@ blast <- function(query_file,
                                                                                   "X11" = readr::col_integer(),
                                                                                   "X12" = readr::col_integer(),
                                                                                   "X13" = readr::col_integer(),
-                                                                                  "X14" = readr::col_integer(),
-                                                                                  "X15" = readr::col_integer(),
+                                                                                  "X14" = readr::col_double(),
+                                                                                  "X15" = readr::col_double(),
                                                                                   "X16" = readr::col_integer(),
-                                                                                  "X17" = readr::col_double(),
-                                                                                  "X18" = readr::col_double(),
-                                                                                  "X19" = readr::col_double()
-                                                                          )))
+                                                                                  "X17" = readr::col_integer(),
+                                                                                  "X18" = readr::col_integer(),
+                                                                                  "X19" = readr::col_double(),
+                                                                                  "X20" = readr::col_double(),          
+                                                                                  "X21" = readr::col_double() )))
                 
                 data.table::setnames(
                         x   = hit_table,
