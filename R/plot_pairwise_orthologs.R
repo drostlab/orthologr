@@ -28,13 +28,19 @@ plot_pairwise_orthologs <- function(ortho_tables, species_order, xlab = "Subject
                 ggplot2::aes(x = subject_species,
                              y = n_orthologs,
                              group = 1)
-        ) + ggplot2::geom_line(size = 2) + ggplot2::geom_point(size = 4) + ggplot2::geom_abline(
-                intercept = ifelse(!is.null(n_core_orthologs), n_core_orthologs, 0),
-                size = 2,
-                col = "darkred",
-                alpha = 0.4
-        ) +
-                ggplot2::geom_text(
+        ) + ggplot2::geom_line(size = 2) + ggplot2::geom_point(size = 4) 
+        
+        if (!is.null(n_core_orthologs)) {
+                p <- p + ggplot2::geom_abline(
+                        intercept = n_core_orthologs,
+                        size = 2,
+                        col = "darkred",
+                        alpha = 0.4
+                ) 
+        }
+        
+        
+        p <- p + ggplot2::geom_text(
                         ggplot2::aes(label = n_orthologs),
                         hjust = 0,
                         vjust = -1.5,

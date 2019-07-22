@@ -10,3 +10,5 @@ COPYING
 ^\.httr-oauth$
 docs
 LICENSE
+orthologr-conda-env.sh
+orthologr.yml
