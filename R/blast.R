@@ -407,7 +407,7 @@ blast <- function(query_file,
                                                                                   "X17" = readr::col_integer(),
                                                                                   "X18" = readr::col_integer(),
                                                                                   "X19" = readr::col_double(),
-                                                                                  "X20" = readr::col_double(),          
+                                                                                  "X20" = readr::col_number(),          
                                                                                   "X21" = readr::col_double() )))
                 
                 data.table::setnames(
