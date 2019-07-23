@@ -123,6 +123,56 @@ codon_aln <- function(file_aln,
         # test whether the connection to pal2nal works
         
         if (tool == "pal2nal") {
+                
+                operating_sys <- Sys.info()[1]
+                
+                if (operating_sys == "Windows") {
+                        tryCatch({
+                                if (is.null(params))
+                                        shell(
+                                                paste0(
+                                                        "perl ",
+                                                        path,
+                                                        " ",
+                                                        file_aln,
+                                                        " ",
+                                                        file_nuc,
+                                                        " -output ",
+                                                        format,
+                                                        " >",
+                                                        file.out
+                                                )
+                                        )
+                                
+                                
+                                if (!is.null(params))
+                                        shell(
+                                                paste0(
+                                                        "perl ",
+                                                        path,
+                                                        " ",
+                                                        file_aln,
+                                                        " ",
+                                                        file_nuc,
+                                                        " -output ",
+                                                        format,
+                                                        " >",
+                                                        file.out,
+                                                        " ",
+                                                        params
+                                                )
+                                        )
+                                
+                                
+                        }, error = function(e) {
+                                stop(
+                                        "Please check the correct path to ",
+                                        tool,
+                                        "... the interface call did not work properly."
+                                )
+                        })
+                } else {
+                
                 tryCatch({
                         if (is.null(params))
                                 system(
@@ -167,6 +217,7 @@ codon_aln <- function(file_aln,
                                 "... the interface call did not work properly."
                         )
                 })
+            }
         }
         
         if (!quiet) {
