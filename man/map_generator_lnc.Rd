@@ -5,9 +5,9 @@
 \title{Infer orthologous lncRNAs between muliple species}
 \usage{
 map_generator_lnc(query_file, subjects_folder, output_folder,
-  eval = "1E-5", ortho_detection = "RBH", min_qry_coverage_hsp = 50,
-  min_qry_perc_identity = 30, comp_cores = 1, progress_bar = TRUE,
-  sep = ";", ...)
+  eval = "1E-5", ortho_detection = "RBH", max.target.seqs = 10000,
+  min_qry_coverage_hsp = 30, min_qry_perc_identity = 30,
+  comp_cores = 1, progress_bar = TRUE, sep = ";", ...)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.}
@@ -25,6 +25,9 @@ dNdS computations. Possible options are:
  \item \code{ortho_detection = "RBH"}: BLAST best reciprocal hit
 }}
 
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep.
+Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .}
+
 \item{min_qry_coverage_hsp}{minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).}
 
 \item{min_qry_perc_identity}{minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).}
@@ -38,7 +41,7 @@ dNdS computations. Possible options are:
 \item{...}{additional parameters that shall be passed to  \code{\link{dNdS}}.}
 }
 \description{
-Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
  The corresponding orthologous tables are then stored in an output folder.
 }
 \details{
