@@ -1,5 +1,5 @@
 #' @title Infer orthologous lncRNAs between muliple species
-#' @description Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+#' @description Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
 #'  The corresponding orthologous tables are then stored in an output folder.
 #' @param query_file a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.
 #' @param subjects_folder a character string specifying the path to the folder where lncRNAs files in \code{fasta} format of the subject organisms are stored.
@@ -11,6 +11,8 @@
 #'  \item \code{ortho_detection = "BH"}: BLAST best unidirectional hit
 #'  \item \code{ortho_detection = "RBH"}: BLAST best reciprocal hit
 #' }
+#' @param max.target.seqs a numeric value specifying the number of aligned sequences to keep.
+#' Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
 #' @param min_qry_coverage_hsp minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
 #' @param min_qry_perc_identity minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
@@ -39,7 +41,8 @@ map_generator_lnc <- function(query_file,
                           output_folder, 
                           eval             = "1E-5",
                           ortho_detection  = "RBH",
-                          min_qry_coverage_hsp = 50,
+                          max.target.seqs = 10000,
+                          min_qry_coverage_hsp = 30,
                           min_qry_perc_identity = 30,
                           comp_cores       = 1,
                           progress_bar     = TRUE,
@@ -76,14 +79,17 @@ map_generator_lnc <- function(query_file,
                         eval            = eval,
                         ortho_detection = ortho_detection,
                         comp_cores      = comp_cores,
+                        max.target.seqs = max.target.seqs,
                         ...
                 )
                 
+                species_name_i <- as.character(unlist(stringr::str_split(subj.files[i], "[.]"))[1])
                 message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
                 OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity)
+                species_tibble <- tibble::tibble(species = unlist(rep(species_name_i, nrow(OrgQuery_vs_OrgSubj))))
                 
                 utils::write.table(
-                        OrgQuery_vs_OrgSubj,
+                        dplyr::bind_cols(species_tibble, OrgQuery_vs_OrgSubj),
                         file.path(
                                 output_folder,
                                 paste0(
@@ -111,6 +117,26 @@ map_generator_lnc <- function(query_file,
         message("\n")
         message("All maps are stored in ", output_folder, ".")
         message("Orthology inference finished successfully!")
+        message("------------------------------------------")
+        message("Importing pairwise tables and generate one overview table ...")
+        
+        lnc_map_list <- lapply(list.files(output_folder), function(map) {
+                
+                suppressMessages(readr::read_delim(
+                        file.path(output_folder, map),
+                        col_names = TRUE,
+                        delim = ";"))
+        })
+        
+        # test that only unique query IDs are present in the output datasets
+        test_df <- dplyr::bind_rows(lapply(lnc_map_list, function(x) tibble::tibble(unique = length(unique(x$query_id)), non_unique = length(x$query_id))))
+        
+        if (!all(test_df$unique == test_df$non_unique))
+                stop("It seems like your output table includes non-unique query_ids -> thus not in call cases the best hit was found. Please check what might have gone wrong...", call. = FALSE)
+        
+        res <- dplyr::bind_rows(lnc_map_list)
+        message("Finished import!")
+        return(res)
 }
 
 
