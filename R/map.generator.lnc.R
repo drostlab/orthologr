@@ -1,4 +1,4 @@
-#' @title Infer orthologous lncRNAs between muliple species
+#' @title Infer orthologous lncRNAs between multiple species
 #' @description Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
 #'  The corresponding orthologous tables are then stored in an output folder.
 #' @param query_file a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.
@@ -129,10 +129,13 @@ map_generator_lnc <- function(query_file,
         })
         
         # test that only unique query IDs are present in the output datasets
-        test_df <- dplyr::bind_rows(lapply(lnc_map_list, function(x) tibble::tibble(unique = length(unique(x$query_id)), non_unique = length(x$query_id))))
+        test_df_query <- dplyr::bind_rows(lapply(lnc_map_list, function(x) tibble::tibble(unique = length(unique(x$query_id)), non_unique = length(x$query_id))))
+        test_df_sbj <- dplyr::bind_rows(lapply(lnc_map_list, function(x) tibble::tibble(unique = length(unique(x$subject_id)), non_unique = length(x$subject_id))))
         
-        if (!all(test_df$unique == test_df$non_unique))
+        if (!all(test_df_query$unique == test_df_query$non_unique))
                 stop("It seems like your output table includes non-unique query_ids -> thus not in call cases the best hit was found. Please check what might have gone wrong...", call. = FALSE)
+        if (!all(test_df_sbj$unique == test_df_sbj$non_unique))
+                stop("It seems like your output table includes non-unique subject_ids -> thus not in call cases the best hit was found. Please check what might have gone wrong...", call. = FALSE)
         
         res <- dplyr::bind_rows(lnc_map_list)
         message("Finished import!")
