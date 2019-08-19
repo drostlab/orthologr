@@ -16,7 +16,7 @@ map_generator_dnds(query_file, subjects_folder, output_folder,
 
 \item{subjects_folder}{a character string specifying the path to the folder where CDS files of the subject organisms are stored.}
 
-\item{output_folder}{a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.}
+\item{output_folder}{a character string specifying the path to the folder where output dNdS/DS Maps should be stored.}
 
 \item{eval}{a character string specifying the e-value for BLAST based Orthology Inference that is performed
 in the process of dNdS computations. Please use the scientific notation.}

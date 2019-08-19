@@ -2,7 +2,7 @@
 % Please edit documentation in R/map.generator.lnc.R
 \name{map_generator_lnc}
 \alias{map_generator_lnc}
-\title{Infer orthologous lncRNAs between muliple species}
+\title{Infer orthologous lncRNAs between multiple species}
 \usage{
 map_generator_lnc(query_file, subjects_folder, output_folder,
   eval = "1E-5", ortho_detection = "RBH", max.target.seqs = 10000,
