@@ -3,7 +3,7 @@
 #' and a set subject organisms stored in the same folder. The corresponding dNdS/DS Maps are then stored in an output folder.
 #' @param query_file a character string specifying the path to the CDS file of the query organism.
 #' @param subjects_folder a character string specifying the path to the folder where CDS files of the subject organisms are stored.
-#' @param output_folder a character string specifying the path to the folder where output dNdS/DS Maps should be stored stored.
+#' @param output_folder a character string specifying the path to the folder where output dNdS/DS Maps should be stored.
 #' @param eval a character string specifying the e-value for BLAST based Orthology Inference that is performed
 #' in the process of dNdS computations. Please use the scientific notation.
 #' @param min_qry_coverage_hsp minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
