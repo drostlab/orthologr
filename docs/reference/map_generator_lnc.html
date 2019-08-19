@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Infer orthologous lncRNAs between muliple species — map_generator_lnc • orthologr</title>
+<title>Infer orthologous lncRNAs between multiple species — map_generator_lnc • orthologr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Infer orthologous lncRNAs between muliple species — map_generator_lnc" />
+<meta property="og:title" content="Infer orthologous lncRNAs between multiple species — map_generator_lnc" />
 
-<meta property="og:description" content="Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+<meta property="og:description" content="Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
  The corresponding orthologous tables are then stored in an output folder." />
 <meta name="twitter:card" content="summary" />
 
@@ -130,22 +130,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Infer orthologous lncRNAs between muliple species</h1>
+    <h1>Infer orthologous lncRNAs between multiple species</h1>
     <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/map.generator.lnc.R'><code>R/map.generator.lnc.R</code></a></small>
     <div class="hidden name"><code>map_generator_lnc.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Inference of orthologous lncRNAs between multiple species is performed via pairwise comparisons.
+    <p>Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
  The corresponding orthologous tables are then stored in an output folder.</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>map_generator_lnc</span>(<span class='no'>query_file</span>, <span class='no'>subjects_folder</span>, <span class='no'>output_folder</span>,
-  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>min_qry_coverage_hsp</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>min_qry_perc_identity</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>, <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>, <span class='kw'>max.target.seqs</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+  <span class='kw'>min_qry_coverage_hsp</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>min_qry_perc_identity</span> <span class='kw'>=</span> <span class='fl'>30</span>,
+  <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +173,11 @@ dNdS computations. Possible options are:</p><ul>
 <li><p><code>ortho_detection = "BH"</code>: BLAST best unidirectional hit</p></li>
 <li><p><code>ortho_detection = "RBH"</code>: BLAST best reciprocal hit</p></li>
 </ul></td>
+    </tr>
+    <tr>
+      <th>max.target.seqs</th>
+      <td><p>a numeric value specifying the number of aligned sequences to keep.
+Please be aware that <code>max.target.seqs</code> selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .</p></td>
     </tr>
     <tr>
       <th>min_qry_coverage_hsp</th>
