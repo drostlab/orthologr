@@ -7,13 +7,21 @@
 based on different sets of homology thresholds.}
 \usage{
 plot_diverse_homology_thresholds_core_orthologs(ortho_tables,
-  species_order, type = "both")
+  species_order, type = "both",
+  xlab = "Parameter set for selecting core orthologs",
+  ylab = "Number of corresponding core orthologs", title = "")
 }
 \arguments{
 \item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}
 
 \item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
 The species names must match with the species names present in the \code{ortho_tables}.}
+
+\item{type}{type of core orthologs that shall be visualized:
+\itemize{
+\item \code{type = "gene_locus"}: visualizes the number of core orthologs for a gene locus (hence, different splice variants can represent the same orthologous gene locus relationship)
+\item \code{type = "both"}: visualizes the difference in numbers of core orthologs for a gene locus versus orthologous splice variant (thus, only the same splice variant can represent the same orthologous gene locus relationship)
+}}
 
 \item{xlab}{x-axis label.}
 
@@ -23,7 +31,7 @@ The species names must match with the species names present in the \code{ortho_t
 }
 \description{
 Given a ortho table generated with \code{\link{generate_ortholog_tables_all}},
-this function will visualize the number of core orthologs 
+this function will visualize the number of core orthologs
 using a diverse range of homology thresholds to enable an analytical decision for chosing homology thresholds to define orthologous genes.
 }
 \author{
