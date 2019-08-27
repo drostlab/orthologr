@@ -68,5 +68,9 @@ generate_ortholog_tables_all <-
                 names(res) <- paste0(qry_species, "_vs_", sbj_species)
                 message("All ortholog tables were successfully built.")
                 res <- dplyr::bind_rows(res)
+                # add scope column
+                q_len <- alig_length <- NULL
+                res <- dplyr::mutate(res, scope = 1 - (abs(q_len - alig_length) / q_len))
+                
                 return(res)
         }
