@@ -10,6 +10,7 @@
 #' \itemize{
 #' \item \code{type = "gene_locus"}: visualizes the number of core orthologs for a gene locus (hence, different splice variants can represent the same orthologous gene locus relationship)
 #' \item \code{type = "both"}: visualizes the difference in numbers of core orthologs for a gene locus versus orthologous splice variant (thus, only the same splice variant can represent the same orthologous gene locus relationship)
+#' }
 #' @param xlab x-axis label.
 #' @param ylab y-axis label.
 #' @param title plot title.
