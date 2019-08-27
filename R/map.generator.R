@@ -59,6 +59,7 @@ map_generator_dnds <- function(query_file,
                            progress_bar     = TRUE,
                            sep              = ";",
                           ... ){
+        
         # retrieve all subject files within a given folder
         subj.files <- list.files(subjects_folder)
         
