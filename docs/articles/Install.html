@@ -122,12 +122,7 @@
 <li><p><a href="http://isocpp.org/about"><strong>C++11</strong></a></p></li>
 <li><p><a href="https://www.perl.org"><strong>Perl</strong></a> &gt;= 5.12</p></li>
 </ul>
-<p>Please make sure these programming languages are installed and executable on the machines you are going run <code>orthologr</code> on.</p>
-</div>
-<div id="installing-orthology-inference-tools" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installing-orthology-inference-tools" class="anchor"></a>Installing Orthology Inference Tools</h2>
-<p>The <code>orthologr</code> package provides interfaces to the following bioinformatics tools to perform <a href="http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9">orthology inference</a>:</p>
+<p>Please make sure these programming languages are installed and executable on the machines you are going to run <code>orthologr</code> on.</p>
 <div id="install-blast" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-blast" class="anchor"></a>Install <code>BLAST</code>
@@ -167,9 +162,9 @@ exit
 blastp -version</code></pre>
 <p>Now users should see the BLAST command line options.</p>
 </div>
-<div id="personal-experience" class="section level3">
+<div id="some-tips" class="section level3">
 <h3 class="hasAnchor">
-<a href="#personal-experience" class="anchor"></a>Personal Experience</h3>
+<a href="#some-tips" class="anchor"></a>Some tips</h3>
 <p>Based on our personal experience the installation of BLAST works best when copy/pasting the BLAST executables to the path <code>usr/local/bin</code>. In detail you can run the following steps to copy/paste the BLAST executables to <code>usr/local/bin</code> (on Unix systems). However, updating BLAST will then need to manually delete all previous BLAST programs from <code>usr/local/bin</code> :</p>
 <p>Open the Terminal application on your system and type:</p>
 <pre><code>open /usr/local/bin 
@@ -204,9 +199,9 @@ Package: blast 2.2.31, build Oct 27 2014 17:10:51</code></pre>
 <code>advanced_makedb()</code> : Advanced interface function to makeblastdb</li>
 </ul>
 </div>
-<div id="multiple-alignment-tools" class="section level3">
+<div id="multiple-sequence-alignment-tools" class="section level3">
 <h3 class="hasAnchor">
-<a href="#multiple-alignment-tools" class="anchor"></a>Multiple Alignment Tools</h3>
+<a href="#multiple-sequence-alignment-tools" class="anchor"></a>Multiple Sequence Alignment Tools</h3>
 <p>The <code>orthologr</code> package also provides interfaces to the following Multiple Alignment Tools. Nevertheless, non of them have to be installed if the corresponding interface functions are not used.</p>
 </div>
 <div id="install-clustalw2" class="section level3">
@@ -322,7 +317,6 @@ sudo cp KaKs_Calculator /usr/local/bin/</code></pre>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#installing-prerequisite-tools">Installing Prerequisite Tools</a></li>
       <li><a href="#programming-languages">Programming Languages</a></li>
-      <li><a href="#installing-orthology-inference-tools">Installing Orthology Inference Tools</a></li>
       </ul>
 </div>
       </div>
