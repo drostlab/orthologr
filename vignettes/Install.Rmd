@@ -34,13 +34,7 @@ the these programming languages:
  
  - [__Perl__](https://www.perl.org) >= 5.12
  
- Please make sure these programming languages are installed and executable on the machines you are going run `orthologr` on.
-
-## Installing Orthology Inference Tools
-
-The `orthologr` package provides interfaces to the following bioinformatics tools 
-to perform [orthology inference](http://link.springer.com/protocol/10.1007%2F978-1-61779-582-4_9):
-
+ Please make sure these programming languages are installed and executable on the machines you are going to run `orthologr` on.
 
 ### Install `BLAST`
 
@@ -89,7 +83,7 @@ blastp -version
 
 Now users should see the BLAST command line options.
 
-### Personal Experience
+### Some tips
 
 Based on our personal experience the installation of BLAST works best when copy/pasting
 the BLAST executables to the path `usr/local/bin`. In detail you can run the following steps
@@ -140,7 +134,7 @@ These interface functions to BLAST+ are implemented in `orthologr`:
  - `advanced_makedb()` : Advanced interface function to makeblastdb
  
  
-### Multiple Alignment Tools
+### Multiple Sequence Alignment Tools
 
 The `orthologr` package also provides interfaces to the following Multiple Alignment Tools.
 Nevertheless, non of them have to be installed if the corresponding interface functions
