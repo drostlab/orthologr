@@ -53,5 +53,7 @@ read.dnds.tbl <- function(file) {
                                         ))
         )
         
+        if (nrow(res) == 0)
+                stop("The file '",file,"' seems to be empty. Please provide a non-empty dNdS file.", call. = FALSE)
         return(res)
 }
