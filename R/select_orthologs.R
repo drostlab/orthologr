@@ -88,6 +88,9 @@ select_orthologs <-
                         imported_annotation_qry <-
                                 tibble::as_tibble(rtracklayer::import.gff(annotation_file_query, format = format[1]))
                         
+                        if (nrow(imported_annotation_qry) == 0)
+                                stop("The annotation file '", annotation_file_query, "' seems to be empty. Please provide a non-empty query annotation file.", call. = FALSE)
+                        
                         message("Select orthologs in query species ...")
                         
                         if (format[1] == "gff") {
@@ -140,6 +143,9 @@ select_orthologs <-
                                         rtracklayer::import.gff(annotation_file_subject, format = format[2])
                                 )
                         
+                        if (nrow(imported_annotation_sbj) == 0)
+                                stop("The annotation file '", annotation_file_subject, "' seems to be empty. Please provide a non-empty subject annotation file.", call. = FALSE)
+                        
                         message("Select orthologs in subject species ...")
                         
                         if (format[2] == "gff") {
@@ -183,6 +189,11 @@ select_orthologs <-
                                         )
                         }
                         
+                        if (nrow(extracted_features_qry) == 0)
+                                stop("Something went wrong during the feature extraction of 'query_gene_locus_id' ...", call. = FALSE)
+                        if (nrow(extracted_features_sbj) == 0)
+                                stop("Something went wrong during the feature extraction of 'subject_gene_locus_id' ...", call. = FALSE)
+                        
                         message("Join dnds and annotation tables ...")
                         # join dnds tbl with query annotation
                         joined_dnds_annotation_tbl_qry <-
@@ -190,6 +201,8 @@ select_orthologs <-
                                                   extracted_features_qry,
                                                   by = "query_id")
                         
+                        if (nrow(joined_dnds_annotation_tbl_qry) == 0)
+                                stop("When joining the 'dnds_tbl' and the 'extracted_features_qry' table by 'query_id', no entries were retained. Thus, this join created an empty table. Please check what might have gone wrong during the query feature extraction process.", call. = FALSE)
                         
                         # join dnds tbl with subject annotation
                         joined_dnds_annotation_tbl_sbj <-
@@ -197,6 +210,8 @@ select_orthologs <-
                                                   extracted_features_sbj,
                                                   by = "subject_id")
                         
+                        if (nrow(joined_dnds_annotation_tbl_sbj) == 0)
+                                stop("When joining the 'dnds_tbl' and the 'extracted_features_sbj' table by 'query_id', no entries were retained. Thus, this join created an empty table. Please check what might have gone wrong during the subject feature extraction process.", call. = FALSE)
                         joined_dnds_annotation_tbl_sbj <-
                                 dplyr::select(
                                         joined_dnds_annotation_tbl_sbj,
@@ -212,6 +227,9 @@ select_orthologs <-
                                         joined_dnds_annotation_tbl_sbj,
                                         by = c("query_id", "subject_id")
                                 )
+                        
+                        if (nrow(final_join_dnds_annotation_tbl) == 0)
+                                stop("When joining the 'joined_dnds_annotation_tbl_qry' and the 'joined_dnds_annotation_tbl_sbj' tables by 'query_id' and 'subject_id', no entries were retained. Thus, this join created an empty table. Please check what might have gone wrong during the joining process.", call. = FALSE)
                         
                         if (!file.exists(temp_store)) {
                                 saveRDS(final_join_dnds_annotation_tbl,
@@ -234,6 +252,9 @@ select_orthologs <-
                                         filter_best_hits(.)
                                 )
                         
+                        if (nrow(res_qry) == 0)
+                                stop("After best splice variant filtering no results were retained. The output was empty ...", call. = FALSE)
+                        
                         message(
                                 "Select splice variant with smallest e-value for each gene locus of subject species ..."
                         )
@@ -246,6 +267,8 @@ select_orthologs <-
                                         filter_best_hits(.)
                                 ))
                         
+                        if (nrow(res_sbj) == 0)
+                                stop("After best splice variant filtering no results were retained. The output was empty ...", call. = FALSE)
                         res_sbj <-
                                 dplyr::select(dplyr::ungroup(res_sbj),
                                               "query_id",
@@ -255,6 +278,10 @@ select_orthologs <-
                                 dplyr::inner_join(dplyr::ungroup(res_qry),
                                                   res_sbj,
                                                   by = c("query_id", "subject_id"))
+                        
+                        
+                        if (nrow(res) == 0)
+                                stop("After joining the best splice variants of the query and subject by 'query_id' and 'subject_id' no overlaps were found. The output was empty ...", call. = FALSE)
                         
                         if (length(unique(res$query_id)) == length(unique(res$query_gene_locus_id))) {
                                 message("Good News: ")
