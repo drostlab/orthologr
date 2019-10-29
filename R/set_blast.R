@@ -58,11 +58,14 @@ set_blast <- function(file,
         # CONCERNING THE CASE THAT A POTENTIAL USER
         # COULD INSERT SOME NON-CDS SEQUENCES
         
+        if (!file.exists(file))
+                stop("The file '", file, "' seems not to exist. Please provide a valid file path." , call. = FALSE)
+                
         if(!is.element(seq_type,c("cds","protein","dna")))
-                stop("Please choose either: 'cds', 'protein', or 'dna' as seq_type.")
+                stop("Please choose either: 'cds', 'protein', or 'dna' as seq_type.", call. = FALSE)
         
         if(!is.element(makedb_type,c("protein","nucleotide")))
-                stop("Please choose either: 'protein' or 'nucleotide' as BLAST database type (makedb_type).")
+                stop("Please choose either: 'protein' or 'nucleotide' as BLAST database type (makedb_type).", call. = FALSE)
         
         if(makedb_type == "protein")
                 db_type <- "prot"
