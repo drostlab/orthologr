@@ -5,6 +5,8 @@
 #' @author Hajk-Georg Drost
 filter_best_hits <- function(x) {
         
+        if (nrow(x) == 0)
+                stop("When trying to retrieve the best hit the column ",x," was empty and could not be processed. Please remove this line from the dataset, before extracting best hits.", call. = FALSE)
         min_val <- min(x$evalue)
         evalue <- alig_length <- NULL
         res <- dplyr::filter(x, evalue == min_val)
