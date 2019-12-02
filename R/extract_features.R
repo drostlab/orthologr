@@ -9,8 +9,10 @@ extract_features <- function(x, format) {
                 stop("Please choose a format that is supported by this function: format = 'gtf' or format = 'gff'.", call. = FALSE)
         
         if (format == "gtf") {
-                if (!all(c("gene", "CDS") %in% names(x)))
-                        stop("Please make sure that the gene and CDS biotypes in your gtf file are labeled as 'gene' and 'CDS'.", call. = FALSE)
+                if (!all(c("gene", "CDS") %in% names(table(x$type)))) {
+                        stop("Please make sure that the 'type' column in your gtf file are labeled as 'gene' and 'CDS' to denote genes and CDS.", call. = FALSE)
+                }
+                        
                 get_gene_id <- dplyr::filter(x, type == "gene")
                 get_mRNA_id <- dplyr::filter(x, type == "CDS")
                 
@@ -25,8 +27,8 @@ extract_features <- function(x, format) {
         }
         
         if (format == "gff") {
-                if (!all(c("gene", "mRNA") %in% names(x)))
-                        stop("Please make sure that the gene and mRNA biotypes in your gtf file are labeled as 'gene' and 'mRNA'.", call. = FALSE)
+                if (!all(c("gene", "mRNA") %in% %in% names(table(x$type))))
+                        stop("Please make sure that the 'type' column in your gtf file are labeled as  'gene' and 'mRNA' to denote genes and mRNA.", call. = FALSE)
                 get_gene_id <- dplyr::filter(x, type == "gene")
                 get_mRNA_id <- dplyr::filter(x, type == "mRNA")
                 
