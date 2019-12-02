@@ -86,7 +86,9 @@ select_orthologs <-
                         
                         # import annotation for query
                         imported_annotation_qry <-
-                                tibble::as_tibble(rtracklayer::import.gff(annotation_file_query, format = format[1]))
+                                tibble::as_tibble(rtracklayer::import(annotation_file_query, format = format[1]))
+                        if (any(imported_annotation_qry$source == "ERCC"))
+                                imported_annotation_qry <- dplyr::filter(imported_annotation_qry, source != "ERCC")
                         
                         if (nrow(imported_annotation_qry) == 0)
                                 stop("The annotation file '", annotation_file_query, "' seems to be empty. Please provide a non-empty query annotation file.", call. = FALSE)
@@ -140,8 +142,11 @@ select_orthologs <-
                         # import annotation for subjecy
                         imported_annotation_sbj <-
                                 tibble::as_tibble(
-                                        rtracklayer::import.gff(annotation_file_subject, format = format[2])
+                                        rtracklayer::import(annotation_file_subject, format = format[2])
                                 )
+                        
+                        if (any(imported_annotation_sbj$source == "ERCC"))
+                                imported_annotation_sbj <- dplyr::filter(imported_annotation_sbj, source != "ERCC")
                         
                         if (nrow(imported_annotation_sbj) == 0)
                                 stop("The annotation file '", annotation_file_subject, "' seems to be empty. Please provide a non-empty subject annotation file.", call. = FALSE)
