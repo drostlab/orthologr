@@ -7,13 +7,13 @@
 #' @param ortholog_tables_folder a path to a folder containing dNdS tables generated with \code{\link{generate_ortholog_tables_all}}
 #' @param model a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 #' \itemize{
-#' \item  \code{K80} (the default)
+#' \item \code{K80} (the default)
 #' \item \code{raw}
-#' \item  \code{N}
-#' \item  \code{TS}
-#' \item  \code{TV}
-#' \item  \code{JC69}
-#' \item  \code{F81} 
+#' \item \code{N}
+#' \item \code{TS}
+#' \item \code{TV}
+#' \item \code{JC69}
+#' \item \code{F81} 
 #' \item \code{K81}
 #' \item \code{F84}
 #' \item \code{BH87}
@@ -274,7 +274,7 @@ promotor_divergence_of_orthologous_genes <-
                         }
                         
                         ortho_promotor_divergence <-
-                                metablastr::promotor_divergence_estimation(query = qry_output_file_path,
+                                promotor_divergence_estimation(query = qry_output_file_path,
                                                                            subject = sbj_output_file_path,
                                                                            model = model)
                         if (nrow(ortho_promotor_divergence) == 0)
