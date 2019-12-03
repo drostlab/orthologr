@@ -27,7 +27,7 @@ extract_features <- function(x, format) {
         }
         
         if (format == "gff") {
-                if (!all(c("gene", "mRNA") %in% %in% names(table(x$type))))
+                if (!all(c("gene", "mRNA") %in% names(table(x$type))))
                         stop("Please make sure that the 'type' column in your gtf file are labeled as  'gene' and 'mRNA' to denote genes and mRNA.", call. = FALSE)
                 get_gene_id <- dplyr::filter(x, type == "gene")
                 get_mRNA_id <- dplyr::filter(x, type == "mRNA")
