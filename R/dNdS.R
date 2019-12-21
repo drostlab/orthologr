@@ -501,11 +501,11 @@ dNdS <- function(query_file,
         data.table::setnames(s_aa, old = c("geneids", "seqs"), new = c("subject_id","subject_aa"))
         
         # joining all tables to a final table containing: query_id, subject_id, query_aa_seq, subject_aa_seq, query_cds_seq, and subject_cds_seq
-        query_tbl <- dplyr::inner_join(dtplyr::tbl_dt(q_cds), dtplyr::tbl_dt(q_aa), by = "query_id")
-        subject_tbl <- dplyr::inner_join(dtplyr::tbl_dt(s_cds), dtplyr::tbl_dt(s_aa), by = "subject_id")
-        joint_query_tbl <- dplyr::inner_join(dtplyr::tbl_dt(hit.table), dtplyr::tbl_dt(query_tbl), by = "query_id")
-        joint_subject_tbl <- dplyr::inner_join(dtplyr::tbl_dt(hit.table), dtplyr::tbl_dt(subject_tbl), by = "subject_id")
-        final_tbl <- dplyr::inner_join(dtplyr::tbl_dt(joint_query_tbl), dtplyr::tbl_dt(joint_subject_tbl), by = c("query_id","subject_id"))
+        query_tbl <- dplyr::inner_join(tibble::as_tibble(q_cds), tibble::as_tibble(q_aa), by = "query_id")
+        subject_tbl <- dplyr::inner_join(tibble::as_tibble(s_cds), tibble::as_tibble(s_aa), by = "subject_id")
+        joint_query_tbl <- dplyr::inner_join(tibble::as_tibble(hit.table), tibble::as_tibble(query_tbl), by = "query_id")
+        joint_subject_tbl <- dplyr::inner_join(tibble::as_tibble(hit.table), tibble::as_tibble(subject_tbl), by = "subject_id")
+        final_tbl <- dplyr::inner_join(tibble::as_tibble(joint_query_tbl), tibble::as_tibble(joint_subject_tbl), by = c("query_id","subject_id"))
         
         if (nrow(final_tbl) == 0)
                 stop("No orthologs could be found! Please check your input files!", call. = FALSE)
@@ -513,7 +513,7 @@ dNdS <- function(query_file,
         
         message("Orthology Inference Completed.")
         message("Starting dN/dS Estimation ...")
-        dNdS_tbl <- compute_dnds( complete_tbl    = final_tbl,
+        dNdS_tbl <- compute_dnds( complete_tbl    = data.table::as.data.table(final_tbl),
                                   aa_aln_type     = aa_aln_type,
                                   aa_aln_tool     = aa_aln_tool,
                                   aa_aln_path     = aa_aln_path,
