@@ -90,7 +90,7 @@
 #'
 #' @return A data.table as returned by the \code{\link{blast}} function, storing the geneids
 #' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
-#' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
+#' @seealso \code{\link{blast}}, \code{\link{blast_best}}, \code{\link{set_blast}}
 #' @export
 blast_rec <- function(query_file, 
                       subject_file, 
