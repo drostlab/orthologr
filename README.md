@@ -54,9 +54,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install()
 # Install package dependencies
-BiocManager::install("Biostrings", version = "3.8")
+BiocManager::install(c("Biostrings", "GenomicRanges", "GenomicFeatures", "Rsamtools", "rtracklayer"))
+
 # install orthologr from GitHub
-BiocManager::install("HajkD/orthologr")
+devtools::install_github("HajkD/metablastr")
+
+# install orthologr from GitHub
+devtools::install_github("HajkD/orthologr")
 ```
 
 ## Use Cases
