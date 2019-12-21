@@ -31,8 +31,6 @@
 #' @details This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
 #' such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
 #'
-#' Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
-#'
 #' When using \code{remote} = \code{TRUE}, make sure you specify the \code{db} argument.
 #' The following databases can be chosen:
 #'
@@ -104,7 +102,7 @@
 #' }
 #'
 #' @return A data.table storing the BLAST hit table returned by BLAST.
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{set_blast}}
 #' @export
 blast <- function(query_file,
                   subject_file,
@@ -205,8 +203,8 @@ blast <- function(query_file,
         #
         tryCatch({
                 seqinr::write.fasta(
-                        sequences = as.list(query.dt[, aa]),
-                        names     = query.dt[, geneids],
+                        sequences = as.list(query.dt[ , aa]),
+                        names     = query.dt[ , geneids],
                         nbchar    = 80,
                         open      = "w",
                         file.out  = input
@@ -440,7 +438,7 @@ blast <- function(query_file,
                 
                 
                 hit_table <-
-                        tibble::as_tibble(dtplyr::tbl_dt(hit_table))
+                        tibble::as_tibble(hit_table)
                 
                 return(hit_table)
                 
