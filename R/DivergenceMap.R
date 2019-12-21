@@ -51,7 +51,7 @@ divergence_map <- function(dNdS_tbl, subject.id = FALSE){
         data.table::setkeyv(dNdS_tbl, c("query_id","subject_id"))
         
         dNdS_tbl_divMap <-
-                dplyr::select(dtplyr::tbl_dt(dNdS_tbl), dNdS, query_id, subject_id)
+                data.table::as.data.table(dplyr::select(dtplyr::lazy_dt(dNdS_tbl), dNdS, query_id, subject_id))
         
         DecileValues <-
                 stats::quantile(dNdS_tbl_divMap[ , dNdS],
