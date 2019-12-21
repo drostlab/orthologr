@@ -1,13 +1,13 @@
 Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
-Version: 0.3.0.9000
-Date: 2019-06-27
+Version: 0.4.0
+Date: 2019-12-19
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
             )
-Maintainer: Hajk-Georg Drost <hgd23@cam.ac.uk>
+Maintainer: Hajk-Georg Drost <hajk-georg.drost@tuebingen.mpg.de>
 Description: Genome-wide orthology inference and dN/dS estimation between multiple genomes. 
 License: GPL-2
 SystemRequirements: C++11, Perl
@@ -18,13 +18,12 @@ Depends:
     data.table (>= 1.9.4)
 Imports:
     seqinr,
-    biomartr,
     metablastr,
     fs,
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
     doParallel (>= 1.0.8),
-    foreach (>= 1.4.2),
+    foreach,
     Rcpp (>= 0.11.3),
     Biostrings,
     RSQLite (>= 0.11.4),
@@ -34,7 +33,10 @@ Imports:
     dtplyr,
     rtracklayer,
     tibble,
-    readr
+    readr,
+    ape,
+    ggplot2,
+    scales
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
@@ -44,4 +46,4 @@ Remotes: HajkD/metablastr
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
