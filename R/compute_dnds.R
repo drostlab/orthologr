@@ -43,7 +43,7 @@
 #' 
 #' @references \url{http://www.r-bloggers.com/the-wonders-of-foreach/}
 #' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
-#' @import foreach
+#' @import foreach 
 #' @import data.table
 compute_dnds <- function(complete_tbl,
                          aa_aln_type     = "multiple", 
@@ -437,7 +437,7 @@ compute_dnds <- function(complete_tbl,
                         file.path(tempdir(), "_calculation")
                 ))
         
-        dNdS_tbl <- tibble::as_tibble(dtplyr::tbl_dt(dNdS_tbl))
+        dNdS_tbl <- tibble::as_tibble(dNdS_tbl)
         # returning the dNdS table as data.table object
         return(dNdS_tbl)
         
