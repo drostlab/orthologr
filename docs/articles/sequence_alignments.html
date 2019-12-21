@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sequence alignments with orthologr • orthologr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Sequence alignments with orthologr">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -79,7 +80,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/HajkD/orthologr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,12 +93,13 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Sequence alignments with orthologr</h1>
             
-            <h4 class="date">2019-10-14</h4>
+            <h4 class="date">2019-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd"><code>vignettes/sequence_alignments.Rmd</code></a></small>
       <div class="hidden name"><code>sequence_alignments.Rmd</code></div>
@@ -121,7 +123,7 @@
 <p>Prior to be able to use all sequence alignment functions implemented in <code>orthologr</code> you need to install corresponding alignment tools of interest. The above mentioned functions provide interfaces to the following alignment programs:</p>
 <div id="the-multi_aln-function" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-multi_aln-function" class="anchor"></a>The <code><a href="../reference/multi_aln.html">multi_aln()</a></code> function</h3>
+<a href="#the-multi_aln-function" class="anchor"></a>The <code>multi_aln()</code> function</h3>
 <ul>
 <li><p><a href="http://www.clustal.org/clustal2/"><strong>ClustalW</strong></a> : Advanced multiple alignment tool of nucleic acid and protein sequences</p></li>
 <li><p><a href="http://www.tcoffee.org/Projects/tcoffee/"><strong>T_Coffee</strong></a> : A collection of tools for processing multiple sequence alignments of nucleic acids and proteins as well as their 3D structure</p></li>
@@ -136,9 +138,9 @@
 <h3 class="hasAnchor">
 <a href="#clustalw" class="anchor"></a>ClustalW</h3>
 <ul>
-<li><p>MacOS: <code><a href="https://www.rdocumentation.org/packages/base/topics/system">system("clustalw2 -help")</a></code></p></li>
-<li><p>Linux: <code><a href="https://www.rdocumentation.org/packages/base/topics/system">system("clustalw -help")</a></code></p></li>
-<li><p>Windows: <code><a href="https://www.rdocumentation.org/packages/base/topics/system">system("clustalw2.exe -help")</a></code></p></li>
+<li><p>MacOS: <code><a href="https://rdrr.io/r/base/system.html">system("clustalw2 -help")</a></code></p></li>
+<li><p>Linux: <code><a href="https://rdrr.io/r/base/system.html">system("clustalw -help")</a></code></p></li>
+<li><p>Windows: <code><a href="https://rdrr.io/r/base/system.html">system("clustalw2.exe -help")</a></code></p></li>
 </ul>
 <p>In case everything is installed appropriately, you should see:</p>
 <pre><code>CLUSTAL 2.1 Multiple Sequence Alignments
@@ -163,7 +165,7 @@
 <a href="#perform-a-multiple-alignment-using-clustalw" class="anchor"></a>Perform A Multiple Alignment Using ClustalW</h3>
 <p>The <code><a href="../reference/multi_aln.html">multi_aln()</a></code> function takes a fasta file storing the genes (proteins) that shall be aligned. The <code>tool</code> argument specifies the alignment tool that shall be used to perform a multiple sequence alignment (in this case <code>tool = clustalw</code>). The <code>get_aln</code> argument specifies whether or not the alignment shall be printed out to the console. In case <code>get_aln = FALSE</code>, the corresponding alignment file is stored in the <code>file.path(tempdir(),_alignment,multi_aln)</code> directory.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># in case the default execution path of clustalw runs properly on your system</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">          <span class="dt">tool    =</span> <span class="st">"clustalw"</span>,</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">          <span class="dt">get_aln =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code> CLUSTAL 2.1 Multiple Sequence Alignments
@@ -180,7 +182,7 @@ AAMultipleAlignment with 2 rows and 429 columns
 <p>It is also possible to pass additional parameters to the ClustalW call:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># running clustalw using additional parameters</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># details: system("clustalw2 -help")</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="dt">tool    =</span> <span class="st">"clustalw"</span>,</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">          <span class="dt">get_aln =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">          <span class="dt">params  =</span> <span class="st">"-PWMATRIX=BLOSUM -TYPE=PROTEIN"</span>)</a></code></pre></div>
@@ -216,7 +218,7 @@ AAMultipleAlignment with 2 rows and 429 columns
 <h3 class="hasAnchor">
 <a href="#t_coffee" class="anchor"></a>T_COFFEE</h3>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"t_coffee -version"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"t_coffee -version"</span>)</a></code></pre></div>
 <p>In case everything is installed appropriately, you should see:</p>
 <pre><code>
 PROGRAM: T-COFFEE Version_11.00.8cbe486 (2014-08-12 21:55:14 - Revision 8cbe486 - Build 470)
@@ -226,7 +228,7 @@ PROGRAM: T-COFFEE Version_11.00.8cbe486 (2014-08-12 21:55:14 - Revision 8cbe486 
 <h3 class="hasAnchor">
 <a href="#muscle" class="anchor"></a>MUSCLE</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"muscle -help"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"muscle -help"</span>)</a></code></pre></div>
 <p>In case everything is installed appropriately, you should see:</p>
 <pre><code>MUSCLE v3.8.31 by Robert C. Edgar
 
@@ -259,7 +261,7 @@ Fastest possible (amino acids): -maxiters 1 -diags -sv -distance1 kbit20_3
 Fastest possible (nucleotides): -maxiters 1 -diags
 </code></pre>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># in case the default execution path of muscle runs properly on your system</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="dt">file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">          <span class="dt">tool    =</span> <span class="st">"muscle"</span>,</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">          <span class="dt">get_aln =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
@@ -267,13 +269,13 @@ Fastest possible (nucleotides): -maxiters 1 -diags
 <h3 class="hasAnchor">
 <a href="#clustalo" class="anchor"></a>ClustalO</h3>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"clustalo --help"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"clustalo --help"</span>)</a></code></pre></div>
 </div>
 <div id="mafft" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mafft" class="anchor"></a>MAFFT</h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"mafft -help"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"mafft -help"</span>)</a></code></pre></div>
 <p>In case everything is installed appropriately, you should see:</p>
 <pre><code>
 ------------------------------------------------------------------------------
@@ -305,10 +307,10 @@ If unsure which option to use:
 </div>
 <div id="the-multi_aln-function-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-multi_aln-function-1" class="anchor"></a>The <code><a href="../reference/multi_aln.html">multi_aln()</a></code> function</h2>
+<a href="#the-multi_aln-function-1" class="anchor"></a>The <code>multi_aln()</code> function</h2>
 <p>The <code><a href="../reference/multi_aln.html">multi_aln()</a></code> function is an interface function between R and common multiple sequence alignment tools. When working with this function a new folder named <code>_alignment</code> is being created and stores the multiple alignment returned by the corresponding alignment tool. The argument <code>get_aln = TRUE</code> allows to work with the multiple alignment generated by the corresponding alignment tool within the current R session.</p>
 <p>This small pairwise alignment example shall illustrate how the <code><a href="../reference/multi_aln.html">multi_aln()</a></code> output can be used:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/aa_seqs.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2">          <span class="dt">tool =</span> <span class="st">"clustalw"</span>, <span class="dt">get_aln =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>$nb
 [1] 2
@@ -341,7 +343,7 @@ attr(,"class")
 [1] "alignment"
 </code></pre>
 <p>Furthermore, multiple alignments are returned as follows:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/multi_aln_example.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/multi_aln.html">multi_aln</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/multi_aln_example.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">          <span class="dt">tool =</span> <span class="st">"clustalw"</span>, <span class="dt">get_aln =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>
 
@@ -488,12 +490,13 @@ attr(,"class")
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#getting-started">Getting Started</a></li>
-      <li><a href="#the-multi_aln-function-1">The <code><a href="--/reference/multi_aln-html">multi_aln()</a></code> function</a></li>
+      <li><a href="#the-multi_aln-function-1">The <code>multi_aln()</code> function</a></li>
       </ul>
 </div>
       </div>
@@ -501,17 +504,20 @@ attr(,"class")
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

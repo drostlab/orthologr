@@ -8,21 +8,25 @@
 
 <title>Compute a Codon Alignment — codon_aln • orthologr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,11 +34,12 @@
 
 
 
-<meta property="og:title" content="Compute a Codon Alignment — codon_aln" />
 
+<meta property="og:title" content="Compute a Codon Alignment — codon_aln" />
 <meta property="og:description" content="This function takes a protein alignment and the corresponding coding sequences 
 as fasta files and computes the corresponding codon alignment based on the models specified in the PAL2NAL program." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -46,6 +51,7 @@ as fasta files and computes the corresponding codon alignment based on the model
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -64,7 +70,7 @@ as fasta files and computes the corresponding codon alignment based on the model
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -72,7 +78,7 @@ as fasta files and computes the corresponding codon alignment based on the model
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -110,11 +116,10 @@ as fasta files and computes the corresponding codon alignment based on the model
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/HajkD/orthologr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -125,6 +130,7 @@ as fasta files and computes the corresponding codon alignment based on the model
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -136,16 +142,21 @@ as fasta files and computes the corresponding codon alignment based on the model
     </div>
 
     <div class="ref-description">
-    
     <p>This function takes a protein alignment and the corresponding coding sequences 
 as fasta files and computes the corresponding codon alignment based on the models specified in the PAL2NAL program.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>codon_aln</span>(<span class='no'>file_aln</span>, <span class='no'>file_nuc</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clustal"</span>, <span class='kw'>tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
-  <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>codon_aln_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>get_aln</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>codon_aln</span>(
+  <span class='no'>file_aln</span>,
+  <span class='no'>file_nuc</span>,
+  <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"clustal"</span>,
+  <span class='kw'>tool</span> <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
+  <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>codon_aln_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>get_aln</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -185,11 +196,10 @@ Default is <code>codon_aln_name</code> = <code>NULL</code> denoting a default na
       <td><p>a logical value specifying whether a successful interface call shall be printed out.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>In case <code>get_aln</code> = <code>TRUE</code> an seqinr alignment object is returned.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function provides an interface between the R language and common codon alignment tools such as "PAL2NAL".
@@ -197,7 +207,6 @@ Codon alignments can be used to quantify the evolutionary pressure acting on pro
 <p>The PAL2NAL program is used to convert a multiple sequence alignment or pairwise alignment of proteins and the corresponding DNA (or mRNA) sequences into 
 a codon-based DNA alignment. The output codon-based DNA alignment can then be used for <code><a href='dNdS.html'>dNdS</a></code> estimation.</p>
 <p>The popular codon alignment tool PAL2NAL is included in this package and is being called when choosing <code>tool</code> = <code>"pal2nal"</code>.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The PAL2NAL program automatically checks</p><ul>
@@ -207,7 +216,7 @@ in this case the sequences don't have to be in the same order</p></li>
 -&gt; you have to rearrange the IDs or sequences so that sequences in the protein alignment file and DNA (or mRNA) file
 have the same order</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Mikita Suyama, David Torrents, and Peer Bork (2006)
@@ -215,50 +224,42 @@ PAL2NAL: robust conversion of protein sequence alignments into the corresponding
 <p>http://www.bork.embl.de/pal2nal/</p>
 <p>http://www.genome.med.kyoto-u.ac.jp/cgi-bin/suyama/pal2nal/index.cgi</p>
 <p>http://abacus.gene.ucl.ac.uk/software/paml.html</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='pairwise_aln.html'>pairwise_aln</a></code>, <code><a href='multi_aln.html'>multi_aln</a></code>, <code><a href='substitutionrate.html'>substitutionrate</a></code>,
  <code><a href='dNdS.html'>dNdS</a></code>, <code><a href='divergence_stratigraphy.html'>divergence_stratigraphy</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-</div><span class='co'># NOT RUN {</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='co'># performing a codon alignment using PAL2NAL</span>
-<span class='no'>codon_aln</span> <span class='kw'>&lt;-</span> <span class='fu'>codon_aln</span>(<span class='kw'>file_aln</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/aa_seqs.aln'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-                       <span class='kw'>file_nuc</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/dna_seqs.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+<span class='no'>codon_aln</span> <span class='kw'>&lt;-</span> <span class='fu'>codon_aln</span>(<span class='kw'>file_aln</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/aa_seqs.aln'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+                       <span class='kw'>file_nuc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/dna_seqs.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
                        <span class='kw'>format</span>   <span class='kw'>=</span> <span class='st'>"clustal"</span>,
                        <span class='kw'>tool</span>     <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
                        <span class='kw'>get_aln</span>  <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 
 <span class='co'># running PAL2NAL with additional parameters (e.g. a different codon table)</span>
-<span class='no'>codon_aln</span> <span class='kw'>&lt;-</span> <span class='fu'>codon_aln</span>(<span class='kw'>file_aln</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/aa_seqs.aln'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-                       <span class='kw'>file_nuc</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>'seqs/dna_seqs.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+<span class='no'>codon_aln</span> <span class='kw'>&lt;-</span> <span class='fu'>codon_aln</span>(<span class='kw'>file_aln</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/aa_seqs.aln'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+                       <span class='kw'>file_nuc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/dna_seqs.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
                        <span class='kw'>format</span>   <span class='kw'>=</span> <span class='st'>"clustal"</span>,
                        <span class='kw'>tool</span>     <span class='kw'>=</span> <span class='st'>"pal2nal"</span>,
                        <span class='kw'>get_aln</span>  <span class='kw'>=</span> <span class='fl'>TRUE</span>,
                        <span class='kw'>params</span>   <span class='kw'>=</span> <span class='st'>"-codontable 2"</span>)
 
-<span class='co'># }</span><div class='input'>                       
-</div></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#note">Note</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -267,19 +268,23 @@ PAL2NAL: robust conversion of protein sequence alignments into the corresponding
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orthology Inference using orthologr • orthologr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Orthology Inference using orthologr">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -79,7 +80,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/HajkD/orthologr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,12 +93,13 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Orthology Inference using orthologr</h1>
             
-            <h4 class="date">2019-10-14</h4>
+            <h4 class="date">2019-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd"><code>vignettes/orthology_inference.Rmd</code></a></small>
       <div class="hidden name"><code>orthology_inference.Rmd</code></div>
@@ -152,11 +154,11 @@
 <a href="#examples-blast-based-methods" class="anchor"></a>Examples: BLAST based methods</h3>
 <p>Using a simple example stored in the package environment of <code>orthologr</code> you can get an impression on how to use the <code><a href="../reference/orthologs.html">orthologs()</a></code> function.</p>
 <p><strong>Note:</strong> it is assumed that when using <code><a href="../reference/orthologs.html">orthologs()</a></code> all corresponding programs you want to use are already installed on your machine and are executable via either the default execution PATH or you specifically define the location of the executable file via the <code>path</code> argument that can be passed to <code><a href="../reference/orthologs.html">orthologs()</a></code>.</p>
-<p>In the following examples, we will use toy fasta files stored within the <code>orthologr</code> package: <code><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')</a></code>.</p>
+<p>In the following examples, we will use toy fasta files stored within the <code>orthologr</code> package: <code><a href="https://rdrr.io/r/base/system.file.html">system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># and fasta sequence files storing protein sequences</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/orthologs">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">orthologr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/orthologr/man/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>,</a>
@@ -187,29 +189,29 @@ Maximum file size: 1000000000B
 Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 # A tibble: 20 x 21
 # Groups:   query_id [20]
-   query_id subject_id perc_identity num_ident_match… alig_length
+   query_id subject_id perc_identity num_ident_match... alig_length
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 AT1G010… 333554|PA…          74.0              347         469
- 2 AT1G010… 470181|PA…          91.1              224         246
- 3 AT1G010… 470180|PA…          95.5              343         359
- 4 AT1G010… 333551|PA…          92.0             1812        1970
- 5 AT1G010… 909874|PA…         100                213         213
- 6 AT1G010… 470177|PA…          89.5              580         648
- 7 AT1G010… 918864|PA…          95.1              348         366
- 8 AT1G010… 909871|PA…          90.3              271         300
- 9 AT1G010… 470171|PA…          96.8              420         434
-10 AT1G011… 333544|PA…          93.6              494         528
-11 AT1G011… 918858|PA…          99.2              525         529
-12 AT1G011… 470161|PA…          98.4              446         453
-13 AT1G011… 918855|PA…          72.6              207         285
-14 AT1G011… 918854|PA…          84.9              152         179
-15 AT1G011… 311317|PA…          85.6               83          97
-16 AT1G011… 909860|PA…          92.6              287         310
-17 AT1G011… 311315|PA…          94.2              502         533
-18 AT1G012… 470156|PA…          95.8              228         238
-19 AT1G012… 311313|PA…          95.3              102         107
-20 AT1G012… 470155|PA…          96.7             1021        1056
-# … with 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+ 1 AT1G010... 333554|PA...          74.0              347         469
+ 2 AT1G010... 470181|PA...          91.1              224         246
+ 3 AT1G010... 470180|PA...          95.5              343         359
+ 4 AT1G010... 333551|PA...          92.0             1812        1970
+ 5 AT1G010... 909874|PA...         100                213         213
+ 6 AT1G010... 470177|PA...          89.5              580         648
+ 7 AT1G010... 918864|PA...          95.1              348         366
+ 8 AT1G010... 909871|PA...          90.3              271         300
+ 9 AT1G010... 470171|PA...          96.8              420         434
+10 AT1G011... 333544|PA...          93.6              494         528
+11 AT1G011... 918858|PA...          99.2              525         529
+12 AT1G011... 470161|PA...          98.4              446         453
+13 AT1G011... 918855|PA...          72.6              207         285
+14 AT1G011... 918854|PA...          84.9              152         179
+15 AT1G011... 311317|PA...          85.6               83          97
+16 AT1G011... 909860|PA...          92.6              287         310
+17 AT1G011... 311315|PA...          94.2              502         533
+18 AT1G012... 470156|PA...          95.8              228         238
+19 AT1G012... 311313|PA...          95.3              102         107
+20 AT1G012... 470155|PA...          96.7             1021        1056
+# ... with 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
 #   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
 #   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;int&gt;, qcovhsp &lt;int&gt;,
 #   s_start &lt;int&gt;, s_end &lt;dbl&gt;, s_len &lt;dbl&gt;, evalue &lt;dbl&gt;,
@@ -220,8 +222,8 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 <p><strong>Note</strong>: future versions of <code>orthologr</code> will allow to perform orthology inference using DNA sequences. Nevertheless, since most orthology inference methods or paradigms rely on protein sequences, the first version of <code>orthologr</code> will follow this paradigm.</p>
 <p>In case you have to specify the path to the corresponding orthology inference method you can use the <code>path</code> argument as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># using an external execution path</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/orthologs">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">orthologr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/orthologr/man/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">          <span class="dt">path            =</span> <span class="st">"here/path/to/blastp"</span>, </a>
@@ -229,8 +231,8 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 <a class="sourceLine" id="cb3-8" data-line-number="8">          <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p>When you are working on a multicore machine, you can also specify the <code>comp_cores</code> argument that will allow you to run all analyses in parallel (to speed up computations).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># running orthology inference in parallel using 2 cores</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/orthologs">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">orthologr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/orthologr/man/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
@@ -239,27 +241,27 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 # Groups:   query_id [20]
    query_id subject_id perc_identity alig_length
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;
- 1 AT1G010… 333554|PA…          74.0         469
- 2 AT1G010… 470181|PA…          91.1         246
- 3 AT1G010… 470180|PA…          95.5         359
- 4 AT1G010… 333551|PA…          92.0        1970
- 5 AT1G010… 909874|PA…         100           213
- 6 AT1G010… 470177|PA…          89.5         648
- 7 AT1G010… 918864|PA…          95.1         366
- 8 AT1G010… 909871|PA…          90.3         300
- 9 AT1G010… 470171|PA…          96.8         434
-10 AT1G011… 333544|PA…          93.6         528
-11 AT1G011… 918858|PA…          99.2         529
-12 AT1G011… 470161|PA…          98.4         453
-13 AT1G011… 918855|PA…          72.6         285
-14 AT1G011… 918854|PA…          84.9         179
-15 AT1G011… 311317|PA…          85.6          97
-16 AT1G011… 909860|PA…          92.6         310
-17 AT1G011… 311315|PA…          94.2         533
-18 AT1G012… 470156|PA…          95.8         238
-19 AT1G012… 311313|PA…          95.3         107
-20 AT1G012… 470155|PA…          96.7        1056
-# … with 8 more variables: mismatches &lt;dbl&gt;,
+ 1 AT1G010... 333554|PA...          74.0         469
+ 2 AT1G010... 470181|PA...          91.1         246
+ 3 AT1G010... 470180|PA...          95.5         359
+ 4 AT1G010... 333551|PA...          92.0        1970
+ 5 AT1G010... 909874|PA...         100           213
+ 6 AT1G010... 470177|PA...          89.5         648
+ 7 AT1G010... 918864|PA...          95.1         366
+ 8 AT1G010... 909871|PA...          90.3         300
+ 9 AT1G010... 470171|PA...          96.8         434
+10 AT1G011... 333544|PA...          93.6         528
+11 AT1G011... 918858|PA...          99.2         529
+12 AT1G011... 470161|PA...          98.4         453
+13 AT1G011... 918855|PA...          72.6         285
+14 AT1G011... 918854|PA...          84.9         179
+15 AT1G011... 311317|PA...          85.6          97
+16 AT1G011... 909860|PA...          92.6         310
+17 AT1G011... 311315|PA...          94.2         533
+18 AT1G012... 470156|PA...          95.8         238
+19 AT1G012... 311313|PA...          95.3         107
+20 AT1G012... 470155|PA...          96.7        1056
+# ... with 8 more variables: mismatches &lt;dbl&gt;,
 #   gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
 #   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
 #   bit_score &lt;dbl&gt;</code></pre>
@@ -276,8 +278,8 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 <p>Orthology Inference using BLASTp best hit can be performed by specifying the argument <code>ortho_detection = "BH"</code> and one computing core <code>comp_core = 1</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># perform orthology inference using BLAST best hit</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># and fasta sequence files storing protein sequences</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">orthologr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/orthologr/topics/orthologs">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">orthologr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/orthologr/man/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">          <span class="dt">ortho_detection =</span> <span class="st">"BH"</span>, </a>
 <a class="sourceLine" id="cb6-7" data-line-number="7">          <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>,</a>
@@ -286,27 +288,27 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 # Groups:   query_id [20]
    query_id subject_id perc_identity alig_length
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;
- 1 AT1G010… 333554|PA…          74.0         469
- 2 AT1G010… 470181|PA…          91.1         246
- 3 AT1G010… 470180|PA…          95.5         359
- 4 AT1G010… 333551|PA…          92.0        1970
- 5 AT1G010… 909874|PA…         100           213
- 6 AT1G010… 470177|PA…          89.5         648
- 7 AT1G010… 918864|PA…          95.1         366
- 8 AT1G010… 909871|PA…          90.3         300
- 9 AT1G010… 470171|PA…          96.8         434
-10 AT1G011… 333544|PA…          93.6         528
-11 AT1G011… 918858|PA…          99.2         529
-12 AT1G011… 470161|PA…          98.4         453
-13 AT1G011… 918855|PA…          72.6         285
-14 AT1G011… 918854|PA…          84.9         179
-15 AT1G011… 311317|PA…          85.6          97
-16 AT1G011… 909860|PA…          92.6         310
-17 AT1G011… 311315|PA…          94.2         533
-18 AT1G012… 470156|PA…          95.8         238
-19 AT1G012… 311313|PA…          95.3         107
-20 AT1G012… 470155|PA…          96.7        1056
-# … with 8 more variables: mismatches &lt;dbl&gt;,
+ 1 AT1G010... 333554|PA...          74.0         469
+ 2 AT1G010... 470181|PA...          91.1         246
+ 3 AT1G010... 470180|PA...          95.5         359
+ 4 AT1G010... 333551|PA...          92.0        1970
+ 5 AT1G010... 909874|PA...         100           213
+ 6 AT1G010... 470177|PA...          89.5         648
+ 7 AT1G010... 918864|PA...          95.1         366
+ 8 AT1G010... 909871|PA...          90.3         300
+ 9 AT1G010... 470171|PA...          96.8         434
+10 AT1G011... 333544|PA...          93.6         528
+11 AT1G011... 918858|PA...          99.2         529
+12 AT1G011... 470161|PA...          98.4         453
+13 AT1G011... 918855|PA...          72.6         285
+14 AT1G011... 918854|PA...          84.9         179
+15 AT1G011... 311317|PA...          85.6          97
+16 AT1G011... 909860|PA...          92.6         310
+17 AT1G011... 311315|PA...          94.2         533
+18 AT1G012... 470156|PA...          95.8         238
+19 AT1G012... 311313|PA...          95.3         107
+20 AT1G012... 470155|PA...          96.7        1056
+# ... with 8 more variables: mismatches &lt;dbl&gt;,
 #   gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
 #   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
 #   bit_score &lt;dbl&gt;</code></pre>
@@ -324,12 +326,12 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 </ol>
 <p>In other words, only in case the tuple <code>(query_id, subject_id)</code> is returned as best hit based on the <code>e-value</code> in both BLAST directions, the corresponding tupel <code>(query_id, subject_id)</code> is retained as orthologous gene pair.</p>
 <p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code> using <code>ortho_detection = "RBH"</code> and one computing core <code>comp_core = 1</code> can be performed as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># and fasta sequence files storing protein sequences</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">          <span class="dt">subject_files   =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb8-7" data-line-number="7">          <span class="dt">seq_type        =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb8-8" data-line-number="8">          <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
 <a class="sourceLine" id="cb8-9" data-line-number="9">          <span class="dt">clean_folders   =</span> <span class="ot">FALSE</span>,</a>
@@ -358,13 +360,13 @@ Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
 20 AT1G01220.1 470155|PACid:16047984  0e+00
 </code></pre>
 <p>When you need more parameters returned by <code>RBH</code>, you can specify the <code>detailed_output = TRUE</code> argument to obtain all BLAST parameters.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># and fasta sequence files storing protein sequences</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">RBH &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">RBH &lt;-<span class="st"> </span><span class="kw"><a href="../reference/orthologs.html">orthologs</a></span>(<span class="dt">query_file =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">          <span class="dt">subject_files     =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_aa.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb10-8" data-line-number="8">          <span class="dt">seq_type          =</span> <span class="st">"protein"</span>, </a>
 <a class="sourceLine" id="cb10-9" data-line-number="9">          <span class="dt">ortho_detection   =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb10-10" data-line-number="10">          <span class="dt">detailed_output   =</span> <span class="ot">TRUE</span>, </a>
@@ -386,7 +388,7 @@ $ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1, 1, 
 $ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 529, 45...
 $ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, 0e+00, 1e-178,...
 $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, ...</code></pre>
-<p>In case you would like to store the corresponding <code>hit tables</code> returned by BLAST for subsequent analyses, you can specify the <code>clean_folders = FALSE</code> argument. The corresponding BLAST hit table can then be found in <code><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path(tempdir(),"_blast_db")</a></code>.</p>
+<p>In case you would like to store the corresponding <code>hit tables</code> returned by BLAST for subsequent analyses, you can specify the <code>clean_folders = FALSE</code> argument. The corresponding BLAST hit table can then be found in <code><a href="https://rdrr.io/r/base/file.path.html">file.path(tempdir(),"_blast_db")</a></code>.</p>
 <p>A detailed overview of further analyses that can be done with the corresponding BLAST output can be found in the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd">BLAST vignette</a>.</p>
 </div>
 <div id="examples-orthogroup-based-methods" class="section level3">
@@ -397,6 +399,7 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -409,17 +412,20 @@ $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, 
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

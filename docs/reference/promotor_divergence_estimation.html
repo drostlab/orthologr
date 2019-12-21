@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Translate coding sequences into amino acid sequences — translate_cds_to_protein • orthologr</title>
+<title>Estimate the DNA distance between promotor sequences — promotor_divergence_estimation • orthologr</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,9 @@
 
 
 
-<meta property="og:title" content="Translate coding sequences into amino acid sequences — translate_cds_to_protein" />
-<meta property="og:description" content="A helper function that takes a fasta file storing coding sequences
-as input and translates these coding sequences into amino acid sequences
-storing them as fasta output file." />
+<meta property="og:title" content="Estimate the DNA distance between promotor sequences — promotor_divergence_estimation" />
+<meta property="og:description" content="Given two fasta files storing the promotor sequence
+of protein coding genes, this function estimates the pairwise DNA distance between these promotor sequences." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,54 +136,57 @@ storing them as fasta output file." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Translate coding sequences into amino acid sequences</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/translate_cds_to_protein.R'><code>R/translate_cds_to_protein.R</code></a></small>
-    <div class="hidden name"><code>translate_cds_to_protein.Rd</code></div>
+    <h1>Estimate the DNA distance between promotor sequences</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HajkD/orthologr/blob/master/R/promotor_divergence_estimation.R'><code>R/promotor_divergence_estimation.R</code></a></small>
+    <div class="hidden name"><code>promotor_divergence_estimation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A helper function that takes a <code>fasta</code> file storing coding sequences
-as input and translates these coding sequences into amino acid sequences
-storing them as <code>fasta</code> output file.</p>
+    <p>Given two <code>fasta</code> files storing the promotor sequence
+of protein coding genes, this function estimates the pairwise DNA distance between these promotor sequences.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>translate_cds_to_protein</span>(<span class='no'>input_file</span>, <span class='no'>output_file</span>, <span class='kw'>delete_corrupt_cds</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>promotor_divergence_estimation</span>(<span class='no'>query</span>, <span class='no'>subject</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='st'>"K80"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input_file</th>
-      <td><p>file path to <code>fasta</code> file storing coding sequences (DNA).</p></td>
+      <th>query</th>
+      <td><p>file path to a query <code>fasta</code> file storing promotor sequences of interest (e.g. generated with <code><a href='https://rdrr.io/pkg/metablastr/man/extract_upstream_promotor_seqs.html'>extract_upstream_promotor_seqs</a></code>).</p></td>
     </tr>
     <tr>
-      <th>output_file</th>
-      <td><p>name or file path in which translated amino acid sequences (AA)
-shall be stored as <code>fasta</code> file.</p></td>
+      <th>subject</th>
+      <td><p>file path to a subject <code>fasta</code> file storing promotor sequences of interest (e.g. generated with <code><a href='https://rdrr.io/pkg/metablastr/man/extract_upstream_promotor_seqs.html'>extract_upstream_promotor_seqs</a></code>).</p></td>
     </tr>
     <tr>
-      <th>delete_corrupt_cds</th>
-      <td><p>delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></td>
+      <th>model</th>
+      <td><p>a model as specified in <code><a href='https://rdrr.io/pkg/ape/man/dist.dna.html'>dist.dna</a></code>: a character string specifying the evolutionary model to be used - must be one of:</p><ul>
+<li><p><code>K80</code> (the default)</p></li>
+<li><p><code>raw</code></p></li>
+<li><p><code>N</code></p></li>
+<li><p><code>TS</code></p></li>
+<li><p><code>TV</code></p></li>
+<li><p><code>JC69</code></p></li>
+<li><p><code>F81</code></p></li>
+<li><p><code>K81</code></p></li>
+<li><p><code>F84</code></p></li>
+<li><p><code>BH87</code></p></li>
+<li><p><code>T92</code></p></li>
+<li><p><code>TN93</code></p></li>
+<li><p><code>GG95</code></p></li>
+<li><p><code>logdet</code></p></li>
+<li><p><code>paralin</code></p></li>
+</ul></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># install.packages("biomartr")</span>
-<span class='co'># download coding sequences of Arabidopsis thaliana</span>
-<span class='no'>Ath_file_path</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>biomartr</span><span class='kw ns'>::</span><span class='fu'><a href='https://docs.ropensci.org/biomartr/reference/getCDS.html'>getCDS</a></span>(<span class='kw'>db</span> <span class='kw'>=</span> <span class='st'>"refseq"</span>,
-                     <span class='kw'>organism</span> <span class='kw'>=</span> <span class='st'>"Arabidopsis thaliana"</span>,
-                     <span class='kw'>gunzip</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># translate coding sequences into amino acid sequences</span>
-<span class='fu'>translate_cds_to_protein</span>(<span class='no'>Ath_file_path</span>, <span class='st'>"Ath_aa_seqs.fasta"</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>

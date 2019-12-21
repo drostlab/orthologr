@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Performing Divergence Stratigraphy • orthologr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Performing Divergence Stratigraphy">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -79,7 +80,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/HajkD/orthologr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,12 +93,13 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Performing Divergence Stratigraphy</h1>
             
-            <h4 class="date">2019-10-14</h4>
+            <h4 class="date">2019-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/divergence_stratigraphy.Rmd"><code>vignettes/divergence_stratigraphy.Rmd</code></a></small>
       <div class="hidden name"><code>divergence_stratigraphy.Rmd</code></div>
@@ -122,7 +124,7 @@
 <p>In other words, imagine having 10000 orthologous genes and their corresponding Ka/Ks values after performing a pairwise genome comparison using the <code><a href="../reference/dNdS.html">dNdS()</a></code> function. Now, these 10000 Ka/Ks values follow a distribution between 0 and +Inf, where Ka/Ks &lt; 1 reflects purifying selection, Ka/Ks = 1 reflects neutral evolution, and Ka/Ks &gt; 1 reflects positive selection (in reality usually the largest Ka/Ks values I have seen are e.g. 100). Next, you bin these 10000 Ka/Ks values according to their 10% quantile (= decile), meaning that the lowest 10% of Ka/Ks values are in decile one (= Divergence Stratum 1), the lowest Ka/Ks values between the 11%-20% quantile are in decile two (= Divergence Stratum 2), …, and the largest Ka/Ks values between the 91-100% quantile are in decile 10 (= Divergence Stratum 10) (This is what the <code><a href="../reference/divergence_map.html">divergence_map()</a></code> function does). This way, each Divergence Stratum has (almost) the same number of genes.</p>
 <p>In <code>orthologr</code> the <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574">Needleman-Wunsch algorithm</a>, <a href="http://www.bork.embl.de/pal2nal/">PAL2NAL</a> and <a href="http://link.springer.com/article/10.1007/BF00173196">Comeron’s method (1995)</a> are already included in the <code>orthologr</code> package and do not have to be installed separately. Nevertheless, users need to make sure <strong>they have BLAST installed on their machine before using the <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>function</strong>.</p>
 <p><strong>Note</strong>: The following examples assume that the <strong>BLAST</strong> program is installed and stored in the default execution path <code>usr/local/bin</code>. In case users do not have <strong>BLAST</strong> installed yet or the following command in R produces a different output, please consult the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#orthology-inference-tools">Installation Vignette</a> to corretly set up the <strong>BLAST</strong> program to perform <strong>Divergence Stratigraphy</strong>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system">system</a></span>(<span class="st">"blastp -version"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="st">"blastp -version"</span>)</a></code></pre></div>
 <pre><code>blastp: 2.2.30+
 Package: blast 2.2.30, build Oct 27 2014 17:10:51</code></pre>
 <div id="divergence-map-computations" class="section level2">
@@ -185,11 +187,11 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 </div>
 <div id="running-divergence_stratigraphy" class="section level2">
 <h2 class="hasAnchor">
-<a href="#running-divergence_stratigraphy" class="anchor"></a>Running <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>
+<a href="#running-divergence_stratigraphy" class="anchor"></a>Running <code>divergence_stratigraphy()</code>
 </h2>
 <p>As mentioned earlier the <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> function is the main function to perform the <strong>Divergence Stratigraphy</strong> algorithm.</p>
-<p>In <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> the <code>query_file</code> and <code>subject_file</code> arguments take an character string storing the path to the corresponding <strong>fasta</strong> files containing the CDS sequences of these organisms. Here the previously downloaded CDS sequence files of <em>A. thaliana</em> (= <code>query_file</code>) and <em>A. lyrata</em> (= <code>subject_file</code>) need to be specified. The <code>eval</code> is set to <code>1E-5</code> (default ; see Quint et al., 2012 <em>Nature</em>) and <code>BLAST best reciprocal hit</code> is used for orthology inference (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>). In case `<code>orthologr</code> is running on a multicore machine, users can set the <code>comp_cores</code> argument to any number of cores supported by their machine. The <code>clean_folders</code> argument indicates whether or not the internal folder structure should be deleted (cleaned) after processing is finished. In this case all output files generated by <code>divergence_stratigraphy</code> (stored in <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code>) will be removed after the <code>Divergence Map</code> was returned. The <code>quiet</code> argument indicates whether or not a successful interface call should be printed out to the console (<code>quiet = FALSE</code>) or not (<code>quiet = TRUE</code>).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<p>In <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> the <code>query_file</code> and <code>subject_file</code> arguments take an character string storing the path to the corresponding <strong>fasta</strong> files containing the CDS sequences of these organisms. Here the previously downloaded CDS sequence files of <em>A. thaliana</em> (= <code>query_file</code>) and <em>A. lyrata</em> (= <code>subject_file</code>) need to be specified. The <code>eval</code> is set to <code>1E-5</code> (default ; see Quint et al., 2012 <em>Nature</em>) and <code>BLAST best reciprocal hit</code> is used for orthology inference (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015</a>). In case `<code>orthologr</code> is running on a multicore machine, users can set the <code>comp_cores</code> argument to any number of cores supported by their machine. The <code>clean_folders</code> argument indicates whether or not the internal folder structure should be deleted (cleaned) after processing is finished. In this case all output files generated by <code>divergence_stratigraphy</code> (stored in <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code>) will be removed after the <code>Divergence Map</code> was returned. The <code>quiet</code> argument indicates whether or not a successful interface call should be printed out to the console (<code>quiet = FALSE</code>) or not (<code>quiet = TRUE</code>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># compute the divergence map of A. thaliana</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">Athaliana_DM &lt;-<span class="st"> </span><span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
@@ -201,12 +203,12 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <a class="sourceLine" id="cb4-10" data-line-number="10">                         <span class="dt">quiet           =</span> <span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">                         <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span> )</a></code></pre></div>
 <p>Before running <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> with two complete genomes, users can first run a test <strong>Divergence Stratigraphy</strong> with 20 example genes that are stored in the <code>orthologr</code> package:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># performing standard divergence stratigraphy</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"> <span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>, </a>
 <a class="sourceLine" id="cb5-8" data-line-number="8">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
 <a class="sourceLine" id="cb5-9" data-line-number="9">      <span class="dt">dnds.threshold  =</span> <span class="dv">2</span>,</a>
@@ -237,19 +239,19 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 20                 3 AT1G01220.1
 </code></pre>
 <p>The resulting output is a <code>Divergence Map</code> of the 20 example genes.</p>
-<p>To save corresponding <code>Divergenec Maps</code> to a hard drive users can pass the resulting <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> output to a variable and then use the <code><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.table()</a></code> function implemented in R to store the <code>Divergenec Map</code> as <code>*.csv</code> file.</p>
+<p>To save corresponding <code>Divergenec Maps</code> to a hard drive users can pass the resulting <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> output to a variable and then use the <code><a href="https://rdrr.io/r/utils/write.table.html">write.table()</a></code> function implemented in R to store the <code>Divergenec Map</code> as <code>*.csv</code> file.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">Athaliana_DM &lt;-<span class="st"> </span><span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>( ... )</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.table</a></span>(<span class="dt">x         =</span> Athaliana_DM, </a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span>(<span class="dt">x         =</span> Athaliana_DM, </a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">            <span class="dt">file      =</span> <span class="st">"Ath_Aly_DivergenceMap.csv"</span>, </a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">            <span class="dt">sep       =</span> <span class="st">";"</span>, </a>
 <a class="sourceLine" id="cb7-6" data-line-number="6">            <span class="dt">col.names =</span> <span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb7-7" data-line-number="7">            <span class="dt">row.names =</span> <span class="ot">FALSE</span>, </a>
 <a class="sourceLine" id="cb7-8" data-line-number="8">            <span class="dt">quote     =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>This way <code><a href="https://www.rdocumentation.org/packages/utils/topics/write.table">write.table()</a></code> will store the <code>Divergence Map</code> to the users current working directory (= <code><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd()</a></code>).</p>
+<p>This way <code><a href="https://rdrr.io/r/utils/write.table.html">write.table()</a></code> will store the <code>Divergence Map</code> to the users current working directory (= <code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code>).</p>
 <div id="specifying-the-arguments-in-divergence_stratigraphy" class="section level3">
 <h3 class="hasAnchor">
-<a href="#specifying-the-arguments-in-divergence_stratigraphy" class="anchor"></a>Specifying the arguments in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>
+<a href="#specifying-the-arguments-in-divergence_stratigraphy" class="anchor"></a>Specifying the arguments in <code>divergence_stratigraphy()</code>
 </h3>
 <p>Several argument combinations can be specified in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> (see <code>Arguments</code> in <code><a href="../reference/divergence_stratigraphy.html">?divergence_stratigraphy</a></code>). This section introduces additional output options of <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>.</p>
 <div id="example-blast_path" class="section level4">
@@ -258,12 +260,12 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 </h4>
 <p>Sometimes the machine users are working on does not allow them to install <strong>BLAST</strong> in the default execution path <code>usr/local/bin</code>. For this purpose the <code>blast_path</code> argument is implemented in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>. This argument takes an character string specifying the <code>PATH</code> to the user’s <code>blastp</code> execution file that is stored in a different place than <code>usr/local/bin</code>.</p>
 <p>The following example shows a possible specification of <code>blast_path</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># performing standard divergence stratigraphy</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"> <span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb8-7" data-line-number="7">      <span class="dt">blast_path      =</span> <span class="st">"here/the/path/to/blastp"</span>, </a>
 <a class="sourceLine" id="cb8-8" data-line-number="8">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>, </a>
 <a class="sourceLine" id="cb8-9" data-line-number="9">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
@@ -300,13 +302,13 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <a href="#example-ds-values" class="anchor"></a>Example: <code>ds.values</code>
 </h4>
 <p>As defined earlier, a <code>Divergence Map</code> stores the <code>divergence strata</code> for protein coding genes of a <code>query</code> organism. However, <code>divergence strata</code> are based on <code>dNdS</code> values that were categorized into deciles. For this reason it is not possible to map a <code>divergence stratum</code> value to the exact initial <code>dNdS</code> value. So in case users are interested in the the exact <code>dNdS</code> value of protein coding genes, they can specify the <code>ds.values</code> argument in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> allowing them to retrieve a <code>dNdS Map</code> instead of a <code>Divergence Map</code>. For this purpose users need to set <code>ds.values = FALSE</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(orthologr)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co"># performing standard divergence stratigraphy</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># but receive a dNdS Map instead of a Divergence Map</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"> <span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb10-8" data-line-number="8">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>, </a>
 <a class="sourceLine" id="cb10-9" data-line-number="9">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb10-10" data-line-number="10">      <span class="dt">ds.values       =</span> <span class="ot">FALSE</span>, </a>
@@ -345,8 +347,8 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <p>Although the <code>Divergence Map</code> <a href="https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd#getting-started">standard</a> is specified as storing <code>DS</code> values in the first column and <code>GeneIDs</code> in the second column, in some cases it is important to store the GeneIDs of orthologous genes in the <code>subject</code> organism. The <code>subject.id</code> argument implemented in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> allows users to retrieve the GeneIDs of the orthologous genes of the <code>subject</code> organism. For this purpose users need to specify <code>subject.id = TRUE</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># receive a Divergence Map with DS | query GeneID | orthologous subject GeneID </span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb12-5" data-line-number="5">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>,</a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7">      <span class="dt">comp_cores      =</span> <span class="dv">1</span>,</a>
@@ -378,8 +380,8 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <p>A similar output can be generated for <code>dNdS</code> values instead of <code>DS</code> values by specifying <code>ds.values = FALSE</code> and <code>subject.id = TRUE</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID </span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb14-5" data-line-number="5">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>,</a>
 <a class="sourceLine" id="cb14-6" data-line-number="6">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb14-7" data-line-number="7">      <span class="dt">comp_cores      =</span> <span class="dv">1</span>,</a>
@@ -416,8 +418,8 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <p><code>Divergence Strata</code> are obtained by categorizing dNdS values into deciles. For decilation the range of dNdS values is important. The <code>dnds.threshold</code> defines the upper level cut off of dNdS values. Since dNdS values are in the range [0, +Inf] a upper threshold needs to be specified. The default value for <code>dnds.threshold</code> in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> is <code>dnds.threshold = 2</code> due to the interpretation of dNdS values for predicting sequence evolution (dNdS &lt; 1 -&gt; negative selection; dNdS = 1 -&gt; neutral selection; dNdS &gt; 1 -&gt; positive selection). Hence, all dNdS values <code>&gt; 1</code> predict positive selection. In my experience of computing dNdS values between hundreds of pairwise species comparisons covering all evolutionary distances, dNdS values of orthologous genes rarely take values &gt; 2. Nevertheless, in case you wish to extend or reduce the upper threshold for dNdS values, you can specify the <code>dnds.threshold</code> in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># upper threshold for dNdS: dnds.threshold = 5</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"> <span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>, </a>
 <a class="sourceLine" id="cb16-6" data-line-number="6">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
 <a class="sourceLine" id="cb16-7" data-line-number="7">      <span class="dt">ds.values       =</span> <span class="ot">FALSE</span>, </a>
@@ -433,8 +435,8 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <p>According to <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full">Drost et al., 2015 <em>Mol. Biol. Evol.</em></a> the <strong>Divergence Stratigraphy</strong> algorithm performs <strong>BLAST</strong> best reciprocal hit (RBH) as orthology inference method. Despite this convention, the <code>ortho_detection</code> argument allows users to perform orthology inference within the <strong>Divergence Stratigraphy</strong> algorithm that is based on any orthology inference method implemented in <code>orthologr</code> (see <code><a href="../reference/orthologs.html">?orthologs</a></code> or <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd">Orthology Inference Vignette</a> for details). For example in Quint et al., 2012 <em>Nature</em> instead of using <strong>BLAST</strong> best reciprocal hit, the method <strong>BLAST</strong> best hit (BH) was used to perform orthology inference within the <strong>Divergence Stratigraphy</strong> algorithm.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># orthology inference method: ortho_detection = "BH"</span></a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"> <span class="kw"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span>(</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">      <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">      <span class="dt">eval            =</span> <span class="st">"1E-5"</span>, </a>
 <a class="sourceLine" id="cb17-6" data-line-number="6">      <span class="dt">ortho_detection =</span> <span class="st">"BH"</span>,</a>
 <a class="sourceLine" id="cb17-7" data-line-number="7">      <span class="dt">ds.values       =</span> <span class="ot">TRUE</span>, </a>
@@ -480,12 +482,13 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#divergence-map-computations">Divergence Map Computations</a></li>
-      <li><a href="#running-divergence_stratigraphy">Running <code><a href="--/reference/divergence_stratigraphy-html">divergence_stratigraphy()</a></code></a></li>
+      <li><a href="#running-divergence_stratigraphy">Running <code>divergence_stratigraphy()</code></a></li>
       <li><a href="#skip-divergence-stratigraphy-and-download-already-published-divergence-maps">Skip <code>Divergence Stratigraphy</code> and Download Already Published <code>Divergence Maps</code></a></li>
       <li><a href="#combine-a-divergence-map-with-gene-expression-data">Combine a Divergence Map with Gene Expression Data</a></li>
       </ul>
@@ -495,17 +498,20 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
