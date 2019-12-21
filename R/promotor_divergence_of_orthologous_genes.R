@@ -3,7 +3,7 @@
 #' from a set of pairwise species comparisons. It allows to add this promotor divergence information
 #' to an pre-computed \code{dNdS table} generated with \code{\link{dNdS}} or \code{\link{generate_ortholog_tables_all}}.
 #' @param promotor_folder a path to a folder containing promotor sequences in \code{fasta} format that
-#' were generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}. 
+#' were generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}. 
 #' @param ortholog_tables_folder a path to a folder containing dNdS tables generated with \code{\link{generate_ortholog_tables_all}}
 #' @param model a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 #' \itemize{
@@ -158,7 +158,7 @@ promotor_divergence_of_orthologous_genes <-
                                         unlist(stringr::str_split(x, "_"))[1]))
                         
                         qry_matched_genes <-
-                                promotor_file_qry_sequences@ranges@NAMES[na.omit(
+                                promotor_file_qry_sequences@ranges@NAMES[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables$query_gene_locus_id,
                                                 promotor_file_qry_sequences@ranges@NAMES
@@ -198,7 +198,7 @@ promotor_divergence_of_orthologous_genes <-
                                           ))
                         
                         sbj_matched_genes <-
-                                promotor_file_sbj_sequences@ranges@NAMES[na.omit(
+                                promotor_file_sbj_sequences@ranges@NAMES[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables$subject_gene_locus_id,
                                                 promotor_file_sbj_sequences@ranges@NAMES
@@ -244,28 +244,28 @@ promotor_divergence_of_orthologous_genes <-
                                         " orthologous genes were retained."
                                 )
                                 
-                                Biostrings::writeXStringSet(promotor_file_qry_sequences[na.omit(
+                                Biostrings::writeXStringSet(promotor_file_qry_sequences[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables_subset$query_gene_locus_id,
                                                 promotor_file_qry_sequences@ranges@NAMES
                                         )
                                 )], qry_output_file_path)
                                 
-                                Biostrings::writeXStringSet(promotor_file_sbj_sequences[na.omit(
+                                Biostrings::writeXStringSet(promotor_file_sbj_sequences[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables_subset$subject_gene_locus_id,
                                                 promotor_file_sbj_sequences@ranges@NAMES
                                         )
                                 )], sbj_output_file_path)
                         } else {
-                                Biostrings::writeXStringSet(promotor_file_qry_sequences[na.omit(
+                                Biostrings::writeXStringSet(promotor_file_qry_sequences[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables$query_gene_locus_id,
                                                 promotor_file_qry_sequences@ranges@NAMES
                                         )
                                 )], qry_output_file_path)
                                 
-                                Biostrings::writeXStringSet(promotor_file_sbj_sequences[na.omit(
+                                Biostrings::writeXStringSet(promotor_file_sbj_sequences[stats::na.omit(
                                         match(
                                                 species_specific_ortholog_tables$subject_gene_locus_id,
                                                 promotor_file_sbj_sequences@ranges@NAMES

@@ -1,4 +1,8 @@
 #' @title Helper function to extract a core set of orthologous lncRNAs
+#' @description Helper function to extract a core set of orthologous lncRNAs.
+#' @param x input data in \code{data.frame} or \code{tibble} format.
+#' @param order_species a character vector containing the scientific names of the organisms of interest
+#' ordered according to their phylogenetic distance to their reference species. 
 filter_core_set_lnc <- function(x, order_species) {
         
         subset_species <- sort(as.character(names(table(

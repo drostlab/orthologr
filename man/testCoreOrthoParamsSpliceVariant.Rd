@@ -2,11 +2,24 @@
 % Please edit documentation in R/testCoreOrthoParamsSplicceVariant.R
 \name{testCoreOrthoParamsSpliceVariant}
 \alias{testCoreOrthoParamsSpliceVariant}
-\title{Helper function for plot_diverse_homology_thresholds_core_orthologs 2}
+\title{Helper function for splice variant based \code{plot_diverse_homology_thresholds_core_orthologs}}
 \usage{
-testCoreOrthoParamsSpliceVariant(ortho_tables, param, species_order,
-  n_core_species)
+testCoreOrthoParamsSpliceVariant(
+  ortho_tables,
+  param,
+  species_order,
+  n_core_species
+)
+}
+\arguments{
+\item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}
+
+\item{param}{parameters.}
+
+\item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.}
+
+\item{n_core_species}{number of core species.}
 }
 \description{
-Helper function for plot_diverse_homology_thresholds_core_orthologs 2
+Helper function for splice variant based \code{\link{plot_diverse_homology_thresholds_core_orthologs}}.
 }

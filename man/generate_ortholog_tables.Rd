@@ -4,9 +4,14 @@
 \alias{generate_ortholog_tables}
 \title{Generate ortholog tables by gene locus and splice varaint}
 \usage{
-generate_ortholog_tables(dNdS_file, annotation_file_query,
-  annotation_file_subject, output_folder = getwd(),
-  output_type = "gene_locus", format)
+generate_ortholog_tables(
+  dNdS_file,
+  annotation_file_query,
+  annotation_file_subject,
+  output_folder = getwd(),
+  output_type = "gene_locus",
+  format
+)
 }
 \arguments{
 \item{dNdS_file}{file path to a \code{dNdS_tbl} generated with \code{\link{dNdS}} and

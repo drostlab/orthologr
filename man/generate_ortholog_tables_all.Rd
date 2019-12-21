@@ -4,9 +4,14 @@
 \alias{generate_ortholog_tables_all}
 \title{Generate ortholog tables by gene locus and splice varaint for a set of species}
 \usage{
-generate_ortholog_tables_all(dNdS_folder, annotation_file_query,
-  annotation_folder_subject, output_folder, output_type = "gene_locus",
-  format = c("gtf", "gtf"))
+generate_ortholog_tables_all(
+  dNdS_folder,
+  annotation_file_query,
+  annotation_folder_subject,
+  output_folder,
+  output_type = "gene_locus",
+  format = c("gtf", "gtf")
+)
 }
 \arguments{
 \item{dNdS_folder}{file path to folder storing a \code{dNdS tables} generated with \code{\link{dNdS}} and

@@ -1,8 +1,8 @@
 #' @title Estimate the DNA distance between promotor sequences
 #' @description Given two \code{fasta} files storing the promotor sequence
 #' of protein coding genes, this function estimates the pairwise DNA distance between these promotor sequences.
-#' @param query file path to a query \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}).
-#' @param subject file path to a subject \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}).
+#' @param query file path to a query \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}).
+#' @param subject file path to a subject \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}).
 #' @param model a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 #' \itemize{
 #' \item  \code{K80} (the default)

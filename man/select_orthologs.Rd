@@ -4,8 +4,13 @@
 \alias{select_orthologs}
 \title{Select orthologs based on either gene locus or splice variant}
 \usage{
-select_orthologs(dnds_tbl, annotation_file_query, annotation_file_subject,
-  collapse_by = "gene_locus", format = c("gtf", "gtf"))
+select_orthologs(
+  dnds_tbl,
+  annotation_file_query,
+  annotation_file_subject,
+  collapse_by = "gene_locus",
+  format = c("gtf", "gtf")
+)
 }
 \arguments{
 \item{dnds_tbl}{a tibble returned by \code{link{dNdS}}.}

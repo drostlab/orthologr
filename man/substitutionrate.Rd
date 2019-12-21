@@ -4,8 +4,15 @@
 \alias{substitutionrate}
 \title{Internal function for dNdS computations}
 \usage{
-substitutionrate(file, est.method, format = "fasta", quiet = FALSE,
-  kaks_calc.params = NULL, kaks_calc_path = NULL, subst_name = NULL)
+substitutionrate(
+  file,
+  est.method,
+  format = "fasta",
+  quiet = FALSE,
+  kaks_calc.params = NULL,
+  kaks_calc_path = NULL,
+  subst_name = NULL
+)
 }
 \arguments{
 \item{file}{a character string specifying the path to a codon alignment file}

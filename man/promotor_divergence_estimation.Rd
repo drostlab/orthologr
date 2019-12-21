@@ -7,9 +7,9 @@
 promotor_divergence_estimation(query, subject, model = "K80")
 }
 \arguments{
-\item{query}{file path to a query \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}).}
+\item{query}{file path to a query \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}).}
 
-\item{subject}{file path to a subject \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}).}
+\item{subject}{file path to a subject \code{fasta} file storing promotor sequences of interest (e.g. generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}).}
 
 \item{model}{a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 \itemize{

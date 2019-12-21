@@ -44,14 +44,7 @@
 #' @author Hajk-Georg Drost
 #' @return A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
 #' in the second column and the amino acid sequences in the third column.
-#' @references
-#' 
-#' BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
-#' 
-#' ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
-#'
 #' @examples \dontrun{
-#' 
 #' 
 #' ### BLAST Best Hit
 #' 
@@ -79,9 +72,6 @@
 #'           seq_type        = "protein", 
 #'           ortho_detection = "RBH", 
 #'           comp_cores      = 2)          
-#'           
-#'           
-#'           
 #' }
 #' @seealso \code{\link{blast_rec}}, \code{\link{dNdS}}
 #' @export

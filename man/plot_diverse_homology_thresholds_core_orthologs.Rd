@@ -6,10 +6,14 @@
 \title{Diverse line plots visualizing the number of core orthologs within a ortho table generated with \code{\link{generate_ortholog_tables_all}}
 based on different sets of homology thresholds.}
 \usage{
-plot_diverse_homology_thresholds_core_orthologs(ortho_tables,
-  species_order, type = "both",
+plot_diverse_homology_thresholds_core_orthologs(
+  ortho_tables,
+  species_order,
+  type = "both",
   xlab = "Parameter set for selecting core orthologs",
-  ylab = "Number of corresponding core orthologs", title = "")
+  ylab = "Number of corresponding core orthologs",
+  title = ""
+)
 }
 \arguments{
 \item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}

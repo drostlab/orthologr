@@ -4,25 +4,28 @@
 \alias{promotor_divergence_of_orthologous_genes}
 \title{Compute promotor sequence divergence of orthologous genes}
 \usage{
-promotor_divergence_of_orthologous_genes(promotor_folder,
-  ortholog_tables_folder, model = "K80",
-  ortholog_promotor_seq_output = NULL)
+promotor_divergence_of_orthologous_genes(
+  promotor_folder,
+  ortholog_tables_folder,
+  model = "K80",
+  ortholog_promotor_seq_output = NULL
+)
 }
 \arguments{
 \item{promotor_folder}{a path to a folder containing promotor sequences in \code{fasta} format that
-were generated with \code{\link[metablastr]{extract_promotor_seqs_from_genome}}.}
+were generated with \code{\link[metablastr]{extract_upstream_promotor_seqs}}.}
 
 \item{ortholog_tables_folder}{a path to a folder containing dNdS tables generated with \code{\link{generate_ortholog_tables_all}}}
 
 \item{model}{a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 \itemize{
-\item  \code{K80} (the default)
+\item \code{K80} (the default)
 \item \code{raw}
-\item  \code{N}
-\item  \code{TS}
-\item  \code{TV}
-\item  \code{JC69}
-\item  \code{F81} 
+\item \code{N}
+\item \code{TS}
+\item \code{TV}
+\item \code{JC69}
+\item \code{F81} 
 \item \code{K81}
 \item \code{F84}
 \item \code{BH87}

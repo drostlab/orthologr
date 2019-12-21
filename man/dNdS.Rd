@@ -4,14 +4,31 @@
 \alias{dNdS}
 \title{Compute dNdS values for two organisms}
 \usage{
-dNdS(query_file, subject_file, seq_type = "cds", format = "fasta",
-  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
-  store_locally = FALSE, cdd.path = NULL, blast_params = NULL,
-  blast_path = NULL, eval = "1E-5", ortho_path = NULL,
-  aa_aln_type = "pairwise", aa_aln_tool = "NW", aa_aln_path = NULL,
-  aa_aln_params = NULL, codon_aln_tool = "pal2nal",
-  kaks_calc_path = NULL, dnds_est.method = "Comeron", comp_cores = 1,
-  quiet = TRUE, clean_folders = FALSE, print_citation = TRUE)
+dNdS(
+  query_file,
+  subject_file,
+  seq_type = "cds",
+  format = "fasta",
+  ortho_detection = "RBH",
+  delete_corrupt_cds = FALSE,
+  store_locally = FALSE,
+  cdd.path = NULL,
+  blast_params = NULL,
+  blast_path = NULL,
+  eval = "1E-5",
+  ortho_path = NULL,
+  aa_aln_type = "pairwise",
+  aa_aln_tool = "NW",
+  aa_aln_path = NULL,
+  aa_aln_params = NULL,
+  codon_aln_tool = "pal2nal",
+  kaks_calc_path = NULL,
+  dnds_est.method = "Comeron",
+  comp_cores = 1,
+  quiet = TRUE,
+  clean_folders = FALSE,
+  print_citation = TRUE
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}

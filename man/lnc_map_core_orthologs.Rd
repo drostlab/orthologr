@@ -7,10 +7,10 @@
 lnc_map_core_orthologs(lnc_map, species_order)
 }
 \arguments{
+\item{lnc_map}{a \code{lnc_map} that was generated with \code{\link{map_generator_lnc}}.}
+
 \item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
 The species names must match with the species names present in the \code{lnc_map}.}
-
-\item{ortho_tables}{a \code{lnc_map} that was generated with \code{\link{map_generator_lnc}}.}
 }
 \description{
 Given a lnc_map table generated with \code{\link{map_generator_lnc}},

@@ -4,12 +4,23 @@
 \alias{map_generator_dnds}
 \title{Generate dNdS Maps Between a Query Organism and Multiple Subject Organisms}
 \usage{
-map_generator_dnds(query_file, subjects_folder, output_folder,
-  eval = "1E-5", min_qry_coverage_hsp = 50,
-  min_qry_perc_identity = 30, ortho_detection = "RBH",
-  aa_aln_type = "pairwise", aa_aln_tool = "NW",
-  codon_aln_tool = "pal2nal", dnds_est_method = "Comeron",
-  comp_cores = 1, progress_bar = TRUE, sep = ";", ...)
+map_generator_dnds(
+  query_file,
+  subjects_folder,
+  output_folder,
+  eval = "1E-5",
+  min_qry_coverage_hsp = 50,
+  min_qry_perc_identity = 30,
+  ortho_detection = "RBH",
+  aa_aln_type = "pairwise",
+  aa_aln_tool = "NW",
+  codon_aln_tool = "pal2nal",
+  dnds_est_method = "Comeron",
+  comp_cores = 1,
+  progress_bar = TRUE,
+  sep = ";",
+  ...
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of the query organism.}

@@ -4,10 +4,14 @@
 \alias{plot_pairwise_orthologs}
 \title{A line plot visualizing the number of pairwise orthologs within a ortho table generated with \code{\link{generate_ortholog_tables_all}}}
 \usage{
-plot_pairwise_orthologs(ortho_tables, species_order,
+plot_pairwise_orthologs(
+  ortho_tables,
+  species_order,
   xlab = "Subject Species",
-  ylab = "Number of reciprocal best hit orthologs", title = "",
-  n_core_orthologs = NULL)
+  ylab = "Number of reciprocal best hit orthologs",
+  title = "",
+  n_core_orthologs = NULL
+)
 }
 \arguments{
 \item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}

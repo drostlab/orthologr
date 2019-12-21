@@ -6,7 +6,7 @@
 #' @param output_folder name or file path to a folder that that shall be generated to store the output \code{fasta} files.
 #' @param delete_corrupt_cds delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @author Hajk-Georg Drost
-#' @examples dontrun{
+#' @examples \dontrun{
 #' # install.packages("biomartr")
 #' # download coding sequences of Arabidopsis thaliana, Arabidopsis lyrata, and Capsella rubella
 #' org_list <- c("Arabidopsis thaliana", "Arabidopsis lyrata", "Capsella rubella")

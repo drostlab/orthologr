@@ -4,10 +4,20 @@
 \alias{map_generator_lnc}
 \title{Infer orthologous lncRNAs between multiple species}
 \usage{
-map_generator_lnc(query_file, subjects_folder, output_folder,
-  eval = "1E-5", ortho_detection = "RBH", max.target.seqs = 10000,
-  min_qry_coverage_hsp = 30, min_qry_perc_identity = 30,
-  comp_cores = 1, progress_bar = TRUE, sep = ";", ...)
+map_generator_lnc(
+  query_file,
+  subjects_folder,
+  output_folder,
+  eval = "1E-5",
+  ortho_detection = "RBH",
+  max.target.seqs = 10000,
+  min_qry_coverage_hsp = 30,
+  min_qry_perc_identity = 30,
+  comp_cores = 1,
+  progress_bar = TRUE,
+  sep = ";",
+  ...
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.}

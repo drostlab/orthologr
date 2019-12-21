@@ -7,7 +7,7 @@
 #' shall be stored as \code{fasta} file.
 #' @param delete_corrupt_cds delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
 #' @author Hajk-Georg Drost
-#' @examples dontrun{
+#' @examples \dontrun{
 #' # install.packages("biomartr")
 #' # download coding sequences of Arabidopsis thaliana
 #' Ath_file_path <- biomartr::getCDS(db = "refseq",

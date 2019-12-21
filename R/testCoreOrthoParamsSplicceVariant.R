@@ -1,4 +1,10 @@
-#' @title Helper function for plot_diverse_homology_thresholds_core_orthologs 2
+#' @title Helper function for splice variant based \code{plot_diverse_homology_thresholds_core_orthologs}
+#' @description Helper function for splice variant based \code{\link{plot_diverse_homology_thresholds_core_orthologs}}.
+#' @param ortho_tables a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.
+#' @param param parameters.
+#' @param species_order a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
+#' @param n_core_species number of core species.
+
 testCoreOrthoParamsSpliceVariant <-
         function(ortho_tables,
                  param,

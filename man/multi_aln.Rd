@@ -4,9 +4,16 @@
 \alias{multi_aln}
 \title{Compute Multiple Sequence Alignments}
 \usage{
-multi_aln(file, tool, get_aln = FALSE, path = NULL,
-  multi_aln_name = NULL, params = NULL, quiet = FALSE,
-  clean_folders = FALSE)
+multi_aln(
+  file,
+  tool,
+  get_aln = FALSE,
+  path = NULL,
+  multi_aln_name = NULL,
+  params = NULL,
+  quiet = FALSE,
+  clean_folders = FALSE
+)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences in FASTA format.}

@@ -139,7 +139,7 @@
 #'  
 #' @return A data.table storing the divergence map of the query organism.
 #' @seealso \code{\link{dNdS}}, \code{\link{divergence_map}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
-#'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
+#'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map_generator_dnds}}
 #' @export
 divergence_stratigraphy <- function(query_file, 
                                     subject_file, 

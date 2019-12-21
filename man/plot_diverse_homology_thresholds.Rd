@@ -5,9 +5,13 @@
 \title{Diverse line plots visualizing the number of pairwise orthologs within a ortho table generated with \code{\link{generate_ortholog_tables_all}}
 based on different sets of homology thresholds.}
 \usage{
-plot_diverse_homology_thresholds(ortho_tables, species_order,
+plot_diverse_homology_thresholds(
+  ortho_tables,
+  species_order,
   xlab = "Subject Species",
-  ylab = "Number of reciprocal best hit orthologs", title = "")
+  ylab = "Number of reciprocal best hit orthologs",
+  title = ""
+)
 }
 \arguments{
 \item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}

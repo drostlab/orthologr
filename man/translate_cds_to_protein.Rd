@@ -4,8 +4,7 @@
 \alias{translate_cds_to_protein}
 \title{Translate coding sequences into amino acid sequences}
 \usage{
-translate_cds_to_protein(input_file, output_file,
-  delete_corrupt_cds = FALSE)
+translate_cds_to_protein(input_file, output_file, delete_corrupt_cds = FALSE)
 }
 \arguments{
 \item{input_file}{file path to \code{fasta} file storing coding sequences (DNA).}
@@ -21,7 +20,7 @@ as input and translates these coding sequences into amino acid sequences
 storing them as \code{fasta} output file.
 }
 \examples{
-dontrun{
+\dontrun{
 # install.packages("biomartr")
 # download coding sequences of Arabidopsis thaliana
 Ath_file_path <- biomartr::getCDS(db = "refseq",

@@ -4,8 +4,11 @@
 \alias{translate_cds_to_protein_all}
 \title{Translate coding sequences into amino acid sequences for multiple files}
 \usage{
-translate_cds_to_protein_all(input_folder, output_folder,
-  delete_corrupt_cds = FALSE)
+translate_cds_to_protein_all(
+  input_folder,
+  output_folder,
+  delete_corrupt_cds = FALSE
+)
 }
 \arguments{
 \item{input_folder}{file path to folder storing the coding sequences \code{fasta} files.}
@@ -20,7 +23,7 @@ as input and translates these coding sequences into amino acid sequences
 storing them as \code{fasta} output files.
 }
 \examples{
-dontrun{
+\dontrun{
 # install.packages("biomartr")
 # download coding sequences of Arabidopsis thaliana, Arabidopsis lyrata, and Capsella rubella
 org_list <- c("Arabidopsis thaliana", "Arabidopsis lyrata", "Capsella rubella")

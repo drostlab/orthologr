@@ -2,10 +2,17 @@
 % Please edit documentation in R/testCoreOrthoParamsGeneLocus.R
 \name{testCoreOrthoParamsGeneLocus}
 \alias{testCoreOrthoParamsGeneLocus}
-\title{Helper function for plot_diverse_homology_thresholds_core_orthologs}
+\title{Helper function for \code{plot_diverse_homology_thresholds_core_orthologs}}
 \usage{
 testCoreOrthoParamsGeneLocus(ortho_tables, param, species_order)
 }
+\arguments{
+\item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}
+
+\item{param}{parameters.}
+
+\item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.}
+}
 \description{
-Helper function for plot_diverse_homology_thresholds_core_orthologs
+Helper function for \code{\link{plot_diverse_homology_thresholds_core_orthologs}}.
 }

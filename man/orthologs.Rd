@@ -4,11 +4,22 @@
 \alias{orthologs}
 \title{Main Orthology Inference Function}
 \usage{
-orthologs(query_file, subject_files, seq_type = "protein",
-  outgroup_file = NULL, eval = "1E-5", format = "fasta",
-  ortho_detection = "RBH", delete_corrupt_cds = FALSE,
-  cdd.path = NULL, path = NULL, add_params = NULL, comp_cores = 1,
-  quiet = FALSE, clean_folders = FALSE)
+orthologs(
+  query_file,
+  subject_files,
+  seq_type = "protein",
+  outgroup_file = NULL,
+  eval = "1E-5",
+  format = "fasta",
+  ortho_detection = "RBH",
+  delete_corrupt_cds = FALSE,
+  cdd.path = NULL,
+  path = NULL,
+  add_params = NULL,
+  comp_cores = 1,
+  quiet = FALSE,
+  clean_folders = FALSE
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
@@ -75,7 +86,6 @@ BLAST based methods:
 \examples{
 \dontrun{
 
-
 ### BLAST Best Hit
 
 # perform orthology inference using BLAST best hit
@@ -102,15 +112,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           seq_type        = "protein", 
           ortho_detection = "RBH", 
           comp_cores      = 2)          
-          
-          
-          
 }
-}
-\references{
-BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
-
-ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 }
 \seealso{
 \code{\link{blast_rec}}, \code{\link{dNdS}}

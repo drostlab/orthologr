@@ -4,8 +4,12 @@
 \alias{retrieve_longest_isoforms}
 \title{Retrieve the longest isoforms from a proteome file and save results as fasta file}
 \usage{
-retrieve_longest_isoforms(proteome_file, annotation_file, new_file,
-  annotation_format = "gff")
+retrieve_longest_isoforms(
+  proteome_file,
+  annotation_file,
+  new_file,
+  annotation_format = "gff"
+)
 }
 \arguments{
 \item{proteome_file}{file path to proteome in \code{fasta} file format.}

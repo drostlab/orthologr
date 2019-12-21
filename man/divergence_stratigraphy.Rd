@@ -4,11 +4,22 @@
 \alias{divergence_stratigraphy}
 \title{Perform Divergence Stratigraphy}
 \usage{
-divergence_stratigraphy(query_file, subject_file, eval = "1E-5",
-  ortho_detection = "RBH", dnds_est.method = "Comeron",
-  delete_corrupt_cds = FALSE, blast_path = NULL, comp_cores = 1,
-  dnds.threshold = 2, store_locally = FALSE, quiet = FALSE,
-  clean_folders = FALSE, ds.values = TRUE, subject.id = FALSE)
+divergence_stratigraphy(
+  query_file,
+  subject_file,
+  eval = "1E-5",
+  ortho_detection = "RBH",
+  dnds_est.method = "Comeron",
+  delete_corrupt_cds = FALSE,
+  blast_path = NULL,
+  comp_cores = 1,
+  dnds.threshold = 2,
+  store_locally = FALSE,
+  quiet = FALSE,
+  clean_folders = FALSE,
+  ds.values = TRUE,
+  subject.id = FALSE
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -173,7 +184,7 @@ Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature
 }
 \seealso{
 \code{\link{dNdS}}, \code{\link{divergence_map}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
-  \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map.generator}}
+  \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map_generator_dnds}}
 }
 \author{
 Hajk-Georg Drost

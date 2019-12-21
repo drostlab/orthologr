@@ -4,11 +4,21 @@
 \alias{blast_best}
 \title{Perform a BLAST+ best hit search}
 \usage{
-blast_best(query_file, subject_file, seq_type = "cds",
-  format = "fasta", blast_algorithm = "blastp",
-  delete_corrupt_cds = TRUE, eval = "1E-5", max.target.seqs = 10000,
-  path = NULL, comp_cores = 1, blast_params = NULL,
-  clean_folders = FALSE, save.output = NULL)
+blast_best(
+  query_file,
+  subject_file,
+  seq_type = "cds",
+  format = "fasta",
+  blast_algorithm = "blastp",
+  delete_corrupt_cds = TRUE,
+  eval = "1E-5",
+  max.target.seqs = 10000,
+  path = NULL,
+  comp_cores = 1,
+  blast_params = NULL,
+  clean_folders = FALSE,
+  save.output = NULL
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -123,7 +133,7 @@ Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., & Schaeffer A
 Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 }
 \seealso{
-\code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
+\code{\link{blast}}, \code{\link{blast_rec}}, \code{\link{set_blast}}
 }
 \author{
 Hajk-Georg Drost

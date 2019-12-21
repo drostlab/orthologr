@@ -4,8 +4,7 @@
 \alias{write.proteome}
 \title{Save a proteome in fasta format}
 \usage{
-write.proteome(proteome, file.name, nbchar = 80, open = "w",
-  as.string = TRUE)
+write.proteome(proteome, file.name, nbchar = 80, open = "w", as.string = TRUE)
 }
 \arguments{
 \item{proteome}{a data.table object storing amino acid sequences in the first column

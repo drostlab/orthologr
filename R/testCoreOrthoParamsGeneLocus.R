@@ -1,4 +1,8 @@
-#' @title Helper function for plot_diverse_homology_thresholds_core_orthologs
+#' @title Helper function for \code{plot_diverse_homology_thresholds_core_orthologs}
+#' @description Helper function for \code{\link{plot_diverse_homology_thresholds_core_orthologs}}.
+#' @param ortho_tables a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.
+#' @param param parameters.
+#' @param species_order a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
 testCoreOrthoParamsGeneLocus <-
         function(ortho_tables, param, species_order) {
                 ortho_tables_core <-

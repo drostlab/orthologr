@@ -4,9 +4,16 @@
 \alias{set_blast}
 \title{Create a BLASTable database with makeblastdb}
 \usage{
-set_blast(file, seq_type = "cds", format = "fasta", makedb = FALSE,
-  delete_corrupt_cds = TRUE, path = NULL, makedb_type = "protein",
-  ...)
+set_blast(
+  file,
+  seq_type = "cds",
+  format = "fasta",
+  makedb = FALSE,
+  delete_corrupt_cds = TRUE,
+  path = NULL,
+  makedb_type = "protein",
+  ...
+)
 }
 \arguments{
 \item{file}{a character string specifying the path to the file storing the sequences of interest.}
@@ -64,7 +71,7 @@ Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., & Schaeffer A
 Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 }
 \seealso{
-\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}, \code{\link{advanced_makedb}}
+\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}
 }
 \author{
 Sarah Scharfenberg and Hajk-Georg Drost

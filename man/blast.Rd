@@ -4,11 +4,23 @@
 \alias{blast}
 \title{Perform a BLAST+ search}
 \usage{
-blast(query_file, subject_file, seq_type = "cds", format = "fasta",
-  blast_algorithm = "blastp", eval = "1E-5", max.target.seqs = 10000,
-  delete_corrupt_cds = TRUE, remote = FALSE, db = NULL,
-  path = NULL, comp_cores = 1, blast_params = NULL,
-  clean_folders = FALSE, save.output = NULL)
+blast(
+  query_file,
+  subject_file,
+  seq_type = "cds",
+  format = "fasta",
+  blast_algorithm = "blastp",
+  eval = "1E-5",
+  max.target.seqs = 10000,
+  delete_corrupt_cds = TRUE,
+  remote = FALSE,
+  db = NULL,
+  path = NULL,
+  comp_cores = 1,
+  blast_params = NULL,
+  clean_folders = FALSE,
+  save.output = NULL
+)
 }
 \arguments{
 \item{query_file}{a character string specifying the path to the CDS file of interest (query organism).}
@@ -63,8 +75,6 @@ This function performs a BLAST+ search of a given set of sequences against a giv
 \details{
 This function provides a fast communication between R and BLAST+. It is mainly used as internal functions
 such as \code{\link{blast_best}} and \code{\link{blast_rec}} but can also be used to perform simple BLAST computations.
-
-Note, that this function isn't as flexible as \code{\link{advanced_blast}}.
 
 When using \code{remote} = \code{TRUE}, make sure you specify the \code{db} argument.
 The following databases can be chosen:
@@ -139,7 +149,7 @@ http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_comm
 http://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
 \seealso{
-\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{set_blast}}, \code{\link{advanced_makedb}}
+\code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{set_blast}}
 }
 \author{
 Hajk-Georg Drost and Sarah Scharfenberg

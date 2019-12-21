@@ -4,11 +4,20 @@
 \alias{compute_dnds}
 \title{Compute dNdS Values For A Given Pairwise Alignment}
 \usage{
-compute_dnds(complete_tbl, aa_aln_type = "multiple",
-  aa_aln_tool = "clustalw", aa_aln_path = NULL, aa_aln_params = NULL,
-  codon_aln_tool = "pal2nal", dnds_est.method = "YN",
-  store_locally = FALSE, kaks_calc_path = NULL, quiet = FALSE,
-  comp_cores = 1, clean_folders = FALSE)
+compute_dnds(
+  complete_tbl,
+  aa_aln_type = "multiple",
+  aa_aln_tool = "clustalw",
+  aa_aln_path = NULL,
+  aa_aln_params = NULL,
+  codon_aln_tool = "pal2nal",
+  dnds_est.method = "YN",
+  store_locally = FALSE,
+  kaks_calc_path = NULL,
+  quiet = FALSE,
+  comp_cores = 1,
+  clean_folders = FALSE
+)
 }
 \arguments{
 \item{complete_tbl}{a data.table object storing the query_id, subject_id, query_cds (sequence), 

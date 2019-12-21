@@ -1,7 +1,7 @@
 #' @title Retrieve a core set of orthologous lncRNAs from the pairwise lncRNA orthologs map
 #' @description Given a lnc_map table generated with \code{\link{map_generator_lnc}},
 #' this function will determine a core set of lncRNA orthologs that are shared between all species.
-#' @param ortho_tables a \code{lnc_map} that was generated with \code{\link{map_generator_lnc}}.
+#' @param lnc_map a \code{lnc_map} that was generated with \code{\link{map_generator_lnc}}.
 #' @param species_order a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
 #' The species names must match with the species names present in the \code{lnc_map}.
 #' @author Hajk-Georg Drost

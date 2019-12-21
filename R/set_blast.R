@@ -41,7 +41,7 @@
 #'  # running the set function to see an example output
 #'  head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
 #' }
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{advanced_blast}}, \code{\link{blast}}, \code{\link{advanced_makedb}}
+#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{blast}}
 #' @import data.table
 #' @export
 

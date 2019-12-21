@@ -6,6 +6,12 @@
 \usage{
 filter_core_set(x, order_species)
 }
+\arguments{
+\item{x}{input data in \code{data.frame} or \code{tibble} format.}
+
+\item{order_species}{a character vector containing the scientific names of the organisms of interest
+ordered according to their phylogenetic distance to their reference species.}
+}
 \description{
 Helper function to extract a core set of orthologous gene loci
 }
