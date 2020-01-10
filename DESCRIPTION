@@ -4,7 +4,7 @@ Title: Comparative Genomics with R
 Version: 0.4.0
 Date: 2019-12-19
 Authors@R: c(
-            person("Hajk-Georg", "Drost", , "hgd23@cam.ac.uk", c("aut", "cre")),
+            person("Hajk-Georg", "Drost", , "hajk-georg.drost@tuebingen.mpg.de", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
             )
 Maintainer: Hajk-Georg Drost <hajk-georg.drost@tuebingen.mpg.de>
