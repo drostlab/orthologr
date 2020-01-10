@@ -1,5 +1,5 @@
 ---
-title: "dNdS estimation using orthologr"
+title: "Orthology inference dNdS estimation of orthologous genes using orthologr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
