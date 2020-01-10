@@ -79,10 +79,9 @@ file is stored in the `file.path(tempdir(),_alignment,multi_aln)` directory.
 
 ```{r,eval=FALSE}
 # in case the default execution path of clustalw runs properly on your system
-multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+orthologr::multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool    = "clustalw",
           get_aln = TRUE)
-
 ```
 
 ```
@@ -104,11 +103,10 @@ It is also possible to pass additional parameters to the ClustalW call:
 ```{r,eval=FALSE}
 # running clustalw using additional parameters
 # details: system("clustalw2 -help")
-multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+orthologr::multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool    = "clustalw",
           get_aln = TRUE,
           params  = "-PWMATRIX=BLOSUM -TYPE=PROTEIN")
-
 ```
 
 ```
@@ -144,25 +142,25 @@ AAMultipleAlignment with 2 rows and 429 columns
 ### T_COFFEE
 
 ```r
-
 system("t_coffee -version")
-
 ```
 
 In case everything is installed appropriately, you should see:
 
 ```
-
 PROGRAM: T-COFFEE Version_11.00.8cbe486 (2014-08-12 21:55:14 - Revision 8cbe486 - Build 470)
+```
 
+```r
+orthologr::multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "t_coffee",
+          get_aln = TRUE)
 ```
 
 ### MUSCLE
 
 ```r
-
 system("muscle -help")
-
 ```
 
 In case everything is installed appropriately, you should see:
@@ -206,8 +204,6 @@ Fastest possible (nucleotides): -maxiters 1 -diags
 multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool    = "muscle",
           get_aln = TRUE)
-
-
 ```
 
 
@@ -215,24 +211,26 @@ multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
 ### ClustalO
 
 ```r
-
 system("clustalo --help")
+```
 
+```{r,eval=FALSE}
+# in case the default execution path of muscle runs properly on your system
+multi_aln(file    = system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
+          tool    = "clustalo",
+          get_aln = TRUE)
 ```
 
 ### MAFFT
 
 
 ```r
-
 system("mafft -help")
-
 ```
 
 In case everything is installed appropriately, you should see:
 
 ```
-
 ------------------------------------------------------------------------------
   MAFFT v7.187 (2014/10/02)
   http://mafft.cbrc.jp/alignment/software/
@@ -267,10 +265,8 @@ The `multi_aln()` function is an interface function between R and common multipl
 This small pairwise alignment example shall illustrate how the `multi_aln()` output can be used:
 
 ```{r,eval=FALSE}
-
 multi_aln(system.file('seqs/aa_seqs.fasta', package = 'orthologr'),
           tool = "clustalw", get_aln = TRUE)
-
 ```
 
 
@@ -310,10 +306,8 @@ attr(,"class")
 Furthermore, multiple alignments are returned as follows:
 
 ```{r,eval=FALSE}
-
 multi_aln(system.file('seqs/multi_aln_example.fasta', package = 'orthologr'),
           tool = "clustalw", get_aln = TRUE)
-
 ```
 
 ```
