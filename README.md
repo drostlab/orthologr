@@ -68,11 +68,12 @@ devtools::install_github("HajkD/orthologr")
 Learn `orthologr` by reading these tutorials: 
 
 - [Install Prerequisite Tools](https://hajkd.github.io/orthologr/articles/Install.html)
-- [Perform BLAST Searches](https://hajkd.github.io/orthologr/articles/blast.html)
-- [Perform Sequence Alignments](https://hajkd.github.io/orthologr/articles/sequence_alignments.html)
 - [Perform Orthology Inference](https://hajkd.github.io/orthologr/articles/orthology_inference.html)
 - [Perform dNdS Estimation](https://hajkd.github.io/orthologr/articles/dNdS_estimation.html)
 - [Perform Divergence Stratigraphy](https://hajkd.github.io/orthologr/articles/divergence_stratigraphy.html)
+- [Perform BLAST Searches](https://hajkd.github.io/orthologr/articles/blast.html)
+- [Perform Sequence Alignments](https://hajkd.github.io/orthologr/articles/sequence_alignments.html)
+
 
 
 ## Example
