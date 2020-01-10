@@ -450,6 +450,9 @@ multi_aln <- function(file,
         }
         
         if (tool == "t_coffee") {
+                
+                is_installed_tcoffee()
+                
                 # test whether the connection to t_coffee works
                 tryCatch({
                         if (is.null(path)) {
