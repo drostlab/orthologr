@@ -36,13 +36,13 @@ Imports:
     readr,
     ape,
     ggplot2,
-    scales,
-    benchmarkme
+    scales
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
     devtools (>= 1.6.1),
-    testthat (>= 0.9.1)
+    testthat (>= 0.9.1),
+    benchmarkme
 Remotes: HajkD/metablastr
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
