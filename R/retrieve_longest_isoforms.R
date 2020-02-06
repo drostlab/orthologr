@@ -46,6 +46,9 @@ retrieve_longest_isoforms <- function(proteome_file, annotation_file, new_file, 
         }))
         names(pep_file) <- new_names
         
+        # check if annotation file is corrupt and remove outliers
+        annotation_file <- check_annotation(annotation_file, remove_annotation_outliers = TRUE)
+        
         if (annotation_format == "gtf") {
                 
                 pep_file_tibble <- tibble::tibble(transcript_id = new_names, width = pep_file@ranges@width)
