@@ -2,7 +2,7 @@ Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
 Version: 0.4.0
-Date: 2019-12-19
+Date: 2020-02-06
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hajk-georg.drost@tuebingen.mpg.de", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb")
@@ -36,7 +36,8 @@ Imports:
     readr,
     ape,
     ggplot2,
-    scales
+    scales,
+    benchmarkme
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
