@@ -70,6 +70,12 @@ generate_ortholog_tables <-
                 dNdS_tbl <-
                         read.dnds.tbl(dNdS_file)
                 
+                # check if annotation file is corrupt and remove outliers
+                annotation_file_query <-
+                        check_annotation(annotation_file_query, remove_annotation_outliers = TRUE)
+                
+                annotation_file_subject <- check_annotation(annotation_file_subject, remove_annotation_outliers = TRUE)
+                
                 # select orthologs by gene_locus
                 select_orthologs_by_gene_locus <- select_orthologs(
                         dnds_tbl = dNdS_tbl,
