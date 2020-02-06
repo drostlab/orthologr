@@ -3,6 +3,7 @@
 export(blast)
 export(blast_best)
 export(blast_rec)
+export(check_annotation)
 export(codon_aln)
 export(dNdS)
 export(divergence_map)
