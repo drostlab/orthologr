@@ -1,3 +1,14 @@
+## `orthologr` version 0.4.0
+
+### New Functions
+
+- new function `check_annotation()` helps to detect corrupt GFF or GTF annotation files and removes such outlier lines
+
+### New Features
+
+- the `generate_ortholog_tables()` and `retrieve_longest_isoforms()` now include the new `check_annotation()` function to capture corrupt GFF or GTF files and fix them 
+
+
 ## `orthologr` version  0.3.0
 
 ### New Functions
