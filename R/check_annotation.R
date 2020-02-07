@@ -25,12 +25,20 @@ check_annotation <- function(annotation_file, remove_annotation_outliers = FALSE
         if (!file.exists(annotation_file))
                 stop("The file '", annotation_file, "' does not seem to exist. Please provide a valid path to the annotation file.", call. = FALSE)
         
-        ram <- check_ram()
-        available_ram <- ram - ((ram / 100) * 20)
-        annotation_file_size <- file.info(annotation_file)$size / 1000000000
-        
-        if (annotation_file_size > available_ram)
-                stop("The size of the annotation file '", annotation_file, " exceeds the available RAM (memory) of your computer. Please try running this function with more memory.", call. = FALSE)
+        if (suppressWarnings(require("benchmarkme"))) {
+                ram <- check_ram()
+                available_ram <- ram - ((ram / 100) * 20)
+                annotation_file_size <-
+                        file.info(annotation_file)$size / 1000000000
+                
+                if (annotation_file_size > available_ram)
+                        stop(
+                                "The size of the annotation file '",
+                                annotation_file,
+                                " exceeds the available RAM (memory) of your computer. Please try running this function with more memory.",
+                                call. = FALSE
+                        )
+        }
         
         message("Importing '", annotation_file, "' ...")
         
