@@ -121,9 +121,9 @@
 <a href="#short-package-description" class="anchor"></a>Short package description</h3>
 <p>In detail, <code>orthologr</code> allows users to perform orthology inference and dN/dS estimation between two genomes or between several genomes. The following methods to infer orthologous relationships between genes of entire genomes are available in this package:</p>
 <ul>
-<li><a href="https://hajkd.github.io/orthologr/articles/blast.html#the-blast_best-function"><strong>BLAST best hit</strong></a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/blast.html#the-blast_rec-function"><strong>BLAST best reciprocal hit</strong></a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/orthology_inference.html"><strong>OrthoFinder2</strong></a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/blast.html#the-blast_best-function"><strong>BLAST best hit</strong></a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/blast.html#the-blast_rec-function"><strong>BLAST best reciprocal hit</strong></a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/orthology_inference.html"><strong>OrthoFinder2</strong></a></li>
 </ul>
 <p>The most useful implementation in <code>orthologr</code> is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS) for all orthologous genes between two <strong>entire genomes</strong>. Available dN/dS estimation methods are:</p>
 <ul>
@@ -139,7 +139,7 @@
 <li>“MA” (Model Averaging): based on a set of candidate models, Posada, D. (2003)</li>
 <li>“ALL”: All models toghether</li>
 </ul>
-<p>Please find more details <a href="https://hajkd.github.io/orthologr/articles/dNdS_estimation.html">here</a>.</p>
+<p>Please find more details <a href="https://drostlab.github.io/orthologr/articles/dNdS_estimation.html">here</a>.</p>
 </div>
 </div>
 <div id="install-orthologr" class="section level2">
@@ -163,12 +163,12 @@
 <a href="#use-cases" class="anchor"></a>Use Cases</h2>
 <p>Learn <code>orthologr</code> by reading these tutorials:</p>
 <ul>
-<li><a href="https://hajkd.github.io/orthologr/articles/Install.html">Install Prerequisite Tools</a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/dNdS_estimation.html">Perform Orthology Inference and dNdS Estimation</a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/orthology_inference.html">Perform Only Orthology Inference</a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/blast.html">Perform BLAST Searches</a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/divergence_stratigraphy.html">Perform Divergence Stratigraphy</a></li>
-<li><a href="https://hajkd.github.io/orthologr/articles/sequence_alignments.html">Perform Sequence Alignments</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/Install.html">Install Prerequisite Tools</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/dNdS_estimation.html">Perform Orthology Inference and dNdS Estimation</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/orthology_inference.html">Perform Only Orthology Inference</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/blast.html">Perform BLAST Searches</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html">Perform Divergence Stratigraphy</a></li>
+<li><a href="https://drostlab.github.io/orthologr/articles/sequence_alignments.html">Perform Sequence Alignments</a></li>
 </ul>
 </div>
 <div id="example" class="section level2">
@@ -249,7 +249,7 @@
 <a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co"># store result in Excel readable csv file</span></a>
 <a class="sourceLine" id="cb4-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"readr"</span>)</a>
 <a class="sourceLine" id="cb4-20" data-line-number="20">readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_excel_csv</a></span>(Hs_vs_Mm_dNdS, <span class="st">"Hs_vs_Mm_dNdS.csv"</span>)</a></code></pre></div>
-<p>Users can find the corresponding map at <a href="https://github.com/HajkD/dNdS_database" class="uri">https://github.com/HajkD/dNdS_database</a>.</p>
+<p>Users can find the corresponding map at <a href="https://github.com/drostlab/dNdS_database" class="uri">https://github.com/drostlab/dNdS_database</a>.</p>
 <p><strong>This way, users can compute dN/dS values for any pairwise genome comparison.</strong></p>
 </div>
 <div id="on-windows-systems" class="section level3">
@@ -274,7 +274,7 @@
 <h3 class="hasAnchor">
 <a href="#troubleshooting-on-windows-machines" class="anchor"></a>Troubleshooting on Windows Machines</h3>
 <ul>
-<li>Install <code>orthologr</code> on a Win 8 laptop: <a href="https://github.com/HajkD/orthologr/issues/1">solution</a> ( Thanks to Andres Romanowski )</li>
+<li>Install <code>orthologr</code> on a Win 8 laptop: <a href="https://github.com/drostlab/orthologr/issues/1">solution</a> ( Thanks to Andres Romanowski )</li>
 </ul>
 </div>
 </div>
@@ -353,7 +353,7 @@
 <a href="#discussions-and-bug-reports" class="anchor"></a>Discussions and Bug Reports</h2>
 <p>I would be very happy to learn more about potential improvements of the concepts and functions provided in this package.</p>
 <p>Furthermore, in case you find some bugs, need additional (more flexible) functionality of parts of this package, or want to contribute to this project please let me know:</p>
-<p><a href="https://github.com/HajkD/orthologr/issues" class="uri">https://github.com/HajkD/orthologr/issues</a></p>
+<p><a href="https://github.com/drostlab/orthologr/issues" class="uri">https://github.com/drostlab/orthologr/issues</a></p>
 </div>
 <div id="licenses" class="section level2">
 <h2 class="hasAnchor">

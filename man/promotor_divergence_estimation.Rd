@@ -13,13 +13,13 @@ promotor_divergence_estimation(query, subject, model = "K80")
 
 \item{model}{a model as specified in \code{\link[ape]{dist.dna}}: a character string specifying the evolutionary model to be used - must be one of:
 \itemize{
-\item  \code{K80} (the default)
+\item \code{K80} (the default)
 \item \code{raw}
-\item  \code{N}
-\item  \code{TS}
-\item  \code{TV}
-\item  \code{JC69}
-\item  \code{F81} 
+\item \code{N}
+\item \code{TS}
+\item \code{TV}
+\item \code{JC69}
+\item \code{F81} 
 \item \code{K81}
 \item \code{F84}
 \item \code{BH87}
