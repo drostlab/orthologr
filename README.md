@@ -25,9 +25,9 @@ working on this software tool and will motivate me to extend its functionality a
 In detail, `orthologr` allows users to perform orthology inference and dN/dS estimation between two genomes or between several genomes. The following methods
 to infer orthologous relationships between genes of entire genomes are available in this package:
 
-- [__BLAST best hit__](https://hajkd.github.io/orthologr/articles/blast.html#the-blast_best-function)
-- [__BLAST best reciprocal hit__](https://hajkd.github.io/orthologr/articles/blast.html#the-blast_rec-function)
-- [__OrthoFinder2__](https://hajkd.github.io/orthologr/articles/orthology_inference.html)
+- [__BLAST best hit__](https://drostlab.github.io/orthologr/articles/blast.html#the-blast_best-function)
+- [__BLAST best reciprocal hit__](https://drostlab.github.io/orthologr/articles/blast.html#the-blast_rec-function)
+- [__OrthoFinder2__](https://drostlab.github.io/orthologr/articles/orthology_inference.html)
 
 The most useful implementation in `orthologr` is the ability to compute synonymous versus non-synonymous substitution rates (dN/dS)
 for all orthologous genes between two __entire genomes__.
@@ -45,7 +45,7 @@ Available dN/dS estimation methods are:
 - "MA" (Model Averaging): based on a set of candidate models, Posada, D. (2003)
 - "ALL": All models toghether 
 
-Please find more details [here](https://hajkd.github.io/orthologr/articles/dNdS_estimation.html).
+Please find more details [here](https://drostlab.github.io/orthologr/articles/dNdS_estimation.html).
 
 ## Install `orthologr`
 
@@ -67,12 +67,12 @@ devtools::install_github("HajkD/orthologr")
 
 Learn `orthologr` by reading these tutorials: 
 
-- [Install Prerequisite Tools](https://hajkd.github.io/orthologr/articles/Install.html)
-- [Perform Orthology Inference and dNdS Estimation](https://hajkd.github.io/orthologr/articles/dNdS_estimation.html)
-- [Perform Only Orthology Inference](https://hajkd.github.io/orthologr/articles/orthology_inference.html)
-- [Perform BLAST Searches](https://hajkd.github.io/orthologr/articles/blast.html)
-- [Perform Divergence Stratigraphy](https://hajkd.github.io/orthologr/articles/divergence_stratigraphy.html)
-- [Perform Sequence Alignments](https://hajkd.github.io/orthologr/articles/sequence_alignments.html)
+- [Install Prerequisite Tools](https://drostlab.github.io/orthologr/articles/Install.html)
+- [Perform Orthology Inference and dNdS Estimation](https://drostlab.github.io/orthologr/articles/dNdS_estimation.html)
+- [Perform Only Orthology Inference](https://drostlab.github.io/orthologr/articles/orthology_inference.html)
+- [Perform BLAST Searches](https://drostlab.github.io/orthologr/articles/blast.html)
+- [Perform Divergence Stratigraphy](https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html)
+- [Perform Sequence Alignments](https://drostlab.github.io/orthologr/articles/sequence_alignments.html)
 
 
 
@@ -161,7 +161,7 @@ install.packages("readr")
 readr::write_excel_csv(Hs_vs_Mm_dNdS, "Hs_vs_Mm_dNdS.csv")
 ```
 
-Users can find the corresponding map at https://github.com/HajkD/dNdS_database.
+Users can find the corresponding map at https://github.com/drostlab/dNdS_database.
 
 __This way, users can compute dN/dS values for any pairwise genome comparison.__
 
@@ -188,7 +188,7 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 
 ### Troubleshooting on Windows Machines
 
-- Install `orthologr` on a Win 8 laptop: [solution](https://github.com/HajkD/orthologr/issues/1) ( Thanks to Andres Romanowski )
+- Install `orthologr` on a Win 8 laptop: [solution](https://github.com/drostlab/orthologr/issues/1) ( Thanks to Andres Romanowski )
 
 
 ## Interfaces implemented in `orthologr`:
@@ -234,7 +234,7 @@ I would be very happy to learn more about potential improvements of the concepts
 
 Furthermore, in case you find some bugs, need additional (more flexible) functionality of parts of this package, or want to contribute to this project please let me know:
 
-https://github.com/HajkD/orthologr/issues
+https://github.com/drostlab/orthologr/issues
 
 ## Licenses
 
