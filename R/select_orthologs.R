@@ -85,8 +85,9 @@ select_orthologs <-
                         )
                         
                         # import annotation for query
-                        imported_annotation_qry <-
-                                tibble::as_tibble(rtracklayer::import(annotation_file_query, format = format[1]))
+                        imported_annotation_qry <- tibble::as_tibble(rtracklayer::import(annotation_file_query, format = format[1]))
+
+                        
                         if (any(imported_annotation_qry$source == "ERCC"))
                                 imported_annotation_qry <- dplyr::filter(imported_annotation_qry, source != "ERCC")
                         
@@ -102,6 +103,7 @@ select_orthologs <-
                                                 dplyr::group_by(imported_annotation_qry, Name),
                                                 extract_features(. , format = format[1])
                                         )
+
                                 colnames(extracted_features_qry)[2] <-
                                         "query_gene_locus_id"
                                 
@@ -116,11 +118,22 @@ select_orthologs <-
                         
                         if (format[1] == "gtf") {
                                 gene_id <- NULL
+                                # extracted_features_qry <-
+                                #         dplyr::do(
+                                #                 dplyr::group_by(imported_annotation_qry, gene_id),
+                                #                 extract_features(. , format = format[1])
+                                #         )
+                                
+                                
+                                select_qry_ids <- unique(imported_annotation_qry[imported_annotation_qry$transcript_id %in% dnds_tbl$query_id,]$gene_id)
+                                
                                 extracted_features_qry <-
                                         dplyr::do(
-                                                dplyr::group_by(imported_annotation_qry, gene_id),
+                                                dplyr::group_by(imported_annotation_qry[imported_annotation_qry$gene_id %in% select_qry_ids,], 
+                                                                                                    gene_id),
                                                 extract_features(. , format = format[1])
                                         )
+                                
                                 colnames(extracted_features_qry)[2] <-
                                         "query_gene_locus_id"
                                 
@@ -176,11 +189,20 @@ select_orthologs <-
                         
                         if (format[2] == "gtf") {
                                 gene_id <- NULL
+                                # extracted_features_sbj <-
+                                #         dplyr::do(
+                                #                 dplyr::group_by(imported_annotation_sbj, gene_id),
+                                #                 extract_features(. , format = format[2])
+                                #         )
+                                
+                                select_sbj_ids <- unique(imported_annotation_sbj[imported_annotation_sbj$transcript_id %in% dnds_tbl$subject_id,]$gene_id)
+                                
                                 extracted_features_sbj <-
                                         dplyr::do(
-                                                dplyr::group_by(imported_annotation_sbj, gene_id),
+                                                dplyr::group_by(imported_annotation_sbj[imported_annotation_sbj$gene_id %in% select_sbj_ids,], gene_id),
                                                 extract_features(. , format = format[2])
                                         )
+                                
                                 colnames(extracted_features_sbj)[2] <-
                                         "subject_gene_locus_id"
                                 colnames(extracted_features_sbj)[3] <-
