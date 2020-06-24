@@ -23,9 +23,9 @@ retrieve_core_orthologs <- function(ortho_tables, species_order) {
      
         ortho_table_core <-
                 dplyr::bind_rows(dplyr::group_map(
-                        .tbl = dplyr::group_by(ortho_tables, query_gene_locus_id),
-                        ~ filter_core_set(., order_species = species_order),
-                        keep = TRUE
+                        .data = dplyr::group_by(ortho_tables, query_gene_locus_id),
+                        .f = ~ filter_core_set(., order_species = species_order),
+                        .keep = TRUE
                 ))
         
         ortho_table_core <-
