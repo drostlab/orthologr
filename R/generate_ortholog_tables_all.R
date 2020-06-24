@@ -32,7 +32,7 @@ generate_ortholog_tables_all <-
                 if (!file.exists(annotation_folder_subject))
                         stop("The subject annotation folder '", annotation_folder_subject, "' does not seem to exist. Please specify a valid folder path.", call. = FALSE)
                 
-                dnds_files <- file.path(dNdS_folder, list.files(dNdS_folder))
+                dnds_files <- file.path(dNdS_folder, list.files(dNdS_folder, pattern = ".*\\.(csv|tsv)"))
                 dnds_species <- basename(dnds_files)
                 qry_species <- unlist(stringr::str_split(basename(annotation_file_query), "[.]"))[1]    
                 sbj_files <- file.path(annotation_folder_subject, list.files(annotation_folder_subject))
