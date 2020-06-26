@@ -23,9 +23,9 @@ lnc_map_core_orthologs <- function(lnc_map, species_order) {
         
         lnc_map_core <-
                 dplyr::bind_rows(dplyr::group_map(
-                        .tbl = dplyr::group_by(lnc_map, query_id),
-                        ~ filter_core_set_lnc(., order_species = species_order),
-                        keep = TRUE
+                        .data = dplyr::group_by(lnc_map, query_id),
+                        .f = ~ filter_core_set_lnc(., order_species = species_order),
+                        .keep = TRUE
                 ))
         
         lnc_map_core <-
