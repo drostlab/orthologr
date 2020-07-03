@@ -15,6 +15,8 @@
 #' Please be aware that \code{max.target.seqs} selects best hits based on the database entry and not by the best e-value. See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
 #' @param min_qry_coverage_hsp minimum \code{qcovhsp} (= query coverage of the HSP) of an orthologous hit (a value between 1 and 100).
 #' @param min_qry_perc_identity minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).
+#' @param min_alig_length minimum \code{alig_length} (alignment length) to an orthologous hit (number of aligned nucleotides or amino acids depending on the input data) 
+#' @param logical_connective character representing logical connective (either "AND" or "OR") if \code{min_alig_length} is not \code{NULL} filtering is done on \code{min_alig_length} and/or \code{min_qry_perc_identity}
 #' @param comp_cores number of computing cores that shall be used to perform parallelized computations. 
 #' @param progress_bar should a progress bar be shown. Default is \code{progress_bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
@@ -44,6 +46,8 @@ map_generator_lnc <- function(query_file,
                           max.target.seqs = 10000,
                           min_qry_coverage_hsp = 30,
                           min_qry_perc_identity = 30,
+                          logical_connective = "AND",
+                          min_alig_length = NULL,
                           comp_cores       = 1,
                           progress_bar     = TRUE,
                           sep              = ";",
@@ -51,6 +55,10 @@ map_generator_lnc <- function(query_file,
         
         if (!fs::file_exists(query_file))
                 stop("Please provide a valid path to the 'query_file'.", call. = FALSE)
+        
+        if(!is.element(logical_connective, c("AND", "OR"))){
+                stop("Variable 'logical_connective' has to be an element of the vector (\"AND\", \"OR\").") 
+        }
         
         # retrieve all subject files within a given folder
         subj.files <- list.files(subjects_folder)
@@ -84,8 +92,33 @@ map_generator_lnc <- function(query_file,
                 )
                 
                 species_name_i <- as.character(unlist(stringr::str_split(subj.files[i], "[.]"))[1])
-                message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
-                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity)
+                if(!is.null(min_alig_length)){
+                        
+                        alig_length <- NULL
+                       
+                        if(logical_connective == "AND"){
+                                
+                                message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " and alig_length >= ", min_alig_length, " ...")
+                                OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity, alig_length >= min_alig_length)
+                                                                 
+                         }else if(logical_connective == "OR"){
+                                 
+                                 message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and (min_qry_perc_identity >= ", min_qry_perc_identity, " or alig_length >= ", min_alig_length, ") ...")
+                                 OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp & (perc_identity >= min_qry_perc_identity | alig_length >= min_alig_length))
+                         }
+ 
+                 }else{
+                         
+                         if(logical_connective == "AND"){
+                                 message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " and min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
+                                 OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp, perc_identity >= min_qry_perc_identity)
+                         }else if(logical_connective == "OR"){
+                                 OrgQuery_vs_OrgSubj <- dplyr::filter(OrgQuery_vs_OrgSubj, qcovhsp >= min_qry_coverage_hsp | perc_identity >= min_qry_perc_identity)
+                                 message("Filtering for BLAST hits with min_qry_coverage_hsp >= ", min_qry_coverage_hsp, " or min_qry_perc_identity >= ", min_qry_perc_identity, " ...")
+                         }
+                         
+                 }
+                
                 species_tibble <- tibble::tibble(species = unlist(rep(species_name_i, nrow(OrgQuery_vs_OrgSubj))))
                 
                 utils::write.table(
