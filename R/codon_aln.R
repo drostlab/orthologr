@@ -173,7 +173,7 @@ codon_aln <- function(file_aln,
                                 stop(
                                         "Please check the correct path to ",
                                         tool,
-                                        "... the interface call did not work properly."
+                                        "... the interface call did not work properly.", call. = FALSE
                                 )
                         })
                 } else {
@@ -219,14 +219,14 @@ codon_aln <- function(file_aln,
                         stop(
                                 "Please check the correct path to ",
                                 tool,
-                                "... the interface call did not work properly."
+                                "... the interface call did not work properly.", call. = FALSE
                         )
                 })
             }
         }
         
         if (!quiet) {
-                print(paste0("Codon Alignment successfully written in ", file.out, "."))
+                message(paste0("Codon Alignment successfully written in ", file.out, "."))
         }
         
         
@@ -241,7 +241,7 @@ codon_aln <- function(file_aln,
                                 "Something went wront with Pal2Nal.pl .",
                                 "\n",
                                 file.out,
-                                " could not be read properly."
+                                " could not be read properly.", call. = FALSE
                         )
                 })
         }
