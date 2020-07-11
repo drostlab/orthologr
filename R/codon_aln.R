@@ -80,6 +80,11 @@ codon_aln <- function(file_aln,
                       quiet          = FALSE){
         
         
+        if (!file.exists(file_aln))
+                stop("The file you specified in 'file_aln' does not seem to exist: ", file_aln,".", call. = FALSE)
+        if (!file.exists(file_nuc))
+                stop("The file you specified in 'file_nuc' does not seem to exist: ", file_nuc,".", call. = FALSE)
+        
         # the Pal2Nal program is stored as executable within
         # the R package environment: 'exec' folder
         # this is not an elegant version, only motivated by this discussion:
@@ -94,10 +99,10 @@ codon_aln <- function(file_aln,
         #path <- "/exec/pal2nal.v14/"
         
         if (!is.element(tool, c("pal2nal")))
-                stop("Please choose a tool that is supported by this function.")
+                stop("Please choose a tool that is supported by this function.", call. = FALSE)
         
         if (!is.element(format, c("clustal", "fasta")))
-                stop("Please choose a format that is supported by this function.")
+                stop("Please choose a format that is supported by this function.", call. = FALSE)
         
         if (!file.exists(file.path(tempdir(), "_alignment"))) {
                 dir.create(file.path(tempdir(), "_alignment"))
