@@ -14,6 +14,8 @@
 #' }
 #' @param comp_cores number of cores that shall be used for parallel processing. Default is \code{cores = 1}.
 #' @author Hajk-Georg Drost
+#' @note This function assumes that users have \code{OrthoFinder} installed via \code{miniconda} and stored at \code{~/opt/miniconda3/bin/}.
+#' In addition, DIAMOND needs to be installed as executable tool (/usr/local/bin).
 #' @examples \dontrun{
 #' # specify species names
 #' orgs <- c("Arabidopsis lyrata", 
@@ -32,12 +34,14 @@
 #' } 
 #' @export
 
-orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_type = "orthogroups_core", comp_cores = 1) {
+orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_type = NULL, comp_cores = 1) {
         
         is_installed_orthofinder()
         
-        if (!is.element(import_type, c("orthogroups_core", "orthogroups_pairwise")))
-                stop("The specified 'import_type' is not supported by this function. Please consult the documentation to select a valid Orthofinder2 'import_type'.", call. = FALSE)
+        if (!is.null(import_type)) {
+                if (!is.element(import_type, c("orthogroups_core", "orthogroups_pairwise")))
+                        stop("The specified 'import_type' is not supported by this function. Please consult the documentation to select a valid Orthofinder2 'import_type'.", call. = FALSE)
+        }
         
         ### add here a test that input sequences are amino acid sequences
         
@@ -60,16 +64,16 @@ orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_ty
                 if (comp_cores > cores)
                         stop("You chose more cores than are available on your machine.", call. = FALSE)
                 
-                message("Running ", system("orthofinder", intern = TRUE)[1], " using ", comp_cores, " cores ...")
+                message("Running OrthoFinder2 with ", comp_cores, " cores ...")
                 message("Do your input fasta files store unique sequences per gene locus, e.g. the longest splice variant? If not, then have a look at ?orthologr::retrieve_longest_isoforms().")
                 
                 # output is stored in OrthoFinder/Results_DATE , where DATE is in format: Nov08 for 08 th November
                 # or in this case OrthoFinder/Results_DATE_basename(proteome_folder)
                 
                 if (dirname(proteome_folder) == ".") {
-                        system(paste0("orthofinder -f ", ws_wrap(file.path(getwd(), proteome_folder))," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
+                        system(paste0("/opt/miniconda3/bin/orthofinder -f ", ws_wrap(file.path(getwd(), proteome_folder))," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
                 } else {
-                        system(paste0("orthofinder -f ", ws_wrap(proteome_folder)," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
+                        system(paste0("/opt/miniconda3/bin/orthofinder -f ", ws_wrap(proteome_folder)," -t ", cores," -a ", cores," -S diamond -n ", basename(proteome_folder)))
                 }
                 
                 message("Orthofinder2 finished successfully and stored all results in ", ifelse(dirname(proteome_folder) == ".", ws_wrap(file.path(getwd(), proteome_folder)), ws_wrap(proteome_folder)))
@@ -77,13 +81,9 @@ orthofinder2 <- function(proteome_folder, use_existing_output = FALSE, import_ty
         }
                 orthofinder2_output_folder <- file.path(proteome_folder, "OrthoFinder", paste0("Results_", basename(proteome_folder)))
                 
-                if (import_type == "orthogroups_core") {
-                        res <- orthofinder2_retrieve_core_orthologs(orthogroups_file = file.path(orthofinder2_output_folder, ""))
+                if (!is.null(import_type) && (import_type == "orthogroups_core")) {
+                        res <- orthofinder2_retrieve_core_orthologs(orthogroups_file = file.path(orthofinder2_output_folder, "") , single_copy_file = file.path(orthofinder2_output_folder, ""))
+                        return(res)
                 }
-                
-                
-        
-        
-        
-        
+
 }

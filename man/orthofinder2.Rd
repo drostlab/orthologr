@@ -7,7 +7,7 @@
 orthofinder2(
   proteome_folder,
   use_existing_output = FALSE,
-  import_type = "orthogroups_core",
+  import_type = NULL,
   comp_cores = 1
 )
 }
@@ -31,6 +31,10 @@ Options are:
 }
 \description{
 Run Orthofinder2 from R.
+}
+\note{
+This function assumes that users have \code{OrthoFinder} installed via \code{miniconda} and stored at \code{~/opt/miniconda3/bin/}.
+In addition, DIAMOND needs to be installed as executable tool (/usr/local/bin).
 }
 \examples{
 \dontrun{
