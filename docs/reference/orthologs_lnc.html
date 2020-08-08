@@ -151,6 +151,7 @@ based on selected orthology inference programs.</p>
     <pre class="usage"><span class='fu'>orthologs_lnc</span>(
   <span class='no'>query_file</span>,
   <span class='no'>subject_file</span>,
+  <span class='kw'>task</span> <span class='kw'>=</span> <span class='st'>"blastn"</span>,
   <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
   <span class='kw'>max.target.seqs</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
@@ -169,6 +170,16 @@ based on selected orthology inference programs.</p>
     <tr>
       <th>subject_file</th>
       <td><p>a character string specifying the paths to the sequence files of interest (subject organisms).</p></td>
+    </tr>
+    <tr>
+      <th>task</th>
+      <td><p>nucleotide search task option. Options are:</p><ul>
+<li><p><code>task = "blastn"</code> : Standard nucleotide-nucleotide comparisons (default) - Traditional BLASTN requiring an exact match of 11.</p></li>
+<li><p><code>task = "blastn-short"</code> : Optimized nucleotide-nucleotide comparisons for query sequences shorter than 50 nucleotides.</p></li>
+<li><p><code>task = "dc-megablast"</code> : Discontiguous megablast used to find somewhat distant sequences.</p></li>
+<li><p><code>task = "megablast"</code> : Traditional megablast used to find very similar (e.g., intraspecies or closely related species) sequences.</p></li>
+<li><p><code>task = "rmblastn"</code></p></li>
+</ul></td>
     </tr>
     <tr>
       <th>eval</th>

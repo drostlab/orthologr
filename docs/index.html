@@ -107,6 +107,7 @@
 <a href="#motivation" class="anchor"></a>Motivation</h3>
 <p>The comparative method is a powerful approach in genomics research. Based on our knowledge about the phylogenetic relationships between species, we can study the evolution, diversification, and constraints of biological processes by comparing genomes, genes, and other genomic loci across species. The <code>orthologr</code> package aims to provide a framework to perform <strong>large scale</strong> comparative genomics studies with R. <code>Orthologr</code> aims to be as easy to use as possible - from genomic data retrieval to orthology inference and dNdS estimation between several genomes.</p>
 <p>In combination with the R package <a href="https://github.com/ropensci/biomartr">biomartr</a>, users can retrieve genomes, proteomes, or coding sequences for several species and use them as input for orthology inference and dN/dS estimation with <code>orthologr</code>. The advantage of using <code>biomartr</code> in combination with <code>orthologr</code> is that users can join the new wave of research that promotes and facilitates <a href="https://github.com/ropensci/biomartr#short-package-description">computational reproducibility in genomics studies</a> and solve the issue of comparing genomes with different genome assembly qualities (also referred to as <a href="https://github.com/ropensci/biomartr#short-package-description">genome version crisis</a>).</p>
+<p>You can find a detailed list of all <code>orthologr</code> functions here: <a href="https://drostlab.github.io/orthologr/reference/index.html" class="uri">https://drostlab.github.io/orthologr/reference/index.html</a></p>
 </div>
 <div id="citation" class="section level3">
 <h3 class="hasAnchor">
@@ -286,19 +287,11 @@
 <a href="#perform-blast-searches-with-r" class="anchor"></a>Perform BLAST searches with R</h3>
 <ul>
 <li>
-<code>advanced_blast()</code>: Perform an advanced BLAST+ search</li>
-<li>
-<code>advanced_makedb()</code>: Create a BLASTable database with makeblastdb (advanced options)</li>
-<li>
 <code><a href="reference/blast.html">blast()</a></code>: Perform a BLAST+ search</li>
-<li>
-<code>blast.nr()</code>: Perform a BLASTP search against NCBI nr</li>
 <li>
 <code><a href="reference/blast_best.html">blast_best()</a></code>: Perform a BLAST+ best hit search</li>
 <li>
 <code><a href="reference/blast_rec.html">blast_rec()</a></code>: Perform a BLAST+ best reciprocal hit (BRH) search</li>
-<li>
-<code>delta.blast()</code>: Perform a DELTA-BLAST Search</li>
 </ul>
 </div>
 <div id="perform-pairwise-and-multiple-sequence-alignements-with-r" class="section level3">
@@ -319,8 +312,6 @@
 <ul>
 <li>
 <code><a href="reference/orthologs.html">orthologs()</a></code>: Main Orthology Inference Function</li>
-<li>
-<code>ProteinOrtho()</code>: Orthology Inference with ProteinOrtho</li>
 </ul>
 </div>
 <div id="perform-population-genomics-with-r" class="section level3">

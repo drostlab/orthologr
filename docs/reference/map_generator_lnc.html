@@ -150,6 +150,7 @@
   <span class='no'>query_file</span>,
   <span class='no'>subjects_folder</span>,
   <span class='no'>output_folder</span>,
+  <span class='kw'>task</span> <span class='kw'>=</span> <span class='st'>"blastn"</span>,
   <span class='kw'>eval</span> <span class='kw'>=</span> <span class='st'>"1E-5"</span>,
   <span class='kw'>ortho_detection</span> <span class='kw'>=</span> <span class='st'>"RBH"</span>,
   <span class='kw'>max.target.seqs</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
@@ -158,6 +159,7 @@
   <span class='kw'>comp_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>progress_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -175,6 +177,16 @@
     <tr>
       <th>output_folder</th>
       <td><p>a character string specifying the path to the folder where output orthologous tables should be stored.</p></td>
+    </tr>
+    <tr>
+      <th>task</th>
+      <td><p>nucleotide search task option. Options are:</p><ul>
+<li><p><code>task = "blastn"</code> : Standard nucleotide-nucleotide comparisons (default) - Traditional BLASTN requiring an exact match of 11.</p></li>
+<li><p><code>task = "blastn-short"</code> : Optimized nucleotide-nucleotide comparisons for query sequences shorter than 50 nucleotides.</p></li>
+<li><p><code>task = "dc-megablast"</code> : Discontiguous megablast used to find somewhat distant sequences.</p></li>
+<li><p><code>task = "megablast"</code> : Traditional megablast used to find very similar (e.g., intraspecies or closely related species) sequences.</p></li>
+<li><p><code>task = "rmblastn"</code></p></li>
+</ul></td>
     </tr>
     <tr>
       <th>eval</th>
@@ -214,6 +226,11 @@ Please be aware that <code>max.target.seqs</code> selects best hits based on the
       <td><p>a file separator that is used to store maps as csv file.</p></td>
     </tr>
     <tr>
+      <th>path</th>
+      <td><p>a character string specifying the path to the corresponding orthology inference tool.
+For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional parameters that shall be passed to  <code><a href='dNdS.html'>dNdS</a></code>.</p></td>
     </tr>
@@ -227,11 +244,19 @@ pairwise species comparisons.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># example using classic blastn searches</span>
 <span class='fu'>map_generator_lnc</span>(
    <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
    <span class='kw'>subjects_folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
-   <span class='kw'>output_folder</span>   <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(),
-   <span class='kw'>quiet</span>           <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+   <span class='kw'>output_folder</span>   <span class='kw'>=</span> <span class='st'>"orthologs_lncrna"</span>,
+   <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span>
+)
+<span class='co'># example using  discontiguous megablast used to find somewhat distant sequences</span>
+<span class='fu'>map_generator_lnc</span>(
+   <span class='kw'>query_file</span>      <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/ortho_thal_cds.fasta'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>subjects_folder</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'seqs/map_gen_example'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'orthologr'</span>),
+   <span class='kw'>output_folder</span>   <span class='kw'>=</span> <span class='st'>"orthologs_lncrna"</span>,
+   <span class='kw'>task</span>            <span class='kw'>=</span> <span class='st'>"dc-megablast"</span>,
    <span class='kw'>comp_cores</span>      <span class='kw'>=</span> <span class='fl'>1</span>
 )
 }</div></pre>
