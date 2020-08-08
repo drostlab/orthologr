@@ -7,6 +7,7 @@
 orthologs_lnc(
   query_file,
   subject_file,
+  task = "blastn",
   eval = "1E-5",
   ortho_detection = "RBH",
   max.target.seqs = 10000,
@@ -19,6 +20,15 @@ orthologs_lnc(
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
 \item{subject_file}{a character string specifying the paths to the sequence files of interest (subject organisms).}
+
+\item{task}{nucleotide search task option. Options are:
+\itemize{
+\item \code{task = "blastn"} : Standard nucleotide-nucleotide comparisons (default) - Traditional BLASTN requiring an exact match of 11.
+\item \code{task = "blastn-short"} : Optimized nucleotide-nucleotide comparisons for query sequences shorter than 50 nucleotides.
+\item \code{task = "dc-megablast"} : Discontiguous megablast used to find somewhat distant sequences.
+\item \code{task = "megablast"} : Traditional megablast used to find very similar (e.g., intraspecies or closely related species) sequences.
+\item \code{task = "rmblastn"}
+}}
 
 \item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
 

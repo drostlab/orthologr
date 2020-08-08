@@ -8,6 +8,7 @@ map_generator_lnc(
   query_file,
   subjects_folder,
   output_folder,
+  task = "blastn",
   eval = "1E-5",
   ortho_detection = "RBH",
   max.target.seqs = 10000,
@@ -16,6 +17,7 @@ map_generator_lnc(
   comp_cores = 1,
   progress_bar = TRUE,
   sep = ";",
+  path = NULL,
   ...
 )
 }
@@ -25,6 +27,15 @@ map_generator_lnc(
 \item{subjects_folder}{a character string specifying the path to the folder where lncRNAs files in \code{fasta} format of the subject organisms are stored.}
 
 \item{output_folder}{a character string specifying the path to the folder where output orthologous tables should be stored.}
+
+\item{task}{nucleotide search task option. Options are:
+\itemize{
+\item \code{task = "blastn"} : Standard nucleotide-nucleotide comparisons (default) - Traditional BLASTN requiring an exact match of 11.
+\item \code{task = "blastn-short"} : Optimized nucleotide-nucleotide comparisons for query sequences shorter than 50 nucleotides.
+\item \code{task = "dc-megablast"} : Discontiguous megablast used to find somewhat distant sequences.
+\item \code{task = "megablast"} : Traditional megablast used to find very similar (e.g., intraspecies or closely related species) sequences.
+\item \code{task = "rmblastn"}
+}}
 
 \item{eval}{a character string specifying the e-value for BLAST based orthology inference. Please use the scientific notation.}
 
@@ -48,6 +59,9 @@ Please be aware that \code{max.target.seqs} selects best hits based on the datab
 
 \item{sep}{a file separator that is used to store maps as csv file.}
 
+\item{path}{a character string specifying the path to the corresponding orthology inference tool.
+For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
+
 \item{...}{additional parameters that shall be passed to  \code{\link{dNdS}}.}
 }
 \description{
@@ -61,11 +75,19 @@ pairwise species comparisons.
 }
 \examples{
 \dontrun{
+# example using classic blastn searches
 map_generator_lnc(
    query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
    subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
-   output_folder   = getwd(),
-   quiet           = TRUE,
+   output_folder   = "orthologs_lncrna",
+   comp_cores      = 1
+)
+# example using  discontiguous megablast used to find somewhat distant sequences
+map_generator_lnc(
+   query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+   subjects_folder = system.file('seqs/map_gen_example', package = 'orthologr'),
+   output_folder   = "orthologs_lncrna",
+   task            = "dc-megablast",
    comp_cores      = 1
 )
 }
