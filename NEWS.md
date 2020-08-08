@@ -10,6 +10,9 @@
 - adding a new argument `of_path` to `orthofinder2()` to allow users to specify their own path
 to their locally installed `orthofinder` executable
 
+- adding new argument `task` to `map_generator_lnc()` and `orthologs_lnc()` to allow users
+to use the full `blastn` range provided by [blast_nucleotide_to_nucleotide()](https://drostlab.github.io/metablastr/reference/blast_nucleotide_to_nucleotide.html)
+- adding new argument `path` to `map_generator_lnc()` to allow users to specify their local installation path of BLAST
 
 ## `orthologr` version  0.3.0
 
