@@ -8,13 +8,14 @@ orthofinder2(
   proteome_folder,
   use_existing_output = FALSE,
   import_type = NULL,
-  comp_cores = 1
+  comp_cores = 1,
+  of_path = NULL
 )
 }
 \arguments{
 \item{proteome_folder}{file path to a folder storing the proteome sequences of the species for which orthology inference shall be performed.}
 
-\item{use_existing_output}{a logical value indicating whether or not an existing \code{Orthofinder2} 
+\item{use_existing_output}{a logical value indicating whether or not an existing \code{Orthofinder2}
 output folder shall be used fo further import and processing. If \code{use_existing_output = TRUE}
 is selected then please specify the file path to the in \code{proteome_folder} where the \code{Orthofinder2} output folder can be found.}
 
@@ -28,6 +29,11 @@ Options are:
 }}
 
 \item{comp_cores}{number of cores that shall be used for parallel processing. Default is \code{cores = 1}.}
+
+\item{path}{a character string specifying the path to the locally installed \code{orthofinder} executable.
+A possible specification could be \code{path = "/opt/miniconda3/bin/"} which internally will translate to
+\code{/opt/miniconda3/bin/orthofinder}. The default is \code{path = NULL} which means that orthofinder assumes
+users have their \code{orthofinder} executable stored at \code{/opt/miniconda3/bin/orthofinder}.}
 }
 \description{
 Run Orthofinder2 from R.
@@ -39,20 +45,20 @@ In addition, DIAMOND needs to be installed as executable tool (/usr/local/bin).
 \examples{
 \dontrun{
 # specify species names
-orgs <- c("Arabidopsis lyrata", 
+orgs <- c("Arabidopsis lyrata",
           "Capsella rubella", "Solanum lycopersicum")
-# download proteome files for all species          
+# download proteome files for all species
 biomartr::getProteomeSet(db = "refseq", organisms = orgs, path = "of_proteomes")
-# download annotation files for all species          
+# download annotation files for all species
 biomartr::getGFFSet(db = "refseq", organisms = orgs, path = "of_gff")
 # select longest splice variant per gene locus
-retrieve_longest_isoforms_all(proteome_folder = "of_proteomes", 
+retrieve_longest_isoforms_all(proteome_folder = "of_proteomes",
                               annotation_folder = "of_gff",
-                              annotation_format = "gff", 
+                              annotation_format = "gff",
                               output_folder = "of_proteomes_longest_sv")
 # run orthofinder2 to infer ortho groups for the specified species
 orthofinder2(proteome_folder = "of_proteomes_longest_sv", comp_cores = 4)
-} 
+}
 }
 \author{
 Hajk-Georg Drost
