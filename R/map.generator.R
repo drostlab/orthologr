@@ -36,7 +36,7 @@
 #'    aa_aln_tool      = "NW", 
 #'    codon_aln_tool   = "pal2nal", 
 #'    dnds_est_method  = "Comeron",
-#'    output_folder   = getwd(),
+#'    output_folder   = "orthologr_dnds_maps",
 #'    quiet           = TRUE,
 #'    comp_cores      = 1
 #' )

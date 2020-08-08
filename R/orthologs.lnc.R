@@ -4,6 +4,14 @@
 #' based on selected orthology inference programs.
 #' @param query_file a character string specifying the path to the sequence file of interest (query organism).
 #' @param subject_file a character string specifying the paths to the sequence files of interest (subject organisms).
+#' @param task nucleotide search task option. Options are:
+#' \itemize{
+#' \item \code{task = "blastn"} : Standard nucleotide-nucleotide comparisons (default) - Traditional BLASTN requiring an exact match of 11.
+#' \item \code{task = "blastn-short"} : Optimized nucleotide-nucleotide comparisons for query sequences shorter than 50 nucleotides.
+#' \item \code{task = "dc-megablast"} : Discontiguous megablast used to find somewhat distant sequences.
+#' \item \code{task = "megablast"} : Traditional megablast used to find very similar (e.g., intraspecies or closely related species) sequences.
+#' \item \code{task = "rmblastn"}
+#' }
 #' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
 #' to detect orthologous genes. Options are:
@@ -71,7 +79,8 @@
 #' @export
 
 orthologs_lnc <- function(query_file,
-                      subject_file, 
+                      subject_file,
+                      task            = "blastn",
                       eval            = "1E-5", 
                       ortho_detection = "RBH",
                       max.target.seqs = 10000,
@@ -95,7 +104,7 @@ orthologs_lnc <- function(query_file,
                         subject =  subject_file,
                         search_type = "nucleotide_to_nucleotide",
                         cores = comp_cores,
-                        task = "blastn",
+                        task = task,
                         evalue = eval, 
                         output.path = tempdir(),
                         max.target.seqs = max.target.seqs,
@@ -114,7 +123,7 @@ orthologs_lnc <- function(query_file,
                         subject =  subject_file,
                         search_type = "nucleotide_to_nucleotide",
                         cores = comp_cores,
-                        task = "blastn",
+                        task = task,
                         evalue = eval, 
                         output.path = tempdir(),
                         max.target.seqs = max.target.seqs,
