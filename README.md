@@ -13,6 +13,8 @@ users can join the new wave of research that promotes and facilitates
 [computational reproducibility in genomics studies](https://github.com/ropensci/biomartr#short-package-description) and solve the
 issue of comparing genomes with different genome assembly qualities (also referred to as [genome version crisis](https://github.com/ropensci/biomartr#short-package-description)).
 
+You can find a detailed list of all `orthologr` functions here: https://drostlab.github.io/orthologr/reference/index.html
+
 ### Citation
 
 **Please cite the following paper in which I introduce `orthologr` when using this package for your own research. This will allow me to continue
@@ -195,13 +197,9 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 
 ### Perform BLAST searches with R  
 
-* `advanced_blast()`: Perform an advanced BLAST+ search
-* `advanced_makedb()`: Create a BLASTable database with makeblastdb (advanced options)
 * `blast()`: Perform a BLAST+ search
-* `blast.nr()`: Perform a BLASTP search against NCBI nr
 * `blast_best()`: Perform a BLAST+ best hit search
 * `blast_rec()`: Perform a BLAST+ best reciprocal hit (BRH) search
-* `delta.blast()`: Perform a DELTA-BLAST Search
 
 
 ### Perform Pairwise and Multiple Sequence Alignements with R
@@ -213,7 +211,6 @@ library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
 ### Perform Orthology Inference with R
 
 * `orthologs()`: Main Orthology Inference Function
-* `ProteinOrtho()`: Orthology Inference with ProteinOrtho
 
 ### Perform Population Genomics with R
 
