@@ -7,6 +7,8 @@
 ### New Features
 
 - the `generate_ortholog_tables()` and `retrieve_longest_isoforms()` now include the new `check_annotation()` function to capture corrupt GFF or GTF files and fix them 
+- adding a new argument `of_path` to `orthofinder2()` to allow users to specify their own path
+to their locally installed `orthofinder` executable
 
 
 ## `orthologr` version  0.3.0
