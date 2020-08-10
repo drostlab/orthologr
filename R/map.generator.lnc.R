@@ -1,6 +1,7 @@
 #' @title Infer orthologous lncRNAs between multiple species
 #' @description Inference of orthologous lncRNAs between multiple species is performed via pairwise BLAST (reciprocal) best hit comparisons.
 #'  The corresponding orthologous tables are then stored in an output folder.
+#'
 #' @param query_file a character string specifying the path to the lncRNAs file of the query organism in \code{fasta} format.
 #' @param subjects_folder a character string specifying the path to the folder where lncRNAs files in \code{fasta} format of the subject organisms are stored.
 #' @param output_folder a character string specifying the path to the folder where output orthologous tables should be stored.
@@ -21,10 +22,14 @@
 #' @param progress_bar should a progress bar be shown. Default is \code{progress_bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
 #' @param ... additional parameters that shall be passed to  \code{\link{dNdS}}.
+#' @note According to Sarropoulos, I., et al. (2019) orthology detection of lncRNAs was performed by reciprocal BLAST searches. Significant hits with an e-value <= 10-3 were selected having an alignment identity >= 10\% OR a minimum alignment length >= 50 nucleotides. 
 #' @details
 #' Given a query organism and a set of subject organsisms that are stored in the same folder,
 #' this function crawls through all subject organsism and infers the lncRNA homologs in
 #' pairwise species comparisons.
+#' @references{
+#' \insertRef{Sarropoulos2019}{orthologr}
+#' }
 #' @author Hajk-Georg Drost
 #' @examples
 #' \dontrun{
@@ -36,8 +41,22 @@
 #'    comp_cores      = 1
 #' )
 #' }
+#' 
+#' \dontrun{
+#' # parameter settings based on Sarropoulos, I., et al. (2019)
+#' map_generator_lnc(
+#'    query_file,,
+#'    subjects_folder,
+#'    eval                  = 1E-3,
+#'    ortho_detection       = "RBH",
+#'    output_folder,
+#'    min_qry_coverage_hsp  = 0,
+#'    min_qry_perc_identity = 10,
+#'    logical_connective    = "OR",
+#'    min_alig_length       = 50)
+#'}
+#' @importFrom Rdpack reprompt
 #' @export
-
 map_generator_lnc <- function(query_file, 
                           subjects_folder,
                           output_folder, 
