@@ -36,7 +36,8 @@ Imports:
     readr,
     ape,
     ggplot2,
-    scales
+    scales,
+    Rdpack
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
@@ -44,7 +45,8 @@ Suggests:
     testthat (>= 0.9.1),
     benchmarkme
 Remotes: HajkD/metablastr
+RdMacros: Rdpack
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
