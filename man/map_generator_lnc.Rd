@@ -14,6 +14,8 @@ map_generator_lnc(
   max.target.seqs = 10000,
   min_qry_coverage_hsp = 30,
   min_qry_perc_identity = 30,
+  logical_connective = "AND",
+  min_alig_length = NULL,
   comp_cores = 1,
   progress_bar = TRUE,
   sep = ";",
@@ -53,6 +55,10 @@ Please be aware that \code{max.target.seqs} selects best hits based on the datab
 
 \item{min_qry_perc_identity}{minimum \code{perc_identity} (= percent sequence identity between query and selected HSP) of an orthologous hit (a value between 1 and 100).}
 
+\item{logical_connective}{character representing logical connective (either "AND" or "OR") if \code{min_alig_length} is not \code{NULL} filtering is done on \code{min_alig_length} and/or \code{min_qry_perc_identity}}
+
+\item{min_alig_length}{minimum \code{alig_length} (alignment length) to an orthologous hit (number of aligned nucleotides or amino acids depending on the input data)}
+
 \item{comp_cores}{number of computing cores that shall be used to perform parallelized computations.}
 
 \item{progress_bar}{should a progress bar be shown. Default is \code{progress_bar = TRUE}.}
@@ -73,6 +79,9 @@ Given a query organism and a set of subject organsisms that are stored in the sa
 this function crawls through all subject organsism and infers the lncRNA homologs in
 pairwise species comparisons.
 }
+\note{
+According to Sarropoulos, I., et al. (2019) orthology detection of lncRNAs was performed by reciprocal BLAST searches. Significant hits with an e-value <= 10-3 were selected having an alignment identity >= 10\% OR a minimum alignment length >= 50 nucleotides.
+}
 \examples{
 \dontrun{
 # example using classic blastn searches
@@ -90,6 +99,25 @@ map_generator_lnc(
    task            = "dc-megablast",
    comp_cores      = 1
 )
+}
+
+\dontrun{
+# parameter settings based on Sarropoulos, I., et al. (2019)
+map_generator_lnc(
+   query_file,,
+   subjects_folder,
+   eval                  = 1E-3,
+   ortho_detection       = "RBH",
+   output_folder,
+   min_qry_coverage_hsp  = 0,
+   min_qry_perc_identity = 10,
+   logical_connective    = "OR",
+   min_alig_length       = 50)
+}
+}
+\references{
+{
+\insertRef{Sarropoulos2019}{orthologr}
 }
 }
 \author{
