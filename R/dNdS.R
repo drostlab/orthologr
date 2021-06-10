@@ -528,7 +528,7 @@ dNdS <- function(query_file,
         subject_id <- NULL
         hit.table_selected <- dplyr::select(hit.table, -subject_id)
         
-        res <- dplyr::inner_join(dNdS_tbl, hit.table_selected, by = "query_id")
+        res <- dplyr::inner_join(dNdS_tbl, hit.table_selected, by = "query_id", copy = TRUE)
         
         message("dN/dS Estimation Completed.")
         
