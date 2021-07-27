@@ -25,6 +25,9 @@ read.genome <- function(file, format, ...){
         if(!is.element(format,c("fasta","fastq")))
                 stop("Please choose a file format that is supported by this function.")
         
+        if (!file.exists(file))
+                stop("The file path you specified does not seem to exist: '", file,"'.", call. = FALSE)
+        
         geneids <- seqs <- NULL
         
         if(format == "fasta"){
@@ -32,6 +35,10 @@ read.genome <- function(file, format, ...){
                 tryCatch({
                         
                         genome <- Biostrings::readDNAStringSet(filepath = file, format = format, ...)
+                        
+                        if (length(genome) == 0)
+                                stop("The file '", file,"' seems to be empty and does not contain any sequences.", call. = FALSE)
+                        
                         genome_names <- as.vector(unlist(sapply(genome@ranges@NAMES, function(x){return(strsplit(x, " ")[[1]][1])})))
                         genome.dt <- data.table::data.table(geneids = genome_names,
                                                             seqs = toupper(as.character(genome)))
@@ -75,12 +82,19 @@ read.proteome <- function(file, format, ...){
         if(!is.element(format,c("fasta","fastq")))
                 stop("Please choose a file format that is supported by this function.")
         
+        if (!file.exists(file))
+                stop("The file path you specified does not seem to exist: '", file,"'.", call. = FALSE)
+        
         geneids <- seqs <- NULL 
         
                 
                 tryCatch({
                         
                         proteome <- Biostrings::readAAStringSet(filepath = file, format = format, ...)
+                        
+                        if (length(proteome) == 0)
+                                stop("The file '", file,"' seems to be empty and does not contain any sequences.", call. = FALSE)
+                        
                         proteome_names <- as.vector(unlist(sapply(proteome@ranges@NAMES, function(x){return(strsplit(x, " ")[[1]][1])})))
                         proteome.dt <- data.table::data.table(geneids = proteome_names,
                                                               seqs = toupper(as.character(proteome)))
@@ -123,12 +137,17 @@ read.cds <- function(file, format, delete_corrupt_cds = TRUE, ...) {
         if (!is.element(format, c("fasta", "fastq")))
                 stop("Please choose a file format that is supported by this function.")
         
+        if (!file.exists(file))
+                stop("The file path you specified does not seem to exist: '", file,"'.", call. = FALSE)
         
         geneids <- seqs <- NULL
         
         tryCatch({
                 cds_file <-
                         Biostrings::readDNAStringSet(filepath = file, format = format, ...)
+                
+                if (length(cds_file) == 0)
+                        stop("The file '", file,"' seems to be empty and does not contain any sequences.", call. = FALSE)
                 
                 cds_names <-
                         as.vector(unlist(sapply(cds_file@ranges@NAMES, function(x) {
@@ -147,7 +166,7 @@ read.cds <- function(file, format, delete_corrupt_cds = TRUE, ...) {
                                 return((nchar(x) %% 3) == 0)
                         }
                 
-                all_triplets <- cds.dt[, mod3(seqs)]
+                all_triplets <- as.logical(cds.dt[ , mod3(seqs)])
                 
                 n_seqs <- nrow(cds.dt)
                 
