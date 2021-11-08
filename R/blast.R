@@ -138,10 +138,20 @@ blast <- function(query_file,
                              call. = FALSE)
         }
         
-        is_installed_blast()
-        message("Running ",
-                system("blastp -version", intern = TRUE)[1],
-                " ...")
+        is_installed_blast(path = path)
+        
+        if (is.null(path)) {
+                message("Running ",
+                        system("blastp -version", intern = TRUE)[1],
+                        " ...")
+        } else {
+                message("Running ",
+                        system(paste0(
+                                'export PATH=$PATH:',
+                                path, "' ; blastp -version '"), intern = TRUE)[1],
+                        " ...")
+        }
+        
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
         # http://stackoverflow.com/questions/8096313/no-visible-binding-for-global-variable-note-in-r-cmd-check?lq=1
