@@ -81,20 +81,14 @@ The CDS retrieval can be done using a `Terminal` or by manual downloading the fi
 ```shell
 
 # download CDS file of A. thaliana
-curl ftp://ftp.ensemblgenomes.org/pub/
-plants/release-23/fasta/arabidopsis_thaliana/
-cds/Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz 
--o Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+curl ftp://ftp.ensemblgenomes.org/pub/plants/release-23/fasta/arabidopsis_thaliana/cds/Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz -o Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
 
 # unzip the fasta file
 gunzip -d Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
 
 # download CDS file of A. lyrata
 
-curl ftp://ftp.ensemblgenomes.org/pub/plants/
-release-23/fasta/arabidopsis_lyrata/cds/
-Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz 
--o Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+curl ftp://ftp.ensemblgenomes.org/pub/plants/release-23/fasta/arabidopsis_lyrata/cds/Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz -o Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 
 # unzip the fasta file
 gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
