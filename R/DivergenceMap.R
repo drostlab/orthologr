@@ -1,8 +1,9 @@
 #' @title Sort dNdS Values Into Divergence Strata
 #' @description This function takes a data.table returned by dNdS
-#' and sorts the corresponding dNdS value into divergence strata (deciles).
+#' and sorts the corresponding dNdS value into divergence strata (10-quantile or deciles by default).
 #' @param dNdS_tbl a data.table object returned by \code{\link{dNdS}}.
 #' @param subject.id a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.
+#' @param n_quantile a numeric value specifying the number of quantiles that should be returned.
 #' @details 
 #' 
 #' Divergence Strata are decile values of corresponding \code{\link{dNdS}} values.
@@ -40,7 +41,7 @@
 #' @import data.table
 #' @export
 
-divergence_map <- function(dNdS_tbl, subject.id = FALSE){
+divergence_map <- function(dNdS_tbl, subject.id = FALSE, n_quantile = 10){
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -53,26 +54,17 @@ divergence_map <- function(dNdS_tbl, subject.id = FALSE){
         dNdS_tbl_divMap <-
                 data.table::as.data.table(dplyr::select(dtplyr::lazy_dt(dNdS_tbl), dNdS, query_id, subject_id))
         
-        DecileValues <-
+        QuantileValues <-
                 stats::quantile(dNdS_tbl_divMap[ , dNdS],
-                                probs = seq(0.0, 1, 0.1),
+                                probs = seq(0.0, 1, (1/{{n_quantile}})),
                                 na.rm = TRUE)
-        
-        for (i in length(DecileValues):2) {
-                AllGenesOfDecile_i <-
-                        stats::na.omit(which((dNdS_tbl_divMap[ , dNdS] < DecileValues[i]) &
-                                                     (dNdS_tbl_divMap[ , dNdS] >= DecileValues[i - 1])
-                        ))
-                dNdS_tbl_divMap[AllGenesOfDecile_i, dNdS := (i - 1)]
-                
+        if (any(duplicated(QuantileValues))) {
+                stop("ERROR: there is at least one duplicate threshold in the quantile analysis. Please select a lower value as n_quantile.")
+        } else {
+        #        print("All values in the vector are unique.")
         }
         
-        ## assigning all KaKs values to Decile-Class : 10 which have the exact Kaks-value
-        ## as the 100% quantile, because in the loop we tested for < X% leaving out
-        ## the exact 100% quantile
-        dNdS_tbl_divMap[which(dNdS_tbl_divMap[ , dNdS] == DecileValues[length(DecileValues)]) , 1] <-
-                10
-        
+        dNdS_tbl_divMap$dNdS <- base::cut(dNdS_tbl_divMap[ , dNdS], breaks = QuantileValues, include.lowest = TRUE, labels = FALSE)
         data.table::setnames(dNdS_tbl_divMap, old = "dNdS", new = "divergence_strata")
         
         if (!subject.id)
