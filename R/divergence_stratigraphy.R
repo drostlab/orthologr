@@ -185,7 +185,6 @@ divergence_stratigraphy <- function(query_file,
         if (ds.values) {
                 # divergence map: standard = col1: divergence stratum, col2: query_id
                 dm_tbl <- divergence_map( dNdS_tbl = dNdS_tbl , subject.id = subject.id , n_quantile = n_quantile)
-                
         }
         
         if (!ds.values) {
