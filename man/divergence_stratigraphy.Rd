@@ -18,7 +18,8 @@ divergence_stratigraphy(
   quiet = FALSE,
   clean_folders = FALSE,
   ds.values = TRUE,
-  subject.id = FALSE
+  subject.id = FALSE,
+  n_quantile = 10
 )
 }
 \arguments{
@@ -62,10 +63,12 @@ Hence all genes having a dNdS value <= \code{dnds.threshold} are retained. Defau
 \item{clean_folders}{a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 processing this function. Default is \code{clean_folders} = \code{FALSE}.}
 
-\item{ds.values}{a logical value specifying whether divegrence stratum values (ds values) or dNdS values shall be returned
+\item{ds.values}{a logical value specifying whether divergence stratum values (ds values) or dNdS values shall be returned
 by \code{divergence_stratigraphy}. Default is \code{ds.values} = \code{TRUE}.}
 
 \item{subject.id}{a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.}
+
+\item{n_quantile}{a numeric value specifying the number of quantiles that should be returned.}
 }
 \value{
 A data.table storing the divergence map of the query organism.
@@ -174,6 +177,22 @@ on an 8 core machine can take up to 1,5 - 2 hours.
       quiet           = TRUE, 
       clean_folders   = TRUE,
       subject.id      = TRUE)
+ 
+      
+      
+ # in case you want a divergence map with divergence stratum as quintile (5-quantile) values 
+ # or any other N-quantile values rather than the default decile (10-quantile) values,
+ # you can specify this with n_quantile.
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH", 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE,
+      n_quantile      = 5)
+      
  }
  
 }
