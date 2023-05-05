@@ -6,7 +6,7 @@
 #' @param n_quantile a numeric value specifying the number of quantiles that should be returned.
 #' @details 
 #' 
-#' Divergence Strata are decile values of corresponding \code{\link{dNdS}} values.
+#' Divergence Strata are typically decile (10-quantile) values of corresponding \code{\link{dNdS}} values.
 #' The \code{\link{dNdS}} function returns dNdS values for orthologous genes
 #' of a query species (versus subject species). These dNdS values are then
 #' sorted into deciles and each orthologous protein coding gene of the
@@ -14,6 +14,8 @@
 #' 
 #' This allows a better comparison between Phylostrata and Divergence Strata (for more details see package: \pkg{myTAI}).
 #' 
+#' It is also possible to specify other number of quantile (N-quantile) value such as quintile (5-quantile) 
+#' rather than decile values.
 #' 
 #' @author Hajk-Georg Drost
 #' @examples \dontrun{
@@ -33,7 +35,12 @@
 #' 
 #' # in case you want the subject_id as well, you can set
 #' # the argument subject.id = TRUE
-#' divMap <- divergence_map( dNdS_tbl = dNdS_tbl, subject.id = TRUE)               
+#' divMap <- divergence_map( dNdS_tbl = dNdS_tbl, subject.id = TRUE)   
+#'             
+#'  # in case you want a divergence map with divergence stratum as quintile (5-quantile) values 
+#'  # or any other N-quantile values rather than the default decile (10-quantile) values,
+#'  # you can specify this with n_quantile.
+#' divMap <- divergence_map( dNdS_tbl = dNdS_tbl, subject.id = TRUE, n_quantile = 5) 
 #' 
 #' }
 #' @seealso \code{\link{divergence_stratigraphy}}
