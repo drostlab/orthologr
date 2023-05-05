@@ -136,6 +136,22 @@
 #'       quiet           = TRUE, 
 #'       clean_folders   = TRUE,
 #'       subject.id      = TRUE)
+#'  
+#'       
+#'       
+#'  # in case you want a divergence map with divergence stratum as quintile (5-quantile) values 
+#'  # or any other N-quantile values rather than the default decile (10-quantile) values,
+#'  # you can specify this with n_quantile.
+#'  divergence_stratigraphy(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5",
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE,
+#'       n_quantile      = 5)
+#'       
 #'  }
 #'  
 #' @return A data.table storing the divergence map of the query organism.
