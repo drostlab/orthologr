@@ -30,9 +30,10 @@
 #' @param quiet a logical value specifying whether a successful interface call shall be printed out to the console.
 #' @param clean_folders a logical value specifying whether the internal folder structure shall be deleted (cleaned) after
 #'  processing this function. Default is \code{clean_folders} = \code{FALSE}.
-#' @param ds.values a logical value specifying whether divegrence stratum values (ds values) or dNdS values shall be returned
+#' @param ds.values a logical value specifying whether divergence stratum values (ds values) or dNdS values shall be returned
 #' by \code{divergence_stratigraphy}. Default is \code{ds.values} = \code{TRUE}.
 #' @param subject.id a logical value indicating whether \code{query_id} AND \code{subject_id} should be returned.
+#' @param n_quantile a numeric value specifying the number of quantiles that should be returned.
 #' @details Introduced by Quint et al., 2012 and extended in Drost et al. 2015, divergence stratigraphy
 #'  is the process of quantifying the selection pressure (in terms of amino acid sequence divergence) acting on
 #'  orthologous genes between closely related species. The resulting sequence divergence map (short divergence map),
@@ -135,6 +136,22 @@
 #'       quiet           = TRUE, 
 #'       clean_folders   = TRUE,
 #'       subject.id      = TRUE)
+#'  
+#'       
+#'       
+#'  # in case you want a divergence map with divergence stratum as quintile (5-quantile) values 
+#'  # or any other N-quantile values rather than the default decile (10-quantile) values,
+#'  # you can specify this with n_quantile.
+#'  divergence_stratigraphy(
+#'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'       eval            = "1E-5",
+#'       ortho_detection = "RBH", 
+#'       comp_cores      = 1, 
+#'       quiet           = TRUE, 
+#'       clean_folders   = TRUE,
+#'       n_quantile      = 5)
+#'       
 #'  }
 #'  
 #' @return A data.table storing the divergence map of the query organism.
@@ -154,7 +171,8 @@ divergence_stratigraphy <- function(query_file,
                                     quiet           = FALSE, 
                                     clean_folders   = FALSE, 
                                     ds.values       = TRUE,
-                                    subject.id      = FALSE){
+                                    subject.id      = FALSE,
+                                    n_quantile      = 10){
         
         if (!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
@@ -182,7 +200,7 @@ divergence_stratigraphy <- function(query_file,
         
         if (ds.values) {
                 # divergence map: standard = col1: divergence stratum, col2: query_id
-                dm_tbl <- divergence_map( dNdS_tbl = dNdS_tbl , subject.id = subject.id )
+                dm_tbl <- divergence_map( dNdS_tbl = dNdS_tbl , subject.id = subject.id , n_quantile = n_quantile)
         }
         
         if (!ds.values) {

@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // Different
 bool Different(const std::string& seq1, const std::string& seq2, bool skip_missing, bool nucleic_acid);
 RcppExport SEXP _orthologr_Different(SEXP seq1SEXP, SEXP seq2SEXP, SEXP skip_missingSEXP, SEXP nucleic_acidSEXP) {
