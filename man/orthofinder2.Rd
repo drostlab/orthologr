@@ -30,9 +30,9 @@ Options are:
 
 \item{comp_cores}{number of cores that shall be used for parallel processing. Default is \code{cores = 1}.}
 
-\item{path}{a character string specifying the path to the locally installed \code{orthofinder} executable.
-A possible specification could be \code{path = "/opt/miniconda3/bin/"} which internally will translate to
-\code{/opt/miniconda3/bin/orthofinder}. The default is \code{path = NULL} which means that orthofinder assumes
+\item{of_path}{a character string specifying the path to the locally installed \code{orthofinder} executable.
+A possible specification could be \code{of_path = "/opt/miniconda3/bin/"} which internally will translate to
+\code{/opt/miniconda3/bin/orthofinder}. The default is \code{of_path = NULL} which means that orthofinder assumes
 users have their \code{orthofinder} executable stored at \code{/opt/miniconda3/bin/orthofinder}.}
 }
 \description{
