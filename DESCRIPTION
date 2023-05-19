@@ -37,16 +37,19 @@ Imports:
     ape,
     ggplot2,
     scales,
-    Rdpack
+    Rdpack,
+    R.utils,
+    benchmarkme
 Suggests:
     knitr (>= 1.6),
     rmarkdown (>= 0.3.3),
     devtools (>= 1.6.1),
-    testthat (>= 0.9.1),
-    benchmarkme
+    testthat (>= 3.0.0)
 Remotes: HajkD/metablastr
 RdMacros: Rdpack
 LinkingTo: Rcpp
 URL: https://github.com/HajkD/orthologr
 BugReports: https://github.com/HajkD/orthologr/issues
 RoxygenNote: 7.2.3
+Config/testthat/edition: 3
+Encoding: UTF-8

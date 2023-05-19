@@ -25,7 +25,7 @@ check_annotation <- function(annotation_file, remove_annotation_outliers = FALSE
         if (!file.exists(annotation_file))
                 stop("The file '", annotation_file, "' does not seem to exist. Please provide a valid path to the annotation file.", call. = FALSE)
         
-        if (suppressWarnings(require("benchmarkme"))) {
+        if (suppressWarnings(requireNamespace("benchmarkme"))) {
                 ram <- check_ram()
                 available_ram <- ram - ((ram / 100) * 20)
                 annotation_file_size <-

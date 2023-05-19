@@ -12,3 +12,4 @@ docs
 LICENSE
 orthologr-conda-env.sh
 orthologr.yml
+^orthologr-conda-env\.sh$
