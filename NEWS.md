@@ -1,4 +1,4 @@
-## `orthologr` version 0.5.0
+## `orthologr` version 0.4.1
 
 ### New Features
 

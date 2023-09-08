@@ -6,19 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Orthology inference dNdS estimation of orthologous genes using orthologr • orthologr</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Orthology inference dNdS estimation of orthologous genes using orthologr">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="orthologr">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,8 +75,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/HajkD/orthologr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/drostlab/orthologr/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -97,58 +93,90 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Orthology inference dNdS estimation of orthologous genes using orthologr</h1>
+      <h1 data-toc-skip>Orthology inference dNdS estimation of
+orthologous genes using orthologr</h1>
             
-            <h4 class="date">2020-08-08</h4>
+            <h4 data-toc-skip class="date">2023-09-08</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/dNdS_estimation.Rmd"><code>vignettes/dNdS_estimation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/dNdS_estimation.Rmd" class="external-link"><code>vignettes/dNdS_estimation.Rmd</code></a></small>
       <div class="hidden name"><code>dNdS_estimation.Rmd</code></div>
 
     </div>
 
     
     
-<p>The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes. This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral with nonsynonymous substitution rates (dN), which are exposed to selection as they change the amino acid composition of a protein (<a href="http://mbe.oxfordjournals.org/content/31/1/212">Mugal et al., 2013</a>).</p>
-<p>The <code>orthologr</code> package provides a function named <code><a href="../reference/dNdS.html">dNdS()</a></code> to perform dNdS estimation on pairs of orthologous genes. The <code><a href="../reference/dNdS.html">dNdS()</a></code> function takes the CDS files of two organisms of interest (<code>query_file</code> and <code>subject_file</code>) and computes the dNdS estimation values for orthologous gene pairs between these organisms.</p>
-<p><strong>Note:</strong> the following dNdS estimation methods are based on KaKs_Calculator 2:</p>
+<p>The dN/dS ratio quantifies the mode and strength of selection acting
+on a pair of orthologous genes. This selection pressure can be
+quantified by comparing synonymous substitution rates (dS) that are
+assumed to be neutral with nonsynonymous substitution rates (dN), which
+are exposed to selection as they change the amino acid composition of a
+protein (<a href="http://mbe.oxfordjournals.org/content/31/1/212" class="external-link">Mugal
+et al., 2013</a>).</p>
+<p>The <code>orthologr</code> package provides a function named
+<code><a href="../reference/dNdS.html">dNdS()</a></code> to perform dNdS estimation on pairs of orthologous
+genes. The <code><a href="../reference/dNdS.html">dNdS()</a></code> function takes the CDS files of two
+organisms of interest (<code>query_file</code> and
+<code>subject_file</code>) and computes the dNdS estimation values for
+orthologous gene pairs between these organisms.</p>
+<p><strong>Note:</strong> the following dNdS estimation methods are
+based on KaKs_Calculator 2:</p>
 <ul>
 <li><p>“NG”: Nei, M. and Gojobori, T. (1986)</p></li>
-<li><p>“LWL”: Li, W.H., et al. (1985)</p></li>
-<li><p>“LPB”: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)</p></li>
-<li><p>“MLWL” (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)</p></li>
+<li><p>“LWL”: Li, W.H., et al. (1985)</p></li>
+<li><p>“LPB”: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O.
+(1993)</p></li>
+<li><p>“MLWL” (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et
+al. (2004)</p></li>
 <li><p>“YN”: Yang, Z. and Nielsen, R. (2000)</p></li>
-<li><p>“MYN” (Modified YN): Zhang, Z., et al. (2006)</p></li>
+<li><p>“MYN” (Modified YN): Zhang, Z., et al. (2006)</p></li>
 <li><p>“GMYN”: Wang, D.P., et al. Biology Direct. (2009)</p></li>
 <li><p>“GY”: Goldman, N. and Yang, Z. (1994)</p></li>
-<li>“MS”: (Model Selection): based on a set of candidate models, Posada, D. (2003)</li>
-<li><p>“MA” (Model Averaging): based on a set of candidate models, Posada, D. (2003)</p></li>
+<li><p>“MS”: (Model Selection): based on a set of candidate models,
+Posada, D. (2003)</p></li>
+<li><p>“MA” (Model Averaging): based on a set of candidate models,
+Posada, D. (2003)</p></li>
 <li><p>“ALL”: All models toghether</p></li>
 </ul>
-<p>It is assumed that when you choose one of these dNdS estimation methods you have <a href="https://sourceforge.net/projects/kakscalculator2/">KaKs_Calculator 2</a> installed on your machine and it can be executed from the default execution <code>PATH</code>.</p>
-<p>The following pipeline resembles an example dNdS estimation procedure:</p>
+<p>It is assumed that when you choose one of these dNdS estimation
+methods you have <a href="https://sourceforge.net/projects/kakscalculator2/" class="external-link">KaKs_Calculator
+2</a> installed on your machine and it can be executed from the default
+execution <code>PATH</code>.</p>
+<p>The following pipeline resembles an example dNdS estimation
+procedure:</p>
 <ol style="list-style-type: decimal">
-<li><p>Orthology Inference: e.g. BLAST reciprocal best hit (RBH)</p></li>
-<li><p>Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments</p></li>
+<li><p>Orthology Inference: e.g. BLAST reciprocal best hit
+(RBH)</p></li>
+<li><p>Pairwise sequence alignment: e.g. clustalw for pairwise amino
+acid sequence alignments</p></li>
 <li><p>Codon Alignment: e.g. pal2nal program</p></li>
-<li><p>dNdS estimation: e.g. <a href="http://mbe.oxfordjournals.org/content/17/1/32.short">Yang, Z. and Nielsen, R. (2000)</a> (YN)</p></li>
+<li><p>dNdS estimation: e.g. <a href="http://mbe.oxfordjournals.org/content/17/1/32.short" class="external-link">Yang, Z. and
+Nielsen, R. (2000)</a> (YN)</p></li>
 </ol>
-<p><strong>Note:</strong> it is assumed that when using <code><a href="../reference/dNdS.html">dNdS()</a></code> all corresponding multiple sequence alignment programs you want to use are already installed on your machine and are executable via either the default execution PATH or you specifically define the location of the executable program via the <code>aa_aln_path</code> or <code>blast_path</code> argument that can be passed to <code><a href="../reference/dNdS.html">dNdS()</a></code>. See the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd">Sequence Alignments vignette</a> for details.</p>
+<p><strong>Note:</strong> it is assumed that when using
+<code><a href="../reference/dNdS.html">dNdS()</a></code> all corresponding multiple sequence alignment
+programs you want to use are already installed on your machine and are
+executable via either the default execution PATH or you specifically
+define the location of the executable program via the
+<code>aa_aln_path</code> or <code>blast_path</code> argument that can be
+passed to <code><a href="../reference/dNdS.html">dNdS()</a></code>. See the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd" class="external-link">Sequence
+Alignments vignette</a> for details.</p>
 <p>The following example shall illustrate a dNdS estimation process.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># get a dNdS table using:</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># 2) Needleman-Wunsch for pairwise amino acid alignments</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># 3) pal2nal for codon alignments</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># 4) Comeron for dNdS estimation</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># 5) single core processing 'comp_cores = 1'</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">     <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">     <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">     <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">     <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, </a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">     <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, </a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">     <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, </a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">     <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<span><span class="co"># get a dNdS table using:</span></span>
+<span><span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span></span>
+<span><span class="co"># 2) Needleman-Wunsch for pairwise amino acid alignments</span></span>
+<span><span class="co"># 3) pal2nal for codon alignments</span></span>
+<span><span class="co"># 4) Comeron for dNdS estimation</span></span>
+<span><span class="co"># 5) single core processing 'comp_cores = 1'</span></span>
+<span><span class="fu"><a href="../reference/dNdS.html">dNdS</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>     subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>     ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
+<span>     aa_aln_type     <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
+<span>     aa_aln_tool     <span class="op">=</span> <span class="st">"NW"</span>, </span>
+<span>     codon_aln_tool  <span class="op">=</span> <span class="st">"pal2nal"</span>, </span>
+<span>     dnds_est.method <span class="op">=</span> <span class="st">"Comeron"</span>, </span>
+<span>     comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  A tibble: 20 x 15
    query_id subject_id      dN    dS   dNdS perc_identity alig_length
    &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
@@ -175,27 +203,34 @@
  ... with 8 more variables: mismatches &lt;dbl&gt;, gap_openings &lt;dbl&gt;,
    q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
    bit_score &lt;dbl&gt;</code></pre>
-<p>Some outputs include <code>NA</code> values. To filter for <code>NA</code> values or a specific <code>dnds.threshold</code>, you can use the <code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function. The <code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function takes the output data.table returned by <code><a href="../reference/dNdS.html">dNdS()</a></code> and filters the output by the following criteria:</p>
+<p>Some outputs include <code>NA</code> values. To filter for
+<code>NA</code> values or a specific <code>dnds.threshold</code>, you
+can use the <code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function. The
+<code><a href="../reference/filter_dNdS.html">filter_dNdS()</a></code> function takes the output data.table returned
+by <code><a href="../reference/dNdS.html">dNdS()</a></code> and filters the output by the following
+criteria:</p>
 <ol style="list-style-type: decimal">
 <li><p>all dN values having an NA value are omitted</p></li>
 <li><p>all dS values having an NA value are omitted</p></li>
-<li><p>all dNdS values &gt;= the specified <code>dnds.threshold</code> are omitted</p></li>
+<li><p>all dNdS values &gt;= the specified <code>dnds.threshold</code>
+are omitted</p></li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># get dNdS estimated for orthologous genes between A. thaliana and A. lyrata</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>(<span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">     <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">     <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>, </a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">     <span class="dt">aa_aln_type     =</span> <span class="st">"pairwise"</span>,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">     <span class="dt">aa_aln_tool     =</span> <span class="st">"NW"</span>, </a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">     <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, </a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">     <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, </a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">     <span class="dt">comp_cores      =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co"># filter for:</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co"># 1) all dN values having an NA value are omitted</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co"># 2) all dS values having an NA value are omitted</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co"># 3) all dNdS values &gt;= 2 are omitted</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="kw"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span>(Ath_Aly_dnds, <span class="dt">dnds.threshold =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<span><span class="co"># get dNdS estimated for orthologous genes between A. thaliana and A. lyrata</span></span>
+<span><span class="va">Ath_Aly_dnds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dNdS.html">dNdS</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>     subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>     ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
+<span>     aa_aln_type     <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
+<span>     aa_aln_tool     <span class="op">=</span> <span class="st">"NW"</span>, </span>
+<span>     codon_aln_tool  <span class="op">=</span> <span class="st">"pal2nal"</span>, </span>
+<span>     dnds_est.method <span class="op">=</span> <span class="st">"Comeron"</span>, </span>
+<span>     comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co"># filter for:</span></span>
+<span><span class="co"># 1) all dN values having an NA value are omitted</span></span>
+<span><span class="co"># 2) all dS values having an NA value are omitted</span></span>
+<span><span class="co"># 3) all dNdS values &gt;= 2 are omitted</span></span>
+<span><span class="fu"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span><span class="op">(</span><span class="va">Ath_Aly_dnds</span>, dnds.threshold <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code>Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...
 Initial input contains 20 rows.
 Filtering done. New output table contains 20 rows.
@@ -225,69 +260,90 @@ Filtering done. New output table contains 20 rows.
  ... with 8 more variables: mismatches &lt;dbl&gt;, gap_openings &lt;dbl&gt;,
    q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
    bit_score &lt;dbl&gt;</code></pre>
-<p>The <code><a href="../reference/dNdS.html">dNdS()</a></code> function can be used choosing the following options:</p>
+<p>The <code><a href="../reference/dNdS.html">dNdS()</a></code> function can be used choosing the following
+options:</p>
 <ul>
 <li>
-<code>ortho_detection</code> : <code>RBH</code> (BLAST best reciprocal hit), <code>BH</code> (BLAST best reciprocal hit), <code>PO</code> (ProteinOrtho), and <code>OrthoMCL</code> (OrthoMCL)</li>
+<code>ortho_detection</code> : <code>RBH</code> (BLAST best
+reciprocal hit), <code>BH</code> (BLAST best reciprocal hit),
+<code>PO</code> (ProteinOrtho), and <code>OrthoMCL</code>
+(OrthoMCL)</li>
 <li>
-<code>aa_aln_type</code> : <code>multiple</code> or <code>pairwise</code>
+<code>aa_aln_type</code> : <code>multiple</code> or
+<code>pairwise</code>
 </li>
 <li>
-<code>aa_aln_tool</code> : <code>clustalw</code>, <code>t_coffee</code>, <code>muscle</code>, <code>clustalo</code>, <code>mafft</code>, and <code>NW</code> (in case <code>aa_aln_type = "pairwise"</code>)</li>
+<code>aa_aln_tool</code> : <code>clustalw</code>,
+<code>t_coffee</code>, <code>muscle</code>, <code>clustalo</code>,
+<code>mafft</code>, and <code>NW</code> (in case
+<code>aa_aln_type = "pairwise"</code>)</li>
 <li>
 <code>codon_aln_tool</code> : <code>pal2nal</code>
 </li>
 <li>
-<code>dnds_est.method</code> : <code>Li</code>, <code>Comeron</code>, <code>NG</code>, <code>LWL</code>, <code>LPB</code>, <code>MLWL</code>, <code>YN</code>, and <code>MYN</code>
+<code>dnds_est.method</code> : <code>Li</code>,
+<code>Comeron</code>, <code>NG</code>, <code>LWL</code>,
+<code>LPB</code>, <code>MLWL</code>, <code>YN</code>, and
+<code>MYN</code>
 </li>
 </ul>
 <p>Please see <code><a href="../reference/dNdS.html">?dNdS</a></code> for details.</p>
-<p>In case your BLAST program, or multiple alignment program can not be executed from the default execution <code>PATH</code> you can specify the <code>aa_aln_path</code> or <code>blast_path</code> arguments.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># using the `aa_aln_path` or `blast_path` arguments</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>( <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">      <span class="dt">blast_path      =</span> <span class="st">"here/path/to/blastp"</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">      <span class="dt">aa_aln_type     =</span> <span class="st">"multiple"</span>, </a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">      <span class="dt">aa_aln_tool     =</span> <span class="st">"clustalw"</span>, </a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">      <span class="dt">aa_aln_path     =</span> <span class="st">"here/path/to/clustalw"</span>,</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">      <span class="dt">codon_aln_tool  =</span> <span class="st">"pal2nal"</span>, </a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">      <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>, </a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<div id="advanced-options" class="section level2">
-<h2 class="hasAnchor">
-<a href="#advanced-options" class="anchor"></a>Advanced options</h2>
-<p>Additional arguments can be passed to <code><a href="../reference/dNdS.html">dNdS()</a></code>. This allows you to use more advanced options of several interface programs.</p>
-<p>To pass additional parameters to the interface programs, you can use the <code>blast_params</code> and <code>aa_aln_params</code> arguments. The <code>aa_aln_params</code> argument assumes that when you chose e.g. <code>aa_aln_tool = "mafft"</code> you will pass the corresponding additional parameters in MAFFT notation.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(orthologr)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># get dNdS estimated for orthologous genes between A. thaliana and A. lyrata</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># using additional parameters:</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co"># get a dNdS table using:</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># 2) multiple amino acid alignments using MAFFT</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># 3) pal2nal for codon alignments</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># 4) Comeron (1995) for dNdS estimation</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co"># 5) single core processing 'comp_cores = 1'</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">Ath_Aly_dnds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dNdS.html">dNdS</a></span>( <span class="dt">query_file      =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_thal_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">                      <span class="dt">subject_file    =</span> <span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'seqs/ortho_lyra_cds.fasta'</span>, <span class="dt">package =</span> <span class="st">'orthologr'</span>),</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">                      <span class="dt">ortho_detection =</span> <span class="st">"RBH"</span>,</a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">                      <span class="dt">blast_params    =</span> <span class="st">"-matrix BLOSUM80"</span>,</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">                      <span class="dt">aa_aln_type     =</span> <span class="st">"multiple"</span>,</a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">                      <span class="dt">aa_aln_tool     =</span> <span class="st">"mafft"</span>,</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">                      <span class="dt">aa_aln_params   =</span> <span class="st">"--maxiterate 1 --clustalout"</span>,</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">                      <span class="dt">dnds_est.method =</span> <span class="st">"Comeron"</span>,</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">                      <span class="dt">comp_cores      =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">                      <span class="dt">clean_folders   =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">                      <span class="dt">quiet           =</span> <span class="ot">TRUE</span> )</a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co"># filter for:</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co"># 1) all dN values having an NA value are omitted</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co"># 2) all dS values having an NA value are omitted</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co"># 3) all dNdS values &gt;= 0.1 are omitted</span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="kw"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span>(Ath_Aly_dnds, <span class="dt">dnds.threshold =</span> <span class="fl">0.1</span>)</a></code></pre></div>
+<p>In case your BLAST program, or multiple alignment program can not be
+executed from the default execution <code>PATH</code> you can specify
+the <code>aa_aln_path</code> or <code>blast_path</code> arguments.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<span><span class="co"># using the `aa_aln_path` or `blast_path` arguments</span></span>
+<span><span class="fu"><a href="../reference/dNdS.html">dNdS</a></span><span class="op">(</span> query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>      ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
+<span>      blast_path      <span class="op">=</span> <span class="st">"here/path/to/blastp"</span>,</span>
+<span>      aa_aln_type     <span class="op">=</span> <span class="st">"multiple"</span>, </span>
+<span>      aa_aln_tool     <span class="op">=</span> <span class="st">"clustalw"</span>, </span>
+<span>      aa_aln_path     <span class="op">=</span> <span class="st">"here/path/to/clustalw"</span>,</span>
+<span>      codon_aln_tool  <span class="op">=</span> <span class="st">"pal2nal"</span>, </span>
+<span>      dnds_est.method <span class="op">=</span> <span class="st">"Comeron"</span>, </span>
+<span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="advanced-options">Advanced options<a class="anchor" aria-label="anchor" href="#advanced-options"></a>
+</h2>
+<p>Additional arguments can be passed to <code><a href="../reference/dNdS.html">dNdS()</a></code>. This
+allows you to use more advanced options of several interface
+programs.</p>
+<p>To pass additional parameters to the interface programs, you can use
+the <code>blast_params</code> and <code>aa_aln_params</code> arguments.
+The <code>aa_aln_params</code> argument assumes that when you chose
+e.g. <code>aa_aln_tool = "mafft"</code> you will pass the corresponding
+additional parameters in MAFFT notation.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<span><span class="co"># get dNdS estimated for orthologous genes between A. thaliana and A. lyrata</span></span>
+<span><span class="co"># using additional parameters:</span></span>
+<span></span>
+<span><span class="co"># get a dNdS table using:</span></span>
+<span><span class="co"># 1) reciprocal best hit for orthology inference (RBH)</span></span>
+<span><span class="co"># 2) multiple amino acid alignments using MAFFT</span></span>
+<span><span class="co"># 3) pal2nal for codon alignments</span></span>
+<span><span class="co"># 4) Comeron (1995) for dNdS estimation</span></span>
+<span><span class="co"># 5) single core processing 'comp_cores = 1'</span></span>
+<span><span class="va">Ath_Aly_dnds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dNdS.html">dNdS</a></span><span class="op">(</span> query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                      ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
+<span>                      blast_params    <span class="op">=</span> <span class="st">"-matrix BLOSUM80"</span>,</span>
+<span>                      aa_aln_type     <span class="op">=</span> <span class="st">"multiple"</span>,</span>
+<span>                      aa_aln_tool     <span class="op">=</span> <span class="st">"mafft"</span>,</span>
+<span>                      aa_aln_params   <span class="op">=</span> <span class="st">"--maxiterate 1 --clustalout"</span>,</span>
+<span>                      dnds_est.method <span class="op">=</span> <span class="st">"Comeron"</span>,</span>
+<span>                      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>                      quiet           <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># filter for:</span></span>
+<span><span class="co"># 1) all dN values having an NA value are omitted</span></span>
+<span><span class="co"># 2) all dS values having an NA value are omitted</span></span>
+<span><span class="co"># 3) all dNdS values &gt;= 0.1 are omitted</span></span>
+<span><span class="fu"><a href="../reference/filter_dNdS.html">filter_dNdS</a></span><span class="op">(</span><span class="va">Ath_Aly_dnds</span>, dnds.threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
 <pre><code>
      query_id      subject_id       dN     dS    dNdS
 1 AT1G01050.1 909874|PACid:16 0.000000 0.1750 0.00000
@@ -297,31 +353,33 @@ Filtering done. New output table contains 20 rows.
 5 AT1G01170.2 311317|PACid:16 0.008750 0.2827 0.03095
 6 AT1G01220.1 470155|PACid:16 0.015210 0.1533 0.09919
 </code></pre>
-<p>Here <code>blast_params</code> and <code>aa_aln_params</code> take an character string specifying the parameters that shall be passed to BLAST and MAFFT. The notation of these parameters must follow the command line call of the stand alone versions of BLAST and MAFFT: e.g. <code>blast_params = "blast_params = -matrix BLOSUM80"</code> and <code>aa_aln_params = "--maxiterate 1 --clustalout"</code>.</p>
+<p>Here <code>blast_params</code> and <code>aa_aln_params</code> take an
+character string specifying the parameters that shall be passed to BLAST
+and MAFFT. The notation of these parameters must follow the command line
+call of the stand alone versions of BLAST and MAFFT:
+e.g. <code>blast_params = "blast_params = -matrix BLOSUM80"</code> and
+<code>aa_aln_params = "--maxiterate 1 --clustalout"</code>.</p>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#advanced-options">Advanced options</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
 
 
       <footer><div class="copyright">
-  <p>Developed by Hajk-Georg Drost.</p>
+  <p></p>
+<p>Developed by Hajk-Georg Drost.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -329,6 +387,8 @@ Filtering done. New output table contains 20 rows.
 
   
 
+
+  
 
   </body>
 </html>
