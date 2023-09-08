@@ -1,5 +1,5 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
+pandoc: 3.1.6.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   Install: Install.html
@@ -8,4 +8,5 @@ articles:
   divergence_stratigraphy: divergence_stratigraphy.html
   orthology_inference: orthology_inference.html
   sequence_alignments: sequence_alignments.html
+last_built: 2023-09-08T14:23Z
 
