@@ -1,3 +1,9 @@
+## `orthologr` version 0.4.1
+
+### New Features
+
+- the `divergence_stratigraphy()` and `divergence_map()` functions now include the parameter `n_quantile`, which enables users to choose the number of quantiles to generate for the `divergence map`. This could allow users to get a higher-resolution `divergence map` if `n_quantile` is greater than 10. Alternatively, this can resolve the issue of empty divergence strata when deciling the dNdS values for closely related organisms with dNdS = 0 for over 10% of the genes.
+
 ## `orthologr` version 0.4.0
 
 ### New Functions

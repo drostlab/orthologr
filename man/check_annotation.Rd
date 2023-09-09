@@ -14,10 +14,10 @@ If yes, then the initial \code{annotation_file} will be overwritten and the remo
 for further exploration.}
 }
 \description{
-Some annotation files include lines with character lengths greater than 65000. This causes problems when trying to import such annotation files into R using \code{\link[rtracklayer]{import}}.
+Some annotation files include lines with character lengths greater than 65000. This causes problems when trying to import such annotation files into R using \code{\href{https://rdrr.io/bioc/rtracklayer/man/export.html}{import}}.
 To overcome this issue, this function screens for such lines
 in a given annotation file and removes these lines so that
-\code{\link[rtracklayer]{import}} can handle the file.
+\code{\href{https://rdrr.io/bioc/rtracklayer/man/export.html}{import}} can handle the file.
 }
 \examples{
 \dontrun{
