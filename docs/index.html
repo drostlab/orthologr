@@ -144,17 +144,25 @@
 <a class="anchor" aria-label="anchor" href="#install-orthologr"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Install Bioconductor</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Install package dependencies</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biostrings"</span>, <span class="st">"GenomicRanges"</span>, <span class="st">"GenomicFeatures"</span>, <span class="st">"Rsamtools"</span>, <span class="st">"rtracklayer"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Biostrings"</span>,</span>
+<span>        <span class="st">"GenomicRanges"</span>,</span>
+<span>        <span class="st">"GenomicFeatures"</span>,</span>
+<span>        <span class="st">"Rsamtools"</span>,</span>
+<span>        <span class="st">"rtracklayer"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install metablastr from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/metablastr"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># install orthologr from GitHub</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HajkD/metablastr"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># install orthologr from GitHub</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HajkD/orthologr"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/orthologr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="use-cases">Use Cases<a class="anchor" aria-label="anchor" href="#use-cases"></a>
@@ -232,9 +240,9 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"biomartr"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/biomartr/" class="external-link">biomartr</a></span><span class="op">)</span></span>
 <span><span class="co"># download all coding sequences for Mus musculus</span></span>
-<span><span class="va">Mmusculus_file</span> <span class="op">&lt;-</span> <span class="fu">biomartr</span><span class="fu">::</span><span class="fu">getCDS</span><span class="op">(</span>organism <span class="op">=</span> <span class="st">"Mus musculus"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">Mmusculus_file</span> <span class="op">&lt;-</span> <span class="fu">biomartr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/biomartr/reference/getCDS.html" class="external-link">getCDS</a></span><span class="op">(</span>organism <span class="op">=</span> <span class="st">"Mus musculus"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># download all coding sequences for Homo sapiens</span></span>
-<span><span class="va">Hsapiens_file</span> <span class="op">&lt;-</span> <span class="fu">biomartr</span><span class="fu">::</span><span class="fu">getCDS</span><span class="op">(</span>organism <span class="op">=</span> <span class="st">"Homo sapiens"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">Hsapiens_file</span> <span class="op">&lt;-</span> <span class="fu">biomartr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/biomartr/reference/getCDS.html" class="external-link">getCDS</a></span><span class="op">(</span>organism <span class="op">=</span> <span class="st">"Homo sapiens"</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># compute dN/dS values for Homo sapiens versus Mus musculus</span></span>
 <span><span class="va">Hs_vs_Mm_dNdS</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="reference/dNdS.html">dNdS</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="va">Hsapiens_file</span>,</span>
@@ -258,7 +266,7 @@
 <p>In some cases (when working with <strong>WINDOWS</strong> machines), the installation via <code>devtools</code> will not work properly. In this case users can try the follwing steps:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># On Windows, this won't work - see ?build_github_devtools</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"HajkD/orthologr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"drostlab/orthologr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># When working with Windows, first users need to install the</span></span>
 <span><span class="co"># R package: rtools -&gt; install.packages("rtools")</span></span>
@@ -266,7 +274,7 @@
 <span><span class="co"># Afterwards users can install devtools -&gt; install.packages("devtools")</span></span>
 <span><span class="co"># and then they can run:</span></span>
 <span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HajkD/orthologr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/orthologr"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># and then call it from the library</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/drostlab/orthologr" class="external-link">"orthologr"</a></span>, lib.loc <span class="op">=</span> <span class="st">"C:/Program Files/R/R-3.1.1/library"</span><span class="op">)</span></span></code></pre></div>
