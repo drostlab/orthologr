@@ -52,17 +52,25 @@ Please find more details [here](https://drostlab.github.io/orthologr/articles/dN
 ## Install `orthologr`
 
 ```r
+# Install Bioconductor
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install()
+
 # Install package dependencies
-BiocManager::install(c("Biostrings", "GenomicRanges", "GenomicFeatures", "Rsamtools", "rtracklayer"))
+BiocManager::install(c(
+        "Biostrings",
+        "GenomicRanges",
+        "GenomicFeatures",
+        "Rsamtools",
+        "rtracklayer"
+))
+
+# install metablastr from GitHub
+devtools::install_github("drostlab/metablastr")
 
 # install orthologr from GitHub
-devtools::install_github("HajkD/metablastr")
-
-# install orthologr from GitHub
-devtools::install_github("HajkD/orthologr")
+devtools::install_github("drostlab/orthologr")
 ```
 
 ## Use Cases
@@ -174,7 +182,7 @@ will not work properly. In this case users can try the follwing steps:
 
 ```r
 # On Windows, this won't work - see ?build_github_devtools
-install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
+install_github("drostlab/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 # When working with Windows, first users need to install the
 # R package: rtools -> install.packages("rtools")
@@ -182,7 +190,7 @@ install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 # Afterwards users can install devtools -> install.packages("devtools")
 # and then they can run:
 
-devtools::install_github("HajkD/orthologr", build_vignettes = TRUE, dependencies = TRUE)
+devtools::install_github("drostlab/orthologr", build_vignettes = TRUE, dependencies = TRUE)
 
 # and then call it from the library
 library("orthologr", lib.loc = "C:/Program Files/R/R-3.1.1/library")
