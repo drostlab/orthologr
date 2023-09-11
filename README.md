@@ -58,8 +58,11 @@ BiocManager::install()
 # Install package dependencies
 BiocManager::install(c("Biostrings", "GenomicRanges", "GenomicFeatures", "Rsamtools", "rtracklayer"))
 
-# install orthologr from GitHub
+# install metablastr from GitHub
 devtools::install_github("HajkD/metablastr")
+
+# install rdiamond from GitHub
+devtools::install_github("drostlab/rdiamond")
 
 # install orthologr from GitHub
 devtools::install_github("HajkD/orthologr")
