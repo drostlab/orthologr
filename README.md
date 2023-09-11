@@ -1,4 +1,4 @@
-orthologr
+orthologr <img src="man/figures/logo.png" align="right" height="174" width="150" />
 =========
 
 ## Comparative Genomics with R
