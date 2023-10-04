@@ -37,24 +37,8 @@
 #' @author Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong
 #' @references
 #' Buchfink, B., Reuter, K., & Drost, H. G. (2021) "Sensitive protein alignments at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.
-#' 
-#' Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990) "Basic local alignment search tool." J. Mol. Biol. 215:403-410.
 #'
-#' Gish, W. & States, D.J. (1993) "Identification of protein coding regions by database similarity search." Nature Genet. 3:266-272.
-#'
-#' Altschul, S.F., Madden, T.L., Schaeffer, A.A., Zhang, J., Zhang, Z., Miller, W. & Lipman, D.J. (1997) "Gapped BLAST and PSI-BLAST: a new generation of protein database search programs." Nucleic Acids Res. 25:3389-3402.
-#'
-#' Zhang Z., Schwartz S., Wagner L., & Miller W. (2000), "A greedy algorithm for aligning DNA sequences" J Comput Biol 2000; 7(1-2):203-14.
-#'
-#' Zhang, J. & Madden, T.L. (1997) "PowerBLAST: A new network BLAST application for interactive or automated sequence analysis and annotation." Genome Res. 7:649-656.
-#'
-#' Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., & Schaeffer A.A. (2008) "Database indexing for production MegaBLAST searches." Bioinformatics 15:1757-1764.
-#'
-#' Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
-#'
-#' http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
-#'
-#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
+#' https://github.com/bbuchfink/diamond/wiki/3.-Command-line-options
 #' @examples \dontrun{
 #' # performing a BLAST search using blastp (default)
 #' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -107,9 +91,7 @@ diamond <- function(
                 comp_cores      = 1,
                 diamond_params    = NULL,
                 clean_folders   = FALSE,
-                save.output     = NULL,
-                hard_mask = TRUE,
-                add_makedb_options = NULL) {
+                save.output     = NULL) {
         
         if (!is.element(diamond_algorithm, c("blastp")))
                 stop(
