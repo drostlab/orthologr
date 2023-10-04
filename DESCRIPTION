@@ -20,7 +20,6 @@ Depends:
 Imports:
     seqinr,
     metablastr,
-    rdiamond,
     fs,
     parallel (>= 3.0.2),
     dplyr (>= 0.3.0.2),
