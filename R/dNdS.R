@@ -218,6 +218,7 @@ dNdS <- function(query_file,
                  print_citation = TRUE
                  ){
         
+        message("\n")
         message("Starting orthology inference (",ortho_detection, ") and dNdS estimation (",dnds_est.method,") using the follwing parameters:")
         message("query = '", basename(query_file), "'")
         message("subject = '", basename(subject_file), "'")
@@ -535,7 +536,8 @@ dNdS <- function(query_file,
         if (print_citation) {
                 message("\n")
                 message("Please cite the following paper when using orthologr for your own research:")
-                message("Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. Mol. Biol. Evol. 32 (5): 1221-1231.")
+                cat("Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.")
+                message("\n")
                 message("\n")
         }
         
