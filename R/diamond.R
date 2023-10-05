@@ -25,7 +25,7 @@
 #' @param path a character string specifying the path to the DIAMOND2 program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run DIAMOND2 searches.
-#' @param DIAMOND2_params a character string listing the input paramters that shall be passed to the executing DIAMOND2 program. Default is \code{NULL}, implicating
+#' @param diamond_params a character string listing the input paramters that shall be passed to the executing DIAMOND2 program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running DIAMOND2.
 #' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
@@ -33,55 +33,57 @@
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @details This function provides a fast communication between R and DIAMOND2. It is mainly used as internal functions
 #' such as \code{\link{diamond_best}} and \code{\link{diamond_rec}} but can also be used to perform simple DIAMOND2 computations.
+#' This function gives the same output as \code{\link{blast}} while being up to 10 000X faster in larger databases.
 #'
-#' @author Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong
+#' @author Jaruwatana Sodai Lotharukpong
 #' @references
 #' Buchfink, B., Reuter, K., & Drost, H. G. (2021) "Sensitive protein alignments at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.
 #'
 #' https://github.com/bbuchfink/diamond/wiki/3.-Command-line-options
 #' @examples \dontrun{
-#' # performing a BLAST search using blastp (default)
-#' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+#' # performing a DIAMOND2 search using diamond blastp (default)
+#' diamond(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'         subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #'
-#' # performing a BLAST search using blastp (default) using amino acid sequences as input file
-#' blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type     = "protein")
+#' # performing a DIAMOND2 search using diamond blastp (default) using amino acid sequences as input file
+#' diamond(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'         subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'         seq_type     = "protein")
 #'
 #'
-#' # save the BLAST output table in your current working directory
-#' blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'       seq_type     = "protein",
-#'       save.output  = getwd())
+#' # save the DIAMOND2 output table in your current working directory
+#' diamond(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'         subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'         seq_type     = "protein",
+#'         save.output  = getwd())
 #'
 #' # in case you are working with a multicore machine, you can also run parallel
-#' # BLAST computations using the comp_cores parameter: here with 2 cores
-#' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'       comp_cores   = 2)
+#' # DIAMOND2 computations using the comp_cores parameter: here with 2 cores
+#' diamond(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'         subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'         comp_cores   = 2)
 #'
 #'
-#'  # running blastp using additional parameters
-#'  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'        subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'        blast_params = "-max_target_seqs 1")
+#'  # running diamond using additional parameters
+#'  diamond(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'          diamond_params = "--max-target-seqs 1")
 #'
 #'
-#' # running blastp using additional parameters and an external blastp path
-#'  blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'        subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'        blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
+#' # running diamond using additional parameters and an external diamond path
+#'  diamond(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'          subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'          diamond_params = "--max-target-seqs 1", path = "path/to/diamond/")
 #' }
 #'
-#' @return A data.table storing the BLAST hit table returned by BLAST.
-#' @seealso \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{set_blast}}
+#' @return A data.table storing the DIAMOND2 hit table returned by DIAMOND2. The format is the same as with BLAST.
+#' @seealso \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{set_diamond}}, \code{\link{blast}}
 #' @export
 diamond <- function(
                 query_file,
                 subject_file,
                 seq_type        = "cds",
+                format          = "fasta",
                 diamond_algorithm = "blastp",
                 sensitivity_mode = "fast",
                 eval            = "1E-5",
@@ -112,6 +114,8 @@ diamond <- function(
                                 path, "' ; diamond --version '"), intern = TRUE)[1],
                         " ...")
         }
+        
+        message("with the ", sensitivity_mode," mode")
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:
@@ -191,6 +195,7 @@ diamond <- function(
                         " Please check the path to ",
                         input,
                         ".",
+                        "\n",
                         "Error:",
                         e
                 )
@@ -198,6 +203,7 @@ diamond <- function(
         
         # configuring the diamond run in the commmand line
         # more diamond modes, i.e. blastn, could be added in the future
+        # the first step is to make a default run and tag on the
         diamond_run <-  paste0(
                         'diamond blastp --db ',
                         database,
@@ -242,6 +248,7 @@ diamond <- function(
                         "diamond ",
                         diamond_algorithm,
                         "... the interface call did not work properly.",
+                        "\n",
                         "Error:",
                         e
                 )
@@ -354,6 +361,7 @@ diamond <- function(
                         " Please check the correct path to ",
                         output,
                         " or whether DIAMOND did write the resulting hit table correctly.",
+                        "\n",
                         "Error:",
                         e
                 )

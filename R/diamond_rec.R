@@ -1,5 +1,6 @@
-#' @title Perform a DIAMOND2 best hit search
-#' @description This function performs a DIAMOND2 search (best hit) of a given set of protein sequences against a given database.
+#' @title Perform a DIAMOND2 reciprocal best hit (RBH) search
+#' @description This function performs a DIAMOND2 search (reciprocal best hit) of a given set of protein sequences against a second
+#' set of protein sequences and vice versa.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
 #' @param seq_type a character string specifying the sequence type stored in the input file.
@@ -31,15 +32,14 @@
 #' @param save.output a path to the location were the DIAMOND2 output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
 #' @author Jaruwatana Sodai Lotharukpong
-#' @details Given a set of protein sequences (query sequences), a best hit diamond search (BH DIAMOND2) is being performed.
+#' @details Given a set of protein sequences A and a different set of protein sequences B,
+#' first a best hit diamond search is being performed from A to B: diamond(A,B) and afterwards
+#' a best hit diamond search is being performed from B to A: diamond(B,A). Only protein sequences
+#' that were found to be best hits in both directions are retained and returned.
 #' 
-#' Internally to perform best hit searches, the DIAMOND2 parameter settings:
-#' 
-#' \code{"-best_hit_score_edge 0.05 -best_hit_overhang 0.25 -max_target_seqs 1"}
-#' 
-#' are used to speed up best hit computations.
-#' 
-#' This function gives the same output as \code{\link{blast_best}} while being much much faster.
+#' This function gives the same output as \code{\link{blast_rec}} while being much much faster.
+#'
+#' This function can be used to perform orthology inference using DIAMOND2 best reciprocal hit methodology.
 #' 
 #' @references
 #' 
@@ -48,52 +48,51 @@
 #' https://github.com/bbuchfink/diamond/wiki/3.-Command-line-options
 #'
 #' @examples \dontrun{
-#' 
-#' # performing gene orthology inference using the best hit (BH) method
-#' diamond_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
-#'            
-#'            
-#'            
-#' # performing gene orthology inference using the best hit (BH) method starting with protein sequences
-#' diamond_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'            seq_type     = "protein")
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
+#' diamond_rec(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'             subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+#'           
+#'           
+#'           
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
+#' # starting with protein sequences
+#' diamond_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'             subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'             seq_type     = "protein")
 #' 
 #' 
 #' 
 #' # save the DIAMOND2 output file to the current working directory
-#' diamond_best(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'            subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-#'            seq_type     = "protein",
-#'            save.output  = getwd())
-#' 
-#' 
+#' diamond_rec(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'             subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+#'             seq_type     = "protein",
+#'             save.output  = getwd())
 #' 
 #' 
 #' 
 #' # use multicore processing
-#' diamond_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
-#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'            comp_cores   = 2)
-#'
-#'
-#'
-#' # performing gene orthology inference using the best hit (BH) method and external
-#' # diamond path
-#' diamond_best(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
-#'            subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-#'            path         = "path/to/diamond/")
+#' diamond_rec(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'), 
+#'             subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'             comp_cores   = 2)
 #'            
 #'            
+#'            
+#' # performing gene orthology inference using the reciprocal best hit (RBH) method
+#' # and external path to diamond
+#' diamond_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'             subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+#'             path         = "path/to/diamond")
+#'           
+#'           
+#'           
 #' }
 #'
-#' @return A data.table as returned by the \code{diamond} function, storing the geneids
-#' of orthologous genes (best hit) in the first column and the amino acid sequences in the second column.
-#' @seealso \code{\link{diamond}}, \code{\link{diamond_rec}}, \code{\link{set_diamond}}, \code{\link{blast_best}}
-#' @import data.table
+#' @return A data.table as returned by the \code{\link{diamond}} function, storing the geneids
+#' of orthologous genes (reciprocal best hit) in the first column and the amino acid sequences in the second column.
+#' @seealso \code{\link{diamond}}, \code{\link{diamond_best}}, \code{\link{set_diamond}}, \code{\link{blast_rec}}
 #' @export
-diamond_best <- function(
+#' 
+diamond_rec <- function(
                 query_file, 
                 subject_file, 
                 seq_type        = "cds",
@@ -108,30 +107,55 @@ diamond_best <- function(
                 clean_folders   = FALSE,
                 save.output     = NULL){
         
-        # default parameters for best hit filtering for blast
-        # this is not needed for DIAMOND
-        # default_pars <- "-best_hit_score_edge 0.05 -best_hit_overhang 0.25"
-        
-        
-        # performing a DIAMOND search from query against subject: diamond(query,subject)
-        
-        hit_tbl <- diamond( 
-                query_file      = query_file,
-                subject_file    = subject_file,
+        orthoA <- diamond_best(
+                query_file      = query_file, 
+                subject_file    = subject_file, 
+                seq_type        = seq_type,
+                format          = format, 
+                sensitivity_mode = sensitivity_mode,
+                delete_corrupt_cds = delete_corrupt_cds,
                 eval            = eval,
                 max.target.seqs = max.target.seqs,
-                delete_corrupt_cds = delete_corrupt_cds,
-                seq_type        = seq_type,
-                sensitivity_mode = sensitivity_mode,
-                format          = format, 
                 path            = path, 
                 comp_cores      = comp_cores,
-                diamond_params  = diamond_params,
+                diamond_params  = diamond_params, 
                 clean_folders   = clean_folders,
                 save.output     = save.output)
         
-        query_id <- '.' <- NULL
-        hit_tbl <- dplyr::do(dplyr::group_by(hit_tbl, query_id), filter_best_hits(.))
-        return(hit_tbl)
+        # now the reverse search
+        orthoB <- diamond_best(
+                query_file      = subject_file, 
+                subject_file    = query_file, 
+                seq_type        = seq_type,
+                format          = format, 
+                sensitivity_mode = sensitivity_mode,
+                delete_corrupt_cds = delete_corrupt_cds,
+                eval            = eval,
+                max.target.seqs = max.target.seqs,
+                path            = path, 
+                comp_cores      = comp_cores,
+                diamond_params  = diamond_params, 
+                clean_folders   = clean_folders,
+                save.output     = save.output)
+        
+        # rename the colnames for the reverse search
+        colnames(orthoB)[1:2] <- c("subject_id", "query_id")
+        
+        tryCatch({
+                return(dplyr::semi_join(
+                        orthoA,
+                        orthoB,
+                        by = c("query_id", "subject_id")
+                ))
+                
+                
+        }, error = function(e) {
+                stop(
+                        "The DIAMOND2 tables resulting from ",
+                        query_file,
+                        " and ",
+                        subject_file,
+                        " could not be joined properly to select only the reciprocal best hits."
+                )
+        })
 }
-
