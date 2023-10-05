@@ -3,6 +3,9 @@
 #' and computes the dNdS estimation values for orthologous gene pairs between these organisms. 
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
+#' @param aligner a character string specifying the sequence aligner. The options are \code{diamond} and \code{blast}.
+#' The option \code{diamond} uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
+#' Thus, the default is \code{aligner} = \code{diamond}.
 #' @param seq_type a character string specifying the sequence type stored in the input file.Options are are: 
 #' \itemize{
 #' \item \code{seq_type = "cds"} (Default): sequence are translated to protein sequences
@@ -12,16 +15,25 @@
 #' \code{\link{read.genome}}, \code{\link{read.proteome}} for more details.
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:
 #' \itemize{
-#' \item \code{ortho_detection ="BH"}: BLAST unidirectional best hit.
-#' \item \code{ortho_detection = "RBH"}: BLAST reciprocal/bidirectional best hit (Default).
+#' \item \code{ortho_detection ="BH"}: DIAMOND or BLAST unidirectional best hit.
+#' \item \code{ortho_detection = "RBH"}: DIAMOND or BLAST reciprocal/bidirectional best hit (Default).
 #' \item \code{ortho_detection = "Orthofinder2"}: single copy core orthologs between multiple species proteome comparisons.
 #' }
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet. 
 #' @param store_locally a logical value indicating whether or not alignment files shall be stored locally rather than in \code{tempdir()}.
 #' @param cdd.path path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).
-#' @param blast_params a character string specifying additional parameters that shall be passed to BLAST. Default is \code{blast_params} = \code{NULL}. 
-#' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
-#' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
+#' @param aligner_params a character string specifying additional parameters that shall be passed to DIAMOND or BLAST. Default is \code{aligner_params} = \code{NULL}. 
+#' @param aligner_path a character string specifying the path to the DIAMOND or BLAST program (in case you don't use the default path).
+#' @param sensitivity_mode specify the level of alignment sensitivity. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
+#' - sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of >70
+#' - sensitivity_mode = "default" : Default mode. Designed for finding hits of >70
+#' - sensitivity_mode = "fast" : fast alignment mode, but least sensitive (default). Designed for finding hits of >70
+#' - sensitivity_mode = "mid-sensitive" : fast alignments between the fast mode and the sensitive mode in sensitivity.
+#' - sensitivity_mode = "sensitive" : fast alignments, but full sensitivity for hits >40
+#' - sensitivity_mode = "more-sensitive" : more sensitive than the sensitive mode.
+#' - sensitivity_mode = "very-sensitive" : sensitive alignment mode.
+#' - sensitivity_mode = "ultra-sensitive" : most sensitive alignment mode (sensitivity as high as BLASTP).
+#' @param eval a numeric value specifying the E-Value cutoff for DIAMOND or BLAST hit detection.
 #' @param ortho_path a character string specifying the path to the orthology inference program such as \code{Orthofinder2}, etc. (in case you don't use the default path).
 #' @param aa_aln_type a character string specifying the amino acid alignement type:
 #' \itemize{ 
@@ -54,7 +66,7 @@
 #' @param clean_folders a boolean value spefiying whether all internall folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param print_citation a logical value indicating whether or not the citation message shall be printed.
-#' @author Hajk-Georg Drost
+#' @author Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong
 #' @details 
 #' 
 #' The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
@@ -70,7 +82,7 @@
 #' 
 #' \itemize{
 #'                 
-#' \item 1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
+#' \item 1) Orthology Inference: e.g. DIAMOND or BLAST reciprocal best hit (RBH)
 #' 
 #' \item 2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments
 #' 
@@ -82,15 +94,15 @@
 #' Note: it is assumed that when using \code{dNdS()} all corresponding multiple sequence alignment programs you
 #' want to use are already installed on your machine and are executable via either
 #' the default execution \code{PATH} or you specifically define the location of the executable file
-#' via the \code{aa_aln_path} or \code{blast_path} argument that can be passed to \code{dNdS()}.
+#' via the \code{aa_aln_path} or \code{aligner_path} argument that can be passed to \code{dNdS()}.
 #' 
 #' The \code{dNdS()} function can be used choosing the folllowing options:
 #' 
 #' \itemize{
 #' \item \code{ortho_detection} : 
 #'    \itemize{  
-#'    \item \code{"RBH"} (BLAST best reciprocal hit)
-#'    \item \code{"BH"} (BLAST best hit)
+#'    \item \code{"RBH"} (DIAMOND or BLAST best reciprocal hit)
+#'    \item \code{"BH"} (DIAMOND or BLAST best hit)
 #'    \item \code{"Orthofinder2"}
 #'      }
 #'      
@@ -189,20 +201,24 @@
 #'      comp_cores      = 1 )
 #' 
 #' }
-#' @seealso \code{\link{divergence_stratigraphy}}, \code{\link{orthologs}}, \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},
-#' \code{\link{blast_rec}}, \code{\link{read.cds}} 
+#' @seealso \code{\link{divergence_stratigraphy}}, \code{\link{orthologs}}, 
+#' \code{\link{substitutionrate}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, 
+#' \code{\link{diamond_best}}, \code{\link{diamond_rec}},
+#' \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{read.cds}} 
 #' @export
 
 dNdS <- function(query_file, 
                  subject_file, 
+                 aligner         = "diamond",
+                 sensitivity_mode = "ultra-sensitive",
+                 aligner_path    = NULL, 
                  seq_type        = "cds",
                  format          = "fasta", 
                  ortho_detection = "RBH",
                  delete_corrupt_cds = FALSE,
                  store_locally   = FALSE,
                  cdd.path        = NULL,
-                 blast_params    = NULL, 
-                 blast_path      = NULL, 
+                 aligner_params  = NULL, 
                  eval            = "1E-5", 
                  ortho_path      = NULL, 
                  aa_aln_type     = "pairwise", 
@@ -280,7 +296,7 @@ dNdS <- function(query_file,
         
         aa <- geneids <- NULL
         
-        # blast each translated aminoacid sequence against the related database to get a 
+        # blast/diamond each translated aminoacid sequence against the related database to get a 
         # hit table with pairs of geneids  
         
         message("Starting Orthology Inference ...")
