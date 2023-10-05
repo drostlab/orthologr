@@ -66,14 +66,13 @@ BiocManager::install(c(
         "rtracklayer"
 ))
 
-# install metablastr from GitHub
-<<<<<<< HEAD
-devtools::install_github("HajkD/metablastr")
-=======
-devtools::install_github("drostlab/metablastr")
->>>>>>> bda50fff539324fd1d1a36d21ef8cecf6c96b86e
+# install CRAN dependencies
+install.packages(c("doParallel", "foreach", "ape", "Rdpack", "benchmarkme", "devtools"))
 
-# install rdiamond from GitHub
+# install BLAST dependency metablastr from GitHub
+devtools::install_github("drostlab/metablastr")
+
+# install DIAMOND dependency rdiamond from GitHub
 devtools::install_github("drostlab/rdiamond")
 
 # install orthologr from GitHub
@@ -110,12 +109,13 @@ library(orthologr)
 dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
      delete_corrupt_cds = TRUE, # coding sequences that cannot be divided by 3 (triplets) will be removed
-     ortho_detection = "RBH", # perform BLAST best reciprocal hit orthology inference
+     ortho_detection = "RBH", # perform DIAMOND best reciprocal hit orthology inference
      aa_aln_type     = "pairwise", # perform pairwise global alignments of AA seqs 
      aa_aln_tool     = "NW", # using Needleman-Wunsch
      codon_aln_tool  = "pal2nal", # perform codon alignments using the tool Pal2Nal
      dnds_est.method = "Comeron", # use Comeron's method for dN/dS inference
-     comp_cores      = 1 )
+     comp_cores      = 1, # number of compute cores
+     delete_corrupt_cds = TRUE) # remove coding sequences that are not divisible by 3
 ```
 
 ```
