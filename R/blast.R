@@ -22,9 +22,9 @@
 #' @param path a character string specifying the path to the BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run BLAST searches.
-#' @param blast_params a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+#' @param blast_params a character string listing the input parameters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running BLAST.
-#' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
+#' @param clean_folders a boolean value specifying whether all internal folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.

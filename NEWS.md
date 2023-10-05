@@ -1,3 +1,14 @@
+## `orthologr` version 0.4.2
+
+### New Function
+
+- `diamond()`, `set_diamond()`, `diamond_best()` and `diamond_rec()` enable a massive speed-up in pairwise sequence alignment functionalities.
+
+### New Features
+
+- a logo is now set for `orthologr`.
+- DIAMOND2 is now used by default in `dNdS()` and `divergence_stratigraphy()` unless blast is specified (`aligner = "blast"`).
+
 ## `orthologr` version 0.4.1
 
 ### New Features

@@ -4,10 +4,22 @@
 #' closely related subject organism.
 #' @param query_file a character string specifying the path to the CDS file of interest (query organism).
 #' @param subject_file a character string specifying the path to the CDS file of interest (subject organism).
-#' @param eval a numeric value specifying the E-Value cutoff for BLAST hit detection.
+#' @param aligner a character string specifying the sequence aligner. The options are \code{diamond} and \code{blast}.
+#' The option \code{diamond} uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
+#' Thus, the default is \code{aligner} = \code{diamond}.
+#' @param sensitivity_mode specify the level of alignment sensitivity, when using DIAMOND2. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
+#' - sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of >70
+#' - sensitivity_mode = "default" : Default mode. Designed for finding hits of >70
+#' - sensitivity_mode = "fast" : fast alignment mode, but least sensitive (default). Designed for finding hits of >70
+#' - sensitivity_mode = "mid-sensitive" : fast alignments between the fast mode and the sensitive mode in sensitivity.
+#' - sensitivity_mode = "sensitive" : fast alignments, but full sensitivity for hits >40
+#' - sensitivity_mode = "more-sensitive" : more sensitive than the sensitive mode.
+#' - sensitivity_mode = "very-sensitive" : sensitive alignment mode.
+#' - sensitivity_mode = "ultra-sensitive" : most sensitive alignment mode (sensitivity as high as BLASTP).
+#' @param eval a numeric value specifying the E-Value cutoff for DIAMOND or BLAST hit detection.
 #' @param ortho_detection a character string specifying the orthology inference method that shall be performed
-#' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-#' Available methods are: "BH" (BLAST best hit), "RBH" (BLAST reciprocal best hit).
+#' to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (DIAMOND or BLAST reciprocal best hit).
+#' Available methods are: "BH" (DIAMOND or BLAST best hit), "RBH" (DIAMOND or BLAST reciprocal best hit).
 #' @param dnds_est.method the dNdS estimation method that shall be used.
 #' Options are:
 #' \itemize{
@@ -21,7 +33,7 @@
 #' \item \code{dnds_est.method ="MYN"} (Modified YN): Zhang, Z., et al. (2006)
 #' }
 #' @param delete_corrupt_cds a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.
-#' @param blast_path a character string specifying the path to the BLAST program (in case you don't use the default path).
+#' @param aligner_path a character string specifying the path to the DIAMOND or BLAST program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be used to perform
 #'  parallel computations on a multicore machine.
 #' @param dnds.threshold a numeric value specifying the dnds threshold for genes that shall be retained.
@@ -44,7 +56,7 @@
 #'  Divergence Stratigraphy:
 #'  
 #'  \itemize{
-#'  \item 1) Orthology Inference using BLAST reciprocal best hit ("RBH") based on blastp
+#'  \item 1) Orthology Inference using DIAMOND or BLAST reciprocal best hit ("RBH") based on blastp
 #'  
 #'  \item 2) Pairwise global amino acid alignments of orthologous genes using the Needleman-Wunsch algorithm
 #'  
@@ -60,7 +72,7 @@
 #' In our experience performing Divergence Stratigraphy using two genomes (one query and one subject genome)
 #' on an 8 core machine can take up to 1,5 - 2 hours.
 #'   
-#' @author Hajk-Georg Drost
+#' @author Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong
 #' @references
 #'  
 #'  Quint M et al. (2012). A transcriptomic hourglass in plant embryogenesis. Nature (490): 98-101.
@@ -80,14 +92,14 @@
 #'       
 #'       
 #'       
-#'  # performing standard divergence stratigraphy using the blast_path argument to specify
-#'  # the path to theblastp
+#'  # performing standard divergence stratigraphy using the aligner_path argument to specify
+#'  # the path to diamond
 #'  divergence_stratigraphy(
 #'       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'       eval            = "1E-5", 
 #'       ortho_detection = "RBH",
-#'       blast_path      = "path/to/blastp",
+#'       aligner_path    = "path/to/diamond",
 #'       comp_cores      = 1, 
 #'       quiet           = TRUE, 
 #'       clean_folders   = TRUE)
@@ -155,16 +167,20 @@
 #'  }
 #'  
 #' @return A data.table storing the divergence map of the query organism.
-#' @seealso \code{\link{dNdS}}, \code{\link{divergence_map}},  \code{\link{substitutionrate}}, \code{\link{multi_aln}},
-#'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{map_generator_dnds}}
+#' @seealso 
+#' \code{\link{dNdS}}, \code{\link{divergence_map}},\code{\link{substitutionrate}}, \code{\link{multi_aln}},
+#'   \code{\link{codon_aln}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}},
+#'   \code{\link{codon_aln}}, \code{\link{blast_best}}, \code{\link{blast_rec}}, 
+#'   \code{\link{map_generator_dnds}}
 #' @export
 divergence_stratigraphy <- function(query_file, 
                                     subject_file, 
+                                    aligner         = "diamond",
                                     eval            = "1E-5",
                                     ortho_detection = "RBH",
                                     dnds_est.method = "Comeron",
                                     delete_corrupt_cds = FALSE,
-                                    blast_path      = NULL, 
+                                    aligner_path      = NULL, 
                                     comp_cores      = 1,
                                     dnds.threshold  = 2,
                                     store_locally   = FALSE,
@@ -172,10 +188,20 @@ divergence_stratigraphy <- function(query_file,
                                     clean_folders   = FALSE, 
                                     ds.values       = TRUE,
                                     subject.id      = FALSE,
-                                    n_quantile      = 10){
+                                    n_quantile      = 10,
+                                    sensitivity_mode = "fast"){
         
         if (!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")
+        
+        if (!is.element(aligner, c("blast", "diamond")))
+                stop("Please choose an aligner that is supported by this function.")
+        
+        message("Proceeding with the aligner: ", aligner)
+        
+        # recommend users to choose DIAMOND2
+        if (aligner == "blast")
+                message("We recommend using DIAMOND2 for fast and sensitive alignment", "\n","P.S. the parameter 'sensitivity_mode' doesn't apply")
         
         message("Running Divergence Stratigraphy ...")
         
@@ -186,6 +212,9 @@ divergence_stratigraphy <- function(query_file,
         
         dNdS_tbl <- filter_dNdS( dNdS( query_file      = query_file,
                                        subject_file    = subject_file,
+                                       aligner         = aligner,
+                                       sensitivity_mode = sensitivity_mode,
+                                       aligner_path    = aligner_path, 
                                        ortho_detection = ortho_detection,
                                        delete_corrupt_cds = delete_corrupt_cds,
                                        aa_aln_type     = "pairwise", 

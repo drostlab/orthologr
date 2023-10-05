@@ -1,4 +1,4 @@
-orthologr
+orthologr <img src="man/figures/logo.png" align="right" height="174" width="150" />
 =========
 
 ## Comparative Genomics with R
@@ -67,7 +67,14 @@ BiocManager::install(c(
 ))
 
 # install metablastr from GitHub
+<<<<<<< HEAD
+devtools::install_github("HajkD/metablastr")
+=======
 devtools::install_github("drostlab/metablastr")
+>>>>>>> bda50fff539324fd1d1a36d21ef8cecf6c96b86e
+
+# install rdiamond from GitHub
+devtools::install_github("drostlab/rdiamond")
 
 # install orthologr from GitHub
 devtools::install_github("drostlab/orthologr")
