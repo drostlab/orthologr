@@ -96,13 +96,16 @@ diamond <- function(
                 diamond_params    = NULL,
                 clean_folders   = FALSE,
                 save.output     = NULL,
-                use_blastdb     = FALSE) {
+                database_maker  = "diamond") {
         
         if (!is.element(diamond_algorithm, c("blastp")))
                 stop(
                         "Please choose a valid DIAMOND mode. Only 'blastp' is available for this function.",
                         call. = FALSE
                 )
+        
+        if (!is.element(database_maker, c("diamond", "blast")))
+                stop("Please choose either: 'diamond' or 'blast' as database_maker.", call. = FALSE)
         
         is_installed_diamond(diamond_exec_path = path)
         
@@ -127,7 +130,7 @@ diamond <- function(
         
         # initialize the DIAMOND search using the previous function for BLAST
         # set_diamond() could be made in the near future. Here is a stopgap.
-        if(!use_blastdb){
+        if(database_maker == "diamond"){
                 message("creating a diamond database")
                 query.dt <- set_diamond(
                         file     = query_file,
@@ -146,7 +149,7 @@ diamond <- function(
                         delete_corrupt_cds = delete_corrupt_cds,
                         comp_cores = comp_cores
                 )[[2]]
-        }else{
+        }else if(database_maker == "blast"){
                 message("creating a blast database")
                 query.dt <- set_blast(
                         file     = query_file,
