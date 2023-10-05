@@ -13,6 +13,7 @@ set_diamond(
   path = NULL,
   makedb_type = "protein",
   comp_cores = 1,
+  quiet = TRUE,
   ...
 )
 }
@@ -36,6 +37,9 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 that is generated using 'diamond makedb'. Currently, the only option is "protein". Default is \code{makedb_type} = "protein".}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore 'diamond makedb' computations.}
+
+\item{quiet}{a logical value indicating whether \code{diamond makedb} should be run with the quiet mode.
+Default is \code{quiet} = \code{TRUE} (which adds \code{--quiet} to the diamond makedb run).}
 
 \item{...}{additional arguments that are used by the seqinr::read.fasta() function.}
 }

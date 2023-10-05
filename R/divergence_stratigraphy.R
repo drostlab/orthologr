@@ -7,7 +7,7 @@
 #' @param aligner a character string specifying the sequence aligner. The options are \code{diamond} and \code{blast}.
 #' The option \code{diamond} uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
 #' Thus, the default is \code{aligner} = \code{diamond}.
-#' @param sensitivity_mode specify the level of alignment sensitivity. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
+#' @param sensitivity_mode specify the level of alignment sensitivity, when using DIAMOND2. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
 #' - sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of >70
 #' - sensitivity_mode = "default" : Default mode. Designed for finding hits of >70
 #' - sensitivity_mode = "fast" : fast alignment mode, but least sensitive (default). Designed for finding hits of >70
@@ -189,7 +189,7 @@ divergence_stratigraphy <- function(query_file,
                                     ds.values       = TRUE,
                                     subject.id      = FALSE,
                                     n_quantile      = 10,
-                                    sensitivity_mode = "ultra-sensitive"){
+                                    sensitivity_mode = "fast"){
         
         if (!is.ortho_detection_method(ortho_detection))
                 stop("Please choose a orthology detection method that is supported by this function.")

@@ -19,6 +19,7 @@ diamond(
   diamond_params = NULL,
   clean_folders = FALSE,
   save.output = NULL,
+  quiet = TRUE,
   database_maker = "diamond"
 )
 }
@@ -67,6 +68,9 @@ shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 
 \item{save.output}{a path to the location were the DIAMOND2 output shall be stored. E.g. \code{save.output} = \code{getwd()}
 to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
+
+\item{quiet}{a logical value indicating whether DIAMOND2 should be run with the quiet mode.
+Default is \code{quiet} = \code{TRUE} (which adds \code{--quiet} to the diamond run).}
 
 \item{database_maker}{a character string specifying whether the database should be made using diamond or blast.
 Default is \code{database_maker} = \code{diamond}.}
