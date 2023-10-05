@@ -15,6 +15,8 @@
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore 'diamond makedb' computations.
 #' @param makedb_type a character string specifying the sequence type stored in the DIAMOND2 database
 #' that is generated using 'diamond makedb'. Currently, the only option is "protein". Default is \code{makedb_type} = "protein".
+#' @param quiet a logical value indicating whether \code{diamond makedb} should be run with the quiet mode.
+#' Default is \code{quiet} = \code{TRUE} (which adds \code{--quiet} to the diamond makedb run).
 #' @param ... additional arguments that are used by the seqinr::read.fasta() function.
 #' @author Jaruwatana Sodai Lotharukpong
 #' @return A list storing two elements. The first element [[1]] corresponds to the data.table storing the gene ids in the first column and
@@ -43,6 +45,7 @@ set_diamond <- function(
                 path        = NULL,
                 makedb_type = "protein",
                 comp_cores  = 1,
+                quiet       = TRUE,
                 ...){
         
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
@@ -164,6 +167,14 @@ set_diamond <- function(
                                 path,
                                 "; ",
                                 diamonddb_run
+                        )
+                }
+                
+                if(quiet){
+                        diamonddb_run <- paste0(
+                                diamonddb_run,
+                                ' ',
+                                '--quiet'
                         )
                 }
                 
