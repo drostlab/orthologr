@@ -25,12 +25,14 @@
 #' @param path a character string specifying the path to the DIAMOND2 program (in case you don't use the default path).
 #' @param comp_cores a numeric value specifying the number of cores that shall be
 #' used to run DIAMOND2 searches.
-#' @param diamond_params a character string listing the input paramters that shall be passed to the executing DIAMOND2 program. Default is \code{NULL}, implicating
+#' @param diamond_params a character string listing the input parameters that shall be passed to the executing DIAMOND2 program. Default is \code{NULL}, implicating
 #' that a set of default parameters is used when running DIAMOND2.
-#' @param clean_folders a boolean value specifying whether all internall folders storing the output of used programs
+#' @param clean_folders a boolean value specifying whether all internal folders storing the output of used programs
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the DIAMOND2 output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
+#' @param use_blastdb a boolean value specifying whether 
+#' Default is \code{use_blastdb} = \code{FALSE}.
 #' @details This function provides a fast communication between R and DIAMOND2. It is mainly used as internal functions
 #' such as \code{\link{diamond_best}} and \code{\link{diamond_rec}} but can also be used to perform simple DIAMOND2 computations.
 #' This function gives the same output as \code{\link{blast}} while being up to 10 000X faster in larger databases.
@@ -93,7 +95,8 @@ diamond <- function(
                 comp_cores      = 1,
                 diamond_params    = NULL,
                 clean_folders   = FALSE,
-                save.output     = NULL) {
+                save.output     = NULL,
+                use_blastdb     = FALSE) {
         
         if (!is.element(diamond_algorithm, c("blastp")))
                 stop(
@@ -124,21 +127,44 @@ diamond <- function(
         
         # initialize the DIAMOND search using the previous function for BLAST
         # set_diamond() could be made in the near future. Here is a stopgap.
-        query.dt <- set_blast(
-                file     = query_file,
-                seq_type = seq_type,
-                format   = format,
-                delete_corrupt_cds = delete_corrupt_cds
-        )[[1]]
-        
-        # make a BLASTable/DIAMONDable databse of the subject
-        database <- set_blast(
-                file     = subject_file,
-                seq_type = seq_type,
-                format   = format,
-                makedb   = TRUE ,
-                delete_corrupt_cds = delete_corrupt_cds
-        )[[2]]
+        if(!use_blastdb){
+                message("creating a diamond database")
+                query.dt <- set_diamond(
+                        file     = query_file,
+                        seq_type = seq_type,
+                        format   = format,
+                        delete_corrupt_cds = delete_corrupt_cds,
+                        comp_cores = comp_cores
+                )[[1]]
+                
+                # make a BLASTable/DIAMONDable databse of the subject
+                database <- set_diamond(
+                        file     = subject_file,
+                        seq_type = seq_type,
+                        format   = format,
+                        makedb   = TRUE ,
+                        delete_corrupt_cds = delete_corrupt_cds,
+                        comp_cores = comp_cores
+                )[[2]]
+        }else{
+                message("creating a blast database")
+                query.dt <- set_blast(
+                        file     = query_file,
+                        seq_type = seq_type,
+                        format   = format,
+                        delete_corrupt_cds = delete_corrupt_cds
+                )[[1]]
+                
+                # make a BLASTable/DIAMONDable databse of the subject
+                database <- set_blast(
+                        file     = subject_file,
+                        seq_type = seq_type,
+                        format   = format,
+                        makedb   = TRUE ,
+                        delete_corrupt_cds = delete_corrupt_cds
+                )[[2]]
+        }
+
         
         filename <-
                 unlist(
@@ -201,7 +227,7 @@ diamond <- function(
                 )
         })
         
-        # configuring the diamond run in the commmand line
+        # configuring the diamond run in the command line
         # more diamond modes, i.e. blastn, could be added in the future
         # the first step is to make a default run and tag on the
         diamond_run <-  paste0(
