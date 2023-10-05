@@ -150,32 +150,32 @@
 <h2 id="install-orthologr">Install <code>orthologr</code>
 <a class="anchor" aria-label="anchor" href="#install-orthologr"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Install Bioconductor</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"BiocManager"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">"BiocManager"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>()</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Install package dependencies</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="fu">c</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>        <span class="st">"Biostrings"</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>        <span class="st">"GenomicRanges"</span>,</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>        <span class="st">"GenomicFeatures"</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>        <span class="st">"Rsamtools"</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>        <span class="st">"rtracklayer"</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>))</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co"># install metablastr from GitHub</span></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="sc">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"HajkD/metablastr"</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="sc">==</span><span class="er">=====</span></span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"drostlab/metablastr"</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;&gt;&gt;&gt;&gt;</span> bda50fff539324fd1d1a36d21ef8cecf6c96b86e</span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co"># install rdiamond from GitHub</span></span>
-<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"drostlab/rdiamond"</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co"># install orthologr from GitHub</span></span>
-<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"drostlab/orthologr"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install Bioconductor</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install package dependencies</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="st">"Biostrings"</span>,</span>
+<span>        <span class="st">"GenomicRanges"</span>,</span>
+<span>        <span class="st">"GenomicFeatures"</span>,</span>
+<span>        <span class="st">"Rsamtools"</span>,</span>
+<span>        <span class="st">"rtracklayer"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install CRAN dependencies</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doParallel"</span>, <span class="st">"foreach"</span>, <span class="st">"ape"</span>, <span class="st">"Rdpack"</span>, <span class="st">"benchmarkme"</span>, <span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install BLAST dependency metablastr from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/metablastr"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install DIAMOND dependency rdiamond from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/rdiamond"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install orthologr from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"drostlab/orthologr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="use-cases">Use Cases<a class="anchor" aria-label="anchor" href="#use-cases"></a>
@@ -210,12 +210,13 @@
 <span><span class="fu"><a href="reference/dNdS.html">dNdS</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>     subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>     delete_corrupt_cds <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># coding sequences that cannot be divided by 3 (triplets) will be removed</span></span>
-<span>     ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, <span class="co"># perform BLAST best reciprocal hit orthology inference</span></span>
+<span>     ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, <span class="co"># perform DIAMOND best reciprocal hit orthology inference</span></span>
 <span>     aa_aln_type     <span class="op">=</span> <span class="st">"pairwise"</span>, <span class="co"># perform pairwise global alignments of AA seqs </span></span>
 <span>     aa_aln_tool     <span class="op">=</span> <span class="st">"NW"</span>, <span class="co"># using Needleman-Wunsch</span></span>
 <span>     codon_aln_tool  <span class="op">=</span> <span class="st">"pal2nal"</span>, <span class="co"># perform codon alignments using the tool Pal2Nal</span></span>
 <span>     dnds_est.method <span class="op">=</span> <span class="st">"Comeron"</span>, <span class="co"># use Comeron's method for dN/dS inference</span></span>
-<span>     comp_cores      <span class="op">=</span> <span class="fl">1</span> <span class="op">)</span></span></code></pre></div>
+<span>     comp_cores      <span class="op">=</span> <span class="fl">1</span>, <span class="co"># number of compute cores</span></span>
+<span>     delete_corrupt_cds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># remove coding sequences that are not divisible by 3</span></span></code></pre></div>
 <pre><code># A tibble: 20 x 24
    query_id subject_id      dN    dS   dNdS perc_identity num_ident_match… alig_length
    &lt;chr&gt;    &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
