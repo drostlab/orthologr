@@ -101,7 +101,7 @@ diamond <- function(
                         call. = FALSE
                 )
         
-        is_diamond_installed(diamond_exec_path = path)
+        is_installed_diamond(diamond_exec_path = path)
         
         if (is.null(path)) {
                 message("Running ",
@@ -115,7 +115,7 @@ diamond <- function(
                         " ...")
         }
         
-        message("with the ", sensitivity_mode," mode")
+        message("sensitivity mode: ", sensitivity_mode)
         
         # due to the discussion of no visible binding for global variable for
         # data.table objects see:

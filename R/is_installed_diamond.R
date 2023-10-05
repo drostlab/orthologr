@@ -1,5 +1,5 @@
 # from rdiamond (github.com/drostlab/rdiamond)
-is_diamond_installed <- function(diamond_exec_path = NULL) {
+is_installed_diamond <- function(diamond_exec_path = NULL) {
         # test if a valid DIAMOND version is installed
         tryCatch({
                 if (!is.null(diamond_exec_path))
