@@ -248,7 +248,7 @@ diamond <- function(
                         output ,
                         ' --threads ',
                         comp_cores,
-                        ' --outfmt 6', ' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen qcovs qcovhsp sstart send slen evalue bitscore score'
+                        ' --outfmt 6', ' qseqid sseqid pident nident length mismatch gapopen gaps positive ppos qstart qend qlen scovhsp qcovhsp sstart send slen evalue bitscore score'
                         )
         
         if(!is.null(path)){
@@ -300,7 +300,7 @@ diamond <- function(
                         "q_start",
                         "q_end",
                         "q_len",
-                        "qcov",
+                        "scovhsp",
                         "qcovhsp",
                         "s_start",
                         "s_end",
