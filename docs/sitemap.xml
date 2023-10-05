@@ -85,6 +85,15 @@
     <loc>/reference/delta.blast.html</loc>
   </url>
   <url>
+    <loc>/reference/diamond.html</loc>
+  </url>
+  <url>
+    <loc>/reference/diamond_best.html</loc>
+  </url>
+  <url>
+    <loc>/reference/diamond_rec.html</loc>
+  </url>
+  <url>
     <loc>/reference/divergence_map.html</loc>
   </url>
   <url>
@@ -200,6 +209,9 @@
   </url>
   <url>
     <loc>/reference/set_blast.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_diamond.html</loc>
   </url>
   <url>
     <loc>/reference/substitutionrate.html</loc>

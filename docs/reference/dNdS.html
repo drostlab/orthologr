@@ -18,7 +18,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
       </span>
     </div>
 
@@ -83,14 +83,16 @@ and computes the dNdS estimation values for orthologous gene pairs between these
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dNdS</span><span class="op">(</span></span>
 <span>  <span class="va">query_file</span>,</span>
 <span>  <span class="va">subject_file</span>,</span>
+<span>  aligner <span class="op">=</span> <span class="st">"diamond"</span>,</span>
+<span>  sensitivity_mode <span class="op">=</span> <span class="st">"fast"</span>,</span>
+<span>  aligner_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seq_type <span class="op">=</span> <span class="st">"cds"</span>,</span>
 <span>  format <span class="op">=</span> <span class="st">"fasta"</span>,</span>
 <span>  ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
 <span>  delete_corrupt_cds <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  store_locally <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cdd.path <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  blast_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  blast_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  aligner_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  eval <span class="op">=</span> <span class="st">"1E-5"</span>,</span>
 <span>  ortho_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  aa_aln_type <span class="op">=</span> <span class="st">"pairwise"</span>,</span>
@@ -117,6 +119,28 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 <dd><p>a character string specifying the path to the CDS file of interest (subject organism).</p></dd>
 
 
+<dt>aligner</dt>
+<dd><p>a character string specifying the sequence aligner. The options are <code>diamond</code> and <code>blast</code>.
+The option <code>diamond</code> uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
+Thus, the default is <code>aligner</code> = <code>diamond</code>.</p></dd>
+
+
+<dt>sensitivity_mode</dt>
+<dd><p>specify the level of alignment sensitivity, when using DIAMOND2. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
+- sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of &gt;70
+- sensitivity_mode = "default" : Default mode. Designed for finding hits of &gt;70
+- sensitivity_mode = "fast" : fast alignment mode, but least sensitive (default). Designed for finding hits of &gt;70
+- sensitivity_mode = "mid-sensitive" : fast alignments between the fast mode and the sensitive mode in sensitivity.
+- sensitivity_mode = "sensitive" : fast alignments, but full sensitivity for hits &gt;40
+- sensitivity_mode = "more-sensitive" : more sensitive than the sensitive mode.
+- sensitivity_mode = "very-sensitive" : sensitive alignment mode.
+- sensitivity_mode = "ultra-sensitive" : most sensitive alignment mode (sensitivity as high as BLASTP).</p></dd>
+
+
+<dt>aligner_path</dt>
+<dd><p>a character string specifying the path to the DIAMOND or BLAST program (in case you don't use the default path).</p></dd>
+
+
 <dt>seq_type</dt>
 <dd><p>a character string specifying the sequence type stored in the input file.Options are are:</p><ul><li><p><code>seq_type = "cds"</code> (Default): sequence are translated to protein sequences</p></li>
 <li><p><code>seq_type = "protein"</code>: orthology inference is performed using protein sequences directly.</p></li>
@@ -129,8 +153,8 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 
 
 <dt>ortho_detection</dt>
-<dd><p>a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:</p><ul><li><p><code>ortho_detection ="BH"</code>: BLAST unidirectional best hit.</p></li>
-<li><p><code>ortho_detection = "RBH"</code>: BLAST reciprocal/bidirectional best hit (Default).</p></li>
+<dd><p>a character string specifying the orthology inference method that shall be performed to detect orthologous genes. Options are:</p><ul><li><p><code>ortho_detection ="BH"</code>: DIAMOND or BLAST unidirectional best hit.</p></li>
+<li><p><code>ortho_detection = "RBH"</code>: DIAMOND or BLAST reciprocal/bidirectional best hit (Default).</p></li>
 <li><p><code>ortho_detection = "Orthofinder2"</code>: single copy core orthologs between multiple species proteome comparisons.</p></li>
 </ul></dd>
 
@@ -147,16 +171,12 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 <dd><p>path to the cdd database folder (specify when using <code>ortho_detection</code> = <code>"DELTA"</code>).</p></dd>
 
 
-<dt>blast_params</dt>
-<dd><p>a character string specifying additional parameters that shall be passed to BLAST. Default is <code>blast_params</code> = <code>NULL</code>.</p></dd>
-
-
-<dt>blast_path</dt>
-<dd><p>a character string specifying the path to the BLAST program (in case you don't use the default path).</p></dd>
+<dt>aligner_params</dt>
+<dd><p>a character string specifying additional parameters that shall be passed to DIAMOND or BLAST. Default is <code>aligner_params</code> = <code>NULL</code>.</p></dd>
 
 
 <dt>eval</dt>
-<dd><p>a numeric value specifying the E-Value cutoff for BLAST hit detection.</p></dd>
+<dd><p>a numeric value specifying the E-Value cutoff for DIAMOND or BLAST hit detection.</p></dd>
 
 
 <dt>ortho_path</dt>
@@ -164,7 +184,7 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 
 
 <dt>aa_aln_type</dt>
-<dd><p>a character string specifying the amino acid alignement type:</p><ul><li><p><code>aa_aln_type</code> = "multiple" (Default)</p></li>
+<dd><p>a character string specifying the amino acid alignment type:</p><ul><li><p><code>aa_aln_type</code> = "multiple" (Default)</p></li>
 <li><p><code>aa_aln_type</code> = "pairwise"</p></li>
 </ul><p>.</p></dd>
 
@@ -239,17 +259,17 @@ change the amino acid composition of a protein (Mugal et al., 2013 http://mbe.ox
 This function takes the CDS files of two organisms of interest (<code>query_file</code> and <code>subject_file</code>) 
 and computes the dNdS estimation values for orthologous gene pairs between these organisms.</p>
 <p>The following pipieline resembles the dNdS estimation process:</p>
-<ul><li><p>1) Orthology Inference: e.g. BLAST reciprocal best hit (RBH)</p></li>
+<ul><li><p>1) Orthology Inference: e.g. DIAMOND or BLAST reciprocal best hit (RBH)</p></li>
 <li><p>2) Pairwise sequence alignment: e.g. clustalw for pairwise amino acid sequence alignments</p></li>
 <li><p>3) Codon Alignment: e.g. pal2nal program</p></li>
 <li><p>4) dNdS estimation: e.g. Yang, Z. and Nielsen, R. (2000) <a href="http://mbe.oxfordjournals.org/content/17/1/32.short" class="external-link">http://mbe.oxfordjournals.org/content/17/1/32.short</a></p></li>
 </ul><p>Note: it is assumed that when using <code>dNdS()</code> all corresponding multiple sequence alignment programs you
 want to use are already installed on your machine and are executable via either
 the default execution <code>PATH</code> or you specifically define the location of the executable file
-via the <code>aa_aln_path</code> or <code>blast_path</code> argument that can be passed to <code>dNdS()</code>.</p>
+via the <code>aa_aln_path</code> or <code>aligner_path</code> argument that can be passed to <code>dNdS()</code>.</p>
 <p>The <code>dNdS()</code> function can be used choosing the folllowing options:</p>
-<ul><li><p><code>ortho_detection</code> :</p><ul><li><p><code>"RBH"</code> (BLAST best reciprocal hit)</p></li>
-<li><p><code>"BH"</code> (BLAST best hit)</p></li>
+<ul><li><p><code>ortho_detection</code> :</p><ul><li><p><code>"RBH"</code> (DIAMOND or BLAST best reciprocal hit)</p></li>
+<li><p><code>"BH"</code> (DIAMOND or BLAST best hit)</p></li>
 <li><p><code>"Orthofinder2"</code></p></li>
 </ul></li>
 <li><p><code>aa_aln_type</code> :</p><ul><li><p><code>"multiple"</code></p></li>
@@ -287,12 +307,14 @@ matching algorithms. R package version 2.32.1.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="divergence_stratigraphy.html">divergence_stratigraphy</a></code>, <code><a href="orthologs.html">orthologs</a></code>, <code><a href="substitutionrate.html">substitutionrate</a></code>, <code><a href="multi_aln.html">multi_aln</a></code>, <code><a href="codon_aln.html">codon_aln</a></code>, <code><a href="blast_best.html">blast_best</a></code>,
-<code><a href="blast_rec.html">blast_rec</a></code>, <code><a href="read.cds.html">read.cds</a></code></p></div>
+    <div class="dont-index"><p><code><a href="divergence_stratigraphy.html">divergence_stratigraphy</a></code>, <code><a href="orthologs.html">orthologs</a></code>, 
+<code><a href="substitutionrate.html">substitutionrate</a></code>, <code><a href="multi_aln.html">multi_aln</a></code>, <code><a href="codon_aln.html">codon_aln</a></code>, 
+<code><a href="diamond_best.html">diamond_best</a></code>, <code><a href="diamond_rec.html">diamond_rec</a></code>,
+<code><a href="blast_best.html">blast_best</a></code>, <code><a href="blast_rec.html">blast_rec</a></code>, <code><a href="read.cds.html">read.cds</a></code></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
-    <p>Hajk-Georg Drost</p>
+    <p>Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong</p>
     </div>
 
     <div id="ref-examples">

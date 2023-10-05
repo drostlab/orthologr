@@ -49,7 +49,8 @@
 #' diamond(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'         subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
 #'
-#' # performing a DIAMOND2 search using diamond blastp (default) using amino acid sequences as input file
+#' # performing a DIAMOND2 search using diamond blastp (default) 
+#' # using amino acid sequences as input file
 #' diamond(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
 #'         subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
 #'         seq_type     = "protein")
