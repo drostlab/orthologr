@@ -7,6 +7,7 @@
 ### New Features
 
 - a logo is now set for `orthologr`.
+- DIAMOND2 is now used by default in `dNdS()` and `divergence_stratigraphy()` unless blast is specified (`aligner = "blast"`).
 
 ## `orthologr` version 0.4.1
 
