@@ -9,6 +9,7 @@ diamond_rec(
   subject_file,
   seq_type = "cds",
   format = "fasta",
+  diamond_algorithm = "blastp",
   sensitivity_mode = "fast",
   delete_corrupt_cds = TRUE,
   eval = "1E-5",
@@ -32,6 +33,8 @@ translated to protein sequences. Default is \code{seq_type} = "cds".}
 
 \item{format}{a character string specifying the file format of the sequence file, e.g. \code{format} = \code{"fasta"}.
 Default is \code{format} = \code{"fasta"}.}
+
+\item{diamond_algorithm}{a character string specifying the DIAMOND2 algorithm that shall be used, option is currently limited to: \code{diamond_algorithm} = \code{"blastp"}}
 
 \item{sensitivity_mode}{specify the level of alignment sensitivity. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
 - sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of >70
@@ -62,8 +65,6 @@ shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 
 \item{save.output}{a path to the location were the DIAMOND2 output shall be stored. E.g. \code{save.output} = \code{getwd()}
 to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.}
-
-\item{diamond_algorithm}{a character string specifying the DIAMOND2 algorithm that shall be used, option is currently limited to: \code{diamond_algorithm} = \code{"blastp"}}
 }
 \value{
 A data.table as returned by the \code{\link{diamond}} function, storing the geneids

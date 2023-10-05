@@ -98,6 +98,7 @@ diamond_best <- function(
                 subject_file, 
                 seq_type        = "cds",
                 format          = "fasta", 
+                diamond_algorithm = "blastp",
                 sensitivity_mode = "fast",
                 delete_corrupt_cds = TRUE,
                 eval            = "1E-5",
@@ -118,6 +119,7 @@ diamond_best <- function(
         hit_tbl <- diamond( 
                 query_file      = query_file,
                 subject_file    = subject_file,
+                diamond_algorithm = diamond_algorithm,
                 eval            = eval,
                 max.target.seqs = max.target.seqs,
                 delete_corrupt_cds = delete_corrupt_cds,

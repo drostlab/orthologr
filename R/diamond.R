@@ -31,8 +31,8 @@
 #' shall be removed. Default is \code{clean_folders} = \code{FALSE}.
 #' @param save.output a path to the location were the DIAMOND2 output shall be stored. E.g. \code{save.output} = \code{getwd()}
 #' to store it in the current working directory, or \code{save.output} = \code{file.path(put,your,path,here)}.
-#' @param use_blastdb a boolean value specifying whether 
-#' Default is \code{use_blastdb} = \code{FALSE}.
+#' @param database_maker a character string specifying whether the database should be made using diamond or blast.
+#' Default is \code{database_maker} = \code{diamond}.
 #' @details This function provides a fast communication between R and DIAMOND2. It is mainly used as internal functions
 #' such as \code{\link{diamond_best}} and \code{\link{diamond_rec}} but can also be used to perform simple DIAMOND2 computations.
 #' This function gives the same output as \code{\link{blast}} while being up to 10 000X faster in larger databases.

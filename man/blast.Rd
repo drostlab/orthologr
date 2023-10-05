@@ -57,10 +57,10 @@ This parameter must be specified when \code{remote} = \code{TRUE} and is \code{N
 \item{comp_cores}{a numeric value specifying the number of cores that shall be
 used to run BLAST searches.}
 
-\item{blast_params}{a character string listing the input paramters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
+\item{blast_params}{a character string listing the input parameters that shall be passed to the executing BLAST program. Default is \code{NULL}, implicating
 that a set of default parameters is used when running BLAST.}
 
-\item{clean_folders}{a boolean value specifying whether all internall folders storing the output of used programs
+\item{clean_folders}{a boolean value specifying whether all internal folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 
 \item{save.output}{a path to the location were the BLAST output shall be stored. E.g. \code{save.output} = \code{getwd()}
