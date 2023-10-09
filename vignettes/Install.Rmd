@@ -35,10 +35,14 @@ the these programming languages:
  - [__Perl__](https://www.perl.org) >= 5.12
  
  Please make sure these programming languages are installed and executable on the machines you are going to run `orthologr` on.
+ 
+## Pairwise Sequence Alignment Tools
+
+The `orthologr` package provides interfaces to the pairwise alignment tools, `BLAST` and `DIAMOND v2`. We recommend the use of `DIAMOND v2` as it saves time whilst being as sensitive as `BLAST`.
 
 ### Install `BLAST`
 
-[__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) = Basic Local Alignment Search Tool finds regions of similarity between biological sequences and is also used as underlying paradigm of most fast orthology inference methods.
+[__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) (= Basic Local Alignment Search Tool) finds regions of similarity between biological sequences and is also used as underlying paradigm of most orthology inference methods.
 
 1) Go to ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ and download the system specific BLAST program.
 
@@ -83,7 +87,7 @@ blastp -version
 
 Now users should see the BLAST command line options.
 
-### Some tips
+#### Some tips
 
 Based on our personal experience the installation of BLAST works best when copy/pasting
 the BLAST executables to the path `usr/local/bin`. In detail you can run the following steps
@@ -133,8 +137,53 @@ These interface functions to BLAST+ are implemented in `orthologr`:
  - `advanced_blast()` : Advanced interface function to BLAST+
  - `advanced_makedb()` : Advanced interface function to makeblastdb
  
+### Install `DIAMOND2`
+
+[__DIAMOND2__](https://github.com/bbuchfink/diamond) (= Double Index alignment of Next-generation sequencing data) finds, like `BLAST`, regions of similarity between biological sequences. Unlike `BLAST` it is much much faster (up to 10 000X faster in the default `fast` mode and over 80X faster in the `ultra-sensitive` mode, which is as sensitive as `BLAST`). Thus, `DIAMOND2` facilitates _even faster_ orthology inference.
+
+1) Go to the download site in the [`DIAMOND2` wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and follow the instructions for installation. `DIAMOND2` is supported on Linux, macOS and Windows.
+
+2) Check the installation of `DIAMOND2` by running the command
+
+```
+diamond --version
+```
+
+3) After installing the `DIAMOND2` program you can open an R session and type the following command to check whether or not `DIAMOND2` can be executed from R.
+
+```{r,eval=FALSE}
+# test whether diamond is correctly installed on your machine
+system("diamond --version")
+```
+
+```
+diamond version 2.1.8
+```
+
+__You should see this output if `DIAMOND2` was installed correctly.__
+
+In case you find the following output:
+
+```
+sh: diamond: command not found
+```
+
+You should return to `step 1)` and install `DIAMOND2` so that it can be executed
+from the default execution `PATH`.
+
+These interface functions to `DIAMOND2` are implemented in `orthologr`, akin to the interface functions to `BLAST+`:
  
-### Multiple Sequence Alignment Tools
+ - `diamond()` : Interface function to DIAMOND2
+ - `diamond_best()` : Perform a diamond best hit search
+ - `diamond_rec()` : Perform a diamond reciprocal best hit (RBH) search
+ - `set_diamond()` : Preparing the parameters and databases for subsequent diamond searches
+ 
+Furthermore, the following functions use `DIAMOND2` by default, though the use of BLAST can be specified through the parameter `aligner = "blast"`:
+
+ - `dNdS()` : Compute dNdS values for two organisms
+ - `divergence_stratigraphy()` : Perform 'Divergence Stratigraphy'
+
+## Multiple Sequence Alignment Tools
 
 The `orthologr` package also provides interfaces to the following Multiple Alignment Tools.
 Nevertheless, non of them have to be installed if the corresponding interface functions
@@ -206,7 +255,7 @@ In `orthologr` the function `multi_aln()` provides interfaces to all of these mu
 as well as an pairwise alignment interface to the [Biostrings](http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574).
 
 
-### Codon Alignment Tools
+## Codon Alignment Tools
 
 The codon alignment tool [Pal2Nal](http://www.bork.embl.de/pal2nal/) is already integrated in the `orthologr` package
 and doesn't need to be installed.
@@ -217,7 +266,7 @@ You don't need to worry about downloading and installing __PAL2NAL__, it is alre
 The corresponding function `codon_aln()` takes a protein alignment and the corresponding coding sequences and returns
 a codon alignment by calling [__Pal2Nal__](http://www.bork.embl.de/pal2nal/) from inside of the `orthologr` package.
 
-### dNdS Estimation Methods
+## dNdS Estimation Methods
 
 dNdS estimation is a method to quantify the selection pressure acting on a specific protein sequence determined by pairwise comparisons of
 amino acid substitutions between two protein sequences and their corresponding codon alignments.
