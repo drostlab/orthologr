@@ -102,7 +102,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Installing Prerequisite Tools</h1>
             
-            <h4 data-toc-skip class="date">2023-10-05</h4>
+            <h4 data-toc-skip class="date">2023-10-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/Install.Rmd" class="external-link"><code>vignettes/Install.Rmd</code></a></small>
       <div class="hidden name"><code>Install.Rmd</code></div>
@@ -142,13 +142,21 @@ on the these programming languages:</p>
 <p>Please make sure these programming languages are installed and
 executable on the machines you are going to run <code>orthologr</code>
 on.</p>
+</div>
+<div class="section level2">
+<h2 id="pairwise-sequence-alignment-tools">Pairwise Sequence Alignment Tools<a class="anchor" aria-label="anchor" href="#pairwise-sequence-alignment-tools"></a>
+</h2>
+<p>The <code>orthologr</code> package provides interfaces to the
+pairwise alignment tools, <code>BLAST</code> and
+<code>DIAMOND v2</code>. We recommend the use of <code>DIAMOND v2</code>
+as it saves time whilst being as sensitive as <code>BLAST</code>.</p>
 <div class="section level3">
 <h3 id="install-blast">Install <code>BLAST</code><a class="anchor" aria-label="anchor" href="#install-blast"></a>
 </h3>
 <p><a href="http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/%5D" class="external-link"><strong>BLAST</strong></a>
-= Basic Local Alignment Search Tool finds regions of similarity between
-biological sequences and is also used as underlying paradigm of most
-fast orthology inference methods.</p>
+(= Basic Local Alignment Search Tool) finds regions of similarity
+between biological sequences and is also used as underlying paradigm of
+most orthology inference methods.</p>
 <ol style="list-style-type: decimal">
 <li><p>Go to <a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/" class="uri">ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/</a>
 and download the system specific BLAST program.</p></li>
@@ -195,10 +203,9 @@ exit
 # log in again and type
 blastp -version</code></pre>
 <p>Now users should see the BLAST command line options.</p>
-</div>
-<div class="section level3">
-<h3 id="some-tips">Some tips<a class="anchor" aria-label="anchor" href="#some-tips"></a>
-</h3>
+<div class="section level4">
+<h4 id="some-tips">Some tips<a class="anchor" aria-label="anchor" href="#some-tips"></a>
+</h4>
 <p>Based on our personal experience the installation of BLAST works best
 when copy/pasting the BLAST executables to the path
 <code>usr/local/bin</code>. In detail you can run the following steps to
@@ -251,13 +258,75 @@ BLAST+</li>
 makeblastdb</li>
 </ul>
 </div>
+</div>
 <div class="section level3">
-<h3 id="multiple-sequence-alignment-tools">Multiple Sequence Alignment Tools<a class="anchor" aria-label="anchor" href="#multiple-sequence-alignment-tools"></a>
+<h3 id="install-diamond2">Install <code>DIAMOND2</code><a class="anchor" aria-label="anchor" href="#install-diamond2"></a>
 </h3>
+<p><a href="https://github.com/bbuchfink/diamond" class="external-link"><strong>DIAMOND2</strong></a>
+(= Double Index alignment of Next-generation sequencing data) finds,
+like <code>BLAST</code>, regions of similarity between biological
+sequences. Unlike <code>BLAST</code> it is much much faster (up to 10
+000X faster in the default <code>fast</code> mode and over 80X faster in
+the <code>ultra-sensitive</code> mode, which is as sensitive as
+<code>BLAST</code>). Thus, <code>DIAMOND2</code> facilitates <em>even
+faster</em> orthology inference.</p>
+<ol style="list-style-type: decimal">
+<li><p>Go to the download site in the <a href="https://github.com/bbuchfink/diamond/wiki/2.-Installation" class="external-link"><code>DIAMOND2</code>
+wiki</a> and follow the instructions for installation.
+<code>DIAMOND2</code> is supported on Linux, macOS and Windows.</p></li>
+<li><p>Check the installation of <code>DIAMOND2</code> by running the
+command</p></li>
+</ol>
+<pre><code><span><span class="va">diamond</span> <span class="op">-</span><span class="op">-</span><span class="va">version</span></span></code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>After installing the <code>DIAMOND2</code> program you can open an R
+session and type the following command to check whether or not
+<code>DIAMOND2</code> can be executed from R.</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># test whether diamond is correctly installed on your machine</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>diamond version 2.1.8</code></pre>
+<p><strong>You should see this output if <code>DIAMOND2</code> was
+installed correctly.</strong></p>
+<p>In case you find the following output:</p>
+<pre><code>sh: diamond: command not found</code></pre>
+<p>You should return to <code>step 1)</code> and install
+<code>DIAMOND2</code> so that it can be executed from the default
+execution <code>PATH</code>.</p>
+<p>These interface functions to <code>DIAMOND2</code> are implemented in
+<code>orthologr</code>, akin to the interface functions to
+<code>BLAST+</code>:</p>
+<ul>
+<li>
+<code><a href="../reference/diamond.html">diamond()</a></code> : Interface function to DIAMOND2</li>
+<li>
+<code><a href="../reference/diamond_best.html">diamond_best()</a></code> : Perform a diamond best hit search</li>
+<li>
+<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code> : Perform a diamond reciprocal best hit
+(RBH) search</li>
+<li>
+<code><a href="../reference/set_diamond.html">set_diamond()</a></code> : Preparing the parameters and databases
+for subsequent diamond searches</li>
+</ul>
+<p>Furthermore, the following functions use <code>DIAMOND2</code> by
+default, though the use of BLAST can be specified through the parameter
+<code>aligner = "blast"</code>:</p>
+<ul>
+<li>
+<code><a href="../reference/dNdS.html">dNdS()</a></code> : Compute dNdS values for two organisms</li>
+<li>
+<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> : Perform ‘Divergence
+Stratigraphy’</li>
+</ul>
+</div>
+</div>
+<div class="section level2">
+<h2 id="multiple-sequence-alignment-tools">Multiple Sequence Alignment Tools<a class="anchor" aria-label="anchor" href="#multiple-sequence-alignment-tools"></a>
+</h2>
 <p>The <code>orthologr</code> package also provides interfaces to the
 following Multiple Alignment Tools. Nevertheless, non of them have to be
 installed if the corresponding interface functions are not used.</p>
-</div>
 <div class="section level3">
 <h3 id="install-clustalw2">Install <code>ClustalW2</code><a class="anchor" aria-label="anchor" href="#install-clustalw2"></a>
 </h3>
@@ -326,9 +395,10 @@ an pairwise alignment interface to the <a href="http://www.bioconductor.org/pack
 package performing a <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
 algorithm</a>.</p>
 </div>
-<div class="section level3">
-<h3 id="codon-alignment-tools">Codon Alignment Tools<a class="anchor" aria-label="anchor" href="#codon-alignment-tools"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="codon-alignment-tools">Codon Alignment Tools<a class="anchor" aria-label="anchor" href="#codon-alignment-tools"></a>
+</h2>
 <p>The codon alignment tool <a href="http://www.bork.embl.de/pal2nal/" class="external-link">Pal2Nal</a> is already
 integrated in the <code>orthologr</code> package and doesn’t need to be
 installed.</p>
@@ -342,9 +412,9 @@ installed.</p>
 coding sequences and returns a codon alignment by calling <a href="http://www.bork.embl.de/pal2nal/" class="external-link"><strong>Pal2Nal</strong></a>
 from inside of the <code>orthologr</code> package.</p>
 </div>
-<div class="section level3">
-<h3 id="dnds-estimation-methods">dNdS Estimation Methods<a class="anchor" aria-label="anchor" href="#dnds-estimation-methods"></a>
-</h3>
+<div class="section level2">
+<h2 id="dnds-estimation-methods">dNdS Estimation Methods<a class="anchor" aria-label="anchor" href="#dnds-estimation-methods"></a>
+</h2>
 <p>dNdS estimation is a method to quantify the selection pressure acting
 on a specific protein sequence determined by pairwise comparisons of
 amino acid substitutions between two protein sequences and their
@@ -379,7 +449,6 @@ Yang, Z. and Nielsen, R. (2000)</p></li>
 <p>For this purpose you need to have <strong>KaKs_Calculator</strong>
 installed on your system and executable from your default
 <code>PATH</code>, e,g, <code>/usr/local/bin/</code>.</p>
-</div>
 <div class="section level3">
 <h3 id="install-kaks_calculator-for-linuxunixos">Install KaKs_Calculator (For Linux/Unix/OS)<a class="anchor" aria-label="anchor" href="#install-kaks_calculator-for-linuxunixos"></a>
 </h3>
