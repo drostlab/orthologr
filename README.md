@@ -114,8 +114,7 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
      aa_aln_tool     = "NW", # using Needleman-Wunsch
      codon_aln_tool  = "pal2nal", # perform codon alignments using the tool Pal2Nal
      dnds_est.method = "Comeron", # use Comeron's method for dN/dS inference
-     comp_cores      = 1, # number of compute cores
-     delete_corrupt_cds = TRUE) # remove coding sequences that are not divisible by 3
+     comp_cores      = 1) # number of compute cores
 ```
 
 ```
