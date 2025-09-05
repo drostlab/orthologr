@@ -63,7 +63,8 @@ BiocManager::install(c(
         "GenomicRanges",
         "GenomicFeatures",
         "Rsamtools",
-        "rtracklayer"
+        "rtracklayer",
+        "pwalign"
 ))
 
 # install CRAN dependencies
