@@ -234,9 +234,9 @@ divergence_stratigraphy <- function(query_file,
         
         if (!ds.values) {
                 if (!subject.id)
-                        dm_tbl <- stats::na.omit(dNdS_tbl[ ,list(dNdS,query_id)]) 
+                        dm_tbl <- stats::na.omit(dplyr::select(dNdS_tbl, dNdS,query_id))
                 if (subject.id)
-                        dm_tbl <- stats::na.omit(dNdS_tbl[ ,list(dNdS,query_id,subject_id)])
+                        dm_tbl <- stats::na.omit(dplyr::select(dNdS_tbl, dNdS,query_id,subject_id))
         }
         
         if (clean_folders)
