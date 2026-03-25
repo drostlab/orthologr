@@ -15,8 +15,8 @@
 #' @author Sarah Scharfenberg and Hajk-Georg Drost
 #' @details This function provides an interface between R and common pairwise alignment computation methods.
 #' 
-#' The current version of this function computes pairwise alignments based on the \code{\link[Biostrings]{pairwiseAlignment}}
-#' function implemented in the \pkg{Biostrings} package.
+#' The current version of this function computes pairwise alignments based on the \code{\link[pwalign]{pairwiseAlignment}}
+#' function implemented in the \pkg{pwalign} package.
 #' 
 #' The default pairwise alignment method is based on the \emph{Needleman-Wunsch Algorithm}.
 #' 
@@ -85,7 +85,7 @@ pairwise_aln <- function(file,
                         )
         }
         
-        # Needleman-Wunsch using Biostrings::pairwiseAlignment( type=global)
+        # Needleman-Wunsch using pwalign::pairwiseAlignment( type=global)
         if (tool == "NW") {
                 #read file
                 if (is.element(seq_type, c("dna", "cds"))) {
@@ -122,25 +122,25 @@ pairwise_aln <- function(file,
                 
                 # align
                 aln  <-
-                        Biostrings::pairwiseAlignment(pattern = seqs[[1]],
-                                                      subject = seqs[[2]],
-                                                      type    = "global")
+                        pwalign::pairwiseAlignment(pattern = seqs[[1]],
+                                                   subject = seqs[[2]],
+                                                   type    = "global")
                 
                 #write file -> comment Hajk: what does pattern() and subject() do in pattern(aln), subject(aln) ?
                 # pattern(aln) == get aligned sequence that was set as pattern input
                 # subject(aln) == get aligned sequence that was set as subject input
                 seqinr::write.fasta(
-                        sequences = list(Biostrings::pattern(aln), IRanges::subject(aln)),
+                        sequences = list(pwalign::pattern(aln), pwalign::subject(aln)),
                         names     = names,
                         file.out  = file.out
                 )
                 
                 if (store_locally) {
                         local_store_path <- file.path("orthologr_alignment_files", "_pairwise_alignment_with_score")
-                        Biostrings::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
+                        pwalign::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
                 } else {
                         local_store_path <- file.path(tempdir(), "_pairwise_alignment_with_score")
-                        Biostrings::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
+                        pwalign::writePairwiseAlignments(aln, file.path(local_store_path, paste0(pairwise_aln_name, "_", tool, "_", seqtype, ".aln")))
                 }
                 
                 if (!quiet) {
