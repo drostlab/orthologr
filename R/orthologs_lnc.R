@@ -44,7 +44,7 @@
 #' in the second column and the amino acid sequences in the third column.
 #' @references
 #' 
-#' BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
+#' BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 #' 
 #' ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 #'
@@ -99,6 +99,10 @@ orthologs_lnc <- function(query_file,
                 if (length(subject_file) > 1)
                         stop("The BLAST best hit method is only defined for pairwise comparisons.", call. = FALSE)
                 
+                if (!requireNamespace("metablastr", quietly = TRUE))
+                        stop("Package 'metablastr' is required for lncRNA orthology inference but is not installed. ",
+                             "Install it with: remotes::install_github('drostlab/metablastr')", call. = FALSE)
+                
                 ortho_tbl <- metablastr::blast_best_hit(
                         query      = query_file,
                         subject =  subject_file,
@@ -117,6 +121,10 @@ orthologs_lnc <- function(query_file,
                 
                 if (length(subject_file) > 1)
                         stop("The BLAST best reciprocal hit method is only defined for pairwise comparisons.", call. = FALSE)
+                
+                if (!requireNamespace("metablastr", quietly = TRUE))
+                        stop("Package 'metablastr' is required for lncRNA orthology inference but is not installed. ",
+                             "Install it with: remotes::install_github('drostlab/metablastr')", call. = FALSE)
                 
                 ortho_tbl <- metablastr::blast_best_reciprocal_hit(
                         query      = query_file,

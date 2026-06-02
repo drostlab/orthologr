@@ -61,11 +61,9 @@
 #' Mikita Suyama, David Torrents, and Peer Bork (2006)
 #' PAL2NAL: robust conversion of protein sequence alignments into the corresponding codon alignments. Nucleic Acids Res. 34, W609-W612.
 #' 
-#' http://www.bork.embl.de/pal2nal/
+#' https://www.bork.embl.de/services.html
 #' 
-#' http://www.genome.med.kyoto-u.ac.jp/cgi-bin/suyama/pal2nal/index.cgi
-#' 
-#' http://abacus.gene.ucl.ac.uk/software/paml.html
+#' https://github.com/abacus-gene/paml/wiki
 #' 
 #' @seealso \code{\link{pairwise_aln}}, \code{\link{multi_aln}}, \code{\link{substitutionrate}},
 #'  \code{\link{dNdS}}, \code{\link{divergence_stratigraphy}}

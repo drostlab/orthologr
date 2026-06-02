@@ -71,13 +71,13 @@ which now allows users to select different dNdS estimation methods when running 
 
 ### Removed Functions
 
-- the function `advanced_blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+- the function `advanced_blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/drostlab/metablastr) in case you need this functionality)
 
-- the function `advanced_makedb()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+- the function `advanced_makedb()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/drostlab/metablastr) in case you need this functionality)
 
-- the function `blast.nr()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+- the function `blast.nr()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/drostlab/metablastr) in case you need this functionality)
 
-- the function `delta.blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/HajkD/metablastr) in case you need this functionality)
+- the function `delta.blast()` is not supported anymore and thus is not available to users anymore (please consult the [metablastr package](https://github.com/drostlab/metablastr) in case you need this functionality)
 
 - the function `ProteinOrtho()` is not supported anymore and thus is not available to users anymore
 
@@ -106,7 +106,7 @@ Thus, given the new trimming feature in `read.cds()`, corrupted CDS equences wil
 ### Bug fixes
 
 - The default setting of the `BLAST` argument `max_target_seqs 1` was removed from `blast_best()` and `blast_rec()` due to
-the misunderstood functionality of the `BLAST` argument (See details [here](https://watermark.silverchair.com/bty833.pdf?token=AQECAHi208BE49Ooan9kkhW_Ercy7Dm3ZL_9Cf3qfKAc485ysgAAAokwggKFBgkqhkiG9w0BBwagggJ2MIICcgIBADCCAmsGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMvrRsd_dqJkkrO5AiAgEQgIICPNCvHwDI6PCzjXjP4FtOO2O0HPaNbVmBBOW7I0YBwK6an33k32Zm3d24U1pB5TsoPAmqK1TBBz8y9IEEynMl7IQKmupg3MXTiUqUe0oLrMDIrL4Szunm255RdiIlvq5RDR5V3B7ejVCxTbwbmvbggBHyiMCcvEEufaNROT8z7XXaUiHx3OyD1HaRkXIM4MC5x_b734rkKFIploMWjLSX5KZS1i2prd_Shn2seyV4E2cj3RVw9YzcBEZvRHpbhzWIOWSjXR3ZqYTlDCxzk5CO0d15J57u3C64sM1rQRo2Atny5KR5VL4oLxy8bBBGsQl-k6lQavisoshkBZPfLMr5kEHMrCmCtw2Q2A6pzgYC-jJ7udunpA7DK2GZsSQc-ApYXHFdEOovrtFYNHFrqlE8IsooVB7U89re0lMzZM4gYoMzcDuvLFQ1_msIl51QMmPi8yIY6E5DA2h1Ho93wUxekwTBdxB3ovAtpz4_J93w8cn4z2EK9ygHoxLRQ90kfd7nawSMTxFwBxDB0iK3_w0YtnObzcyd_JAWZM9fobNHDc1CY9j4DWKclIxhqHeCHKMtw9nB9CSa7Bccbf1EBHw4uf1-qYl30IdUsKQUpP5YOtKA7nUDTpTJiKKEf1V3MmW6rPreBayi45-QPk7GkhlrgJgaXdU4LMSGxjaDdcXhOX3W35Y95VSAZEf3rlueplgDTRnRxu8NNZ8S1c5ccA1vP0gFth80NTwzUzZy2kSITIndok_0MWSeuavaRQ7g) and #9 ; Many thanks to @armish)
+the misunderstood functionality of the `BLAST` argument (See details [here](https://doi.org/10.1093/bioinformatics/bty833) and #9 ; Many thanks to @armish)
 
 ## `orthologr` version  0.0.4
 
@@ -135,9 +135,9 @@ stores all corrupted CDS so that they can be investigated. See issue #8 for deta
 
 ## `orthologr` version  0.0.3
 
-- Fixing internal path bug that caused that wrong pal2nal paths were generated when using multiple sequence aligners -> see issue https://github.com/HajkD/orthologr/issues/5 (Many thanks to Dr. Mario López-Pérez)
+- Fixing internal path bug that caused that wrong pal2nal paths were generated when using multiple sequence aligners -> see issue https://github.com/drostlab/orthologr/issues/5 (Many thanks to Dr. Mario López-Pérez)
 
 ## `orthologr` version  0.0.2
 
 - Fixing a major bug that caused KaKs_Calculator to not be able to correctly 
-parse the kaks computation output (Many thanks to [Hongyi Li](https://github.com/lihongyi123) who spotted the bug and found a solution).
+parse the kaks computation output (Many thanks to Hongyi Li who spotted the bug and found a solution).

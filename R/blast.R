@@ -62,9 +62,9 @@
 #'
 #' Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 #'
-#' http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+#' https://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
 #'
-#' http://blast.ncbi.nlm.nih.gov/Blast.cgi
+#' https://blast.ncbi.nlm.nih.gov/Blast.cgi
 #' @examples \dontrun{
 #' # performing a BLAST search using blastp (default)
 #' blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -356,7 +356,7 @@ blast <- function(query_file,
         })
         
         # additional blast parameters can be found here:
-        # http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+        # https://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
         blast_table_names <-
                 c(
                         "query_id",

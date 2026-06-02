@@ -41,7 +41,7 @@
 #' 
 #' 3) dNdS estimation of the codon alignment returned by 2)
 #' 
-#' @references \url{http://www.r-bloggers.com/the-wonders-of-foreach/}
+#' @references \url{https://www.r-bloggers.com/2013/08/the-wonders-of-foreach/}
 #' @seealso \code{\link{multi_aln}}, \code{\link{substitutionrate}}, \code{\link{dNdS}}
 #' @import foreach 
 #' @import data.table
