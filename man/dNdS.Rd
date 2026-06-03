@@ -248,17 +248,17 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
 }
 }
 \references{
-seqinr: \url{http://seqinr.r-forge.r-project.org/}
+seqinr: \url{https://cran.r-project.org/package=seqinr}
 
 Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator: Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263. 
 
-KaKs_Calculator: \url{https://code.google.com/p/kaks-calculator/} [GNU GPL-3 license]
+KaKs_Calculator: \url{https://code.google.com/archive/p/kaks-calculator} [GNU GPL-3 license]
 
 Paradis, E. (2012) Analysis of Phylogenetics and Evolution with R (Second Edition). New York: Springer.
 
 Paradis, E., Claude, J. and Strimmer, K. (2004) APE: analyses of phylogenetics and evolution in R language. Bioinformatics, 20, 289-290.
 
-More information on \pkg{ape} can be found at \url{http://ape-package.ird.fr/}.
+More information on \pkg{ape} can be found at \url{https://emmanuelparadis.github.io/} or \url{https://github.com/emmanuelparadis/ape}.
 
 Pages H, Aboyoun P, Gentleman R and DebRoy S. Biostrings: String objects representing biological sequences, and
 matching algorithms. R package version 2.32.1.

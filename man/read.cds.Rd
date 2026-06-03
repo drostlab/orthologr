@@ -28,7 +28,7 @@ of interest as first argument.
 
 It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 
-CDS stored in fasta files can be downloaded from http://www.ensembl.org/info/data/ftp/index.html.
+CDS stored in fasta files can be downloaded from https://www.ensembl.org/info/data/ftp/index.html, etc.
 }
 \examples{
 \dontrun{

@@ -138,9 +138,7 @@ Thornton, K. (2003) libsequence: a C++ class library for evolutionary genetic an
 Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator:
 Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263.
 
-https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator
-
-https://code.google.com/p/kaks-calculator/wiki/AXT
+https://code.google.com/archive/p/kaks-calculator
 }
 \seealso{
 \code{\link{dNdS}}, \code{\link{multi_aln}}, \code{\link{codon_aln}}, \code{\link{blast_best}},

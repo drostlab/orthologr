@@ -45,8 +45,8 @@ that shall be aligned and computes a paiwise alignment using a defined alignment
 \details{
 This function provides an interface between R and common pairwise alignment computation methods.
 
-The current version of this function computes pairwise alignments based on the \code{\link[Biostrings]{pairwiseAlignment}}
-function implemented in the \pkg{Biostrings} package.
+The current version of this function computes pairwise alignments based on the \code{\link[pwalign]{pairwiseAlignment}}
+function implemented in the \pkg{pwalign} package.
 
 The default pairwise alignment method is based on the \emph{Needleman-Wunsch Algorithm}.
 }

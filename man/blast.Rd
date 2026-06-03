@@ -144,9 +144,9 @@ Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., & Schaeffer A
 
 Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421.
 
-http://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+https://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
 
-http://blast.ncbi.nlm.nih.gov/Blast.cgi
+https://blast.ncbi.nlm.nih.gov/Blast.cgi
 }
 \seealso{
 \code{\link{blast_best}}, \code{\link{blast_rec}}, \code{\link{set_blast}}
