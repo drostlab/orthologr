@@ -26,10 +26,7 @@ Imports:
     Rcpp (>= 0.11.3),
     Biostrings (>= 2.52.0),
     pwalign (>= 1.6.0),
-    RSQLite (>= 0.11.4),
     stringr (>= 0.6.2),
-    IRanges,
-    DBI (>= 0.3.1),
     dtplyr,
     rtracklayer,
     tibble,
@@ -42,6 +39,9 @@ Imports:
     benchmarkme
 Suggests:
     knitr (>= 1.6),
+    DBI (>= 0.3.1),
+    IRanges,
+    RSQLite (>= 0.11.4),
     rmarkdown (>= 0.3.3),
     devtools (>= 1.6.1),
     testthat (>= 3.0.0),
