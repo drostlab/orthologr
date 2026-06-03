@@ -3,10 +3,7 @@ context("Test: set_diamond()")
 cds_file     <- system.file("seqs/ortho_thal_cds.fasta",  package = "orthologr")
 protein_file <- system.file("seqs/ortho_thal_aa.fasta",   package = "orthologr")
 
-diamond_available <- tryCatch({
-        is_installed_diamond()
-        TRUE
-}, error = function(e) FALSE)
+diamond_available <- isTRUE(tryCatch(is_installed_diamond(), error = function(e) FALSE))
 
 # --- Input validation (no DIAMOND needed) ------------------------------------
 

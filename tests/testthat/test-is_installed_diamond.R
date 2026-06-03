@@ -1,9 +1,6 @@
 context("Test: is_installed_diamond()")
 
-diamond_available <- tryCatch({
-        is_installed_diamond()
-        TRUE
-}, error = function(e) FALSE)
+diamond_available <- isTRUE(tryCatch(is_installed_diamond(), error = function(e) FALSE))
 
 test_that("is_installed_diamond() returns TRUE when DIAMOND2 is on PATH", {
         skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")

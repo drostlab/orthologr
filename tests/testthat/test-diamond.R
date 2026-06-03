@@ -12,10 +12,7 @@ expected_cols <- c(
         "s_start", "s_end", "s_len", "evalue", "bit_score", "score_raw"
 )
 
-diamond_available <- tryCatch({
-        is_installed_diamond()
-        TRUE
-}, error = function(e) FALSE)
+diamond_available <- isTRUE(tryCatch(is_installed_diamond(), error = function(e) FALSE))
 
 # --- Input validation (no DIAMOND needed) ------------------------------------
 

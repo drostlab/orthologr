@@ -234,7 +234,7 @@
 #' T-Coffee: A novel method for multiple sequence alignments. 
 #' Notredame, Higgins, Heringa, JMB, 302(205-217). 2000.
 #' 
-#' \url{https://tcoffee.readthedocs.io/en/latest//}
+#' \url{https://tcoffee.readthedocs.io/en/latest/}
 #' 
 #' \url{https://tcoffee.readthedocs.io/en/latest/tcoffee_technical_documentation.html}
 #' 

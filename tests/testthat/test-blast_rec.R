@@ -1,9 +1,6 @@
 context("Test: blast_rec()")
 
-blast_available <- tryCatch({
-        is_installed_blast()
-        TRUE
-}, error = function(e) FALSE)
+blast_available <- isTRUE(tryCatch(is_installed_blast(), error = function(e) FALSE))
 
 test_that("blast_rec() runs properly ...", {
         skip_if_not(blast_available, "BLAST is not installed or not on PATH")
