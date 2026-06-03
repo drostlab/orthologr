@@ -385,10 +385,4 @@ subsequent analyses, you can specify the `clean_folders = FALSE` argument. The c
 BLAST hit table can then be found in `file.path(tempdir(),"_blast_db")`.
 
 A detailed overview of further analyses that can be done with the corresponding BLAST output
-can be found in the [BLAST vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/blast.Rmd).
-
-
-### Examples: Orthogroup based methods
-
-
-
+can be found in the [BLAST vignette](https://drostlab.github.io/orthologr/articles/blast.html).

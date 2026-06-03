@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 The `orthologr` package provides several interface functions to perform
 BLAST searches.
 
-First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast) instructions to install BLAST on your manine.
+First, users need to make sure that they have [BLAST](ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) installed on their machine. Please follow [these](https://drostlab.github.io/orthologr/articles/Install.html#install-blast) instructions to install BLAST on your manine.
 
 ## Performing BLAST Searches
 
@@ -102,7 +102,7 @@ The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `p
 `alig_length`, `mismatches`, `gap_openings`, `q_start`, `q_end`, `s_start`, `s_end`, `evalue`, and `bit_score`.
 
 Since `blast()` stores the hit table returned by BLAST in a data.table object, you can access each column,
-using the [data.table notation](https://github.com/Rdatatable/data.table/wiki).
+using the [data.table notation](https://r-datatable.com).
 
 
 In case you need to specify the `PATH` to BLAST+ please use the `path` argument:
@@ -216,7 +216,7 @@ argument defines the default e-value that shall be chosen as best hit threshold.
 ### Using the split-apply-combine strategy for a BLAST hit table
 
 All `blast` functions implemented in `orthologr` can easily be processed using the
-[split-apply-combine strategy](http://www.jstatsoft.org/v40/i01/paper) to detect 
+[split-apply-combine strategy](https://www.jstatsoft.org/htaccess.php?volume=40&type=i&issue=01&filename=paper) to detect 
 for example `one-to-one`, `one-to-many`, and `many-to-many` gene homology relationships.
 
 Here a simple example:
@@ -509,7 +509,7 @@ Now users can perform a global alignment between the CDS sequences of `AT1G01070
 and the three subject genes as follows:
 
 ```{r,eval=FALSE}
-library(Biostrings)
+library(Biostrings); library(pwalign)
 # perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, 
 # 919693|PACid:16048878, 919961|PACid:16062329
 sapply(Aly.cds[ unlist(dplyr::select(dplyr::filter(hit_tbl, query_id == "AT1G01070.1"), subject_id)), seqs ], pairwiseAlignment, 
@@ -758,18 +758,10 @@ LDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLV
 VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*
 ```
 
-## Perform BLAST Searches between Genomes or Proteomes
+## Advanced BLAST+ analyses
 
-For large-scale applications of `orthologr`, users may wish to perform BLAST+
-searches between entire genomes. For very large-scale BLAST+ searches
-between genomes we recommend the user to use the [metablastr](https://github.com/HajkD/metablastr) package
+For large-scale applications of BLAST+ analysis within R, we recommend users to see the [metablastr](https://github.com/drostlab/metablastr) package
 which aims to provide an easy-to-use BLAST search framework
 for massive genome comparisons.
-
-For pairwise genome comparisons however, users can use the following
-functions to BLAST one genome against another.
-
-### Genome and Proteome Retrieval
-
 
 

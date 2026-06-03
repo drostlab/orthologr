@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
 This selection pressure can be quantified by comparing synonymous substitution rates (dS) that are assumed to be neutral
 with nonsynonymous substitution rates (dN), which are exposed to selection as they 
-change the amino acid composition of a protein ([Mugal et al., 2013](http://mbe.oxfordjournals.org/content/31/1/212)).
+change the amino acid composition of a protein ([Mugal et al., 2013](https://academic.oup.com/mbe/article/31/1/212/1049986)).
 
 The `orthologr` package provides a function named `dNdS()` to perform dNdS estimation on pairs of orthologous genes.
 The `dNdS()` function takes the CDS files of two organisms of interest (`query_file` and `subject_file`) 
@@ -60,13 +60,13 @@ The following pipeline resembles an example dNdS estimation procedure:
  
  3) Codon Alignment: e.g. pal2nal program
  
- 4) dNdS estimation: e.g. [Yang, Z. and Nielsen, R. (2000)](http://mbe.oxfordjournals.org/content/17/1/32.short) (YN)
+ 4) dNdS estimation: e.g. [Yang, Z. and Nielsen, R. (2000)](https://academic.oup.com/mbe/article/17/1/32/975527) (YN)
 
 
 __Note:__ it is assumed that when using `dNdS()` all corresponding multiple sequence alignment programs you
 want to use are already installed on your machine and are executable via either
 the default execution PATH or you specifically define the location of the executable program
-via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`. See the [Sequence Alignments vignette](https://github.com/HajkD/orthologr/blob/master/vignettes/sequence_alignments.Rmd)
+via the `aa_aln_path` or `blast_path` argument that can be passed to `dNdS()`. See the [Sequence Alignments vignette](https://drostlab.github.io/orthologr/articles/sequence_alignments.html)
 for details.
 
 The following example shall illustrate a dNdS estimation process.
