@@ -28,9 +28,9 @@ and execute test cases that are presented in each section.__
 The following bioinformatics tools you are going to install are based on
 the these programming languages:
 
- - [__R__](http://www.cran.r-project.org) >= 3.1.1
+ - [__R__](https://cran.r-project.org) >= 3.1.1
  
- - [__C++11__](http://isocpp.org/about)
+ - [__C++11__](https://isocpp.org/about)
  
  - [__Perl__](https://www.perl.org) >= 5.12
  
@@ -42,17 +42,18 @@ The `orthologr` package provides interfaces to the pairwise alignment tools, `BL
 
 ### Install `BLAST`
 
-[__BLAST__](http://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) (= Basic Local Alignment Search Tool) finds regions of similarity between biological sequences and is also used as underlying paradigm of most orthology inference methods.
+[__BLAST__](https://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/]) (= Basic Local Alignment Search Tool) finds regions of similarity between biological sequences and is also used as underlying paradigm of most orthology inference methods.
 
-1) Go to ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ and download the system specific BLAST program.
+1) Go to https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ and download the system specific BLAST program.
 
 2) Install BLAST :  
 
-* On a Windows machine (see [installation manual: Windows](http://www.ncbi.nlm.nih.gov/books/NBK52637/))
+* On a Windows machine (see [installation manual: Windows](https://www.ncbi.nlm.nih.gov/books/NBK52637/))
 -> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly.
-* On a Unix machine (see [installation manual: Unix](http://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
+* On a Unix machine (see [installation manual: Unix](https://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
 -> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
 
+<details> <summary>Example on Linux systems for BLAST+ version 2.2.31</summary>
 For example for Linux systems open the `Terminal` application and run (Thanks to Alexander Gabel):
 
 ```
@@ -65,6 +66,7 @@ tar zxvpf ncbi-blast+2.2.31+-x64-linux.tar.gz
 # copy BLAST files to `usr/local/bin`
 cp ncbi-blast-2.2.31+/bin/* usr/local/bin
 ```
+</details>
 
 Alternatively users can set the system call to the BLAST programs by specifying the `PATH` variable (this is useful, because it allows an easier update of BLAST versions instead of deleting all BLAST programs from `usr/local/bin`):
 
@@ -102,6 +104,26 @@ open /usr/local/bin
 
 Next, copy/paste the `blastp`, `makeblastdb`, etc files (BLAST executables) from your BLAST folder to `/usr/local/bin`. To do so you will need to enter the system password to allow the copy process.
 
+<details> <summary>Additional tips for macOS</summary>
+While one can install BLAST+ via `brewer` and other package managers, we recommend to install BLAST+ manually. Select `aarch64-macosx` for Apple Silicon (M1/M2/M3 etc.) and `x64-macosx` for Intel-based Macs. 
+
+If you cannot run BLAST+, e.g. `blastp`, due to the message "Apple could not verify “blastp” is free of malware that may harm your Mac or compromise your privacy", consider navigating to the directory where `blastp` is located using the terminal and running a clear the quarantine flag `xattr -r -d com.apple.quarantine .`. There may be other solutions.
+
+In addition, you may want to add BLAST+ to the .Renviron file to make sure that BLAST+ is available in R sessions. To do so, open the R and type:
+
+```R
+library(usethis)
+# open the .Renviron file for editing
+usethis::edit_r_environ()
+```
+
+In the .Renviron file add the following line (make sure to change the path to the BLAST+ bin folder):
+
+```
+# e.g., for BLAST+ version 2.17.0+ installed in the Downloads folder of the user "user"
+PATH="/Users/User/Downloads/ncbi-blast-2.17.0+/bin:${PATH}"
+```
+</details>
 
 After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
 
@@ -132,11 +154,7 @@ These interface functions to BLAST+ are implemented in `orthologr`:
  - `blast_best()` : Perform a BLAST+ best hit search
  - `blast_rec()` : Perform a BLAST+ reciprocal best hit (RBH) search
  - `set_blast()` : Preparing the parameters and databases for subsequent BLAST+ searches
- - `blast.nr()` : Perform a BLASTp search against NCBI nr
- - `delta.blast()` : Perform a DELTA-BLAST Search
- - `advanced_blast()` : Advanced interface function to BLAST+
- - `advanced_makedb()` : Advanced interface function to makeblastdb
- 
+
 ### Install `DIAMOND2`
 
 [__DIAMOND2__](https://github.com/bbuchfink/diamond) (= Double Index alignment of Next-generation sequencing data) finds, like `BLAST`, regions of similarity between biological sequences. Unlike `BLAST` it is much much faster (up to 10 000X faster in the default `fast` mode and over 80X faster in the `ultra-sensitive` mode, which is as sensitive as `BLAST`). Thus, `DIAMOND2` facilitates _even faster_ orthology inference.
@@ -148,6 +166,8 @@ These interface functions to BLAST+ are implemented in `orthologr`:
 ```
 diamond --version
 ```
+
+Check the `Additional tips for macOS` section in the `BLAST` installation instructions for macOS users, because similar issues may arise when installing `DIAMOND2` on macOS.
 
 3) After installing the `DIAMOND2` program you can open an R session and type the following command to check whether or not `DIAMOND2` can be executed from R.
 
@@ -191,8 +211,7 @@ are not used.
 
 ### Install `ClustalW2`
 
-To install `ClustalW2` please go to the [ClustalW](http://www.clustal.org/clustal2/) homepage and download
-the corresponding [clustalw2 program](http://www.clustal.org/download/current/) matching your operating system.
+To install `ClustalW2` please download via a package manager (e.g. brewer, conda) since the ClustalW homepage is no longer available. However, if you are somehow able to obtain the `clustalw2` program that matches your operating system, you can install it by following the instructions below.
 
 After downloading and unpacking the `clustalw2` program, please go to the clustalw-2.1 folder and open a `Terminal` application
 to type (in this example for Mac OS X):
@@ -204,19 +223,19 @@ cp clustalw2 usr/local/bin
 
 ### Install `T-Coffee`
 
-To install `T-Coffee` please go to the [T-Coffee](http://www.tcoffee.org/Projects/tcoffee/) homepage and download
-the corresponding [T-Coffee program](http://www.tcoffee.org/Packages/Stable/Latest/) matching your operating system.
+To install `T-Coffee` please go to the [T-Coffee](https://tcoffee.readthedocs.io/en/latest/index.html) homepage and download
+the corresponding [T-Coffee program](https://tcoffee.readthedocs.io/en/latest/index.html) matching your operating system.
 
  
  
 ### Install `MUSCLE`
  
- - [__MUSCLE__](http://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
+ - [__MUSCLE__](https://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
  
  
 ### Install `ClustalO`
  
- 1) Download the [argtable](http://argtable.sourceforge.net/) program.
+ 1) Download the [argtable](https://argtable.sourceforge.io/) program.
  
  2) Unzip the file.
  
@@ -232,39 +251,29 @@ the corresponding [T-Coffee program](http://www.tcoffee.org/Packages/Stable/Late
  sudo make install
  ```
  
- 4) Download [ClustalO](http://www.clustal.org/omega/).
- 
- 5) Unzip the folder and run within the folder:
- 
- ```
- ./configure
- 
- make
- 
- sudo make install
- ```
+ 4) Download ClustalO via package manager (e.g. brewer, conda).
  
 ### Install `MAFFT`
  
- - [__MAFFT__](http://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
+ - [__MAFFT__](https://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
 
 
 
 
 In `orthologr` the function `multi_aln()` provides interfaces to all of these multiple alignment tools
-as well as an pairwise alignment interface to the [Biostrings](http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a [Needleman-Wunsch algorithm](http://www.sciencedirect.com/science/article/pii/0022283670900574).
+as well as an pairwise alignment interface to the [Biostrings](https://www.bioconductor.org/packages/release/bioc/html/Biostrings.html) package performing a [Needleman-Wunsch algorithm](https://www.sciencedirect.com/science/article/pii/0022283670900574).
 
 
 ## Codon Alignment Tools
 
-The codon alignment tool [Pal2Nal](http://www.bork.embl.de/pal2nal/) is already integrated in the `orthologr` package
+The codon alignment tool `Pal2Nal` is already integrated in the `orthologr` package
 and doesn't need to be installed.
 
- - [__Pal2Nal__](http://www.bork.embl.de/pal2nal/)
+ - [__Pal2Nal__](https://bio.tools/pal2nal/)
 
 You don't need to worry about downloading and installing __PAL2NAL__, it is already included in the `orthologr` package.
 The corresponding function `codon_aln()` takes a protein alignment and the corresponding coding sequences and returns
-a codon alignment by calling [__Pal2Nal__](http://www.bork.embl.de/pal2nal/) from inside of the `orthologr` package.
+a codon alignment by calling __Pal2Nal__ from inside of the `orthologr` package.
 
 ## dNdS Estimation Methods
 
@@ -276,22 +285,22 @@ The `orthologr` package includes the most common dNdS estimation methods.
 Starting with an codon alignment returned by `codon_aln()` the function `dNdS()` computes
 the the dN, dS, and dNdS values of pairs of proteins.
 
-Based on implementations provided by `gestimator`, `ape`, and [KaKs_Calculator](https://code.google.com/p/kaks-calculator/),
+Based on implementations provided by `gestimator`, `ape`, and [KaKs_Calculator](https://code.google.com/archive/p/kaks-calculator),
 the following dNdS Estimation Methods are available in `orthologr`:
 
- - [Li](http://link.springer.com/article/10.1007/BF02407308#page-1) : Li's method (1993) -> provided by the `ape package`
+ - [Li](https://link.springer.com/article/10.1007/BF02407308) : Li's method (1993) -> provided by the `ape package`
 
- - [Comeron](http://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
+ - [Comeron](https://link.springer.com/article/10.1007/BF00173196) : Comeron's method (1995)
 
- - [NG](http://mbe.oxfordjournals.org/content/3/5/418.short) : Nei, M. and Gojobori, T. (1986)
+ - [NG](https://academic.oup.com/mbe/content/3/5/418.short) : Nei, M. and Gojobori, T. (1986)
 
- - [LWL](http://mbe.oxfordjournals.org/content/2/2/150.short) : Li, W.H., et al. (1985)
+ - [LWL](https://academic.oup.com/mbe/article/2/2/150/1220392) : Li, W.H., et al. (1985)
 
- - [MLWL](http://mbe.oxfordjournals.org/content/21/12/2290.short) (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+ - [MLWL](https://academic.oup.com/mbe/article/21/12/2290/1071055) (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
 
- - [YN](http://mbe.oxfordjournals.org/content/17/1/32.short) : Yang, Z. and Nielsen, R. (2000)
+ - [YN](https://academic.oup.com/mbe/article/17/1/32/975527) : Yang, Z. and Nielsen, R. (2000)
 
- - [MYN](http://www.biomedcentral.com/1471-2148/6/44/) (Modified YN): Zhang, Z., et al. (2006)
+ - [MYN](https://link.springer.com/article/10.1186/1471-2148-6-44) (Modified YN): Zhang, Z., et al. (2006)
 
 For this purpose you need to have __KaKs_Calculator__ installed on your system and executable from your default `PATH`, e,g, `/usr/local/bin/`.
 

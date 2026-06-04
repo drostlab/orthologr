@@ -44,7 +44,7 @@
 #' in the second column and the amino acid sequences in the third column.
 #' @references
 #' 
-#' BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
+#' BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 #' 
 #' ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 #'

@@ -8,7 +8,7 @@
 #' of interest as first argument.
 #'
 #' It is possible to read in different genome file standards such as \emph{fasta} or \emph{fastq}.
-#' Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/info/genomes.
+#' Genomes stored in fasta files can be downloaded from https://ensemblgenomes.org, https://www.ncbi.nlm.nih.gov/genome, or https://www.ebi.ac.uk, etc.
 #'
 #' @examples \dontrun{
 #' # reading a genome stored in a fasta file
@@ -65,7 +65,7 @@ read.genome <- function(file, format, ...){
 #'
 #' It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 #'
-#' Proteomes stored in fasta files can be downloaded from http://www.ebi.ac.uk/reference_proteomes.
+#' Proteomes stored in fasta files can be downloaded from https://www.ebi.ac.uk/reference_proteomes, etc.
 #'
 #' @examples \dontrun{
 #' # reading a proteome stored in a fasta file
@@ -121,7 +121,7 @@ read.proteome <- function(file, format, ...){
 #'
 #' It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 #'
-#' CDS stored in fasta files can be downloaded from http://www.ensembl.org/info/data/ftp/index.html.
+#' CDS stored in fasta files can be downloaded from https://www.ensembl.org/info/data/ftp/index.html, etc.
 #'
 #' @examples \dontrun{
 #' # reading a cds file stored in fasta format

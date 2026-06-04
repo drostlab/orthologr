@@ -26,7 +26,7 @@ of interest as first argument.
 
 It is possible to read in different proteome file standards such as \emph{fasta} or \emph{fastq}.
 
-Proteomes stored in fasta files can be downloaded from http://www.ebi.ac.uk/reference_proteomes.
+Proteomes stored in fasta files can be downloaded from https://www.ebi.ac.uk/reference_proteomes, etc.
 }
 \examples{
 \dontrun{

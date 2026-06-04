@@ -24,17 +24,17 @@ The above mentioned functions provide interfaces to the following alignment prog
 
 ### The `multi_aln()` function
 
-* [__ClustalW__](http://www.clustal.org/clustal2/) : Advanced multiple alignment tool of nucleic acid and protein sequences
+* __ClustalW__ : Advanced multiple alignment tool of nucleic acid and protein sequences
  
-* [__T_Coffee__](http://www.tcoffee.org/Projects/tcoffee/) : A collection of tools for processing multiple sequence alignments
+* [__T_Coffee__](https://tcoffee.readthedocs.io/en/latest/index.html) : A collection of tools for processing multiple sequence alignments
  of nucleic acids and proteins as well as their 3D structure
  
-* [__MUSCLE__](http://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
+* [__MUSCLE__](https://www.drive5.com/muscle/) : Fast and accurate multiple alignment tool of nucleic acid and protein sequences
  
-* [__ClustalO__](http://www.clustal.org/omega/) : Fast and scalable multiple alignment tool for nucleic acid and protein sequences that is also
+* __ClustalO__ : Fast and scalable multiple alignment tool for nucleic acid and protein sequences that is also
  capable of performing HMM alignments
  
-* [__MAFFT__](http://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
+* [__MAFFT__](https://mafft.cbrc.jp/alignment/software/) : A tool for multiple sequence alignment and phylogeny
 
 The easiest way to use the `multi_aln()` function is to store the corresponding multiple sequence alignment tools in the default execution `PATH` of you system (e.g. `/usr/local/bin` on UNIX machines).
 
@@ -233,7 +233,7 @@ In case everything is installed appropriately, you should see:
 ```
 ------------------------------------------------------------------------------
   MAFFT v7.187 (2014/10/02)
-  http://mafft.cbrc.jp/alignment/software/
+  https://mafft.cbrc.jp/alignment/software/
   MBE 30:772-780 (2013), NAR 30:3059-3066 (2002)
 ------------------------------------------------------------------------------
 High speed:

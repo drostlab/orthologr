@@ -159,17 +159,15 @@ orthologs.lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package
 }
 }
 \references{
-BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
+BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 
 ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 
-BLAST: http://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
+BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
 
 ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 }
 \seealso{
-\code{\link{blast_rec}}, \code{\link{dNdS}}
-
 \code{\link{blast_rec}}, \code{\link{dNdS}}
 }
 \author{

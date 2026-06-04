@@ -20,7 +20,7 @@ You can find a detailed list of all `orthologr` functions here: https://drostlab
 **Please cite the following paper in which I introduce `orthologr` when using this package for your own research. This will allow me to continue
 working on this software tool and will motivate me to extend its functionality and usability in the next years. Many thanks in advance :)**
 
-> Drost et al. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](http://mbe.oxfordjournals.org/content/32/5/1221.abstract?sid=767aea12-1eb3-40be-8c6a-e2861f159b46)
+> Drost et al. 2015. __Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis__. _Mol. Biol. Evol._ 32 (5): 1221-1231. [doi:10.1093/molbev/msv012](https://doi.org/10.1093/molbev/msv012)
 
 ### Short package description
 
@@ -153,7 +153,7 @@ When running your own query file, please specify `query_file = "path/to/your/cds
 
 ### Example: Computing dN/dS values for all orthologous genes between two genomes
 
-First, users can retrieve all coding sequences from entire genomes using the [biomartr](https://github.com/ropensci/biomartr) package ([see details here](https://ropensci.github.io/biomartr/articles/Sequence_Retrieval.html#cds-retrieval)).
+First, users can retrieve all coding sequences from entire genomes using the [biomartr](https://github.com/ropensci/biomartr) package ([see details here](https://docs.ropensci.org/biomartr/articles/Sequence_Retrieval.html#cds-retrieval)).
 
 ```r
 install.packages("biomartr")
@@ -287,7 +287,7 @@ In `orthologr` the file `parseFastaIntoAXT.pl` is stored in `/inst/KaKs_Calc_par
 ```
 The parseFastaIntoAXT.pl script is freely available under GNU GPL v3 
 Licence and included in the KaKs_Calculator project that can be found at 
-https://code.google.com/p/kaks-calculator/
+https://code.google.com/archive/p/kaks-calculator
 
 ```
 

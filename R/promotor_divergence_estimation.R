@@ -49,7 +49,7 @@ promotor_divergence_estimation <-
                 
                 # compute global pairwise alignments between query and subject promotor sequences
                 Alignments <-
-                        Biostrings::pairwiseAlignment(query_seqs, subject_seqs)
+                        pwalign::pairwiseAlignment(query_seqs, subject_seqs)
                 
                 names_query_seqs <- names(query_seqs)
                 names_subject_seqs <- names(subject_seqs)

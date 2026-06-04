@@ -105,9 +105,7 @@
 #' Zhang Z, Li J, Zhao XQ, Wang J, Wong GK, Yu J: KaKs Calculator:
 #' Calculating Ka and Ks through model selection and model averaging. Genomics Proteomics Bioinformatics 2006 , 4:259-263.
 #' 
-#' https://code.google.com/p/kaks-calculator/wiki/KaKs_Calculator
-#' 
-#' https://code.google.com/p/kaks-calculator/wiki/AXT
+#' https://code.google.com/archive/p/kaks-calculator
 #' 
 #' @return A data.table storing the query_id, subject_id, dN, dS, and dNdS values or 
 #' a data.table storing the query_id, method, dN, dS, and dNdS values when using KaKs_Calculator.

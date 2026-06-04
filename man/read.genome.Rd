@@ -25,7 +25,7 @@ The \code{read.genome} function takes a string specifying the path to the genome
 of interest as first argument.
 
 It is possible to read in different genome file standards such as \emph{fasta} or \emph{fastq}.
-Genomes stored in fasta files can be downloaded from http://ensemblgenomes.org/info/genomes.
+Genomes stored in fasta files can be downloaded from https://ensemblgenomes.org, https://www.ncbi.nlm.nih.gov/genome, or https://www.ebi.ac.uk, etc.
 }
 \examples{
 \dontrun{
