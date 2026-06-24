@@ -1,4 +1,3 @@
-context("Test: blast_rec()")
 
 blast_available <- isTRUE(tryCatch(is_installed_blast(), error = function(e) FALSE))
 

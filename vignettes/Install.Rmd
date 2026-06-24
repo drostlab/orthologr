@@ -14,7 +14,7 @@ vignette: >
 Most `orthologr` functions are interface functions that pass data to common
 bioinformatics tools, internally call the corresponding tool, and read their output
 as R object. For this purpose, when using interface functions in `orthologr` users need to 
-install the underlying bioinformatics tools to obain accurate results. 
+install the underlying bioinformatics tools to obtain accurate results. 
 
 The following sections provide step by step instructions or guidance on installing 
 all bioinformatics tools for which R interface functions are implemented in `orthologr`.

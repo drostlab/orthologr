@@ -1,4 +1,3 @@
-context("Test: filter_dNdS()")
 
 # Build a minimal mock dNdS table matching the columns filter_dNdS() uses
 mock_dnds <- tibble::tibble(

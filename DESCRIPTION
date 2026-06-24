@@ -14,9 +14,9 @@ SystemRequirements: C++11, Perl
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Depends:
-    R (>= 3.1.1),
-    data.table (>= 1.9.4)
+    R (>= 3.1.1)
 Imports:
+    data.table (>= 1.9.4),
     seqinr,
     fs,
     parallel (>= 3.0.2),
