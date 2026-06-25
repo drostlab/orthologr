@@ -45,6 +45,7 @@ Suggests:
     rmarkdown (>= 0.3.3),
     devtools (>= 1.6.1),
     testthat (>= 3.0.0),
+    pkgload,
     metablastr
 RdMacros: Rdpack
 LinkingTo: Rcpp
