@@ -1,0 +1,188 @@
+#' @title Annotate \code{deepclust} output with source file metadata
+#' @description Runs \code{\link{deepclust}} across one or more sequence files,
+#' then annotates each cluster member with the source file it originated from.
+#' The result is a long-format tibble linking every
+#' \code{(representative_id, member_id)} pair to its source \code{file_name},
+#' making it straightforward to compare cluster membership across multiple
+#' proteomes or organisms.
+#' @param input_file a character string, a character vector of file paths, or a
+#' \emph{named list} mapping custom labels to file paths. When a named list is
+#' supplied (e.g. \code{list("thal" = "/path/to/thal.fasta", "lyra" =
+#' "/path/to/lyra.fasta")}), the list \emph{names} are used as the
+#' \code{file_name} column in the output instead of the base names of the files.
+#' This is useful when the file names are long or uninformative and you want
+#' cleaner labels in downstream analyses. Files are passed directly to
+#' \code{\link{deepclust}} for clustering, and are also scanned individually to
+#' build a sequence-ID-to-file mapping (the "sequence library").
+#' @param seq_type a character string specifying the sequence type stored in the
+#' input file(s). Options are: \code{"cds"}, \code{"protein"}, or \code{"dna"}.
+#' Default is \code{seq_type = "protein"}.
+#' @param format a character string specifying the file format of the sequence
+#' file. Default is \code{format = "fasta"}.
+#' @param delete_corrupt_cds a logical value indicating whether sequences with
+#' corrupt base triplets should be removed from the input file. Only relevant
+#' when \code{seq_type = "cds"}. Default is \code{delete_corrupt_cds = TRUE}.
+#' @param path a character string specifying the path to the DIAMOND2 executable
+#' (in case it is not on the system \code{PATH}).
+#' @param comp_cores a numeric value specifying the number of CPU threads to use.
+#' Passed to \code{--threads}. Default is \code{comp_cores = 1}.
+#' @param mutual_cover a numeric value (percentage) specifying the minimum mutual
+#' coverage between a cluster member and its representative. Passed to
+#' \code{--mutual-cover}. Default is \code{mutual_cover = 80}.
+#' @param approx_id a numeric value (percentage) specifying the minimum
+#' approximate identity for clustering. Passed to \code{--approx-id}. Default is
+#' \code{NULL} (DIAMOND2 default applies).
+#' @param eval a numeric value specifying the maximum E-value. Passed to
+#' \code{--evalue}. Default is \code{NULL} (DIAMOND2 default of 0.001 applies).
+#' @param deepclust_params a character string of additional DIAMOND2 deepclust
+#' parameters to append to the \code{deepclust} call. Default is \code{NULL}.
+#' @param quiet a logical value indicating whether DIAMOND2 should run in quiet
+#' mode. Default is \code{quiet = TRUE}.
+#' @details
+#' The function performs three steps:
+#' \enumerate{
+#'   \item \strong{Build sequence library.} Each input file is read with
+#'     \code{seqinr::read.fasta} to extract the sequence IDs (FASTA header
+#'     names, i.e. the \code{member_id} values that DIAMOND2 will produce).
+#'     These are collected into a two-column tibble of \code{member_id} and
+#'     \code{file_name} (the base name of the source file).
+#'   \item \strong{Run deepclust.} \code{\link{deepclust}} is called with all
+#'     supplied \code{input_file} paths and the specified clustering parameters.
+#'   \item \strong{Join.} The sequence library is left-joined onto the deepclust
+#'     output on \code{member_id}, annotating every cluster member with its
+#'     source file.
+#' }
+#' The resulting long-format tibble can be pivoted to a wide presence/absence
+#' matrix (one row per cluster, one column per organism/file) using
+#' \code{tidyr::pivot_wider}.
+#'
+#' @author Jaruwatana Sodai Lotharukpong
+#' @references
+#' Buchfink, B., Reuter, K., & Drost, H. G. (2021) "Sensitive protein alignments
+#' at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.
+#'
+#' https://github.com/bbuchfink/diamond/wiki
+#' @examples \dontrun{
+#' # Profile two proteomes with default settings
+#' profile <- deepclust_annotate(
+#'   input_file = c(
+#'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   )
+#' )
+#'
+#' # Use a named list to control the file_name column labels
+#' profile <- deepclust_annotate(
+#'   input_file = list(
+#'     "thal" = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     "lyra" = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   )
+#' )
+#' profile
+#'
+#' # Pivot to a presence/absence matrix
+#' library(tidyr)
+#' library(dplyr)
+#' profile |>
+#'   distinct(representative_id, file_name) |>
+#'   mutate(present = 1L) |>
+#'   pivot_wider(
+#'     names_from  = file_name,
+#'     values_from = present,
+#'     values_fill = 0L
+#'   )
+#'
+#' # Stricter clustering with custom thresholds
+#' deepclust_annotate(
+#'   input_file = c(
+#'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   ),
+#'   approx_id    = 50,
+#'   mutual_cover = 90,
+#'   comp_cores   = 4
+#' )
+#' }
+#' @return A \code{\link[tibble]{tibble}} with three columns:
+#' \itemize{
+#'   \item \code{representative_id} — accession of the cluster representative.
+#'   \item \code{member_id} — accession of the cluster member.
+#'   \item \code{file_name} — base name of the source file from which the member
+#'     sequence originated.
+#' }
+#' @seealso \code{\link{deepclust}}, \code{\link{diamond}}, \code{\link{set_diamond}}
+#' @export
+deepclust_annotate <- function(
+                input_file,
+                seq_type           = "protein",
+                format             = "fasta",
+                delete_corrupt_cds = TRUE,
+                path               = NULL,
+                comp_cores         = 1,
+                mutual_cover       = 80,
+                approx_id          = NULL,
+                eval               = NULL,
+                deepclust_params   = NULL,
+                quiet              = TRUE) {
+        
+        # Normalise input_file: accept a character vector or a named list.
+        # When a named list is supplied, the names become the file_name labels.
+        if (is.list(input_file)) {
+                file_paths  <- unlist(input_file, use.names = FALSE)
+                file_labels <- if (!is.null(names(input_file)))
+                        names(input_file)
+                else
+                        basename(file_paths)
+        } else {
+                file_paths  <- input_file
+                file_labels <- basename(input_file)
+        }
+
+        # validate that all supplied files exist before doing any work
+        missing_files <- file_paths[!file.exists(file_paths)]
+        if (length(missing_files) > 0)
+                stop(
+                        "The following input file(s) were not found:\n",
+                        paste(missing_files, collapse = "\n"),
+                        call. = FALSE
+                )
+        
+        # 1. build sequence ID library
+        # Map each sequence ID to its source label (list name or basename).
+        seqtype_fasta <- if (seq_type == "protein") "AA" else "DNA"
+        
+        message("Building sequence ID library from ", length(file_paths), " file(s) ...")
+        
+        seq_library <- do.call(rbind, lapply(seq_along(file_paths), function(i) {
+                seqs <- seqinr::read.fasta(
+                        file            = file_paths[i],
+                        seqtype         = seqtype_fasta,
+                        as.string       = TRUE,
+                        forceDNAtolower = FALSE
+                )
+                tibble::tibble(
+                        member_id = names(seqs),
+                        file_name = file_labels[i]
+                )
+        }))
+        
+        # 2. run deepclust
+        cluster_result <- deepclust(
+                input_file         = file_paths,
+                seq_type           = seq_type,
+                format             = format,
+                delete_corrupt_cds = delete_corrupt_cds,
+                path               = path,
+                comp_cores         = comp_cores,
+                mutual_cover       = mutual_cover,
+                approx_id          = approx_id,
+                eval               = eval,
+                deepclust_params   = deepclust_params,
+                quiet              = quiet
+        )
+        
+        # 3. join member_id with the sequence library
+        profile <- dplyr::left_join(cluster_result, seq_library, by = "member_id")
+        
+        return(profile)
+}

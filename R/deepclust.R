@@ -4,17 +4,21 @@
 #' \code{\link{set_diamond}}, runs \code{diamond deepclust}, and returns a
 #' two-column tibble mapping each representative sequence to its cluster members.
 #' The result is also written to a TSV file.
-#' @param input_file a character string specifying the path to the input sequence
-#' file (query organism). Supported sequence types are controlled by \code{seq_type}.
+#' @param input_file a character string, or a character vector of file paths,
+#' specifying the input sequence file(s). When multiple paths are provided the
+#' sequences are merged into a single temporary FASTA before clustering, allowing
+#' proteomes from different organisms to be clustered together. Both plain and
+#' gzip-compressed (\code{.gz}) files are supported and may be mixed freely.
+#' Supported sequence types are controlled by \code{seq_type}.
 #' @param seq_type a character string specifying the sequence type stored in the
-#' input file. Options are: \code{"cds"}, \code{"protein"}, or \code{"dna"}.
+#' input file(s). Options are: \code{"cds"}, \code{"protein"}, or \code{"dna"}.
 #' In case of \code{"cds"}, sequences are translated to protein sequences before
 #' clustering. Default is \code{seq_type = "protein"}.
 #' @param format a character string specifying the file format of the sequence file.
 #' Default is \code{format = "fasta"}.
 #' @param delete_corrupt_cds a logical value indicating whether sequences with
-#' corrupt base triplets should be removed from the input file. Default is
-#' \code{delete_corrupt_cds = TRUE}.
+#' corrupt base triplets should be removed from the input file. Only relevant when
+#' \code{seq_type = "cds"}. Default is \code{delete_corrupt_cds = TRUE}.
 #' @param path a character string specifying the path to the DIAMOND2 executable
 #' (in case it is not on the system \code{PATH}).
 #' @param comp_cores a numeric value specifying the number of CPU threads to use.
@@ -27,8 +31,8 @@
 #' \code{--approx-id}. Default is \code{NULL} (DIAMOND2 default applies).
 #' @param eval a numeric value specifying the maximum E-value to report alignments.
 #' Passed to \code{--evalue}. Default is \code{NULL} (DIAMOND2 default of 0.001 applies).
-#' @param diamond_params a character string of additional DIAMOND2 parameters to
-#' append to the \code{deepclust} call. Default is \code{NULL}.
+#' @param deepclust_params a character string of additional DIAMOND2 deepclust  
+#' parameters to append to the \code{deepclust} call. Default is \code{NULL}.
 #' @param save.output a character string specifying the path where the output TSV
 #' file should be saved. E.g. \code{save.output = getwd()} to save in the current
 #' working directory. Default is \code{NULL} (file is only written to a temporary
@@ -42,6 +46,13 @@
 #' sequence accession and the second column contains the cluster member accession.
 #' A sequence that is its own representative will appear with itself in both columns.
 #'
+#' When multiple files are supplied via \code{input_file}, they are first merged
+#' into a single temporary FASTA file (using \code{seqinr::read.fasta} and
+#' \code{seqinr::write.fasta}) before the DIAMOND2 database is built. This allows
+#' cross-species or multi-proteome clustering in a single run. The merged file is
+#' written to the session temporary directory and is not retained after the R
+#' session ends unless \code{save.output} is specified.
+#'
 #' The function uses \code{\link{set_diamond}} internally to handle CDS translation
 #' and DIAMOND2 database creation.
 #'
@@ -52,20 +63,25 @@
 #'
 #' https://github.com/bbuchfink/diamond/wiki
 #' @examples \dontrun{
-#' # Cluster CDS sequences (translated to protein internally)
-#' diamond_deepclust(
-#'   input_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr')
+#' # Cluster a single proteome (protein sequences, the default)
+#' deepclust(
+#'   input_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')
 #' )
 #'
-#' # Cluster protein sequences directly
-#' diamond_deepclust(
-#'   input_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
-#'   seq_type   = "protein"
+#' # Cluster two proteomes together in a single run
+#' deepclust(
+#'   input_file = c(
+#'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   )
 #' )
 #'
-#' # Apply identity and coverage thresholds
-#' diamond_deepclust(
-#'   input_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' # Apply identity and coverage thresholds across multiple proteomes
+#' deepclust(
+#'   input_file = c(
+#'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   ),
 #'   approx_id    = 50,
 #'   mutual_cover = 80,
 #'   eval         = 1e-5,
@@ -73,9 +89,18 @@
 #' )
 #'
 #' # Save the cluster TSV to the current working directory
-#' diamond_deepclust(
-#'   input_file  = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' deepclust(
+#'   input_file = c(
+#'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'     system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#'   ),
 #'   save.output = getwd()
+#' )
+#'
+#' # Cluster CDS sequences (translated to protein internally)
+#' deepclust(
+#'   input_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#'   seq_type   = "cds"
 #' )
 #' }
 #' @return A \code{\link[tibble]{tibble}} with two columns:
@@ -83,9 +108,9 @@
 #'   \item \code{representative_id} — accession of the cluster representative sequence.
 #'   \item \code{member_id} — accession of the cluster member sequence.
 #' }
-#' @seealso \code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}
+#' @seealso \code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{deepclust_annotate}}
 #' @export
-diamond_deepclust <- function(
+deepclust <- function(
         input_file,
         seq_type           = "protein",
         format             = "fasta",
@@ -95,7 +120,7 @@ diamond_deepclust <- function(
         mutual_cover       = NULL,
         approx_id          = NULL,
         eval               = NULL,
-        diamond_params     = NULL,
+        deepclust_params   = NULL,
         save.output        = NULL,
         quiet              = TRUE) {
 
@@ -119,9 +144,71 @@ diamond_deepclust <- function(
                 stop("You chose more cores than are available on your machine.",
                      call. = FALSE)
 
+        # validate that all supplied files exist before doing any work
+        missing_files <- input_file[!file.exists(input_file)]
+        if (length(missing_files) > 0)
+                stop(
+                        "The following input file(s) were not found:\n",
+                        paste(missing_files, collapse = "\n"),
+                        call. = FALSE
+                )
+
+        # ensure the shared temp directory exists early (needed for merge step)
+        if (!file.exists(file.path(tempdir(), "_blast_db")))
+                dir.create(file.path(tempdir(), "_blast_db"))
+
+        # merge multiple input files into a single temporary FASTA before clustering
+        if (length(input_file) > 1) {
+
+                n_files     <- length(input_file)
+                seqtype_fasta <- if (seq_type == "protein") "AA" else "DNA"
+
+                message("Merging ", n_files, " input files ...")
+
+                all_seqs  <- list()
+                all_names <- character(0)
+
+                for (f in input_file) {
+                        seqs <- seqinr::read.fasta(
+                                file            = f,
+                                seqtype         = seqtype_fasta,
+                                as.string       = TRUE,
+                                forceDNAtolower = FALSE
+                        )
+                        all_seqs  <- c(all_seqs,  seqs)
+                        all_names <- c(all_names, names(seqs))
+                }
+
+                merged_filename <- paste0("deepclust_merged_", n_files, "_files.fasta")
+                merged_file     <- file.path(tempdir(), "_blast_db", merged_filename)
+
+                seqinr::write.fasta(
+                        sequences = all_seqs,
+                        names     = all_names,
+                        file.out  = merged_file,
+                        nbchar    = 80
+                )
+
+                message("Merged ", length(all_names), " sequences into: ", merged_filename)
+
+                input_file <- merged_file
+        }
+
+        # derive an output filename from the (possibly merged) input file
+        filename <- unlist(
+                strsplit(
+                        input_file,
+                        .Platform$file.sep,
+                        fixed    = FALSE,
+                        perl     = TRUE,
+                        useBytes = FALSE
+                )
+        )
+        filename <- filename[length(filename)]
+        output   <- paste0("deepclust_", filename, ".tsv")
+
         message("Building DIAMOND2 database for deepclust ...")
 
-        # Translate CDS to protein (if needed) and build a DIAMOND2 database
         db_result <- set_diamond(
                 file               = input_file,
                 seq_type           = seq_type,
@@ -135,73 +222,37 @@ diamond_deepclust <- function(
 
         database <- db_result[[2]]
 
-        # Derive a filename stem for the output TSV
-        filename <- unlist(
-                strsplit(
-                        input_file,
-                        .Platform$file.sep,
-                        fixed    = FALSE,
-                        perl     = TRUE,
-                        useBytes = FALSE
-                )
-        )
-        filename <- filename[length(filename)]
-
-        output <- paste0("deepclust_", filename, ".tsv")
-
-        if (!file.exists(file.path(tempdir(), "_blast_db"))) {
-                dir.create(file.path(tempdir(), "_blast_db"))
-        }
-
+        # configure the diamond deepclust run
         currwd <- getwd()
         setwd(file.path(tempdir(), "_blast_db"))
 
-        # Build the diamond deepclust command
         deepclust_run <- paste0(
                 'diamond deepclust',
-                ' --db ', database,
-                ' --out ', output,
+                ' --db ',      database,
+                ' --out ',     output,
                 ' --threads ', comp_cores
         )
 
-        if (!is.null(approx_id)) {
-                deepclust_run <- paste0(
-                        deepclust_run,
-                        ' --approx-id ', as.numeric(approx_id)
-                )
-        }
+        if (!is.null(approx_id))
+                deepclust_run <- paste0(deepclust_run,
+                                        ' --approx-id ', as.numeric(approx_id))
 
-        if (!is.null(mutual_cover)) {
-                deepclust_run <- paste0(
-                        deepclust_run,
-                        ' --mutual-cover ', as.numeric(mutual_cover)
-                )
-        }
+        if (!is.null(mutual_cover))
+                deepclust_run <- paste0(deepclust_run,
+                                        ' --mutual-cover ', as.numeric(mutual_cover))
 
-        if (!is.null(eval)) {
-                deepclust_run <- paste0(
-                        deepclust_run,
-                        ' --evalue ', as.numeric(eval)
-                )
-        }
+        if (!is.null(eval))
+                deepclust_run <- paste0(deepclust_run,
+                                        ' --evalue ', as.numeric(eval))
 
-        if (!is.null(diamond_params)) {
-                deepclust_run <- paste0(
-                        deepclust_run,
-                        ' ', diamond_params
-                )
-        }
+        if (!is.null(deepclust_params))
+                deepclust_run <- paste0(deepclust_run, ' ', deepclust_params)
 
-        if (!is.null(path)) {
-                deepclust_run <- paste0(
-                        'export PATH=$PATH:', path, '; ',
-                        deepclust_run
-                )
-        }
+        if (!is.null(path))
+                deepclust_run <- paste0('export PATH=$PATH:', path, '; ', deepclust_run)
 
-        if (quiet) {
+        if (quiet)
                 deepclust_run <- paste0(deepclust_run, ' --quiet')
-        }
 
         message("Running diamond deepclust ...")
 
@@ -221,9 +272,9 @@ diamond_deepclust <- function(
         tryCatch({
                 cluster_table <- data.table::as.data.table(
                         readr::read_tsv(
-                                file      = output,
-                                col_names = FALSE,
-                                col_types = readr::cols(
+                                file           = output,
+                                col_names      = FALSE,
+                                col_types      = readr::cols(
                                         X1 = readr::col_character(),
                                         X2 = readr::col_character()
                                 ),
