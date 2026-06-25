@@ -4,6 +4,8 @@
 #' \code{\link{set_diamond}}, runs \code{diamond deepclust}, and returns a
 #' two-column tibble mapping each representative sequence to its cluster members.
 #' The result is also written to a TSV file.
+#' Note, we recommend users to run \code{deepclust_annotate()} for more information  
+#' about the cluster members and their representative sequences.
 #' @param input_file a character string, or a character vector of file paths,
 #' specifying the input sequence file(s). When multiple paths are provided the
 #' sequences are merged into a single temporary FASTA before clustering, allowing
@@ -108,7 +110,7 @@
 #'   \item \code{representative_id} — accession of the cluster representative sequence.
 #'   \item \code{member_id} — accession of the cluster member sequence.
 #' }
-#' @seealso \code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{deepclust_annotate}}
+#' @seealso \code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{deepclust_annotate}}, \code{\link{deepclust_realign}}
 #' @export
 deepclust <- function(
         input_file,

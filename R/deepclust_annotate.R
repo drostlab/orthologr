@@ -4,7 +4,9 @@
 #' The result is a long-format tibble linking every
 #' \code{(representative_id, member_id)} pair to its source \code{file_name},
 #' making it straightforward to compare cluster membership across multiple
-#' proteomes or organisms.
+#' proteomes or organisms. Optionally, per-pair alignment statistics from
+#' \code{\link{deepclust_realign}} can be incorporated without re-running
+#' \code{diamond deepclust}.
 #' @param input_file a character string, a character vector of file paths, or a
 #' \emph{named list} mapping custom labels to file paths. When a named list is
 #' supplied (e.g. \code{list("thal" = "/path/to/thal.fasta", "lyra" =
@@ -13,7 +15,9 @@
 #' This is useful when the file names are long or uninformative and you want
 #' cleaner labels in downstream analyses. Files are passed directly to
 #' \code{\link{deepclust}} for clustering, and are also scanned individually to
-#' build a sequence-ID-to-file mapping (the "sequence library").
+#' build a sequence-ID-to-file mapping (the "sequence library"). Ignored when
+#' \code{cluster_table} is supplied (the sequence library is still built from
+#' these paths in that case).
 #' @param seq_type a character string specifying the sequence type stored in the
 #' input file(s). Options are: \code{"cds"}, \code{"protein"}, or \code{"dna"}.
 #' Default is \code{seq_type = "protein"}.
@@ -38,19 +42,39 @@
 #' parameters to append to the \code{deepclust} call. Default is \code{NULL}.
 #' @param quiet a logical value indicating whether DIAMOND2 should run in quiet
 #' mode. Default is \code{quiet = TRUE}.
+#' @param cluster_table an optional \code{tibble} (or \code{data.frame}) with
+#' columns \code{representative_id} and \code{member_id}, as returned by a
+#' previous call to \code{\link{deepclust}} or \code{\link{deepclust_annotate}}.
+#' When supplied, \code{diamond deepclust} is \emph{not} re-run; the provided
+#' table is used directly as the clustering result. This is particularly useful
+#' when combined with \code{realign} to annotate an existing clustering with
+#' alignment statistics without incurring the cost of a second deepclust run.
+#' Default is \code{cluster_table = NULL}.
+#' @param realign an optional \code{tibble} returned by
+#' \code{\link{deepclust_realign}}. When supplied, the alignment statistics
+#' (\code{approx_pident}, \code{evalue}, \code{bitscore}, \code{qcovhsp},
+#' \code{scovhsp}) are left-joined onto the cluster profile by
+#' \code{(representative_id, member_id)}, enriching each row with per-pair
+#' alignment information. Combine with \code{cluster_table} to annotate a
+#' previously computed clustering without re-running \code{diamond deepclust}.
+#' Default is \code{realign = NULL}.
 #' @details
-#' The function performs three steps:
+#' The function performs up to four steps:
 #' \enumerate{
 #'   \item \strong{Build sequence library.} Each input file is read with
 #'     \code{seqinr::read.fasta} to extract the sequence IDs (FASTA header
 #'     names, i.e. the \code{member_id} values that DIAMOND2 will produce).
 #'     These are collected into a two-column tibble of \code{member_id} and
 #'     \code{file_name} (the base name of the source file).
-#'   \item \strong{Run deepclust.} \code{\link{deepclust}} is called with all
-#'     supplied \code{input_file} paths and the specified clustering parameters.
+#'   \item \strong{Run deepclust} (skipped when \code{cluster_table} is
+#'     supplied). \code{\link{deepclust}} is called with all supplied
+#'     \code{input_file} paths and the specified clustering parameters.
 #'   \item \strong{Join.} The sequence library is left-joined onto the deepclust
 #'     output on \code{member_id}, annotating every cluster member with its
 #'     source file.
+#'   \item \strong{Join realign} (only when \code{realign} is supplied).
+#'     The alignment statistics from \code{\link{deepclust_realign}} are
+#'     left-joined onto the profile by \code{(representative_id, member_id)}.
 #' }
 #' The resulting long-format tibble can be pivoted to a wide presence/absence
 #' matrix (one row per cluster, one column per organism/file) using
@@ -102,15 +126,42 @@
 #'   mutual_cover = 90,
 #'   comp_cores   = 4
 #' )
+#'
+#' # Enrich an existing cluster profile with alignment stats from
+#' # deepclust_realign, without re-running diamond deepclust
+#' input_files <- c(
+#'   system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+#'   system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+#' )
+#'
+#' clusters      <- deepclust(input_file = input_files)
+#' realign_stats <- deepclust_realign(input_file = input_files,
+#'                                    clusters   = clusters)
+#'
+#' profile_enriched <- deepclust_annotate(
+#'   input_file    = input_files,
+#'   cluster_table = clusters,
+#'   realign       = realign_stats
+#' )
 #' }
-#' @return A \code{\link[tibble]{tibble}} with three columns:
+#' @return A \code{\link[tibble]{tibble}} with three columns (plus five
+#' additional alignment columns when \code{realign} is supplied):
 #' \itemize{
 #'   \item \code{representative_id} — accession of the cluster representative.
 #'   \item \code{member_id} — accession of the cluster member.
 #'   \item \code{file_name} — base name of the source file from which the member
 #'     sequence originated.
+#'   \item \code{approx_pident} — (only with \code{realign}) approximate
+#'     percentage of identical matches between representative and member.
+#'   \item \code{evalue} — (only with \code{realign}) expect value.
+#'   \item \code{bitscore} — (only with \code{realign}) bit score.
+#'   \item \code{qcovhsp} — (only with \code{realign}) query (representative)
+#'     coverage per HSP.
+#'   \item \code{scovhsp} — (only with \code{realign}) subject (member)
+#'     coverage per HSP.
 #' }
-#' @seealso \code{\link{deepclust}}, \code{\link{diamond}}, \code{\link{set_diamond}}
+#' @seealso \code{\link{deepclust}}, \code{\link{deepclust_realign}},
+#'   \code{\link{diamond}}, \code{\link{set_diamond}}
 #' @export
 deepclust_annotate <- function(
                 input_file,
@@ -123,8 +174,10 @@ deepclust_annotate <- function(
                 approx_id          = NULL,
                 eval               = NULL,
                 deepclust_params   = NULL,
-                quiet              = TRUE) {
-        
+                quiet              = TRUE,
+                cluster_table      = NULL,
+                realign            = NULL) {
+
         # Normalise input_file: accept a character vector or a named list.
         # When a named list is supplied, the names become the file_name labels.
         if (is.list(input_file)) {
@@ -146,13 +199,41 @@ deepclust_annotate <- function(
                         paste(missing_files, collapse = "\n"),
                         call. = FALSE
                 )
-        
+
+        # validate realign columns if provided
+        if (!is.null(realign)) {
+                required_realign_cols <- c("representative_id", "member_id",
+                                           "approx_pident", "evalue",
+                                           "bitscore", "qcovhsp", "scovhsp")
+                missing_cols <- setdiff(required_realign_cols, names(realign))
+                if (length(missing_cols) > 0)
+                        stop(
+                                "'realign' is missing required column(s): ",
+                                paste(missing_cols, collapse = ", "),
+                                ". Supply the direct return value of deepclust_realign().",
+                                call. = FALSE
+                        )
+        }
+
+        # validate cluster_table columns if provided
+        if (!is.null(cluster_table)) {
+                required_cluster_cols <- c("representative_id", "member_id")
+                missing_cols <- setdiff(required_cluster_cols, names(cluster_table))
+                if (length(missing_cols) > 0)
+                        stop(
+                                "'cluster_table' is missing required column(s): ",
+                                paste(missing_cols, collapse = ", "),
+                                ". Supply the direct return value of deepclust() or deepclust_annotate().",
+                                call. = FALSE
+                        )
+        }
+
         # 1. build sequence ID library
         # Map each sequence ID to its source label (list name or basename).
         seqtype_fasta <- if (seq_type == "protein") "AA" else "DNA"
-        
+
         message("Building sequence ID library from ", length(file_paths), " file(s) ...")
-        
+
         seq_library <- do.call(rbind, lapply(seq_along(file_paths), function(i) {
                 seqs <- seqinr::read.fasta(
                         file            = file_paths[i],
@@ -165,24 +246,43 @@ deepclust_annotate <- function(
                         file_name = file_labels[i]
                 )
         }))
-        
-        # 2. run deepclust
-        cluster_result <- deepclust(
-                input_file         = file_paths,
-                seq_type           = seq_type,
-                format             = format,
-                delete_corrupt_cds = delete_corrupt_cds,
-                path               = path,
-                comp_cores         = comp_cores,
-                mutual_cover       = mutual_cover,
-                approx_id          = approx_id,
-                eval               = eval,
-                deepclust_params   = deepclust_params,
-                quiet              = quiet
-        )
-        
+
+        # 2. obtain cluster result — either from a pre-computed table or by
+        #    running diamond deepclust
+        if (!is.null(cluster_table)) {
+                message("Using supplied cluster_table; skipping diamond deepclust.")
+                cluster_result <- tibble::as_tibble(cluster_table)
+        } else {
+                cluster_result <- deepclust(
+                        input_file         = file_paths,
+                        seq_type           = seq_type,
+                        format             = format,
+                        delete_corrupt_cds = delete_corrupt_cds,
+                        path               = path,
+                        comp_cores         = comp_cores,
+                        mutual_cover       = mutual_cover,
+                        approx_id          = approx_id,
+                        eval               = eval,
+                        deepclust_params   = deepclust_params,
+                        quiet              = quiet
+                )
+        }
+
         # 3. join member_id with the sequence library
         profile <- dplyr::left_join(cluster_result, seq_library, by = "member_id")
-        
+
+        # 4. optionally join alignment statistics from deepclust_realign
+        if (!is.null(realign)) {
+                message("Joining deepclust_realign alignment statistics ...")
+                realign_cols <- c("representative_id", "member_id",
+                                  "approx_pident", "evalue",
+                                  "bitscore", "qcovhsp", "scovhsp")
+                profile <- dplyr::left_join(
+                        profile,
+                        realign[, realign_cols],
+                        by = c("representative_id", "member_id")
+                )
+        }
+
         return(profile)
 }
