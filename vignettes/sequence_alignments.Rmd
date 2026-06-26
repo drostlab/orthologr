@@ -3,7 +3,7 @@ title: "Sequence alignments with orthologr"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sequence Alignments}
+  %\VignetteIndexEntry{Sequence alignments with orthologr}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---

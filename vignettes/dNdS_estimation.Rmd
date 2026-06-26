@@ -3,7 +3,7 @@ title: "Orthology inference dNdS estimation of orthologous genes using orthologr
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Estimating dNdS}
+  %\VignetteIndexEntry{Orthology inference dNdS estimation of orthologous genes using orthologr}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
