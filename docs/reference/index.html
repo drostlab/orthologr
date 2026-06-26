@@ -40,6 +40,43 @@
     </div>
 
     <div class="section level2">
+      <h2 id="sequence-search-diamond-">Sequence Search (<code>DIAMOND2</code>)<a class="anchor" aria-label="anchor" href="#sequence-search-diamond-"></a></h2>
+
+      <div class="section-desc"><p>Run DIAMOND2 homology searches and build DIAMOND databases.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="diamond.html">diamond()</a></code>
+
+        </dt>
+        <dd>Perform a DIAMOND2 search</dd>
+
+        <dt>
+
+          <code><a href="diamond_best.html">diamond_best()</a></code>
+
+        </dt>
+        <dd>Perform a DIAMOND2 best hit search</dd>
+
+        <dt>
+
+          <code><a href="diamond_rec.html">diamond_rec()</a></code>
+
+        </dt>
+        <dd>Perform a DIAMOND2 reciprocal best hit (RBH) search</dd>
+
+        <dt>
+
+          <code><a href="set_diamond.html">set_diamond()</a></code>
+
+        </dt>
+        <dd>Create a DIAMONDable database with <code>diamond makedb</code></dd>
+      </dl></div><div class="section level2">
       <h2 id="sequence-search-blast-">Sequence Search (BLAST+)<a class="anchor" aria-label="anchor" href="#sequence-search-blast-"></a></h2>
 
       <div class="section-desc"><p>Run BLAST+ homology searches, filter hits, and build BLAST databases.</p></div>
@@ -83,43 +120,6 @@
 
         </dt>
         <dd>Helper function to select best BLAST hit based on minimum evalue</dd>
-      </dl></div><div class="section level2">
-      <h2 id="sequence-search-diamond-">Sequence Search (DIAMOND2)<a class="anchor" aria-label="anchor" href="#sequence-search-diamond-"></a></h2>
-
-      <div class="section-desc"><p>Run DIAMOND2 homology searches and build DIAMOND databases.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="diamond.html">diamond()</a></code>
-
-        </dt>
-        <dd>Perform a DIAMOND2 search</dd>
-
-        <dt>
-
-          <code><a href="diamond_best.html">diamond_best()</a></code>
-
-        </dt>
-        <dd>Perform a DIAMOND2 best hit search</dd>
-
-        <dt>
-
-          <code><a href="diamond_rec.html">diamond_rec()</a></code>
-
-        </dt>
-        <dd>Perform a DIAMOND2 reciprocal best hit (RBH) search</dd>
-
-        <dt>
-
-          <code><a href="set_diamond.html">set_diamond()</a></code>
-
-        </dt>
-        <dd>Create a DIAMONDable database with <code>diamond makedb</code></dd>
       </dl></div><div class="section level2">
       <h2 id="sequence-alignment">Sequence Alignment<a class="anchor" aria-label="anchor" href="#sequence-alignment"></a></h2>
 
@@ -257,7 +257,7 @@
       </dl></div><div class="section level2">
       <h2 id="divergence-stratigraphy">Divergence Stratigraphy<a class="anchor" aria-label="anchor" href="#divergence-stratigraphy"></a></h2>
 
-      <div class="section-desc"><p>Perform divergence stratigraphy to assign genes to evolutionary divergence strata.</p></div>
+      <div class="section-desc"><p>Perform divergence stratigraphy to assign genes to evolutionary divergence strata based on dNdS values.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -306,7 +306,7 @@
           <code><a href="import_ortholog_tables_all.html">import_ortholog_tables_all()</a></code>
 
         </dt>
-        <dd>Importing output pairwise orthologs tables generated with <code>generate_ortholog_tables_all</code></dd>
+        <dd>Importing output pairwise orthologs tables generated with <code><a href="https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html">generate_ortholog_tables_all</a></code></dd>
 
         <dt>
 
@@ -426,21 +426,21 @@
           <code><a href="plot_pairwise_orthologs.html">plot_pairwise_orthologs()</a></code>
 
         </dt>
-        <dd>A line plot visualizing the number of pairwise orthologs within a ortho table generated with <code>generate_ortholog_tables_all</code></dd>
+        <dd>A line plot visualizing the number of pairwise orthologs within a ortho table generated with <code><a href="https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html">generate_ortholog_tables_all</a></code></dd>
 
         <dt>
 
           <code><a href="plot_diverse_homology_thresholds.html">plot_diverse_homology_thresholds()</a></code>
 
         </dt>
-        <dd>Diverse line plots visualizing the number of pairwise orthologs within a ortho table generated with <code>generate_ortholog_tables_all</code> based on different sets of homology thresholds.</dd>
+        <dd>Diverse line plots visualizing the number of pairwise orthologs within a ortho table generated with <code><a href="https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html">generate_ortholog_tables_all</a></code> based on different sets of homology thresholds.</dd>
 
         <dt>
 
           <code><a href="plot_diverse_homology_thresholds_core_orthologs.html">plot_diverse_homology_thresholds_core_orthologs()</a></code>
 
         </dt>
-        <dd>Diverse line plots visualizing the number of core orthologs within a ortho table generated with <code>generate_ortholog_tables_all</code> based on different sets of homology thresholds.</dd>
+        <dd>Diverse line plots visualizing the number of core orthologs within a ortho table generated with <code><a href="https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html">generate_ortholog_tables_all</a></code> based on different sets of homology thresholds.</dd>
 
         <dt>
 
