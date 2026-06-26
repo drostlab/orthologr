@@ -193,6 +193,17 @@ deepclust <- function(
 
                 message("Merged ", length(all_names), " sequences into: ", merged_filename)
 
+                dup_ids <- all_names[duplicated(all_names)]
+                if (length(dup_ids) > 0) {
+                        warning(
+                                "Duplicate sequence IDs found across input files. ",
+                                "DIAMOND2 may produce unexpected results.\n",
+                                "Affected IDs include: ",
+                                paste(head(unique(dup_ids)), collapse = ", "),
+                                call. = FALSE
+                        )
+                }
+
                 input_file <- merged_file
         }
 

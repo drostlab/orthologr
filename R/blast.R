@@ -174,17 +174,7 @@ blast <- function(query_file,
                 delete_corrupt_cds = delete_corrupt_cds
         )[[2]]
         
-        filename <-
-                unlist(
-                        strsplit(
-                                query_file,
-                                .Platform$file.sep,
-                                fixed = FALSE,
-                                perl = TRUE,
-                                useBytes = FALSE
-                        )
-                )
-        filename <- filename[length(filename)]
+        filename <- basename(query_file)
         
         
         # create an internal folder structure for the BLAST process
@@ -199,6 +189,7 @@ blast <- function(query_file,
         
         currwd <- getwd()
         setwd(file.path(tempdir(), "_blast_db"))
+        on.exit(setwd(currwd), add = TRUE)
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
