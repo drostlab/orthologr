@@ -102,6 +102,70 @@ test_that("deepclust_annotate() falls back to basenames when input_file is an un
         expect_true(all(result[["file_name"]] %in% expected_names))
 })
 
+# --- Duplicate ID warning ----------------------------------------------------
+
+test_that("deepclust_annotate() warns when duplicate sequence IDs exist across input files", {
+        # Use cluster_table to bypass diamond deepclust — no DIAMOND2 needed
+        first_id <- names(seqinr::read.fasta(protein_file, seqtype = "AA",
+                                              as.string = TRUE))[1]
+
+        tmp_dup <- tempfile(fileext = ".fasta")
+        file.copy(protein_file, tmp_dup)
+        on.exit(unlink(tmp_dup), add = TRUE)
+
+        dummy_clusters <- tibble::tibble(
+                representative_id = first_id,
+                member_id         = first_id
+        )
+
+        expect_warning(
+                deepclust_annotate(
+                        input_file    = c(protein_file, tmp_dup),
+                        cluster_table = dummy_clusters
+                ),
+                regexp = "Duplicate sequence IDs"
+        )
+})
+
+test_that("deepclust_annotate() duplicate warning names affected IDs", {
+        first_id <- names(seqinr::read.fasta(protein_file, seqtype = "AA",
+                                              as.string = TRUE))[1]
+
+        tmp_dup <- tempfile(fileext = ".fasta")
+        file.copy(protein_file, tmp_dup)
+        on.exit(unlink(tmp_dup), add = TRUE)
+
+        dummy_clusters <- tibble::tibble(
+                representative_id = first_id,
+                member_id         = first_id
+        )
+
+        expect_warning(
+                deepclust_annotate(
+                        input_file    = c(protein_file, tmp_dup),
+                        cluster_table = dummy_clusters
+                ),
+                regexp = first_id,
+                fixed  = TRUE
+        )
+})
+
+test_that("deepclust_annotate() does not warn about duplicate IDs when all IDs are unique", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
+
+        # thal and lyra have completely distinct IDs — no warning expected
+        warned <- FALSE
+        withCallingHandlers(
+                deepclust_annotate(input_file = c(protein_file, protein_file2)),
+                warning = function(w) {
+                        if (grepl("Duplicate sequence IDs", conditionMessage(w)))
+                                warned <<- TRUE
+                        invokeRestart("muffleWarning")
+                }
+        )
+        expect_false(warned)
+})
+
 # --- Error handling ----------------------------------------------------------
 
 test_that("deepclust_annotate() errors informatively when a path in a named list does not exist", {

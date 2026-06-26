@@ -100,6 +100,54 @@ test_that("stricter approx_id yields at least as many rows as a lenient threshol
         expect_gte(nrow(result_strict), nrow(result_lenient))
 })
 
+# --- Duplicate ID warning (multi-file merge) ---------------------------------
+
+test_that("deepclust() warns when duplicate sequence IDs exist across input files", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
+
+        # Copy protein_file so all IDs are guaranteed to overlap
+        tmp_dup <- tempfile(fileext = ".fasta")
+        file.copy(protein_file, tmp_dup)
+        on.exit(unlink(tmp_dup), add = TRUE)
+
+        expect_warning(
+                deepclust(input_file = c(protein_file, tmp_dup)),
+                regexp = "Duplicate sequence IDs"
+        )
+})
+
+test_that("deepclust() duplicate warning names affected IDs", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
+
+        tmp_dup <- tempfile(fileext = ".fasta")
+        file.copy(protein_file, tmp_dup)
+        on.exit(unlink(tmp_dup), add = TRUE)
+
+        first_id <- names(seqinr::read.fasta(protein_file, seqtype = "AA",
+                                              as.string = TRUE))[1]
+        expect_warning(
+                deepclust(input_file = c(protein_file, tmp_dup)),
+                regexp = first_id,
+                fixed  = TRUE
+        )
+})
+
+test_that("deepclust() does not warn about duplicate IDs when all IDs are unique", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
+
+        # thal and lyra have completely distinct IDs
+        warned <- FALSE
+        withCallingHandlers(
+                deepclust(input_file = c(protein_file, protein_file2)),
+                warning = function(w) {
+                        if (grepl("Duplicate sequence IDs", conditionMessage(w)))
+                                warned <<- TRUE
+                        invokeRestart("muffleWarning")
+                }
+        )
+        expect_false(warned)
+})
+
 # --- save.output -------------------------------------------------------------
 
 test_that("deepclust() writes a TSV when save.output is specified", {
