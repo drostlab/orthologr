@@ -63,7 +63,7 @@
 #' \dontrun{
 #' # parameter settings based on Sarropoulos, I., et al. (2019)
 #' map_generator_lnc(
-#'    query_file,,
+#'    query_file,
 #'    subjects_folder,
 #'    eval                  = 1E-3,
 #'    ortho_detection       = "RBH",

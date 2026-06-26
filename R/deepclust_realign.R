@@ -228,16 +228,7 @@ deepclust_realign <- function(
         }
 
         # derive output filename from the (possibly merged) input file
-        filename <- unlist(
-                strsplit(
-                        input_file,
-                        .Platform$file.sep,
-                        fixed    = FALSE,
-                        perl     = TRUE,
-                        useBytes = FALSE
-                )
-        )
-        filename <- filename[length(filename)]
+        filename <- basename(input_file)
         output   <- paste0("deepclust_realign_", filename, ".tsv")
 
         message("Building DIAMOND2 database for realign ...")
@@ -257,6 +248,7 @@ deepclust_realign <- function(
 
         currwd <- getwd()
         setwd(file.path(tempdir(), "_blast_db"))
+        on.exit(setwd(currwd), add = TRUE)
 
         realign_run <- paste0(
                 'diamond realign',
@@ -278,18 +270,14 @@ deepclust_realign <- function(
 
         message("Running diamond realign ...")
 
-        tryCatch({
-                system(realign_run)
-        }, error = function(e) {
+        status <- system(realign_run)
+        if (!identical(status, 0L)) {
                 stop(
-                        "diamond realign did not run correctly.",
-                        "\n",
-                        "Please check the path to the DIAMOND2 executable and the input file.",
-                        "\n",
-                        "Error: ", e,
+                        "diamond realign exited with non-zero status: ", status,
+                        "\nPlease check the path to the DIAMOND2 executable, the input_file, and clusters.",
                         call. = FALSE
                 )
-        })
+        }
 
         tryCatch({
                 recluster_table <- data.table::as.data.table(

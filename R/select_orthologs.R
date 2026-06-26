@@ -1,6 +1,6 @@
 #' @title Select orthologs based on either gene locus or splice variant
 #' @description This function selects orthologs based on either gene locus or splice variant.
-#' @param dnds_tbl a tibble returned by \code{link{dNdS}}.
+#' @param dnds_tbl a tibble returned by \code{\link{dNdS}}.
 #' @param annotation_file_query file path to query annotation file in either \code{gtf} or \code{gff} format.
 #' @param annotation_file_subject file path to query annotation file in either \code{gtf} or \code{gff} format.
 #' @param collapse_by locus type by which orthologs should be determined. Options are:

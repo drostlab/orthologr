@@ -197,16 +197,7 @@ deepclust <- function(
         }
 
         # derive an output filename from the (possibly merged) input file
-        filename <- unlist(
-                strsplit(
-                        input_file,
-                        .Platform$file.sep,
-                        fixed    = FALSE,
-                        perl     = TRUE,
-                        useBytes = FALSE
-                )
-        )
-        filename <- filename[length(filename)]
+        filename <- basename(input_file)
         output   <- paste0("deepclust_", filename, ".tsv")
 
         message("Building DIAMOND2 database for deepclust ...")
@@ -227,6 +218,7 @@ deepclust <- function(
         # configure the diamond deepclust run
         currwd <- getwd()
         setwd(file.path(tempdir(), "_blast_db"))
+        on.exit(setwd(currwd), add = TRUE)
 
         deepclust_run <- paste0(
                 'diamond deepclust',
@@ -258,18 +250,14 @@ deepclust <- function(
 
         message("Running diamond deepclust ...")
 
-        tryCatch({
-                system(deepclust_run)
-        }, error = function(e) {
+        status <- system(deepclust_run)
+        if (!identical(status, 0L)) {
                 stop(
-                        "diamond deepclust did not run correctly.",
-                        "\n",
-                        "Please check the path to the DIAMOND2 executable and the input file.",
-                        "\n",
-                        "Error: ", e,
+                        "diamond deepclust exited with non-zero status: ", status,
+                        "\nPlease check the path to the DIAMOND2 executable and the input file.",
                         call. = FALSE
                 )
-        })
+        }
 
         tryCatch({
                 cluster_table <- data.table::as.data.table(

@@ -13,7 +13,7 @@ select_orthologs(
 )
 }
 \arguments{
-\item{dnds_tbl}{a tibble returned by \code{link{dNdS}}.}
+\item{dnds_tbl}{a tibble returned by \code{\link{dNdS}}.}
 
 \item{annotation_file_query}{file path to query annotation file in either \code{gtf} or \code{gff} format.}
 

@@ -348,22 +348,7 @@ In `orthologr` the file `parseFastaIntoAXT.pl` is stored in
 
 # Package index
 
-## Sequence Search (BLAST+)
-
-Run BLAST+ homology searches, filter hits, and build BLAST databases.
-
-- [`blast()`](https://drostlab.github.io/orthologr/reference/blast.md) :
-  Perform a BLAST+ search
-- [`blast_best()`](https://drostlab.github.io/orthologr/reference/blast_best.md)
-  : Perform a BLAST+ best hit search
-- [`blast_rec()`](https://drostlab.github.io/orthologr/reference/blast_rec.md)
-  : Perform a BLAST+ reciprocal best hit (RBH) search
-- [`set_blast()`](https://drostlab.github.io/orthologr/reference/set_blast.md)
-  : Create a BLASTable database with makeblastdb
-- [`filter_best_hits()`](https://drostlab.github.io/orthologr/reference/filter_best_hits.md)
-  : Helper function to select best BLAST hit based on minimum evalue
-
-## Sequence Search (DIAMOND2)
+## Sequence Search (`DIAMOND2`)
 
 Run DIAMOND2 homology searches and build DIAMOND databases.
 
@@ -380,6 +365,21 @@ Run DIAMOND2 homology searches and build DIAMOND databases.
   :
 
   Create a DIAMONDable database with `diamond makedb`
+
+## Sequence Search (BLAST+)
+
+Run BLAST+ homology searches, filter hits, and build BLAST databases.
+
+- [`blast()`](https://drostlab.github.io/orthologr/reference/blast.md) :
+  Perform a BLAST+ search
+- [`blast_best()`](https://drostlab.github.io/orthologr/reference/blast_best.md)
+  : Perform a BLAST+ best hit search
+- [`blast_rec()`](https://drostlab.github.io/orthologr/reference/blast_rec.md)
+  : Perform a BLAST+ reciprocal best hit (RBH) search
+- [`set_blast()`](https://drostlab.github.io/orthologr/reference/set_blast.md)
+  : Create a BLASTable database with makeblastdb
+- [`filter_best_hits()`](https://drostlab.github.io/orthologr/reference/filter_best_hits.md)
+  : Helper function to select best BLAST hit based on minimum evalue
 
 ## Sequence Alignment
 
@@ -450,7 +450,7 @@ Compute, filter, and import pairwise synonymous (dS) and non-synonymous
 ## Divergence Stratigraphy
 
 Perform divergence stratigraphy to assign genes to evolutionary
-divergence strata.
+divergence strata based on dNdS values.
 
 - [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
   : Perform Divergence Stratigraphy
@@ -473,7 +473,7 @@ tables.
   :
 
   Importing output pairwise orthologs tables generated with
-  `generate_ortholog_tables_all`
+  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
 
 - [`retrieve_core_orthologs()`](https://drostlab.github.io/orthologr/reference/retrieve_core_orthologs.md)
   : Retrieve a core set of orthologous gene loci from several pairwise
@@ -526,21 +526,24 @@ comparisons.
   :
 
   A line plot visualizing the number of pairwise orthologs within a
-  ortho table generated with `generate_ortholog_tables_all`
+  ortho table generated with
+  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
 
 - [`plot_diverse_homology_thresholds()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds.md)
   :
 
   Diverse line plots visualizing the number of pairwise orthologs within
-  a ortho table generated with `generate_ortholog_tables_all` based on
-  different sets of homology thresholds.
+  a ortho table generated with
+  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
+  based on different sets of homology thresholds.
 
 - [`plot_diverse_homology_thresholds_core_orthologs()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds_core_orthologs.md)
   :
 
   Diverse line plots visualizing the number of core orthologs within a
-  ortho table generated with `generate_ortholog_tables_all` based on
-  different sets of homology thresholds.
+  ortho table generated with
+  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
+  based on different sets of homology thresholds.
 
 - [`testCoreOrthoParamsGeneLocus()`](https://drostlab.github.io/orthologr/reference/testCoreOrthoParamsGeneLocus.md)
   :

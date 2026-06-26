@@ -246,7 +246,18 @@ deepclust_annotate <- function(
                         file_name = file_labels[i]
                 )
         }))
-
+        
+        dup_ids <- seq_library$member_id[duplicated(seq_library$member_id)]
+        if (length(dup_ids) > 0) {
+                warning(
+                        "Duplicate sequence IDs found across input files. ",
+                        "The left_join on member_id may produce ambiguous results.\n",
+                        "Affected IDs include: ",
+                        paste(head(unique(dup_ids)), collapse = ", "),
+                        call. = FALSE
+                )
+        }
+        
         # 2. obtain cluster result — either from a pre-computed table or by
         #    running diamond deepclust
         if (!is.null(cluster_table)) {
