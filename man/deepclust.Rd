@@ -80,6 +80,8 @@ DIAMOND2 \code{deepclust} algorithm. It prepares a DIAMOND2 database via
 \code{\link{set_diamond}}, runs \code{diamond deepclust}, and returns a
 two-column tibble mapping each representative sequence to its cluster members.
 The result is also written to a TSV file.
+Note, we recommend users to run \code{deepclust_annotate()} for more information  
+about the cluster members and their representative sequences.
 }
 \details{
 This function wraps \code{diamond deepclust}, the graph-based sequence clustering
@@ -148,7 +150,7 @@ at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.
 https://github.com/bbuchfink/diamond/wiki
 }
 \seealso{
-\code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{deepclust_annotate}}
+\code{\link{diamond}}, \code{\link{set_diamond}}, \code{\link{diamond_best}}, \code{\link{diamond_rec}}, \code{\link{deepclust_annotate}}, \code{\link{deepclust_realign}}
 }
 \author{
 Jaruwatana Sodai Lotharukpong
