@@ -1,14 +1,14 @@
 Package: orthologr
 Type: Package
 Title: Comparative Genomics with R
-Version: 0.4.2
-Date: 2026-06-02
+Version: 0.4.3
+Date: 2026-06-26
 Authors@R: c(
             person("Hajk-Georg", "Drost", , "hajk-georg.drost@tuebingen.mpg.de", c("aut", "cre")),
             person("Sarah", "Scharfenberg", , "Sarah.Scharfenberg@ipb-halle.de", role = "ctb"),
             person("Jaruwatana Sodai", "Lotharukpong", , "jaruwatana.lotharukpong@tuebingen.mpg.de", role = "ctb", comment = c(ORCID = "0000-0002-3475-0980"))
             )
-Description: Genome-wide orthology inference and dN/dS estimation between multiple genomes. 
+Description: Genome-wide orthology inference and dN/dS estimation between multiple genomes.
 License: GPL-2
 SystemRequirements: C++11, Perl
 VignetteBuilder: knitr
@@ -49,7 +49,7 @@ Suggests:
     metablastr
 RdMacros: Rdpack
 LinkingTo: Rcpp
-URL: https://github.com/drostlab/orthologr
+URL: https://drostlab.github.io/orthologr, https://github.com/drostlab/orthologr
 BugReports: https://github.com/drostlab/orthologr/issues
 Config/testthat/edition: 3
 Encoding: UTF-8

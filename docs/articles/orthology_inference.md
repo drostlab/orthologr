@@ -1,0 +1,398 @@
+# Orthology Inference using orthologr
+
+Orthology Inference is the process of detecting [orthologous
+genes](https://www.biostars.org/p/1595/) between a query organism and a
+set of subject organisms. Motivated by the discussion on which orthology
+inference method, paradigm or program is the [most
+accurate](https://www.biostars.org/p/7568/) or [the
+fastest](https://www.nature.com/articles/nmeth.3830) one, the
+`orthologr` package provides functions to perform genome wide orthology
+inference following two different paradigms:
+
+> 1.  orthology inference based on 1-1 orthology relationship using
+>     `BLAST reciprocal best hit`
+>
+> 2.  orthology inference based on 1-many homology relationship using
+>     orthologous groups (OrthoFinder2)
+
+To perform orthology inference you can start with the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function provided by `orthologr`. The
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function takes nucleotide or protein sequences stored in fasta files for
+a set of organisms as input and performs orthology inference to detect
+orthologous genes or orthologous groups within the given organisms based
+on selected orthology inference programs.
+
+The following interfaces are (yet) implemented in the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function:
+
+### BLAST based methods:
+
+- BLASTp best hit (BH): see
+  [`blast_best()`](https://drostlab.github.io/orthologr/reference/blast_best.md).
+
+- BLASTp reciprocal best hit (RBH): see
+  [`blast_rec()`](https://drostlab.github.io/orthologr/reference/blast_rec.md).
+
+#### Advantages:
+
+#### Disadvantages:
+
+### Orthogroup based methods:
+
+- [Orthofinder2](https://github.com/davidemms/OrthoFinder): see
+  [`orthofinder2()`](https://drostlab.github.io/orthologr/reference/orthofinder2.md).
+
+#### Advantages:
+
+#### Disadvantages:
+
+### Examples: BLAST based methods
+
+Using a simple example stored in the package environment of `orthologr`
+you can get an impression on how to use the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function.
+
+**Note:** it is assumed that when using
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+all corresponding programs you want to use are already installed on your
+machine and are executable via either the default execution PATH or you
+specifically define the location of the executable file via the `path`
+argument that can be passed to
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md).
+
+In the following examples, we will use toy fasta files stored within the
+`orthologr` package:
+`system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')`.
+
+``` r
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologr::orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH",
+          comp_cores      = 1,
+          clean_folders   = FALSE)
+```
+
+    Running blastp: 2.9.0+ ...
+
+
+    Building a new DB, current time: 07/06/2019 16:22:29
+    New DB name:   blastdb_ortho_lyra_aa.fasta_protein.fasta
+    New DB title:  blastdb_ortho_lyra_aa.fasta_protein.fasta
+    Sequence type: Protein
+    Deleted existing BLAST database with identical name.
+    Keep Linkouts: T
+    Keep MBits: T
+    Maximum file size: 1000000000B
+    Adding sequences from FASTA; added 20 sequences in 0.00440097 seconds.
+    Running blastp: 2.9.0+ ...
+
+
+    Building a new DB, current time: 07/06/2019 16:22:30
+    New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
+    New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
+    Sequence type: Protein
+    Deleted existing BLAST database with identical name.
+    Keep Linkouts: T
+    Keep MBits: T
+    Maximum file size: 1000000000B
+    Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
+    # A tibble: 20 x 21
+    # Groups:   query_id [20]
+       query_id subject_id perc_identity num_ident_match... alig_length
+       <chr>    <chr>              <dbl>            <int>       <int>
+     1 AT1G010... 333554|PA...          74.0              347         469
+     2 AT1G010... 470181|PA...          91.1              224         246
+     3 AT1G010... 470180|PA...          95.5              343         359
+     4 AT1G010... 333551|PA...          92.0             1812        1970
+     5 AT1G010... 909874|PA...         100                213         213
+     6 AT1G010... 470177|PA...          89.5              580         648
+     7 AT1G010... 918864|PA...          95.1              348         366
+     8 AT1G010... 909871|PA...          90.3              271         300
+     9 AT1G010... 470171|PA...          96.8              420         434
+    10 AT1G011... 333544|PA...          93.6              494         528
+    11 AT1G011... 918858|PA...          99.2              525         529
+    12 AT1G011... 470161|PA...          98.4              446         453
+    13 AT1G011... 918855|PA...          72.6              207         285
+    14 AT1G011... 918854|PA...          84.9              152         179
+    15 AT1G011... 311317|PA...          85.6               83          97
+    16 AT1G011... 909860|PA...          92.6              287         310
+    17 AT1G011... 311315|PA...          94.2              502         533
+    18 AT1G012... 470156|PA...          95.8              228         238
+    19 AT1G012... 311313|PA...          95.3              102         107
+    20 AT1G012... 470155|PA...          96.7             1021        1056
+    # ... with 16 more variables: mismatches <int>, gap_openings <int>,
+    #   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
+    #   q_end <int>, q_len <int>, qcov <int>, qcovhsp <int>,
+    #   s_start <int>, s_end <dbl>, s_len <dbl>, evalue <dbl>,
+    #   bit_score <chr>, score_raw <dbl>
+    >
+
+This small example returns 20 orthologous genes between *Arabidopsis
+thaliana* and *Arabidopsis lyrata*. As you can see, the `query_file` and
+`subject_files` arguments take the proteomes of *Arabidopsis thaliana*
+(`query_file`) and *Arabidopsis lyrata* (`subject_files`) stored in
+fasta files. The `seq_type` argument specifies that you will pass
+protein sequences (proteomes) to the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function. In case you only have either genomes (DNA sequences) or CDS
+files, you can modify the `seq_type` argument to `seq_type = "dna"`
+(when working with only genome data) or `seq_type = "cds"` (when working
+with CDS files). Internally the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function will perform a CDS prediction using `predict_cds()` and will
+furthermore translate the predicted CDS sequences into protein
+sequences. Analogously when `seq_type = "cds"` is specified, internally
+the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function will translate all CDS sequences into protein sequences to run
+orthology inference based on protein sequences.
+
+**The advantage of this type of output is that in addition to having the
+orthology relationship between genes from two different genomes, users
+also retrieve the BLAST results of the respective orthology relationship
+which allows them to perform subsequent filtering for either more
+conservative or more liberal orthology relationships.**
+
+**Note**: future versions of `orthologr` will allow to perform orthology
+inference using DNA sequences. Nevertheless, since most orthology
+inference methods or paradigms rely on protein sequences, the first
+version of `orthologr` will follow this paradigm.
+
+In case you have to specify the path to the corresponding orthology
+inference method you can use the `path` argument as follows:
+
+``` r
+
+# using an external execution path
+orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          path            = "here/path/to/blastp", 
+          clean_folders   = FALSE,
+          comp_cores      = 1)
+```
+
+When you are working on a multicore machine, you can also specify the
+`comp_cores` argument that will allow you to run all analyses in
+parallel (to speed up computations).
+
+``` r
+
+# running orthology inference in parallel using 2 cores
+orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          clean_folders   = FALSE,
+          comp_cores      = 2)
+```
+
+    # A tibble: 20 x 12
+    # Groups:   query_id [20]
+       query_id subject_id perc_identity alig_length
+       <chr>    <chr>              <dbl>       <dbl>
+     1 AT1G010... 333554|PA...          74.0         469
+     2 AT1G010... 470181|PA...          91.1         246
+     3 AT1G010... 470180|PA...          95.5         359
+     4 AT1G010... 333551|PA...          92.0        1970
+     5 AT1G010... 909874|PA...         100           213
+     6 AT1G010... 470177|PA...          89.5         648
+     7 AT1G010... 918864|PA...          95.1         366
+     8 AT1G010... 909871|PA...          90.3         300
+     9 AT1G010... 470171|PA...          96.8         434
+    10 AT1G011... 333544|PA...          93.6         528
+    11 AT1G011... 918858|PA...          99.2         529
+    12 AT1G011... 470161|PA...          98.4         453
+    13 AT1G011... 918855|PA...          72.6         285
+    14 AT1G011... 918854|PA...          84.9         179
+    15 AT1G011... 311317|PA...          85.6          97
+    16 AT1G011... 909860|PA...          92.6         310
+    17 AT1G011... 311315|PA...          94.2         533
+    18 AT1G012... 470156|PA...          95.8         238
+    19 AT1G012... 311313|PA...          95.3         107
+    20 AT1G012... 470155|PA...          96.7        1056
+    # ... with 8 more variables: mismatches <dbl>,
+    #   gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
+    #   s_start <dbl>, s_end <dbl>, evalue <dbl>,
+    #   bit_score <dbl>
+
+In this case 2 cores are being used to perform parallel processing, the
+`clean_folders` argument specifies that all files returned by the
+corresponding orthology inference method are removed after analyses.
+
+## Program specific use of the orthologs() function
+
+In this section small examples will illustrate the use of the
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+function for each orthology inference program.
+
+### BLASTp best hit
+
+The BLASTp best hit method is a uni-directional BLAST best hit search of
+a `query organism A` against a `subject organism B` based on the
+`e-value`.
+
+Orthology Inference using BLASTp best hit can be performed by specifying
+the argument `ortho_detection = "BH"` and one computing core
+`comp_core = 1`:
+
+``` r
+
+# perform orthology inference using BLAST best hit
+# and fasta sequence files storing protein sequences
+orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "BH", 
+          clean_folders   = TRUE,
+          comp_cores      = 1)
+```
+
+     # A tibble: 20 x 12
+    # Groups:   query_id [20]
+       query_id subject_id perc_identity alig_length
+       <chr>    <chr>              <dbl>       <dbl>
+     1 AT1G010... 333554|PA...          74.0         469
+     2 AT1G010... 470181|PA...          91.1         246
+     3 AT1G010... 470180|PA...          95.5         359
+     4 AT1G010... 333551|PA...          92.0        1970
+     5 AT1G010... 909874|PA...         100           213
+     6 AT1G010... 470177|PA...          89.5         648
+     7 AT1G010... 918864|PA...          95.1         366
+     8 AT1G010... 909871|PA...          90.3         300
+     9 AT1G010... 470171|PA...          96.8         434
+    10 AT1G011... 333544|PA...          93.6         528
+    11 AT1G011... 918858|PA...          99.2         529
+    12 AT1G011... 470161|PA...          98.4         453
+    13 AT1G011... 918855|PA...          72.6         285
+    14 AT1G011... 918854|PA...          84.9         179
+    15 AT1G011... 311317|PA...          85.6          97
+    16 AT1G011... 909860|PA...          92.6         310
+    17 AT1G011... 311315|PA...          94.2         533
+    18 AT1G012... 470156|PA...          95.8         238
+    19 AT1G012... 311313|PA...          95.3         107
+    20 AT1G012... 470155|PA...          96.7        1056
+    # ... with 8 more variables: mismatches <dbl>,
+    #   gap_openings <dbl>, q_start <dbl>, q_end <dbl>,
+    #   s_start <dbl>, s_end <dbl>, evalue <dbl>,
+    #   bit_score <dbl>
+
+The resulting table stores the orthologous gene pairs and the
+corresponding e-value of the best hit. By specifying
+`detailed_output = TRUE` more information of the BLAST result can be
+obtained.
+
+### BLASTp best reciprocal hit
+
+The BLAST best reciprocal hit is a bi-directional BLAST best hit search
+of a `query organism A` against a `subject organism B` based on the
+`e-value`.
+
+The Algorithm for BLAST best reciprocal hit runs as follows:
+
+1.  `bh_A <- best_hit(A,B)`
+
+2.  `bh_B <- best_hit(B,A)`
+
+3.  `join(bh_A,bh_B)` by tupel `(query_id, subject_id)`
+
+In other words, only in case the tuple `(query_id, subject_id)` is
+returned as best hit based on the `e-value` in both BLAST directions,
+the corresponding tupel `(query_id, subject_id)` is retained as
+orthologous gene pair.
+
+As demonstrated before a simple call of
+[`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+using `ortho_detection = "RBH"` and one computing core `comp_core = 1`
+can be performed as follows:
+
+``` r
+
+library(orthologr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein", 
+          ortho_detection = "RBH", 
+          clean_folders   = FALSE,
+          comp_cores      = 1)
+```
+
+
+          query_id            subject_id evalue
+    1  AT1G01010.1 333554|PACid:16033839  0e+00
+    2  AT1G01020.1 470181|PACid:16064328 7e-166
+    3  AT1G01030.1 470180|PACid:16054974  0e+00
+    4  AT1G01040.1 333551|PACid:16057793  0e+00
+    5  AT1G01050.1 909874|PACid:16064489 2e-160
+    6  AT1G01060.3 470177|PACid:16043374  0e+00
+    7  AT1G01070.1 918864|PACid:16052578  0e+00
+    8  AT1G01080.1 909871|PACid:16053217 1e-178
+    9  AT1G01090.1 470171|PACid:16052860  0e+00
+    10 AT1G01110.2 333544|PACid:16034284  0e+00
+    11 AT1G01120.1 918858|PACid:16049140  0e+00
+    12 AT1G01140.3 470161|PACid:16036015  0e+00
+    13 AT1G01150.1 918855|PACid:16037307 3e-150
+    14 AT1G01160.1 918854|PACid:16044153  1e-93
+    15 AT1G01170.2 311317|PACid:16052302  3e-54
+    16 AT1G01180.1 909860|PACid:16056125  0e+00
+    17 AT1G01190.1 311315|PACid:16059488  0e+00
+    18 AT1G01200.1 470156|PACid:16041002 3e-172
+    19 AT1G01210.1 311313|PACid:16057125  7e-76
+    20 AT1G01220.1 470155|PACid:16047984  0e+00
+
+When you need more parameters returned by `RBH`, you can specify the
+`detailed_output = TRUE` argument to obtain all BLAST parameters.
+
+``` r
+
+library(orthologr)
+library(dplyr)
+
+# perform orthology inference using BLAST reciprocal best hit
+# and fasta sequence files storing protein sequences
+RBH <- orthologs(query_file = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files     = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type          = "protein", 
+          ortho_detection   = "RBH",
+          detailed_output   = TRUE, 
+          clean_folders     = FALSE,
+          comp_cores        = 1)
+
+
+glimpse(RBH)
+```
+
+    Variables:
+    $ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1"...
+    $ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|...
+    $ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 95.08, 90.33, 9...
+    $ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 529, 45...
+    $ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0, 20,...
+    $ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0, 0, 0
+    $ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1, 1, 1
+    $ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 529, 45...
+    $ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1, 1, 1
+    $ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 529, 45...
+    $ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, 0e+00, 1e-178,...
+    $ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, ...
+
+In case you would like to store the corresponding `hit tables` returned
+by BLAST for subsequent analyses, you can specify the
+`clean_folders = FALSE` argument. The corresponding BLAST hit table can
+then be found in `file.path(tempdir(),"_blast_db")`.
+
+A detailed overview of further analyses that can be done with the
+corresponding BLAST output can be found in the [BLAST
+vignette](https://drostlab.github.io/orthologr/articles/blast.html).

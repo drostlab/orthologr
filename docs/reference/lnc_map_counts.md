@@ -1,0 +1,32 @@
+# Count number of orthologous lncRNAs per pairwise species comparison
+
+This function takes a orthologous lncRNA map generated with
+[`map_generator_lnc`](https://drostlab.github.io/orthologr/reference/map_generator_lnc.md)
+as input and groups the table by species to count the number of
+orthologous lncRNAs per pairwise species comparison using the reference
+(query) species specified in
+[`map_generator_lnc`](https://drostlab.github.io/orthologr/reference/map_generator_lnc.md).
+
+## Usage
+
+``` r
+lnc_map_counts(lnc_map, species_order)
+```
+
+## Arguments
+
+- lnc_map:
+
+  a orthologous lncRNA map generated with
+  [`map_generator_lnc`](https://drostlab.github.io/orthologr/reference/map_generator_lnc.md).
+
+- species_order:
+
+  character string specifying species names listed in the order of
+  phylogenetic/taxonomic distance from the query species. The species
+  names must match with the species names present in
+  `map_generator_lnc`.
+
+## Author
+
+Hajk-Georg Drost

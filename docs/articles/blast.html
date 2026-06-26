@@ -4,109 +4,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BLAST searches using orthologr • orthologr</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="BLAST searches using orthologr">
-<meta property="og:description" content="orthologr">
-<meta property="og:image" content="/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="BLAST searches using orthologr">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
-      </span>
-    </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/Install.html">Installing Prerequisite Tools</a>
-    </li>
-    <li>
-      <a href="../articles/blast.html">BLAST searches using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a>
-    </li>
-    <li>
-      <a href="../articles/orthology_inference.html">Orthology Inference using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a>
-    </li>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">orthologr</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
+    <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
+    <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/drostlab/orthologr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/drostlab/orthologr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>BLAST searches using orthologr</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>BLAST searches using orthologr</h1>
             
-            <h4 data-toc-skip class="date">2023-10-10</h4>
+            <h4 data-toc-skip class="date">2026-06-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/blast.Rmd" class="external-link"><code>vignettes/blast.Rmd</code></a></small>
-      <div class="hidden name"><code>blast.Rmd</code></div>
-
+      <div class="d-none name"><code>blast.Rmd</code></div>
     </div>
 
     
@@ -149,7 +113,7 @@ Retrieval</a></li>
 <p>The <code>orthologr</code> package provides several interface
 functions to perform BLAST searches.</p>
 <p>First, users need to make sure that they have <a href="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/">BLAST</a>
-installed on their machine. Please follow <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#install-blast" class="external-link">these</a>
+installed on their machine. Please follow <a href="https://drostlab.github.io/orthologr/articles/Install.html#install-blast">these</a>
 instructions to install BLAST on your manine.</p>
 </div>
 <div class="section level2">
@@ -220,8 +184,7 @@ arguments: <code>query_id</code>, <code>subject_id</code>,
 <code>q_start</code>, <code>q_end</code>, <code>s_start</code>,
 <code>s_end</code>, <code>evalue</code>, and <code>bit_score</code>.</p>
 <p>Since <code><a href="../reference/blast.html">blast()</a></code> stores the hit table returned by BLAST in
-a data.table object, you can access each column, using the <a href="https://github.com/Rdatatable/data.table/wiki" class="external-link">data.table
-notation</a>.</p>
+a data.table object, you can access each column, using the <a href="https://r-datatable.com" class="external-link">data.table notation</a>.</p>
 <p>In case you need to specify the <code>PATH</code> to BLAST+ please
 use the <code>path</code> argument:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -324,7 +287,7 @@ chosen as best hit threshold.</p>
 <h3 id="using-the-split-apply-combine-strategy-for-a-blast-hit-table">Using the split-apply-combine strategy for a BLAST hit table<a class="anchor" aria-label="anchor" href="#using-the-split-apply-combine-strategy-for-a-blast-hit-table"></a>
 </h3>
 <p>All <code>blast</code> functions implemented in
-<code>orthologr</code> can easily be processed using the <a href="http://www.jstatsoft.org/v40/i01/paper" class="external-link">split-apply-combine
+<code>orthologr</code> can easily be processed using the <a href="https://www.jstatsoft.org/htaccess.php?volume=40&amp;type=i&amp;issue=01&amp;filename=paper" class="external-link">split-apply-combine
 strategy</a> to detect for example <code>one-to-one</code>,
 <code>one-to-many</code>, and <code>many-to-many</code> gene homology
 relationships.</p>
@@ -588,7 +551,7 @@ atggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</code></pre>
 <p>Now users can perform a global alignment between the CDS sequences of
 <code>AT1G01070.1</code> and the three subject genes as follows:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/pwalign" class="external-link">pwalign</a></span><span class="op">)</span></span>
 <span><span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span></span>
 <span><span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">Aly.cds</span><span class="op">[</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span> <span class="op">==</span> <span class="st">"AT1G01070.1"</span><span class="op">)</span>, <span class="va">subject_id</span><span class="op">)</span><span class="op">)</span>, <span class="va">seqs</span> <span class="op">]</span>, <span class="va">pairwiseAlignment</span>, </span>
@@ -806,50 +769,33 @@ VDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</code></pre>
 </div>
 </div>
 <div class="section level2">
-<h2 id="perform-blast-searches-between-genomes-or-proteomes">Perform BLAST Searches between Genomes or Proteomes<a class="anchor" aria-label="anchor" href="#perform-blast-searches-between-genomes-or-proteomes"></a>
+<h2 id="advanced-blast-analyses">Advanced BLAST+ analyses<a class="anchor" aria-label="anchor" href="#advanced-blast-analyses"></a>
 </h2>
-<p>For large-scale applications of <code>orthologr</code>, users may
-wish to perform BLAST+ searches between entire genomes. For very
-large-scale BLAST+ searches between genomes we recommend the user to use
-the <a href="https://github.com/HajkD/metablastr" class="external-link">metablastr</a> package
+<p>For large-scale applications of BLAST+ analysis within R, we
+recommend users to see the <a href="https://github.com/drostlab/metablastr" class="external-link">metablastr</a> package
 which aims to provide an easy-to-use BLAST search framework for massive
 genome comparisons.</p>
-<p>For pairwise genome comparisons however, users can use the following
-functions to BLAST one genome against another.</p>
-<div class="section level3">
-<h3 id="genome-and-proteome-retrieval">Genome and Proteome Retrieval<a class="anchor" aria-label="anchor" href="#genome-and-proteome-retrieval"></a>
-</h3>
 </div>
-</div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Hajk-Georg Drost.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
 
 
-  
+
 
   </body>
 </html>

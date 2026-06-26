@@ -1,0 +1,279 @@
+# Orthology inference dNdS estimation of orthologous genes using orthologr
+
+The dN/dS ratio quantifies the mode and strength of selection acting on
+a pair of orthologous genes. This selection pressure can be quantified
+by comparing synonymous substitution rates (dS) that are assumed to be
+neutral with nonsynonymous substitution rates (dN), which are exposed to
+selection as they change the amino acid composition of a protein ([Mugal
+et al., 2013](https://academic.oup.com/mbe/article/31/1/212/1049986)).
+
+The `orthologr` package provides a function named
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md) to
+perform dNdS estimation on pairs of orthologous genes. The
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md)
+function takes the CDS files of two organisms of interest (`query_file`
+and `subject_file`) and computes the dNdS estimation values for
+orthologous gene pairs between these organisms.
+
+**Note:** the following dNdS estimation methods are based on
+KaKs_Calculator 2:
+
+- “NG”: Nei, M. and Gojobori, T. (1986)
+
+- “LWL”: Li, W.H., et al. (1985)
+
+- “LPB”: Li, W.H. (1993) and Pamilo, P. and Bianchi, N.O. (1993)
+
+- “MLWL” (Modified LWL), MLPB (Modified LPB): Tzeng, Y.H., et al. (2004)
+
+- “YN”: Yang, Z. and Nielsen, R. (2000)
+
+- “MYN” (Modified YN): Zhang, Z., et al. (2006)
+
+- “GMYN”: Wang, D.P., et al. Biology Direct. (2009)
+
+- “GY”: Goldman, N. and Yang, Z. (1994)
+
+- “MS”: (Model Selection): based on a set of candidate models,
+  Posada, D. (2003)
+
+- “MA” (Model Averaging): based on a set of candidate models, Posada, D.
+  (2003)
+
+- “ALL”: All models toghether
+
+It is assumed that when you choose one of these dNdS estimation methods
+you have [KaKs_Calculator
+2](https://sourceforge.net/projects/kakscalculator2/) installed on your
+machine and it can be executed from the default execution `PATH`.
+
+The following pipeline resembles an example dNdS estimation procedure:
+
+1.  Orthology Inference: e.g. BLAST reciprocal best hit (RBH)
+
+2.  Pairwise sequence alignment: e.g. clustalw for pairwise amino acid
+    sequence alignments
+
+3.  Codon Alignment: e.g. pal2nal program
+
+4.  dNdS estimation: e.g. [Yang, Z. and Nielsen, R.
+    (2000)](https://academic.oup.com/mbe/article/17/1/32/975527) (YN)
+
+**Note:** it is assumed that when using
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md) all
+corresponding multiple sequence alignment programs you want to use are
+already installed on your machine and are executable via either the
+default execution PATH or you specifically define the location of the
+executable program via the `aa_aln_path` or `blast_path` argument that
+can be passed to
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md). See
+the [Sequence Alignments
+vignette](https://drostlab.github.io/orthologr/articles/sequence_alignments.html)
+for details.
+
+The following example shall illustrate a dNdS estimation process.
+
+``` r
+
+library(orthologr)
+# get a dNdS table using:
+# 1) reciprocal best hit for orthology inference (RBH)
+# 2) Needleman-Wunsch for pairwise amino acid alignments
+# 3) pal2nal for codon alignments
+# 4) Comeron for dNdS estimation
+# 5) single core processing 'comp_cores = 1'
+dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH", 
+     aa_aln_type     = "pairwise",
+     aa_aln_tool     = "NW", 
+     codon_aln_tool  = "pal2nal", 
+     dnds_est.method = "Comeron", 
+     comp_cores      = 1)
+```
+
+      A tibble: 20 x 15
+       query_id subject_id      dN    dS   dNdS perc_identity alig_length
+       <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>       <dbl>
+     1 AT1G010... 333554|PA... 0.106   0.254 0.420           74.0         469
+     2 AT1G010... 470181|PA... 0.0402  0.104 0.388           91.1         246
+     3 AT1G010... 470180|PA... 0.0150  0.126 0.118           95.5         359
+     4 AT1G010... 333551|PA... 0.0135  0.116 0.116           92.0        1970
+     5 AT1G010... 909874|PA... 0       0.175 0              100           213
+     6 AT1G010... 470177|PA... 0.0449  0.113 0.397           89.5         648
+     7 AT1G010... 918864|PA... 0.0183  0.106 0.173           95.1         366
+     8 AT1G010... 909871|PA... 0.0340  0.106 0.322           90.3         300
+     9 AT1G010... 470171|PA... 0.00910 0.218 0.0417          96.8         434
+    10 AT1G011... 333544|PA... 0.0325  0.122 0.266           93.6         528
+    11 AT1G011... 918858|PA... 0.00307 0.133 0.0232          99.2         529
+    12 AT1G011... 470161|PA... 0.00567 0.131 0.0432          98.5         453
+    13 AT1G011... 918855|PA... 0.13    0.203 0.641           72.6         285
+    14 AT1G011... 918854|PA... 0.105   0.280 0.373           84.9         179
+    15 AT1G011... 311317|PA... 0       0.306 0               85.6          97
+    16 AT1G011... 909860|PA... 0.0297  0.176 0.168           92.6         310
+    17 AT1G011... 311315|PA... 0.0287  0.162 0.177           94.2         533
+    18 AT1G012... 470156|PA... 0.0190  0.168 0.114           95.8         238
+    19 AT1G012... 311313|PA... 0.0207  0.154 0.134           95.3         107
+    20 AT1G012... 470155|PA... 0.0157  0.153 0.102           96.7        1056
+     ... with 8 more variables: mismatches <dbl>, gap_openings <dbl>,
+       q_start <dbl>, q_end <dbl>, s_start <dbl>, s_end <dbl>, evalue <dbl>,
+       bit_score <dbl>
+
+Some outputs include `NA` values. To filter for `NA` values or a
+specific `dnds.threshold`, you can use the
+[`filter_dNdS()`](https://drostlab.github.io/orthologr/reference/filter_dNdS.md)
+function. The
+[`filter_dNdS()`](https://drostlab.github.io/orthologr/reference/filter_dNdS.md)
+function takes the output data.table returned by
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md) and
+filters the output by the following criteria:
+
+1.  all dN values having an NA value are omitted
+
+2.  all dS values having an NA value are omitted
+
+3.  all dNdS values \>= the specified `dnds.threshold` are omitted
+
+``` r
+
+library(orthologr)
+# get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
+Ath_Aly_dnds <- dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+     subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+     ortho_detection = "RBH", 
+     aa_aln_type     = "pairwise",
+     aa_aln_tool     = "NW", 
+     codon_aln_tool  = "pal2nal", 
+     dnds_est.method = "Comeron", 
+     comp_cores      = 1)
+# filter for:
+# 1) all dN values having an NA value are omitted
+# 2) all dS values having an NA value are omitted
+# 3) all dNdS values >= 2 are omitted
+filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
+```
+
+    Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+    Initial input contains 20 rows.
+    Filtering done. New output table contains 20 rows.
+     A tibble: 20 x 15
+       query_id subject_id      dN    dS   dNdS perc_identity alig_length
+       <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>       <dbl>
+     1 AT1G010... 333554|PA... 0.106   0.254 0.420           74.0         469
+     2 AT1G010... 470181|PA... 0.0402  0.104 0.388           91.1         246
+     3 AT1G010... 470180|PA... 0.0150  0.126 0.118           95.5         359
+     4 AT1G010... 333551|PA... 0.0135  0.116 0.116           92.0        1970
+     5 AT1G010... 909874|PA... 0       0.175 0              100           213
+     6 AT1G010... 470177|PA... 0.0449  0.113 0.397           89.5         648
+     7 AT1G010... 918864|PA... 0.0183  0.106 0.173           95.1         366
+     8 AT1G010... 909871|PA... 0.0340  0.106 0.322           90.3         300
+     9 AT1G010... 470171|PA... 0.00910 0.218 0.0417          96.8         434
+    10 AT1G011... 333544|PA... 0.0325  0.122 0.266           93.6         528
+    11 AT1G011... 918858|PA... 0.00307 0.133 0.0232          99.2         529
+    12 AT1G011... 470161|PA... 0.00567 0.131 0.0432          98.5         453
+    13 AT1G011... 918855|PA... 0.13    0.203 0.641           72.6         285
+    14 AT1G011... 918854|PA... 0.105   0.280 0.373           84.9         179
+    15 AT1G011... 311317|PA... 0       0.306 0               85.6          97
+    16 AT1G011... 909860|PA... 0.0297  0.176 0.168           92.6         310
+    17 AT1G011... 311315|PA... 0.0287  0.162 0.177           94.2         533
+    18 AT1G012... 470156|PA... 0.0190  0.168 0.114           95.8         238
+    19 AT1G012... 311313|PA... 0.0207  0.154 0.134           95.3         107
+    20 AT1G012... 470155|PA... 0.0157  0.153 0.102           96.7        1056
+     ... with 8 more variables: mismatches <dbl>, gap_openings <dbl>,
+       q_start <dbl>, q_end <dbl>, s_start <dbl>, s_end <dbl>, evalue <dbl>,
+       bit_score <dbl>
+
+The [`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md)
+function can be used choosing the following options:
+
+- `ortho_detection` : `RBH` (BLAST best reciprocal hit), `BH` (BLAST
+  best reciprocal hit), `PO` (ProteinOrtho), and `OrthoMCL` (OrthoMCL)
+- `aa_aln_type` : `multiple` or `pairwise`
+- `aa_aln_tool` : `clustalw`, `t_coffee`, `muscle`, `clustalo`, `mafft`,
+  and `NW` (in case `aa_aln_type = "pairwise"`)
+- `codon_aln_tool` : `pal2nal`
+- `dnds_est.method` : `Li`, `Comeron`, `NG`, `LWL`, `LPB`, `MLWL`, `YN`,
+  and `MYN`
+
+Please see
+[`?dNdS`](https://drostlab.github.io/orthologr/reference/dNdS.md) for
+details.
+
+In case your BLAST program, or multiple alignment program can not be
+executed from the default execution `PATH` you can specify the
+`aa_aln_path` or `blast_path` arguments.
+
+``` r
+
+library(orthologr)
+# using the `aa_aln_path` or `blast_path` arguments
+dNdS( query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      ortho_detection = "RBH",
+      blast_path      = "here/path/to/blastp",
+      aa_aln_type     = "multiple", 
+      aa_aln_tool     = "clustalw", 
+      aa_aln_path     = "here/path/to/clustalw",
+      codon_aln_tool  = "pal2nal", 
+      dnds_est.method = "Comeron", 
+      comp_cores      = 1, 
+      clean_folders   = TRUE)
+```
+
+## Advanced options
+
+Additional arguments can be passed to
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md). This
+allows you to use more advanced options of several interface programs.
+
+To pass additional parameters to the interface programs, you can use the
+`blast_params` and `aa_aln_params` arguments. The `aa_aln_params`
+argument assumes that when you chose e.g. `aa_aln_tool = "mafft"` you
+will pass the corresponding additional parameters in MAFFT notation.
+
+``` r
+
+library(orthologr)
+# get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
+# using additional parameters:
+
+# get a dNdS table using:
+# 1) reciprocal best hit for orthology inference (RBH)
+# 2) multiple amino acid alignments using MAFFT
+# 3) pal2nal for codon alignments
+# 4) Comeron (1995) for dNdS estimation
+# 5) single core processing 'comp_cores = 1'
+Ath_Aly_dnds <- dNdS( query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+                      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+                      ortho_detection = "RBH",
+                      blast_params    = "-matrix BLOSUM80",
+                      aa_aln_type     = "multiple",
+                      aa_aln_tool     = "mafft",
+                      aa_aln_params   = "--maxiterate 1 --clustalout",
+                      dnds_est.method = "Comeron",
+                      comp_cores      = 1, 
+                      clean_folders   = TRUE, 
+                      quiet           = TRUE )
+
+# filter for:
+# 1) all dN values having an NA value are omitted
+# 2) all dS values having an NA value are omitted
+# 3) all dNdS values >= 0.1 are omitted
+filter_dNdS(Ath_Aly_dnds, dnds.threshold = 0.1)
+```
+
+
+         query_id      subject_id       dN     dS    dNdS
+    1 AT1G01050.1 909874|PACid:16 0.000000 0.1750 0.00000
+    2 AT1G01090.1 470171|PACid:16 0.009843 0.2150 0.04579
+    3 AT1G01120.1 918858|PACid:16 0.003072 0.1326 0.02317
+    4 AT1G01140.3 470161|PACid:16 0.005672 0.1312 0.04324
+    5 AT1G01170.2 311317|PACid:16 0.008750 0.2827 0.03095
+    6 AT1G01220.1 470155|PACid:16 0.015210 0.1533 0.09919
+
+Here `blast_params` and `aa_aln_params` take an character string
+specifying the parameters that shall be passed to BLAST and MAFFT. The
+notation of these parameters must follow the command line call of the
+stand alone versions of BLAST and MAFFT:
+e.g. `blast_params = "blast_params = -matrix BLOSUM80"` and
+`aa_aln_params = "--maxiterate 1 --clustalout"`.

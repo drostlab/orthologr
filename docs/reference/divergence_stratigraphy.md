@@ -1,0 +1,317 @@
+# Perform Divergence Stratigraphy
+
+This function takes a query organism and performs divergence
+stratigraphy (Quint et al.,2012 ; Drost et al. 2015) against a closely
+related subject organism.
+
+## Usage
+
+``` r
+divergence_stratigraphy(
+  query_file,
+  subject_file,
+  aligner = "diamond",
+  eval = "1E-5",
+  ortho_detection = "RBH",
+  dnds_est.method = "Comeron",
+  delete_corrupt_cds = FALSE,
+  aligner_path = NULL,
+  comp_cores = 1,
+  dnds.threshold = 2,
+  store_locally = FALSE,
+  quiet = FALSE,
+  clean_folders = FALSE,
+  ds.values = TRUE,
+  subject.id = FALSE,
+  n_quantile = 10,
+  sensitivity_mode = "fast"
+)
+```
+
+## Arguments
+
+- query_file:
+
+  a character string specifying the path to the CDS file of interest
+  (query organism).
+
+- subject_file:
+
+  a character string specifying the path to the CDS file of interest
+  (subject organism).
+
+- aligner:
+
+  a character string specifying the sequence aligner. The options are
+  `diamond` and `blast`. The option `diamond` uses DIAMOND2 which is up
+  to 10 000X folds faster than BLASTP while retaining the sensitivity of
+  BLASTP. Thus, the default is `aligner` = `diamond`.
+
+- eval:
+
+  a numeric value specifying the E-Value cutoff for DIAMOND or BLAST hit
+  detection.
+
+- ortho_detection:
+
+  a character string specifying the orthology inference method that
+  shall be performed to detect orthologous genes. Default is
+  `ortho_detection` = "RBH" (DIAMOND or BLAST reciprocal best hit).
+  Available methods are: "BH" (DIAMOND or BLAST best hit), "RBH"
+  (DIAMOND or BLAST reciprocal best hit).
+
+- dnds_est.method:
+
+  the dNdS estimation method that shall be used. Options are:
+
+  - `dnds_est.method = "Comeron"` (Default): Comeron's method (1995)
+
+  - `dnds_est.method = "Li"`: Li's method (1993)
+
+  - `dnds_est.method = "NG"`: Nei, M. and Gojobori, T. (1986)
+
+  - `dnds_est.method = "LWL"`: Li, W.H., et al. (1985)
+
+  - `dnds_est.method = "LPB"`: Li, W.H. (1993) and Pamilo, P. and
+    Bianchi, N.O. (1993)
+
+  - `dnds_est.method = "MLWL"`: (Modified LWL), MLPB (Modified LPB):
+    Tzeng, Y.H., et al. (2004)
+
+  - `dnds_est.method = "YN"`: Yang, Z. and Nielsen, R. (2000)
+
+  - `dnds_est.method ="MYN"` (Modified YN): Zhang, Z., et al. (2006)
+
+- delete_corrupt_cds:
+
+  a logical value indicating whether sequences with corrupt base
+  triplets should be removed from the input `file`. This is the case
+  when the length of coding sequences cannot be divided by 3 and thus
+  the coding sequence contains at least one corrupt base triplet.
+
+- aligner_path:
+
+  a character string specifying the path to the DIAMOND or BLAST program
+  (in case you don't use the default path).
+
+- comp_cores:
+
+  a numeric value specifying the number of cores that shall be used to
+  perform parallel computations on a multicore machine.
+
+- dnds.threshold:
+
+  a numeric value specifying the dnds threshold for genes that shall be
+  retained. Hence all genes having a dNdS value \<= `dnds.threshold` are
+  retained. Default is `dnds.threshold` = 2.
+
+- store_locally:
+
+  a logical value indicating whether or not alignment files shall be
+  stored locally rather than in
+  [`tempdir()`](https://rdrr.io/r/base/tempfile.html).
+
+- quiet:
+
+  a logical value specifying whether a successful interface call shall
+  be printed out to the console.
+
+- clean_folders:
+
+  a logical value specifying whether the internal folder structure shall
+  be deleted (cleaned) after processing this function. Default is
+  `clean_folders` = `FALSE`.
+
+- ds.values:
+
+  a logical value specifying whether divergence stratum values (ds
+  values) or dNdS values shall be returned by `divergence_stratigraphy`.
+  Default is `ds.values` = `TRUE`.
+
+- subject.id:
+
+  a logical value indicating whether `query_id` AND `subject_id` should
+  be returned.
+
+- n_quantile:
+
+  a numeric value specifying the number of quantiles that should be
+  returned.
+
+- sensitivity_mode:
+
+  specify the level of alignment sensitivity, when using DIAMOND2. The
+  higher the sensitivity level, the more deep homologs can be found, but
+  at the cost of reduced computational speed. - sensitivity_mode =
+  "faster" : fastest alignment mode, but least sensitive (default).
+  Designed for finding hits of \>70 - sensitivity_mode = "default" :
+  Default mode. Designed for finding hits of \>70 - sensitivity_mode =
+  "fast" : fast alignment mode, but least sensitive (default). Designed
+  for finding hits of \>70 - sensitivity_mode = "mid-sensitive" : fast
+  alignments between the fast mode and the sensitive mode in
+  sensitivity. - sensitivity_mode = "sensitive" : fast alignments, but
+  full sensitivity for hits \>40 - sensitivity_mode = "more-sensitive" :
+  more sensitive than the sensitive mode. - sensitivity_mode =
+  "very-sensitive" : sensitive alignment mode. - sensitivity_mode =
+  "ultra-sensitive" : most sensitive alignment mode (sensitivity as high
+  as BLASTP).
+
+## Value
+
+A data.table storing the divergence map of the query organism.
+
+## Details
+
+Introduced by Quint et al., 2012 and extended in Drost et al. 2015,
+divergence stratigraphy is the process of quantifying the selection
+pressure (in terms of amino acid sequence divergence) acting on
+orthologous genes between closely related species. The resulting
+sequence divergence map (short divergence map), stores the divergence
+stratum in the first column and the query_id of inferred orthologous
+genes in the second column.
+
+Following steps are performed to obtain a standard divergence map based
+on divergence_stratigraphy:
+
+Divergence Stratigraphy:
+
+- 1\) Orthology Inference using DIAMOND or BLAST reciprocal best hit
+  ("RBH") based on blastp
+
+- 2\) Pairwise global amino acid alignments of orthologous genes using
+  the Needleman-Wunsch algorithm
+
+- 3\) Codon alignments of orthologous genes using PAL2NAL
+
+- 4\) dNdS estimation using Comeron's method (1995)
+
+- 5\) Assigning dNdS values to divergence strata (deciles)
+
+## Note
+
+Although this function has been heavily optimized and parallelized,
+performing Divergence Stratigraphy using two genomes will take some
+computation time.
+
+In our experience performing Divergence Stratigraphy using two genomes
+(one query and one subject genome) on an 8 core machine can take up to
+1,5 - 2 hours.
+
+## References
+
+Quint M et al. (2012). A transcriptomic hourglass in plant
+embryogenesis. Nature (490): 98-101.
+
+Drost HG et al. (2015). Evidence for Active Maintenance of
+Phylotranscriptomic Hourglass Patterns in Animal and Plant
+Embryogenesis. Mol Biol Evol. 32 (5): 1221-1231
+doi:10.1093/molbev/msv012
+
+## See also
+
+[`dNdS`](https://drostlab.github.io/orthologr/reference/dNdS.md),
+[`divergence_map`](https://drostlab.github.io/orthologr/reference/divergence_map.md),[`substitutionrate`](https://drostlab.github.io/orthologr/reference/substitutionrate.md),
+[`multi_aln`](https://drostlab.github.io/orthologr/reference/multi_aln.md),
+[`codon_aln`](https://drostlab.github.io/orthologr/reference/codon_aln.md),
+[`diamond_best`](https://drostlab.github.io/orthologr/reference/diamond_best.md),
+[`diamond_rec`](https://drostlab.github.io/orthologr/reference/diamond_rec.md),
+[`codon_aln`](https://drostlab.github.io/orthologr/reference/codon_aln.md),
+[`blast_best`](https://drostlab.github.io/orthologr/reference/blast_best.md),
+[`blast_rec`](https://drostlab.github.io/orthologr/reference/blast_rec.md),
+[`map_generator_dnds`](https://drostlab.github.io/orthologr/reference/map_generator_dnds.md)
+
+## Author
+
+Hajk-Georg Drost and Jaruwatana Sodai Lotharukpong
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+ # performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH", 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+      
+      
+      
+ # performing standard divergence stratigraphy using the aligner_path argument to specify
+ # the path to diamond
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH",
+      aligner_path    = "path/to/diamond",
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+ 
+ 
+ 
+ # Divergence Stratigraphy can also be performed in parallel 
+ # (on a multicore machine) using the 'comp_cores' argument
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH", 
+      comp_cores      = 2, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+ 
+ 
+ 
+ 
+ # in case you want a divergence map with DS values and query_id and subject_id
+ # you can specify subject.id = TRUE
+ # performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH", 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE,
+      subject.id      = TRUE)
+      
+      
+      
+      
+ # in case you want a divergence map with KaKs values and query_id and subject_id
+ # you can specify ds.values = FALSE and subject.id = TRUE
+ # performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH", 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE,
+      subject.id      = TRUE)
+ 
+      
+      
+ # in case you want a divergence map with divergence stratum as quintile (5-quantile) values 
+ # or any other N-quantile values rather than the default decile (10-quantile) values,
+ # you can specify this with n_quantile.
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH", 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE,
+      n_quantile      = 5)
+      
+ } # }
+ 
+```
