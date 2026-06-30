@@ -1,0 +1,231 @@
+# Perform a BLAST+ search
+
+This function performs a BLAST+ search of a given set of sequences
+against a given database.
+
+## Usage
+
+``` r
+blast(
+  query_file,
+  subject_file,
+  seq_type = "cds",
+  format = "fasta",
+  blast_algorithm = "blastp",
+  eval = "1E-5",
+  max.target.seqs = 10000,
+  delete_corrupt_cds = TRUE,
+  remote = FALSE,
+  db = NULL,
+  path = NULL,
+  comp_cores = 1,
+  blast_params = NULL,
+  clean_folders = FALSE,
+  save.output = NULL
+)
+```
+
+## Arguments
+
+- query_file:
+
+  a character string specifying the path to the CDS file of interest
+  (query organism).
+
+- subject_file:
+
+  a character string specifying the path to the CDS file of interest
+  (subject organism).
+
+- seq_type:
+
+  a character string specifying the sequence type stored in the input
+  file. Options are are: "cds", "protein", or "dna". In case of "cds",
+  sequence are translated to protein sequences, in case of "dna", cds
+  prediction is performed on the corresponding sequences which
+  subsequently are translated to protein sequences. Default is
+  `seq_type` = "cds".
+
+- format:
+
+  a character string specifying the file format of the sequence file,
+  e.g. `format` = `"fasta"`. Default is `format` = `"fasta"`.
+
+- blast_algorithm:
+
+  a character string specifying the BLAST algorithm that shall be used,
+  option is: `blast_algorithm` = `"blastp"`
+
+- eval:
+
+  a numeric value specifying the E-Value cutoff for BLAST hit detection.
+
+- max.target.seqs:
+
+  a numeric value specifying the number of aligned sequences to keep.
+  Please be aware that `max.target.seqs` selects best hits based on the
+  database entry and not by the best e-value. See details here:
+  https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166
+  .
+
+- delete_corrupt_cds:
+
+  a logical value indicating whether sequences with corrupt base
+  triplets should be removed from the input `file`. This is the case
+  when the length of coding sequences cannot be divided by 3 and thus
+  the coding sequence contains at least one corrupt base triplet.
+
+- remote:
+
+  a boolean value specifying whether a remote BLAST search shall be
+  performed. In case `remote` = `TRUE`, please specify the `db`
+  argument. This feature is very experimental, since a query of only a
+  few genes against NCBI nr database, can consume a lot of time and
+  might cause response delay crashes in R.
+
+- db:
+
+  a character string specifying the NCBI data base that shall be queried
+  using remote BLAST. This parameter must be specified when `remote` =
+  `TRUE` and is `NULL` by default.
+
+- path:
+
+  a character string specifying the path to the BLAST program (in case
+  you don't use the default path).
+
+- comp_cores:
+
+  a numeric value specifying the number of cores that shall be used to
+  run BLAST searches.
+
+- blast_params:
+
+  a character string listing the input parameters that shall be passed
+  to the executing BLAST program. Default is `NULL`, implicating that a
+  set of default parameters is used when running BLAST.
+
+- clean_folders:
+
+  a boolean value specifying whether all internal folders storing the
+  output of used programs shall be removed. Default is `clean_folders` =
+  `FALSE`.
+
+- save.output:
+
+  a path to the location were the BLAST output shall be stored. E.g.
+  `save.output` = [`getwd()`](https://rdrr.io/r/base/getwd.html) to
+  store it in the current working directory, or `save.output` =
+  `file.path(put,your,path,here)`.
+
+## Value
+
+A data.table storing the BLAST hit table returned by BLAST.
+
+## Details
+
+This function provides a fast communication between R and BLAST+. It is
+mainly used as internal functions such as
+[`blast_best`](https://drostlab.github.io/orthologr/reference/blast_best.md)
+and
+[`blast_rec`](https://drostlab.github.io/orthologr/reference/blast_rec.md)
+but can also be used to perform simple BLAST computations.
+
+When using `remote` = `TRUE`, make sure you specify the `db` argument.
+The following databases can be chosen:
+
+`db`
+
+- "nr"
+
+- "plaza"
+
+Note: When working with remote BLAST, make sure you don't submit too
+large jobs due to the BLAST query conventions! All in all this
+functionality is still very experimental and can cause problems due to
+time out errors when submitting too large queries!
+
+## References
+
+Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990)
+"Basic local alignment search tool." J. Mol. Biol. 215:403-410.
+
+Gish, W. & States, D.J. (1993) "Identification of protein coding regions
+by database similarity search." Nature Genet. 3:266-272.
+
+Madden, T.L., Tatusov, R.L. & Zhang, J. (1996) "Applications of network
+BLAST server" Meth. Enzymol. 266:131-141.
+
+Altschul, S.F., Madden, T.L., Schaeffer, A.A., Zhang, J., Zhang, Z.,
+Miller, W. & Lipman, D.J. (1997) "Gapped BLAST and PSI-BLAST: a new
+generation of protein database search programs." Nucleic Acids Res.
+25:3389-3402.
+
+Zhang Z., Schwartz S., Wagner L., & Miller W. (2000), "A greedy
+algorithm for aligning DNA sequences" J Comput Biol 2000; 7(1-2):203-14.
+
+Zhang, J. & Madden, T.L. (1997) "PowerBLAST: A new network BLAST
+application for interactive or automated sequence analysis and
+annotation." Genome Res. 7:649-656.
+
+Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., &
+Schaeffer A.A. (2008) "Database indexing for production MegaBLAST
+searches." Bioinformatics 15:1757-1764.
+
+Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K.,
+& Madden T.L. (2008) "BLAST+: architecture and applications." BMC
+Bioinformatics 10:421.
+
+https://www.ncbi.nlm.nih.gov/books/NBK1763/table/CmdLineAppsManual.T.options_common_to_al/?report=objectonly
+
+https://blast.ncbi.nlm.nih.gov/Blast.cgi
+
+## See also
+
+[`blast_best`](https://drostlab.github.io/orthologr/reference/blast_best.md),
+[`blast_rec`](https://drostlab.github.io/orthologr/reference/blast_rec.md),
+[`set_blast`](https://drostlab.github.io/orthologr/reference/set_blast.md)
+
+## Author
+
+Hajk-Georg Drost and Sarah Scharfenberg
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# performing a BLAST search using blastp (default)
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'))
+
+# performing a BLAST search using blastp (default) using amino acid sequences as input file
+blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+      seq_type     = "protein")
+
+
+# save the BLAST output table in your current working directory
+blast(query_file   = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+      seq_type     = "protein",
+      save.output  = getwd())
+
+# in case you are working with a multicore machine, you can also run parallel
+# BLAST computations using the comp_cores parameter: here with 2 cores
+blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      comp_cores   = 2)
+
+
+ # running blastp using additional parameters
+ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+       blast_params = "-max_target_seqs 1")
+
+
+# running blastp using additional parameters and an external blastp path
+ blast(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+       subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+       blast_params = "-max_target_seqs 1", path = "path/to/blastp/")
+} # }
+```

@@ -1,4 +1,3 @@
-context("Test: diamond_rec()")
 
 cds_file     <- system.file("seqs/ortho_thal_cds.fasta", package = "orthologr")
 subject_cds  <- system.file("seqs/ortho_lyra_cds.fasta", package = "orthologr")

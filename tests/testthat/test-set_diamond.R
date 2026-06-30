@@ -1,4 +1,3 @@
-context("Test: set_diamond()")
 
 cds_file     <- system.file("seqs/ortho_thal_cds.fasta",  package = "orthologr")
 protein_file <- system.file("seqs/ortho_thal_aa.fasta",   package = "orthologr")

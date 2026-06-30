@@ -128,8 +128,7 @@ set_diamond <- function(
         
         # makedb
         dbname <- vector(mode = "character", length = 1)
-        filename <- unlist(strsplit(file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-        filename <- filename[length(filename)]
+        filename <- basename(file)
         
         
         if(makedb){
@@ -141,6 +140,7 @@ set_diamond <- function(
                 
                 currwd <- getwd()
                 setwd(file.path(tempdir(),"_blast_db"))
+                on.exit(setwd(currwd), add = TRUE)
                 
                 dbname <- paste0("diamonddb_",filename,"_protein.fasta")
                 
@@ -179,14 +179,14 @@ set_diamond <- function(
                 }
                 
                 ## running diamond makedb
-                tryCatch({
-                        system(diamonddb_run)
-                }, error = function(e){ 
-                        stop("diamond makedb did not work properly. ","\n",
-                             "Please check the arguments of the function.","\n",
-                             "Additionally check: ",dbname," .")
-                        }
-                )
+                status <- system(diamonddb_run)
+                if (!identical(status, 0L)) {
+                        stop(
+                                "diamond makedb exited with non-zero status: ", status,
+                                "\nPlease check the arguments of the function and: ", dbname,
+                                call. = FALSE
+                        )
+                }
 
                 # return to global working directory
                 setwd(file.path(currwd))

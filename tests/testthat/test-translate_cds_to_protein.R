@@ -1,4 +1,3 @@
-context("Test: translate_cds_to_protein()")
 
 cds_file <- system.file("seqs/ortho_thal_cds.fasta", package = "orthologr")
 

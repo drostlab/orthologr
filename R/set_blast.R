@@ -137,8 +137,7 @@ set_blast <- function(file,
 
         # makedb
         dbname <- vector(mode = "character", length = 1)
-        filename <- unlist(strsplit(file, .Platform$file.sep, fixed = FALSE, perl = TRUE, useBytes = FALSE))
-        filename <- filename[length(filename)]
+        filename <- basename(file)
 
 
      if(makedb){
@@ -150,6 +149,7 @@ set_blast <- function(file,
         
         currwd <- getwd()
         setwd(file.path(tempdir(),"_blast_db"))
+        on.exit(setwd(currwd), add = TRUE)
         
         dbname <- paste0("blastdb_",filename,"_protein.fasta")
         
@@ -159,21 +159,24 @@ set_blast <- function(file,
                              open      = "w",
                              file.out  = dbname )
         
-        tryCatch({
-                
-                if(is.null(path)){
-                        system(paste0("makeblastdb -in ", dbname,
-                               " -input_type fasta -dbtype ",db_type," -hash_index"))
-                        
-                } else {
-                        system(paste0("export PATH=",path,"; makeblastdb -in ",
-                               dbname," -input_type fasta -dbtype ",db_type," -hash_index"))
-                }
-                
-                }, error = function(e){ stop("makeblastdb did not work properly. The default parameters are: ","\n",
-                                   "-input_type fasta -dbtype prot .","\n","Please check that you really want to work with a protein database.","\n",
-                                   "Additionally check: ",dbname," .")}
-        )
+        makeblastdb_run <- if (is.null(path)) {
+                paste0("makeblastdb -in ", dbname,
+                       " -input_type fasta -dbtype ", db_type, " -hash_index")
+        } else {
+                paste0("export PATH=$PATH:", path,
+                       "; makeblastdb -in ", dbname,
+                       " -input_type fasta -dbtype ", db_type, " -hash_index")
+        }
+
+        status <- system(makeblastdb_run)
+        if (!identical(status, 0L)) {
+                stop(
+                        "makeblastdb exited with non-zero status: ", status,
+                        "\nDefault parameters are: -input_type fasta -dbtype prot .",
+                        "\nAdditionally check: ", dbname,
+                        call. = FALSE
+                )
+        }
         
         # return to global working directory
         setwd(file.path(currwd))

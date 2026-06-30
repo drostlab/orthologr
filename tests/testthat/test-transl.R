@@ -1,4 +1,3 @@
-context("Test: transl()")
 
 test_that("transl() returns a character string", {
         result <- transl("ATGATG")

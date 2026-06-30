@@ -1,0 +1,601 @@
+# Performing Divergence Stratigraphy
+
+The `orthologr` package allows users to perform **Divergence
+Stratigraphy** for any query and subject organisms of interest.
+
+**Divergence Stratigraphy** is the process of quantifying the selection
+pressure (in terms of protein evolutionary rate) acting on orthologous
+genes between closely related species. The resulting sequence divergence
+map (short divergence map), stores the divergence stratum in the first
+column and the `query_id` of inferred orthologous genes in the second
+column ( Quint et al., 2012 *Nature*; [Drost et al., 2015 *Mol. Biol.
+Evol.*](https://academic.oup.com/mbe/article/32/5/1221/1125964); [Drost
+et al., 2016 *Mol. Biol.
+Evol.*](https://academic.oup.com/mbe/article/33/5/1158/2580081);
+[Introduction to myTAI](https://drostlab.github.io/myTAI) ).
+[Here](https://github.com/drostlab/myTAI/issues/5) you can also find a
+short example and discussion about the usefulness of
+`Divergence Strata`.
+
+The following Algorithm implemented in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+defines **Divergence Stratigraphy** as method (see [Drost et al.,
+2015](https://academic.oup.com/mbe/article/32/5/1221/1125964)):
+
+1.  Orthology Inference using BLAST best reciprocal hit (“RBH”) based on
+    blastp
+
+2.  Pairwise global amino acid alignments of orthologous genes using the
+    [Needleman-Wunsch
+    algorithm](https://www.sciencedirect.com/science/article/pii/0022283670900574)
+
+3.  Codon alignments of orthologous genes using
+    [PAL2NAL](https://bio.tools/pal2nal)
+
+4.  dNdS estimation using [Comeron’s method
+    (1995)](https://link.springer.com/article/10.1007/BF00173196)
+
+5.  Categorize estimated dNdS values into `divergence strata` (= deciles
+    of all dNdS values)
+
+> In brief, a Divergence Stratum is defined as a decile (= 10% quantile)
+> retrieved from all Ka/Ks (or dN/dS) values of all orthologs returned
+> by the pairwise genome comparison.
+
+In other words, imagine having 10000 orthologous genes and their
+corresponding Ka/Ks values after performing a pairwise genome comparison
+using the
+[`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md)
+function. Now, these 10000 Ka/Ks values follow a distribution between 0
+and +Inf, where Ka/Ks \< 1 reflects purifying selection, Ka/Ks = 1
+reflects neutral evolution, and Ka/Ks \> 1 reflects positive selection
+(in reality usually the largest Ka/Ks values I have seen are e.g. 100).
+Next, you bin these 10000 Ka/Ks values according to their 10% quantile
+(= decile), meaning that the lowest 10% of Ka/Ks values are in decile
+one (= Divergence Stratum 1), the lowest Ka/Ks values between the
+11%-20% quantile are in decile two (= Divergence Stratum 2), …, and the
+largest Ka/Ks values between the 91-100% quantile are in decile 10 (=
+Divergence Stratum 10) (This is what the
+[`divergence_map()`](https://drostlab.github.io/orthologr/reference/divergence_map.md)
+function does). This way, each Divergence Stratum has (almost) the same
+number of genes.
+
+In `orthologr` the [Needleman-Wunsch
+algorithm](https://www.sciencedirect.com/science/article/pii/0022283670900574),
+[PAL2NAL](https://bio.tools/pal2nal/) and [Comeron’s method
+(1995)](https://link.springer.com/article/10.1007/BF00173196) are
+already included in the `orthologr` package and do not have to be
+installed separately. Nevertheless, users need to make sure **they have
+BLAST installed on their machine before using the
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)function**.
+
+**Note**: The following examples assume that the **BLAST** program is
+installed and stored in the default execution path `usr/local/bin`. In
+case users do not have **BLAST** installed yet or the following command
+in R produces a different output, please consult the [Installation
+Vignette](https://drostlab.github.io/orthologr/articles/Install.html) to
+correctly set up the **BLAST** program to perform **Divergence
+Stratigraphy**.
+
+``` r
+
+system("blastp -version")
+```
+
+    blastp: 2.2.30+
+    Package: blast 2.2.30, build Oct 27 2014 17:10:51
+
+## Divergence Map Computations
+
+In [Drost et al., 2015 *Mol. Biol.
+Evol.*](https://academic.oup.com/mbe/article/32/5/1221/1125964) we
+define a `Divergence Map` as table storing the degree of selection
+pressure (= `divergence strata`) for each protein coding gene of a given
+query organism. In this case selection pressure was quantified by dNdS
+estimation (ratio of synonymous versus non-synonymous
+`codon -> amino acid` sequence substitution rates). The resulting dNdS
+values for all protein coding genes of the query organism are then
+categorized into deciles (10%-quantiles) allowing users to compare the
+results obtained from `Phylostratigraphy` with results obtained form
+`Divergence Stratigraphy`.
+
+To perform **Divergence Stratigraphy** using `orthologr` users need to
+retrieve the following input files:
+
+- a CDS file covering all protein coding genes of the query organism of
+  interest
+- a CDS file covering all protein coding genes of the subject organism
+  of interest
+
+### Sequence Data Retrieval
+
+In the following example, we will use *Arabidopsis thaliana* as query
+organism and *Arabidopsis lyrata* as subject organism.
+
+First, we need to download the CDS sequences for all protein coding
+genes of *A. thaliana* and *A. lyrata*.
+
+#### Option 1:
+
+The CDS retrieval can be done using a `Terminal` or by manual
+downloading the files
+
+- `Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz`
+- `Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz`
+
+``` shell
+
+# download CDS file of A. thaliana
+curl ftp://ftp.ensemblgenomes.org/pub/plants/release-23/fasta/arabidopsis_thaliana/cds/Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz -o Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_thaliana.TAIR10.23.cds.all.fa.gz
+
+# download CDS file of A. lyrata
+
+curl ftp://ftp.ensemblgenomes.org/pub/plants/release-23/fasta/arabidopsis_lyrata/cds/Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz -o Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+
+# unzip the fasta file
+gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
+```
+
+When the download is finished you need to unzip the files.
+
+#### Option 2:
+
+We implemented the [biomartr](https://github.com/ropensci/biomartr)
+package to automate the process of performing biological data retrieval.
+The [Sequence Retrieval
+Vignette](https://docs.ropensci.org/biomartr/articles/Sequence_Retrieval.html)
+stored in `biomartr` provides detailed use cases for the automation of
+biological sequence retrieval.
+
+**Note**: Users need to make sure they have
+[biomartr](https://docs.ropensci.org/biomartr/index.html#installation)
+installed before running any `biomartr` functions.
+
+### Computation Time
+
+**Please note that** performing **Divergence Stratigraphy** with two
+large genomes using BLAST+ can take (even on a multicore machine) some
+time -\> **up to several hours**. On a 4 core machine with 3.4 GHz i7
+processors the computation time of generating a divergence map between
+*A. thaliana* and *A. lyrata* was **2.5-3 hours**.
+
+The `comp_cores` argument implemented in the
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+function allows users to specify the number of cores they would like to
+use on their machine. The default value is `comp_cores = 1` which might
+take **10-12h** to execute. So users need to make sure that they use all
+cores available on their machine to speed up the computation time.
+
+(Note, the wall clock time is now reduced with the `diamond`.)
+
+## Running `divergence_stratigraphy()`
+
+As mentioned earlier the
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+function is the main function to perform the **Divergence Stratigraphy**
+algorithm.
+
+In
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+the `query_file` and `subject_file` arguments take an character string
+storing the path to the corresponding **fasta** files containing the CDS
+sequences of these organisms. Here the previously downloaded CDS
+sequence files of *A. thaliana* (= `query_file`) and *A. lyrata* (=
+`subject_file`) need to be specified. The `eval` is set to `1E-5`
+(default ; see Quint et al., 2012 *Nature*) and
+`BLAST best reciprocal hit` is used for orthology inference (see [Drost
+et al., 2015](https://academic.oup.com/mbe/article/32/5/1221/1125964)).
+In case \``orthologr` is running on a multicore machine, users can set
+the `comp_cores` argument to any number of cores supported by their
+machine. The `clean_folders` argument indicates whether or not the
+internal folder structure should be deleted (cleaned) after processing
+is finished. In this case all output files generated by
+`divergence_stratigraphy` (stored in
+[`tempdir()`](https://rdrr.io/r/base/tempfile.html)) will be removed
+after the `Divergence Map` was returned. The `quiet` argument indicates
+whether or not a successful interface call should be printed out to the
+console (`quiet = FALSE`) or not (`quiet = TRUE`).
+
+``` r
+
+library(orthologr)
+
+# compute the divergence map of A. thaliana
+Athaliana_DM <- divergence_stratigraphy(
+                         query_file      = "path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa",
+                         subject_file    = "path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa",
+                         eval            = "1E-5", 
+                         ortho_detection = "RBH",
+                         comp_cores      = 1, 
+                         quiet           = TRUE, 
+                         clean_folders   = TRUE )
+```
+
+Before running
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+with two complete genomes, users can first run a test **Divergence
+Stratigraphy** with 20 example genes that are stored in the `orthologr`
+package:
+
+``` r
+
+library(orthologr)
+
+# performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH", 
+      dnds.threshold  = 2,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+```
+
+
+       divergence_strata    query_id
+    1                 10 AT1G01010.1
+    2                  9 AT1G01020.1
+    3                  5 AT1G01030.1
+    4                  4 AT1G01040.1
+    5                  1 AT1G01050.1
+    6                  9 AT1G01060.3
+    7                  6 AT1G01070.1
+    8                  8 AT1G01080.1
+    9                  2 AT1G01090.1
+    10                 7 AT1G01110.2
+    11                 2 AT1G01120.1
+    12                 3 AT1G01140.3
+    13                10 AT1G01150.1
+    14                 8 AT1G01160.1
+    15                 1 AT1G01170.2
+    16                 6 AT1G01180.1
+    17                 7 AT1G01190.1
+    18                 4 AT1G01200.1
+    19                 5 AT1G01210.1
+    20                 3 AT1G01220.1
+
+The resulting output is a `Divergence Map` of the 20 example genes.
+
+To save corresponding `Divergenec Maps` to a hard drive users can pass
+the resulting
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+output to a variable and then use the
+[`write.table()`](https://rdrr.io/r/utils/write.table.html) function
+implemented in R to store the `Divergenec Map` as `*.csv` file.
+
+``` r
+
+Athaliana_DM <- divergence_stratigraphy( ... )
+
+write.table(x         = Athaliana_DM, 
+            file      = "Ath_Aly_DivergenceMap.csv", 
+            sep       = ";", 
+            col.names = TRUE, 
+            row.names = FALSE, 
+            quote     = FALSE)
+```
+
+This way [`write.table()`](https://rdrr.io/r/utils/write.table.html)
+will store the `Divergence Map` to the users current working directory
+(= [`getwd()`](https://rdrr.io/r/base/getwd.html)).
+
+### Specifying the arguments in `divergence_stratigraphy()`
+
+Several argument combinations can be specified in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+(see `Arguments` in
+[`?divergence_stratigraphy`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)).
+This section introduces additional output options of
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
+
+#### Example: `blast_path`
+
+Sometimes the machine users are working on does not allow them to
+install **BLAST** in the default execution path `usr/local/bin`. For
+this purpose the `blast_path` argument is implemented in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
+This argument takes an character string specifying the `PATH` to the
+user’s `blastp` execution file that is stored in a different place than
+`usr/local/bin`.
+
+The following example shows a possible specification of `blast_path`.
+
+``` r
+
+library(orthologr)
+
+# performing standard divergence stratigraphy
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      blast_path      = "here/the/path/to/blastp", 
+      eval            = "1E-5", 
+      ortho_detection = "RBH", 
+      dnds.threshold  = 2, 
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+```
+
+
+       divergence_strata    query_id
+    1                 10 AT1G01010.1
+    2                  9 AT1G01020.1
+    3                  5 AT1G01030.1
+    4                  4 AT1G01040.1
+    5                  1 AT1G01050.1
+    6                  9 AT1G01060.3
+    7                  6 AT1G01070.1
+    8                  8 AT1G01080.1
+    9                  2 AT1G01090.1
+    10                 7 AT1G01110.2
+    11                 2 AT1G01120.1
+    12                 3 AT1G01140.3
+    13                10 AT1G01150.1
+    14                 8 AT1G01160.1
+    15                 1 AT1G01170.2
+    16                 6 AT1G01180.1
+    17                 7 AT1G01190.1
+    18                 4 AT1G01200.1
+    19                 5 AT1G01210.1
+    20                 3 AT1G01220.1
+
+#### Example: `ds.values`
+
+As defined earlier, a `Divergence Map` stores the `divergence strata`
+for protein coding genes of a `query` organism. However,
+`divergence strata` are based on `dNdS` values that were categorized
+into deciles. For this reason it is not possible to map a
+`divergence stratum` value to the exact initial `dNdS` value. So in case
+users are interested in the the exact `dNdS` value of protein coding
+genes, they can specify the `ds.values` argument in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+allowing them to retrieve a `dNdS Map` instead of a `Divergence Map`.
+For this purpose users need to set `ds.values = FALSE`.
+
+``` r
+
+library(orthologr)
+
+# performing standard divergence stratigraphy
+# but receive a dNdS Map instead of a Divergence Map
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH",
+      ds.values       = FALSE, 
+      dnds.threshold  = 2,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+```
+
+          dNdS    query_id
+    1  0.41950 AT1G01010.1
+    2  0.38790 AT1G01020.1
+    3  0.11850 AT1G01030.1
+    4  0.11560 AT1G01040.1
+    5  0.00000 AT1G01050.1
+    6  0.39670 AT1G01060.3
+    7  0.17280 AT1G01070.1
+    8  0.32170 AT1G01080.1
+    9  0.04174 AT1G01090.1
+    10 0.26620 AT1G01110.2
+    11 0.02317 AT1G01120.1
+    12 0.04324 AT1G01140.3
+    13 0.64120 AT1G01150.1
+    14 0.37310 AT1G01160.1
+    15 0.00000 AT1G01170.2
+    16 0.16830 AT1G01180.1
+    17 0.17730 AT1G01190.1
+    18 0.11370 AT1G01200.1
+    19 0.13420 AT1G01210.1
+    20 0.10230 AT1G01220.1
+
+The corresponding output now stores `dNdS` values instead of `DS` values
+in the first column.
+
+#### Example: `subject.id`
+
+Although the `Divergence Map`
+[standard](https://drostlab.github.io/myTAI) is specified as storing
+`DS` values in the first column and `GeneIDs` in the second column, in
+some cases it is important to store the GeneIDs of orthologous genes in
+the `subject` organism. The `subject.id` argument implemented in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+allows users to retrieve the GeneIDs of the orthologous genes of the
+`subject` organism. For this purpose users need to specify
+`subject.id = TRUE`.
+
+``` r
+
+# receive a Divergence Map with DS | query GeneID | orthologous subject GeneID 
+divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH",
+      comp_cores      = 1,
+      quiet           = TRUE,
+      clean_folders   = TRUE,
+      subject.id      = TRUE)
+```
+
+       DS    query_id            subject_id
+    1  10 AT1G01010.1 333554|PACid:16033839
+    2   9 AT1G01020.1 470181|PACid:16064328
+    3   5 AT1G01030.1 470180|PACid:16054974
+    4   4 AT1G01040.1 333551|PACid:16057793
+    5   1 AT1G01050.1 909874|PACid:16064489
+    6   9 AT1G01060.3 470177|PACid:16043374
+    7   6 AT1G01070.1 918864|PACid:16052578
+    8   8 AT1G01080.1 909871|PACid:16053217
+    9   2 AT1G01090.1 470171|PACid:16052860
+    10  7 AT1G01110.2 333544|PACid:16034284
+    11  2 AT1G01120.1 918858|PACid:16049140
+    12  3 AT1G01140.3 470161|PACid:16036015
+    13 10 AT1G01150.1 918855|PACid:16037307
+    14  8 AT1G01160.1 918854|PACid:16044153
+    15  1 AT1G01170.2 311317|PACid:16052302
+    16  6 AT1G01180.1 909860|PACid:16056125
+    17  7 AT1G01190.1 311315|PACid:16059488
+    18  4 AT1G01200.1 470156|PACid:16041002
+    19  5 AT1G01210.1 311313|PACid:16057125
+    20  3 AT1G01220.1 470155|PACid:16047984
+
+The resulting output now shows DS values, query GeneIDs, and orthologous
+subject GeneIDs.
+
+A similar output can be generated for `dNdS` values instead of `DS`
+values by specifying `ds.values = FALSE` and `subject.id = TRUE`.
+
+``` r
+
+# receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID 
+divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5",
+      ortho_detection = "RBH",
+      comp_cores      = 1,
+      ds.values       = FALSE,
+      quiet           = TRUE,
+      clean_folders   = TRUE,
+      subject.id      = TRUE)
+```
+
+          dNdS    query_id            subject_id
+    1  0.41950 AT1G01010.1 333554|PACid:16033839
+    2  0.38790 AT1G01020.1 470181|PACid:16064328
+    3  0.11850 AT1G01030.1 470180|PACid:16054974
+    4  0.11560 AT1G01040.1 333551|PACid:16057793
+    5  0.00000 AT1G01050.1 909874|PACid:16064489
+    6  0.39670 AT1G01060.3 470177|PACid:16043374
+    7  0.17280 AT1G01070.1 918864|PACid:16052578
+    8  0.32170 AT1G01080.1 909871|PACid:16053217
+    9  0.04174 AT1G01090.1 470171|PACid:16052860
+    10 0.26620 AT1G01110.2 333544|PACid:16034284
+    11 0.02317 AT1G01120.1 918858|PACid:16049140
+    12 0.04324 AT1G01140.3 470161|PACid:16036015
+    13 0.64120 AT1G01150.1 918855|PACid:16037307
+    14 0.37310 AT1G01160.1 918854|PACid:16044153
+    15 0.00000 AT1G01170.2 311317|PACid:16052302
+    16 0.16830 AT1G01180.1 909860|PACid:16056125
+    17 0.17730 AT1G01190.1 311315|PACid:16059488
+    18 0.11370 AT1G01200.1 470156|PACid:16041002
+    19 0.13420 AT1G01210.1 311313|PACid:16057125
+    20 0.10230 AT1G01220.1 470155|PACid:16047984
+
+#### Example: `dnds.threshold`
+
+`Divergence Strata` are obtained by categorizing dNdS values into
+deciles. For decilation the range of dNdS values is important. The
+`dnds.threshold` defines the upper level cut off of dNdS values. Since
+dNdS values are in the range \[0, +Inf\] a upper threshold needs to be
+specified. The default value for `dnds.threshold` in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+is `dnds.threshold = 2` due to the interpretation of dNdS values for
+predicting sequence evolution (dNdS \< 1 -\> negative selection; dNdS =
+1 -\> neutral selection; dNdS \> 1 -\> positive selection). Hence, all
+dNdS values `> 1` predict positive selection. In my experience of
+computing dNdS values between hundreds of pairwise species comparisons
+covering all evolutionary distances, dNdS values of orthologous genes
+rarely take values \> 2. Nevertheless, in case you wish to extend or
+reduce the upper threshold for dNdS values, you can specify the
+`dnds.threshold` in
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
+
+``` r
+
+# upper threshold for dNdS: dnds.threshold = 5
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "RBH",
+      ds.values       = FALSE, 
+      dnds.threshold  = 5,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+```
+
+#### Example: `ortho_detection`
+
+According to [Drost et al., 2015 *Mol. Biol.
+Evol.*](https://academic.oup.com/mbe/article/32/5/1221/1125964) the
+**Divergence Stratigraphy** algorithm performs **BLAST** best reciprocal
+hit (RBH) as orthology inference method. Despite this convention, the
+`ortho_detection` argument allows users to perform orthology inference
+within the **Divergence Stratigraphy** algorithm that is based on any
+orthology inference method implemented in `orthologr` (see
+[`?orthologs`](https://drostlab.github.io/orthologr/reference/orthologs.md)
+or [Orthology Inference
+Vignette](https://drostlab.github.io/orthologr/articles/orthology_inference.html)
+for details). For example in Quint et al., 2012 *Nature* instead of
+using **BLAST** best reciprocal hit, the method **BLAST** best hit (BH)
+was used to perform orthology inference within the **Divergence
+Stratigraphy** algorithm.
+
+``` r
+
+# orthology inference method: ortho_detection = "BH"
+ divergence_stratigraphy(
+      query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+      subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
+      eval            = "1E-5", 
+      ortho_detection = "BH",
+      ds.values       = TRUE, 
+      dnds.threshold  = 2,
+      comp_cores      = 1, 
+      quiet           = TRUE, 
+      clean_folders   = TRUE)
+```
+
+       DS    query_id
+    1  10 AT1G01010.1
+    2   9 AT1G01020.1
+    3   5 AT1G01030.1
+    4   4 AT1G01040.1
+    5   1 AT1G01050.1
+    6   9 AT1G01060.3
+    7   6 AT1G01070.1
+    8   8 AT1G01080.1
+    9   2 AT1G01090.1
+    10  7 AT1G01110.2
+    11  2 AT1G01120.1
+    12  3 AT1G01140.3
+    13 10 AT1G01150.1
+    14  8 AT1G01160.1
+    15  1 AT1G01170.2
+    16  6 AT1G01180.1
+    17  7 AT1G01190.1
+    18  4 AT1G01200.1
+    19  5 AT1G01210.1
+    20  3 AT1G01220.1
+
+## Skip `Divergence Stratigraphy` and Download Already Published `Divergence Maps`
+
+Users can find a detailed list of [published Phylostratigraphic Maps and
+Divergence Maps](https://github.com/drostlab/published_phylomaps) by
+following the link. This way the computation time of 3-4 h on a local
+machine for 2 genome comparisions can be skipped.
+
+## Combine a Divergence Map with Gene Expression Data
+
+`Divergence Maps` can be used for a wide range of analyses. One example
+is to combine `Divergence Maps` with gene expression data to capture
+evolutionary signals in developmental transcriptomes (=
+`Phylotranscriptomics`; see [Drost et al., 2015 *Mol. Biol.
+Evol.*](https://academic.oup.com/mbe/article/32/5/1221/1125964)).
+Performing phylotranscriptomic analyses based on an existing
+`Divergence Map` can easily be done by using the `myTAI` package. You
+can consult the [Introduction to the myTAI package
+Vignette](https://drostlab.github.io/myTAI/articles/other-strata.html)
+for more details.

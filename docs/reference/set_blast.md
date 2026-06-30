@@ -1,0 +1,129 @@
+# Create a BLASTable database with makeblastdb
+
+This function reads a file storing a specific sequence type, such as
+"cds", "protein", or "dna" in a standard sequence file format such as
+"fasta", etc. and depending of the `makedb` parameter either creates a
+blast-able database, or returns the corresponding protein sequences as
+data.table object for further BLAST searches.
+
+## Usage
+
+``` r
+set_blast(
+  file,
+  seq_type = "cds",
+  format = "fasta",
+  makedb = FALSE,
+  delete_corrupt_cds = TRUE,
+  path = NULL,
+  makedb_type = "protein",
+  ...
+)
+```
+
+## Arguments
+
+- file:
+
+  a character string specifying the path to the file storing the
+  sequences of interest.
+
+- seq_type:
+
+  a character string specifying the sequence type stored in the input
+  file. Options are are: "cds", "protein", or "dna". In case of "cds",
+  sequence are translated to protein sequences, in case of "dna", cds
+  prediction is performed on the corresponding sequences which
+  subsequently are translated to protein sequences. Default is
+  `seq_type` = "cds".
+
+- format:
+
+  a character string specifying the file format used to store the
+  genome, e.g. "fasta", "gbk".
+
+- makedb:
+
+  TRUE or FALSE whether a database should be created or not (BLAST
+  parameter 'makeblastdb').
+
+- delete_corrupt_cds:
+
+  a logical value indicating whether sequences with corrupt base
+  triplets should be removed from the input `file`. This is the case
+  when the length of coding sequences cannot be divided by 3 and thus
+  the coding sequence contains at least one corrupt base triplet.
+
+- path:
+
+  a character string specifying the path to the BLAST program (in case
+  you don't use the default path).
+
+- makedb_type:
+
+  a character string specifying the sequence type stored in the BLAST
+  database that is generated using 'makeblastdb'. Options are: "protein"
+  and "nucleotide". Default is `makedb_type` = "protein".
+
+- ...:
+
+  additional arguments that are used by the seqinr::read.fasta()
+  function.
+
+## Value
+
+A list storing two elements. The first element \[\[1\]\] corresponds to
+the data.table storing the gene ids in the first column and the
+corresponding dna (cds) sequence in the second column and the aminoacid
+sequence third column. The second list element \[\[2\]\] stores the name
+of the protein database that was created by 'makeblastdb'.
+
+## References
+
+Altschul, S.F., Gish, W., Miller, W., Myers, E.W. & Lipman, D.J. (1990)
+"Basic local alignment search tool." J. Mol. Biol. 215:403-410.
+
+Gish, W. & States, D.J. (1993) "Identification of protein coding regions
+by database similarity search." Nature Genet. 3:266-272.
+
+Madden, T.L., Tatusov, R.L. & Zhang, J. (1996) "Applications of network
+BLAST server" Meth. Enzymol. 266:131-141.
+
+Altschul, S.F., Madden, T.L., Schaeffer, A.A., Zhang, J., Zhang, Z.,
+Miller, W. & Lipman, D.J. (1997) "Gapped BLAST and PSI-BLAST: a new
+generation of protein database search programs." Nucleic Acids Res.
+25:3389-3402.
+
+Zhang Z., Schwartz S., Wagner L., & Miller W. (2000), "A greedy
+algorithm for aligning DNA sequences" J Comput Biol 2000; 7(1-2):203-14.
+
+Zhang, J. & Madden, T.L. (1997) "PowerBLAST: A new network BLAST
+application for interactive or automated sequence analysis and
+annotation." Genome Res. 7:649-656.
+
+Morgulis A., Coulouris G., Raytselis Y., Madden T.L., Agarwala R., &
+Schaeffer A.A. (2008) "Database indexing for production MegaBLAST
+searches." Bioinformatics 15:1757-1764.
+
+Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K.,
+& Madden T.L. (2008) "BLAST+: architecture and applications." BMC
+Bioinformatics 10:421.
+
+## See also
+
+[`blast_best`](https://drostlab.github.io/orthologr/reference/blast_best.md),
+[`blast_rec`](https://drostlab.github.io/orthologr/reference/blast_rec.md),
+[`blast`](https://drostlab.github.io/orthologr/reference/blast.md)
+
+## Author
+
+Sarah Scharfenberg and Hajk-Georg Drost
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+ # running the set function to see an example output
+ head(set_blast(file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'))[[1]] , 2)
+} # }
+```

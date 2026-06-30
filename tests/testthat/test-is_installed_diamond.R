@@ -1,4 +1,3 @@
-context("Test: is_installed_diamond()")
 
 diamond_available <- isTRUE(tryCatch(is_installed_diamond(), error = function(e) FALSE))
 

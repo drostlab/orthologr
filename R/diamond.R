@@ -173,17 +173,7 @@ diamond <- function(
         }
 
         
-        filename <-
-                unlist(
-                        strsplit(
-                                query_file,
-                                .Platform$file.sep,
-                                fixed = FALSE,
-                                perl = TRUE,
-                                useBytes = FALSE
-                        )
-                )
-        filename <- filename[length(filename)]
+        filename <- basename(query_file)
         
         
         # create an internal folder structure for the DIAMOND process
@@ -199,6 +189,7 @@ diamond <- function(
         
         currwd <- getwd()
         setwd(file.path(tempdir(), "_blast_db"))
+        on.exit(setwd(currwd), add = TRUE)
         
         # determine the number of cores on a multicore machine
         cores <- parallel::detectCores()
@@ -281,20 +272,15 @@ diamond <- function(
         }
         
         ## running diamond
-        tryCatch({
-                system(diamond_run)
-        }, error = function(e){
+        status <- system(diamond_run)
+        if (!identical(status, 0L)) {
                 stop(
-                        "Please check the correct path to ",
-                        "diamond ",
-                        diamond_algorithm,
-                        "... the interface call did not work properly.",
-                        "\n",
-                        "Error:",
-                        e
+                        "diamond ", diamond_algorithm,
+                        " exited with non-zero status: ", status,
+                        "\nPlease check the path to the DIAMOND2 executable and the input file.",
+                        call. = FALSE
                 )
-                }
-        )
+        }
         # additional DIAMOND parameters can be found here:
         # https://github.com/bbuchfink/diamond/wiki/3.-Command-line-options
         diamond_table_names <-

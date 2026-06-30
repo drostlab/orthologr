@@ -4,109 +4,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Performing Divergence Stratigraphy • orthologr</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Performing Divergence Stratigraphy">
-<meta property="og:description" content="orthologr">
-<meta property="og:image" content="/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Performing Divergence Stratigraphy">
 </head>
-<body data-spy="scroll" data-target="#toc">
-    
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.2</span>
-      </span>
-    </div>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/Install.html">Installing Prerequisite Tools</a>
-    </li>
-    <li>
-      <a href="../articles/blast.html">BLAST searches using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a>
-    </li>
-    <li>
-      <a href="../articles/orthology_inference.html">Orthology Inference using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a>
-    </li>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
+    <a class="navbar-brand me-2" href="../index.html">orthologr</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
+    <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
+    <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/drostlab/orthologr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/drostlab/orthologr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Performing Divergence Stratigraphy</h1>
+
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Performing Divergence Stratigraphy</h1>
             
-            <h4 data-toc-skip class="date">2023-10-10</h4>
+            <h4 data-toc-skip class="date">2026-06-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/divergence_stratigraphy.Rmd" class="external-link"><code>vignettes/divergence_stratigraphy.Rmd</code></a></small>
-      <div class="hidden name"><code>divergence_stratigraphy.Rmd</code></div>
-
+      <div class="d-none name"><code>divergence_stratigraphy.Rmd</code></div>
     </div>
 
     
@@ -120,23 +84,23 @@ rate) acting on orthologous genes between closely related species. The
 resulting sequence divergence map (short divergence map), stores the
 divergence stratum in the first column and the <code>query_id</code> of
 inferred orthologous genes in the second column ( Quint et al., 2012
-<em>Nature</em>; <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
-al., 2015 <em>Mol. Biol. Evol.</em></a>; <a href="http://mbe.oxfordjournals.org/content/early/2016/02/23/molbev.msw039.abstract" class="external-link">Drost
-et al., 2016 <em>Mol. Biol. Evol.</em></a>; <a href="https://github.com/HajkD/myTAI" class="external-link">Introduction to myTAI</a> ). <a href="https://github.com/HajkD/myTAI/issues/5" class="external-link">Here</a> you can also
+<em>Nature</em>; <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
+al., 2015 <em>Mol. Biol. Evol.</em></a>; <a href="https://academic.oup.com/mbe/article/33/5/1158/2580081" class="external-link">Drost et
+al., 2016 <em>Mol. Biol. Evol.</em></a>; <a href="https://drostlab.github.io/myTAI" class="external-link">Introduction to myTAI</a> ). <a href="https://github.com/drostlab/myTAI/issues/5" class="external-link">Here</a> you can also
 find a short example and discussion about the usefulness of
 <code>Divergence Strata</code>.</p>
 <p>The following Algorithm implemented in
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> defines <strong>Divergence
-Stratigraphy</strong> as method (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
+Stratigraphy</strong> as method (see <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015</a>):</p>
 <ol style="list-style-type: decimal">
 <li><p>Orthology Inference using BLAST best reciprocal hit (“RBH”) based
 on blastp</p></li>
 <li><p>Pairwise global amino acid alignments of orthologous genes using
-the <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
+the <a href="https://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
 algorithm</a></p></li>
-<li><p>Codon alignments of orthologous genes using <a href="http://www.bork.embl.de/pal2nal/" class="external-link">PAL2NAL</a></p></li>
-<li><p>dNdS estimation using <a href="http://link.springer.com/article/10.1007/BF00173196" class="external-link">Comeron’s
+<li><p>Codon alignments of orthologous genes using <a href="https://bio.tools/pal2nal" class="external-link">PAL2NAL</a></p></li>
+<li><p>dNdS estimation using <a href="https://link.springer.com/article/10.1007/BF00173196" class="external-link">Comeron’s
 method (1995)</a></p></li>
 <li><p>Categorize estimated dNdS values into
 <code>divergence strata</code> (= deciles of all dNdS values)</p></li>
@@ -160,9 +124,8 @@ Divergence Stratum 2), …, and the largest Ka/Ks values between the
 91-100% quantile are in decile 10 (= Divergence Stratum 10) (This is
 what the <code><a href="../reference/divergence_map.html">divergence_map()</a></code> function does). This way, each
 Divergence Stratum has (almost) the same number of genes.</p>
-<p>In <code>orthologr</code> the <a href="http://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
-algorithm</a>, <a href="http://www.bork.embl.de/pal2nal/" class="external-link">PAL2NAL</a>
-and <a href="http://link.springer.com/article/10.1007/BF00173196" class="external-link">Comeron’s
+<p>In <code>orthologr</code> the <a href="https://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
+algorithm</a>, <a href="https://bio.tools/pal2nal/" class="external-link">PAL2NAL</a> and <a href="https://link.springer.com/article/10.1007/BF00173196" class="external-link">Comeron’s
 method (1995)</a> are already included in the <code>orthologr</code>
 package and do not have to be installed separately. Nevertheless, users
 need to make sure <strong>they have BLAST installed on their machine
@@ -172,8 +135,8 @@ before using the
 <strong>BLAST</strong> program is installed and stored in the default
 execution path <code>usr/local/bin</code>. In case users do not have
 <strong>BLAST</strong> installed yet or the following command in R
-produces a different output, please consult the <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/Install.Rmd#orthology-inference-tools" class="external-link">Installation
-Vignette</a> to corretly set up the <strong>BLAST</strong> program to
+produces a different output, please consult the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
+Vignette</a> to correctly set up the <strong>BLAST</strong> program to
 perform <strong>Divergence Stratigraphy</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"blastp -version"</span><span class="op">)</span></span></code></pre></div>
@@ -182,7 +145,7 @@ Package: blast 2.2.30, build Oct 27 2014 17:10:51</code></pre>
 <div class="section level2">
 <h2 id="divergence-map-computations">Divergence Map Computations<a class="anchor" aria-label="anchor" href="#divergence-map-computations"></a>
 </h2>
-<p>In <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
+<p>In <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015 <em>Mol. Biol. Evol.</em></a> we define a
 <code>Divergence Map</code> as table storing the degree of selection
 pressure (= <code>divergence strata</code>) for each protein coding gene
@@ -238,11 +201,11 @@ gunzip -d Arabidopsis_lyrata.v.1.0.23.cds.all.fa.gz
 <div class="section level4">
 <h4 id="option-2">Option 2:<a class="anchor" aria-label="anchor" href="#option-2"></a>
 </h4>
-<p>We implemented the <a href="https://github.com/HajkD/biomartr" class="external-link">biomartr</a> package to
-automate the process of performing biological data retrieval. The <a href="https://github.com/HajkD/biomartr/blob/master/vignettes/Sequence_Retrieval.Rmd" class="external-link">Sequence
+<p>We implemented the <a href="https://github.com/ropensci/biomartr" class="external-link">biomartr</a> package to
+automate the process of performing biological data retrieval. The <a href="https://docs.ropensci.org/biomartr/articles/Sequence_Retrieval.html" class="external-link">Sequence
 Retrieval Vignette</a> stored in <code>biomartr</code> provides detailed
 use cases for the automation of biological sequence retrieval.</p>
-<p><strong>Note</strong>: Users need to make sure they have <a href="https://github.com/HajkD/biomartr#fast-installation-guide" class="external-link">biomartr</a>
+<p><strong>Note</strong>: Users need to make sure they have <a href="https://docs.ropensci.org/biomartr/index.html#installation" class="external-link">biomartr</a>
 installed before running any <code>biomartr</code> functions.</p>
 </div>
 </div>
@@ -250,11 +213,12 @@ installed before running any <code>biomartr</code> functions.</p>
 <h3 id="computation-time">Computation Time<a class="anchor" aria-label="anchor" href="#computation-time"></a>
 </h3>
 <p><strong>Please note that</strong> performing <strong>Divergence
-Stratigraphy</strong> with two large genomes can take (even on a
-multicore machine) some time -&gt; <strong>up to several hours</strong>.
-On a 4 core machine with 3.4 GHz i7 processors the computation time of
-generating a divergence map between <em>A. thaliana</em> and <em>A.
-lyrata</em> was <strong>2.5-3 hours</strong>.</p>
+Stratigraphy</strong> with two large genomes using BLAST+ can take (even
+on a multicore machine) some time -&gt; <strong>up to several
+hours</strong>. On a 4 core machine with 3.4 GHz i7 processors the
+computation time of generating a divergence map between <em>A.
+thaliana</em> and <em>A. lyrata</em> was <strong>2.5-3
+hours</strong>.</p>
 <p>The <code>comp_cores</code> argument implemented in the
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> function allows users to specify
 the number of cores they would like to use on their machine. The default
@@ -262,6 +226,8 @@ value is <code>comp_cores = 1</code> which might take
 <strong>10-12h</strong> to execute. So users need to make sure that they
 use all cores available on their machine to speed up the computation
 time.</p>
+<p>(Note, the wall clock time is now reduced with the
+<code>diamond</code>.)</p>
 </div>
 </div>
 <div class="section level2">
@@ -278,7 +244,7 @@ sequence files of <em>A. thaliana</em> (= <code>query_file</code>) and
 <em>A. lyrata</em> (= <code>subject_file</code>) need to be specified.
 The <code>eval</code> is set to <code>1E-5</code> (default ; see Quint
 et al., 2012 <em>Nature</em>) and <code>BLAST best reciprocal hit</code>
-is used for orthology inference (see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
+is used for orthology inference (see <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015</a>). In case `<code>orthologr</code> is running on a
 multicore machine, users can set the <code>comp_cores</code> argument to
 any number of cores supported by their machine. The
@@ -291,7 +257,7 @@ will be removed after the <code>Divergence Map</code> was returned. The
 interface call should be printed out to the console
 (<code>quiet = FALSE</code>) or not (<code>quiet = TRUE</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># compute the divergence map of A. thaliana</span></span>
 <span><span class="va">Athaliana_DM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -307,7 +273,7 @@ complete genomes, users can first run a test <strong>Divergence
 Stratigraphy</strong> with 20 example genes that are stored in the
 <code>orthologr</code> package:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -382,7 +348,7 @@ different place than <code>usr/local/bin</code>.</p>
 <p>The following example shows a possible specification of
 <code>blast_path</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -435,7 +401,7 @@ the <code>ds.values</code> argument in
 <code>dNdS Map</code> instead of a <code>Divergence Map</code>. For this
 purpose users need to set <code>ds.values = FALSE</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/drostlab/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy</span></span>
 <span><span class="co"># but receive a dNdS Map instead of a Divergence Map</span></span>
@@ -477,8 +443,8 @@ of <code>DS</code> values in the first column.</p>
 <div class="section level4">
 <h4 id="example-subject-id">Example: <code>subject.id</code><a class="anchor" aria-label="anchor" href="#example-subject-id"></a>
 </h4>
-<p>Although the <code>Divergence Map</code> <a href="https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd#getting-started" class="external-link">standard</a>
-is specified as storing <code>DS</code> values in the first column and
+<p>Although the <code>Divergence Map</code> <a href="https://drostlab.github.io/myTAI" class="external-link">standard</a> is specified as
+storing <code>DS</code> values in the first column and
 <code>GeneIDs</code> in the second column, in some cases it is important
 to store the GeneIDs of orthologous genes in the <code>subject</code>
 organism. The <code>subject.id</code> argument implemented in
@@ -592,7 +558,7 @@ specify the <code>dnds.threshold</code> in
 <div class="section level4">
 <h4 id="example-ortho_detection">Example: <code>ortho_detection</code><a class="anchor" aria-label="anchor" href="#example-ortho_detection"></a>
 </h4>
-<p>According to <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
+<p>According to <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015 <em>Mol. Biol. Evol.</em></a> the <strong>Divergence
 Stratigraphy</strong> algorithm performs <strong>BLAST</strong> best
 reciprocal hit (RBH) as orthology inference method. Despite this
@@ -600,7 +566,7 @@ convention, the <code>ortho_detection</code> argument allows users to
 perform orthology inference within the <strong>Divergence
 Stratigraphy</strong> algorithm that is based on any orthology inference
 method implemented in <code>orthologr</code> (see
-<code><a href="../reference/orthologs.html">?orthologs</a></code> or <a href="https://github.com/HajkD/orthologr/blob/master/vignettes/orthology_inference.Rmd" class="external-link">Orthology
+<code><a href="../reference/orthologs.html">?orthologs</a></code> or <a href="https://drostlab.github.io/orthologr/articles/orthology_inference.html">Orthology
 Inference Vignette</a> for details). For example in Quint et al., 2012
 <em>Nature</em> instead of using <strong>BLAST</strong> best reciprocal
 hit, the method <strong>BLAST</strong> best hit (BH) was used to perform
@@ -646,7 +612,7 @@ algorithm.</p>
 <h2 id="skip-divergence-stratigraphy-and-download-already-published-divergence-maps">Skip <code>Divergence Stratigraphy</code> and Download Already
 Published <code>Divergence Maps</code><a class="anchor" aria-label="anchor" href="#skip-divergence-stratigraphy-and-download-already-published-divergence-maps"></a>
 </h2>
-<p>Users can find a detailed list of <a href="https://github.com/HajkD/published_phylomaps" class="external-link">published
+<p>Users can find a detailed list of <a href="https://github.com/drostlab/published_phylomaps" class="external-link">published
 Phylostratigraphic Maps and Divergence Maps</a> by following the link.
 This way the computation time of 3-4 h on a local machine for 2 genome
 comparisions can be skipped.</p>
@@ -657,41 +623,32 @@ comparisions can be skipped.</p>
 <p><code>Divergence Maps</code> can be used for a wide range of
 analyses. One example is to combine <code>Divergence Maps</code> with
 gene expression data to capture evolutionary signals in developmental
-transcriptomes (= <code>Phylotranscriptomics</code>; see <a href="http://mbe.oxfordjournals.org/content/32/5/1221.full" class="external-link">Drost et
+transcriptomes (= <code>Phylotranscriptomics</code>; see <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015 <em>Mol. Biol. Evol.</em></a>). Performing phylotranscriptomic
 analyses based on an existing <code>Divergence Map</code> can easily be
-done by using the <code>myTAI</code> package. You can consult the <a href="https://github.com/HajkD/myTAI/blob/master/vignettes/Introduction.Rmd" class="external-link">Introduction
+done by using the <code>myTAI</code> package. You can consult the <a href="https://drostlab.github.io/myTAI/articles/other-strata.html" class="external-link">Introduction
 to the myTAI package Vignette</a> for more details.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Hajk-Georg Drost.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
-  
 
 
-  
+
 
   </body>
 </html>
