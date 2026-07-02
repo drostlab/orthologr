@@ -53,7 +53,7 @@
 #' ### BLAST Reciprocal Best Hit
 #' # perform orthology inference using BLAST reciprocal best hit
 #' # and fasta sequence files storing protein sequences
-#' orthologs.lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' orthologs_lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file   = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           ortho_detection = "RBH")
 #'           
@@ -61,13 +61,13 @@
 #' ### BLAST Best Hit
 #' # perform orthology inference using BLAST best hit
 #' # and fasta sequence files storing protein sequences
-#' orthologs.lnc(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' orthologs_lnc(query_file = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           ortho_detection = "BH")
 #' 
 #'
 #' # multicore version          
-#' orthologs.lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
+#' orthologs_lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
 #'           subject_file   = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
 #'           ortho_detection = "RBH", 
 #'           comp_cores      = 2)          
