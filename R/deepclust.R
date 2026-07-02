@@ -271,22 +271,29 @@ deepclust <- function(
         }
 
         tryCatch({
-                cluster_table <- data.table::as.data.table(
-                        readr::read_tsv(
-                                file           = output,
-                                col_names      = FALSE,
-                                col_types      = readr::cols(
-                                        X1 = readr::col_character(),
-                                        X2 = readr::col_character()
-                                ),
-                                show_col_types = FALSE
-                        )
-                )
-
-                data.table::setnames(
-                        cluster_table,
-                        old = c("X1", "X2"),
-                        new = c("representative_id", "member_id")
+                # cluster_table <- data.table::as.data.table(
+                #         readr::read_tsv(
+                #                 file           = output,
+                #                 col_names      = FALSE,
+                #                 col_types      = readr::cols(
+                #                         X1 = readr::col_character(),
+                #                         X2 = readr::col_character()
+                #                 ),
+                #                 show_col_types = FALSE
+                #         )
+                # )
+                # 
+                # data.table::setnames(
+                #         cluster_table,
+                #         old = c("X1", "X2"),
+                #         new = c("representative_id", "member_id")
+                # )
+                
+                cluster_table <- data.table::fread(
+                        file    = output,
+                        header  = FALSE,
+                        col.names = c("representative_id", "member_id"),
+                        colClasses = "character"
                 )
 
                 setwd(file.path(currwd))
