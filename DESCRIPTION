@@ -27,7 +27,6 @@ Imports:
     Biostrings (>= 2.52.0),
     pwalign (>= 1.6.0),
     stringr (>= 0.6.2),
-    dtplyr,
     rtracklayer,
     tibble,
     readr,
