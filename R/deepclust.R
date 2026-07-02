@@ -260,8 +260,16 @@ deepclust <- function(
                 deepclust_run <- paste0(deepclust_run, ' --quiet')
 
         message("Running diamond deepclust ...")
-
-        status <- system(deepclust_run)
+        t_deepclust_start   <- proc.time()["elapsed"]
+        status              <- system(deepclust_run)
+        t_deepclust_elapsed <- proc.time()["elapsed"] - t_deepclust_start
+        message(
+                "diamond deepclust completed in ",
+                if (t_deepclust_elapsed >= 60)
+                        paste0(round(t_deepclust_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_deepclust_elapsed, 2), " sec.")
+        )
         if (!identical(status, 0L)) {
                 stop(
                         "diamond deepclust exited with non-zero status: ", status,

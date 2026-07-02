@@ -85,7 +85,7 @@
 #'   clusters = clusters
 #' )
 #'
-#' # 3. Alternatively, supply the path to the deepclust TSV directly
+#' # 2. Alternatively, supply the path to the deepclust TSV directly
 #' realign_result <- deepclust_realign(
 #'   input_file = c(
 #'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -94,7 +94,7 @@
 #'   clusters = "/path/to/deepclust_output.tsv"
 #' )
 #'
-#' # 4. Incorporate into deepclust_annotate without re-running deepclust
+#' # 3. Incorporate into deepclust_annotate without re-running deepclust
 #' profile <- deepclust_annotate(
 #'   input_file = c(
 #'     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -269,8 +269,16 @@ deepclust_realign <- function(
                 realign_run <- paste0(realign_run, ' --quiet')
 
         message("Running diamond realign ...")
-
-        status <- system(realign_run)
+        t_realign_start   <- proc.time()["elapsed"]
+        status            <- system(realign_run)
+        t_realign_elapsed <- proc.time()["elapsed"] - t_realign_start
+        message(
+                "diamond realign completed in ",
+                if (t_realign_elapsed >= 60)
+                        paste0(round(t_realign_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_realign_elapsed, 2), " sec.")
+        )
         if (!identical(status, 0L)) {
                 stop(
                         "diamond realign exited with non-zero status: ", status,
@@ -278,28 +286,38 @@ deepclust_realign <- function(
                         call. = FALSE
                 )
         }
+        # define the colClasses for faster file streaming
+        col_Classes <- c(rep("character", 2),
+                         rep("double", 5))
 
         tryCatch({
-                recluster_table <- data.table::as.data.table(
-                        readr::read_tsv(
-                                file      = output,
-                                col_names = FALSE,
-                                col_types = readr::cols(
-                                        X1 = readr::col_character(),
-                                        X2 = readr::col_character(),
-                                        X3 = readr::col_double(),
-                                        X4 = readr::col_double(),
-                                        X5 = readr::col_double(),
-                                        X6 = readr::col_double(),
-                                        X7 = readr::col_double()
-                                ),
-                                show_col_types = FALSE
-                        )
+                # recluster_table <- data.table::as.data.table(
+                #         readr::read_tsv(
+                #                 file      = output,
+                #                 col_names = FALSE,
+                #                 col_types = readr::cols(
+                #                         X1 = readr::col_character(),
+                #                         X2 = readr::col_character(),
+                #                         X3 = readr::col_double(),
+                #                         X4 = readr::col_double(),
+                #                         X5 = readr::col_double(),
+                #                         X6 = readr::col_double(),
+                #                         X7 = readr::col_double()
+                #                 ),
+                #                 show_col_types = FALSE
+                #         )
+                # )
+                
+                recluster_table <- data.table::fread(
+                        input      = output,
+                        sep        = "\t",
+                        header     = FALSE,
+                        colClasses = col_Classes
                 )
 
                 data.table::setnames(
                         recluster_table,
-                        old = paste0("X", 1:7),
+                        old = paste0("V", 1:7), # "X" if readr is used
                         new = c("representative_id", "member_id",
                                 "approx_pident", "evalue", "bitscore",
                                 "qcovhsp", "scovhsp")

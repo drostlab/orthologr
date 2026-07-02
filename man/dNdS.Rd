@@ -37,9 +37,12 @@ dNdS(
 
 \item{subject_file}{a character string specifying the path to the CDS file of interest (subject organism).}
 
-\item{aligner}{a character string specifying the sequence aligner. The options are \code{diamond} and \code{blast}.
-The option \code{diamond} uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
-Thus, the default is \code{aligner} = \code{diamond}.}
+\item{aligner}{a character string specifying the sequence aligner. Options are: 
+\itemize{
+\item \code{aligner = "diamond"} (Default): sequence alignment is performed using DIAMOND2
+\item \code{aligner = "blast"}: sequence alignment is performed using BLASTP.
+}
+The option diamond uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.}
 
 \item{sensitivity_mode}{specify the level of alignment sensitivity, when using DIAMOND2. The higher the sensitivity level, the more deep homologs can be found, but at the cost of reduced computational speed.
 - sensitivity_mode = "faster" : fastest alignment mode, but least sensitive (default). Designed for finding hits of >70
@@ -53,7 +56,7 @@ Thus, the default is \code{aligner} = \code{diamond}.}
 
 \item{aligner_path}{a character string specifying the path to the DIAMOND or BLAST program (in case you don't use the default path).}
 
-\item{seq_type}{a character string specifying the sequence type stored in the input file.Options are are: 
+\item{seq_type}{a character string specifying the sequence type stored in the input file. Options are: 
 \itemize{
 \item \code{seq_type = "cds"} (Default): sequence are translated to protein sequences
 \item \code{seq_type = "protein"}: orthology inference is performed using protein sequences directly.

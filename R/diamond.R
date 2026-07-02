@@ -272,7 +272,17 @@ diamond <- function(
         }
         
         ## running diamond
-        status <- system(diamond_run)
+        message("Starting DIAMOND2 search ...")
+        t_diamond_start   <- proc.time()["elapsed"]
+        status            <- system(diamond_run)
+        t_diamond_elapsed <- proc.time()["elapsed"] - t_diamond_start
+        message(
+                "DIAMOND2 search completed in ",
+                if (t_diamond_elapsed >= 60)
+                        paste0(round(t_diamond_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_diamond_elapsed, 2), " sec.")
+        )
         if (!identical(status, 0L)) {
                 stop(
                         "diamond ", diamond_algorithm,
