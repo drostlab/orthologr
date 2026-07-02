@@ -9,6 +9,7 @@ orthofinder2(
   use_existing_output = FALSE,
   import_type = NULL,
   comp_cores = 1,
+  orthogroup_only = TRUE,
   of_path = NULL
 )
 }
@@ -29,6 +30,11 @@ Options are:
 }}
 
 \item{comp_cores}{number of cores that shall be used for parallel processing. Default is \code{cores = 1}.}
+
+\item{orthogroup_only}{logical, default \code{TRUE}. When \code{TRUE}, OrthoFinder is run with the
+\code{-og} flag, which stops the analysis after orthogroup inference and skips the more
+computationally expensive gene-tree and orthologue inference steps. Set to \code{FALSE} to
+run the full OrthoFinder pipeline.}
 
 \item{of_path}{a character string specifying the path to the locally installed \code{orthofinder} executable.
 A possible specification could be \code{of_path = "/opt/miniconda3/bin/"} which internally will translate to
