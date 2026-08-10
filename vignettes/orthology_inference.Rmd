@@ -524,3 +524,101 @@ BLAST hit table can then be found in `file.path(tempdir(),"_blast_db")`.
 
 A detailed overview of further analyses that can be done with the corresponding BLAST output
 can be found in the [BLAST vignette](https://drostlab.github.io/orthologr/articles/blast.html).
+
+<!-- ## Multi-species ortholog table workflow -->
+
+<!-- The pairwise functions above compare one query against one subject at a time. When you want to -->
+<!-- compare a query species against **several** subject species and then identify a **core set** of -->
+<!-- orthologs conserved across all of them, `orthologr` provides a four-step pipeline: -->
+
+<!-- | Step | Function | What it does | -->
+<!-- |------|----------|--------------| -->
+<!-- | 1 | `map_generator_dnds()` | Pairwise BLAST + dNdS between query and every subject; writes one CSV per species pair | -->
+<!-- | 2 | `generate_ortholog_tables_all()` | Combines those CSVs with GTF/GFF annotation files to resolve gene loci from splice variants | -->
+<!-- | 3 | `import_ortholog_tables_all()` | Re-reads saved ortholog tables from disk (skip if you kept the in-memory result from step 2) | -->
+<!-- | 4 | `retrieve_core_orthologs()` | Retains only gene loci with an ortholog in **every** subject species | -->
+
+<!-- ### Step 1: Generate pairwise dNdS maps -->
+
+<!-- `map_generator_dnds()` iterates over all CDS files in `subjects_folder`, runs pairwise orthology -->
+<!-- inference and dNdS estimation against the query, and writes one CSV per species pair to -->
+<!-- `output_folder`. -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- library(orthologr) -->
+
+<!-- map_generator_dnds( -->
+<!--   query_file      = "path/to/query_cds.fasta", -->
+<!--   subjects_folder = "path/to/subject_cds_files/", -->
+<!--   output_folder   = "dnds_maps/", -->
+<!--   ortho_detection = "DIAMOND_RBH", -->
+<!--   aa_aln_type     = "pairwise", -->
+<!--   aa_aln_tool     = "NW", -->
+<!--   codon_aln_tool  = "pal2nal", -->
+<!--   dnds_est_method = "Comeron", -->
+<!--   comp_cores      = 1 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- The toy files bundled with the package can be used to test this: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- map_generator_dnds( -->
+<!--   query_file      = system.file("seqs/ortho_thal_cds.fasta", package = "orthologr"), -->
+<!--   subjects_folder = system.file("seqs/map_gen_example",      package = "orthologr"), -->
+<!--   output_folder   = "orthologr_dnds_maps/", -->
+<!--   aa_aln_type     = "pairwise", -->
+<!--   aa_aln_tool     = "NW", -->
+<!--   codon_aln_tool  = "pal2nal", -->
+<!--   dnds_est_method = "Comeron", -->
+<!--   comp_cores      = 1 -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ### Step 2: Build gene-locus ortholog tables -->
+
+<!-- `generate_ortholog_tables_all()` takes the dNdS CSVs from step 1 and a set of GTF/GFF annotation -->
+<!-- files to resolve splice variants to gene loci, producing a combined ortholog table with columns -->
+<!-- `query_species`, `subject_species`, `query_gene_locus_id`, `query_id`, `subject_id`, `dN`, `dS`, -->
+<!-- `dNdS`, and standard alignment statistics. -->
+
+<!-- `output_type = "gene_locus"` (default) retains one representative splice variant per gene locus — -->
+<!-- the one with the lowest e-value (longest isoform used as tiebreaker). Use -->
+<!-- `output_type = "splice_variant"` to keep all splice variant pairings. -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- ortho_tbl <- generate_ortholog_tables_all( -->
+<!--   dNdS_folder               = "dnds_maps/", -->
+<!--   annotation_file_query     = "path/to/query_annotation.gtf", -->
+<!--   annotation_folder_subject = "path/to/subject_annotations/", -->
+<!--   output_folder             = "ortholog_tables/", -->
+<!--   output_type               = "gene_locus",    # or "splice_variant" -->
+<!--   format                    = c("gtf", "gtf")  # adjust to "gff" as needed -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- ### Step 3: Re-import saved tables (optional) -->
+
+<!-- If you need to reload the ortholog tables in a later session without rerunning steps 1–2, use -->
+<!-- `import_ortholog_tables_all()`: -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- ortho_tbl <- import_ortholog_tables_all(ortholog_tables_folder = "ortholog_tables/") -->
+<!-- ``` -->
+
+<!-- ### Step 4: Retrieve the core ortholog set -->
+
+<!-- `retrieve_core_orthologs()` filters the combined table to gene loci that have an ortholog in -->
+<!-- **every** subject species. Pass the subject species in phylogenetic order (closest relative first) -->
+<!-- via `species_order`. -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- core_orthologs <- retrieve_core_orthologs( -->
+<!--   ortho_tables = ortho_tbl, -->
+<!--   species_order = c("Arabidopsis_lyrata", "Brassica_rapa", "Capsella_rubella") -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- The returned table has the same schema as `ortho_tbl` but contains only gene loci conserved across -->
+<!-- all species, making it a convenient starting point for comparative analyses such as divergence -->
+<!-- stratigraphy (see the [Divergence Stratigraphy vignette](https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html)). -->

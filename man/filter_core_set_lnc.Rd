@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_core_set_lnc.R
 \name{filter_core_set_lnc}
 \alias{filter_core_set_lnc}
-\title{Helper function to extract a core set of orthologous lncRNAs}
+\title{Helper function to extract a core set of orthologous lncRNAs (deprecated)}
 \usage{
 filter_core_set_lnc(x, order_species)
 }
@@ -13,5 +13,7 @@ filter_core_set_lnc(x, order_species)
 ordered according to their phylogenetic distance to their reference species.}
 }
 \description{
-Helper function to extract a core set of orthologous lncRNAs.
+This function is deprecated and will be removed in a future release.
+Please use \code{\link{filter_core_set}} instead, which now handles both
+protein-coding gene tables and lncRNA maps automatically.
 }

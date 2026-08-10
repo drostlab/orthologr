@@ -66,7 +66,7 @@ Please be aware that \code{max.target.seqs} selects best hits based on the datab
 \item{sep}{a file separator that is used to store maps as csv file.}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
+For "BH" and "RBH": path to BLAST.}
 
 \item{...}{additional parameters that shall be passed to  \code{\link{dNdS}}.}
 }

@@ -2,19 +2,20 @@
 % Please edit documentation in R/lnc_map_core_orthologs.R
 \name{lnc_map_core_orthologs}
 \alias{lnc_map_core_orthologs}
-\title{Retrieve a core set of orthologous lncRNAs from the pairwise lncRNA orthologs map}
+\title{Retrieve a core set of orthologous lncRNAs (deprecated)}
 \usage{
 lnc_map_core_orthologs(lnc_map, species_order)
 }
 \arguments{
 \item{lnc_map}{a \code{lnc_map} that was generated with \code{\link{map_generator_lnc}}.}
 
-\item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
-The species names must match with the species names present in the \code{lnc_map}.}
+\item{species_order}{a character string specifying species names listed in the order of
+phylogenetic/taxonomic distance from the query species.}
 }
 \description{
-Given a lnc_map table generated with \code{\link{map_generator_lnc}},
-this function will determine a core set of lncRNA orthologs that are shared between all species.
+This function is deprecated and will be removed in a future release.
+Please use \code{\link{retrieve_core_orthologs}} instead, which now handles both
+protein-coding gene tables and lncRNA maps automatically.
 }
 \author{
 Hajk-Georg Drost
