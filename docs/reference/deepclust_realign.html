@@ -213,7 +213,7 @@ at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.</p>
 <span class="r-in"><span>  clusters <span class="op">=</span> <span class="va">clusters</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 3. Alternatively, supply the path to the deepclust TSV directly</span></span></span>
+<span class="r-in"><span><span class="co"># 2. Alternatively, supply the path to the deepclust TSV directly</span></span></span>
 <span class="r-in"><span><span class="va">realign_result</span> <span class="op">&lt;-</span> <span class="fu">deepclust_realign</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  input_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
@@ -222,7 +222,7 @@ at tree-of-life scale using DIAMOND." Nature methods, 18(4), 366-368.</p>
 <span class="r-in"><span>  clusters <span class="op">=</span> <span class="st">"/path/to/deepclust_output.tsv"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 4. Incorporate into deepclust_annotate without re-running deepclust</span></span></span>
+<span class="r-in"><span><span class="co"># 3. Incorporate into deepclust_annotate without re-running deepclust</span></span></span>
 <span class="r-in"><span><span class="va">profile</span> <span class="op">&lt;-</span> <span class="fu"><a href="deepclust_annotate.html">deepclust_annotate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  input_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>

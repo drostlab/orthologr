@@ -92,9 +92,9 @@ and computes the dNdS estimation values for orthologous gene pairs between these
 
 
 <dt id="arg-aligner">aligner<a class="anchor" aria-label="anchor" href="#arg-aligner"></a></dt>
-<dd><p>a character string specifying the sequence aligner. The options are <code>diamond</code> and <code>blast</code>.
-The option <code>diamond</code> uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.
-Thus, the default is <code>aligner</code> = <code>diamond</code>.</p></dd>
+<dd><p>a character string specifying the sequence aligner. Options are:</p><ul><li><p><code>aligner = "diamond"</code> (Default): sequence alignment is performed using DIAMOND2</p></li>
+<li><p><code>aligner = "blast"</code>: sequence alignment is performed using BLASTP.</p></li>
+</ul><p>The option diamond uses DIAMOND2 which is up to 10 000X folds faster than BLASTP while retaining the sensitivity of BLASTP.</p></dd>
 
 
 <dt id="arg-sensitivity-mode">sensitivity_mode<a class="anchor" aria-label="anchor" href="#arg-sensitivity-mode"></a></dt>
@@ -114,7 +114,7 @@ Thus, the default is <code>aligner</code> = <code>diamond</code>.</p></dd>
 
 
 <dt id="arg-seq-type">seq_type<a class="anchor" aria-label="anchor" href="#arg-seq-type"></a></dt>
-<dd><p>a character string specifying the sequence type stored in the input file.Options are are:</p><ul><li><p><code>seq_type = "cds"</code> (Default): sequence are translated to protein sequences</p></li>
+<dd><p>a character string specifying the sequence type stored in the input file. Options are:</p><ul><li><p><code>seq_type = "cds"</code> (Default): sequence are translated to protein sequences</p></li>
 <li><p><code>seq_type = "protein"</code>: orthology inference is performed using protein sequences directly.</p></li>
 </ul></dd>
 

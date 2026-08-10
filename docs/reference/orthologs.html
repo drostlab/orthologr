@@ -60,11 +60,14 @@ based on selected orthology inference programs.</p>
 <span>  outgroup_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  eval <span class="op">=</span> <span class="st">"1E-5"</span>,</span>
 <span>  format <span class="op">=</span> <span class="st">"fasta"</span>,</span>
-<span>  ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
+<span>  ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
+<span>  sensitivity_mode <span class="op">=</span> <span class="st">"fast"</span>,</span>
+<span>  max.target.seqs <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  delete_corrupt_cds <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cdd.path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  add_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  diamond_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  comp_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  clean_folders <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -80,52 +83,73 @@ based on selected orthology inference programs.</p>
 
 
 <dt id="arg-subject-files">subject_files<a class="anchor" aria-label="anchor" href="#arg-subject-files"></a></dt>
-<dd><p>a character string specifying the paths to the sequence files of interest (subject organisms).
-Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).</p></dd>
+<dd><p>a character string specifying the paths to the sequence files of interest (subject organisms).</p></dd>
 
 
 <dt id="arg-seq-type">seq_type<a class="anchor" aria-label="anchor" href="#arg-seq-type"></a></dt>
 <dd><p>a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+Options are: "cds", "protein", or "dna". In case of "cds", sequences are translated to protein sequences,
+in case of "dna", CDS prediction is performed on the corresponding sequences which are subsequently
 translated to protein sequences. Default is <code>seq_type</code> = "protein".</p></dd>
 
 
 <dt id="arg-outgroup-file">outgroup_file<a class="anchor" aria-label="anchor" href="#arg-outgroup-file"></a></dt>
-<dd><p>a character string specifying the paths to the sequence files of interest (outgroup organisms).
-This argument is only used by <code>InParanoid</code>.</p></dd>
+<dd><p>currently unused; reserved for future use.</p></dd>
 
 
 <dt id="arg-eval">eval<a class="anchor" aria-label="anchor" href="#arg-eval"></a></dt>
-<dd><p>a numeric value specifying the E-Value cutoff for BLAST hit detection.</p></dd>
+<dd><p>a numeric value specifying the E-Value cutoff for hit detection.</p></dd>
 
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
-<dd><p>a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".</p></dd>
+<dd><p>a character string specifying the file format of the sequence file, e.g. "fasta". Default is "fasta".</p></dd>
 
 
 <dt id="arg-ortho-detection">ortho_detection<a class="anchor" aria-label="anchor" href="#arg-ortho-detection"></a></dt>
-<dd><p>a character string specifying the orthology inference method that shall be performed
-to detect orthologous genes. Default is <code>ortho_detection</code> = "RBH" (BLAST reciprocal best hit).
-Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.</p></dd>
+<dd><p>a character string specifying the orthology inference method to use.
+Default is <code>ortho_detection</code> = <code>"DIAMOND_RBH"</code> (DIAMOND2 reciprocal best hit).
+Available methods:</p><ul><li><p><code>"DIAMOND_RBH"</code>: DIAMOND2 reciprocal best hit (default; fast, recommended)</p></li>
+<li><p><code>"DIAMOND_BH"</code>: DIAMOND2 best hit</p></li>
+<li><p><code>"RBH"</code>: BLAST reciprocal best hit</p></li>
+<li><p><code>"BH"</code>: BLAST best hit</p></li>
+<li><p><code>"Orthofinder2"</code>: OrthoFinder2 (currently under development)</p></li>
+</ul></dd>
+
+
+<dt id="arg-sensitivity-mode">sensitivity_mode<a class="anchor" aria-label="anchor" href="#arg-sensitivity-mode"></a></dt>
+<dd><p>a character string specifying the DIAMOND2 sensitivity level.
+Only used when <code>ortho_detection</code> is <code>"DIAMOND_RBH"</code> or <code>"DIAMOND_BH"</code>.
+Options: <code>"faster"</code>, <code>"fast"</code> (default), <code>"mid-sensitive"</code>,
+<code>"sensitive"</code>, <code>"more-sensitive"</code>, <code>"very-sensitive"</code>, <code>"ultra-sensitive"</code>.</p></dd>
+
+
+<dt id="arg-max-target-seqs">max.target.seqs<a class="anchor" aria-label="anchor" href="#arg-max-target-seqs"></a></dt>
+<dd><p>a numeric value specifying the number of aligned sequences to keep (DIAMOND2 only).
+Default is <code>10000</code>.</p></dd>
 
 
 <dt id="arg-delete-corrupt-cds">delete_corrupt_cds<a class="anchor" aria-label="anchor" href="#arg-delete-corrupt-cds"></a></dt>
-<dd><p>a logical value indicating whether sequences with corrupt base triplets should be removed from the input <code>file</code>. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.</p></dd>
+<dd><p>a logical value indicating whether sequences with corrupt base triplets should
+be removed from the input <code>file</code>. Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-cdd-path">cdd.path<a class="anchor" aria-label="anchor" href="#arg-cdd-path"></a></dt>
-<dd><p>path to the cdd database folder (specify when using <code>ortho_detection</code> = <code>"DELTA"</code>).</p></dd>
+<dd><p>currently unused; reserved for future use.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.</p></dd>
+<dd><p>a character string specifying the path to the orthology inference tool executable.</p></dd>
 
 
 <dt id="arg-add-params">add_params<a class="anchor" aria-label="anchor" href="#arg-add-params"></a></dt>
-<dd><p>a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
-Default is <code>add_params</code> = <code>NULL</code>.</p></dd>
+<dd><p>a character string specifying additional parameters passed to the orthology inference tool.
+For DIAMOND2 methods, use <code>diamond_params</code> instead. Default is <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-diamond-params">diamond_params<a class="anchor" aria-label="anchor" href="#arg-diamond-params"></a></dt>
+<dd><p>a character string specifying additional parameters passed to DIAMOND2.
+Only used when <code>ortho_detection</code> is <code>"DIAMOND_RBH"</code> or <code>"DIAMOND_BH"</code>.
+Default is <code>NULL</code>.</p></dd>
 
 
 <dt id="arg-comp-cores">comp_cores<a class="anchor" aria-label="anchor" href="#arg-comp-cores"></a></dt>
@@ -137,28 +161,28 @@ Default is <code>add_params</code> = <code>NULL</code>.</p></dd>
 
 
 <dt id="arg-clean-folders">clean_folders<a class="anchor" aria-label="anchor" href="#arg-clean-folders"></a></dt>
-<dd><p>a boolean value spefiying whether all internall folders storing the output of used programs
+<dd><p>a boolean value specifying whether all internal folders storing the output of used programs
 shall be removed. Default is <code>clean_folders</code> = <code>FALSE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
-in the second column and the amino acid sequences in the third column.</p>
+    <p>A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of
+orthologous genes in the second column and the amino acid sequences in the third column.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function takes sequence files of a query organism and a subject organism and performs orthology inference
-using a defined orthology inference method to dectect orthologous genes.</p>
+using a defined orthology inference method to detect orthologous genes.</p>
 <p>The following interfaces are implemented in the <code>orthologs</code> function:</p>
-<p>BLAST based methods:</p>
-<ul><li><p>BLAST best hit (BH)</p></li>
-<li><p>BLAST reciprocal best hit (RBH)</p></li>
-<li><p>DELTA-BLAST reciprocal best hit (DELTA)</p></li>
+<p>DIAMOND2 based methods (recommended):</p><ul><li><p>DIAMOND2 reciprocal best hit (<code>"DIAMOND_RBH"</code>) — default</p></li>
+<li><p>DIAMOND2 best hit (<code>"DIAMOND_BH"</code>)</p></li>
+</ul><p>BLAST based methods:</p><ul><li><p>BLAST reciprocal best hit (<code>"RBH"</code>)</p></li>
+<li><p>BLAST best hit (<code>"BH"</code>)</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="blast_rec.html">blast_rec</a></code>, <code><a href="dNdS.html">dNdS</a></code></p></div>
+    <div class="dont-index"><p><code><a href="diamond_rec.html">diamond_rec</a></code>, <code><a href="diamond_best.html">diamond_best</a></code>, <code><a href="blast_rec.html">blast_rec</a></code>, <code><a href="dNdS.html">dNdS</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -169,32 +193,35 @@ using a defined orthology inference method to dectect orthologous genes.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">### BLAST Best Hit</span></span></span>
+<span class="r-in"><span><span class="co">### DIAMOND2 Reciprocal Best Hit (default)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># perform orthology inference using BLAST best hit</span></span></span>
-<span class="r-in"><span><span class="co"># and fasta sequence files storing protein sequences</span></span></span>
 <span class="r-in"><span><span class="fu">orthologs</span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span></span>
-<span class="r-in"><span>          ortho_detection <span class="op">=</span> <span class="st">"BH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### DIAMOND2 Best Hit</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">orthologs</span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span></span>
+<span class="r-in"><span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_BH"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### BLAST Reciprocal Best Hit</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></span></span>
-<span class="r-in"><span><span class="co"># and fasta sequence files storing protein sequences</span></span></span>
 <span class="r-in"><span><span class="fu">orthologs</span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span></span>
+<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span></span>
 <span class="r-in"><span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>          </span></span>
-<span class="r-in"><span>          </span></span>
-<span class="r-in"><span><span class="co"># multicore version          </span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### BLAST Best Hit</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">orthologs</span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span></span>
-<span class="r-in"><span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span></span>
-<span class="r-in"><span>          comp_cores      <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>          </span></span>
+<span class="r-in"><span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span></span>
+<span class="r-in"><span>          ortho_detection <span class="op">=</span> <span class="st">"BH"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

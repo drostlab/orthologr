@@ -125,14 +125,13 @@ tables.
   :
 
   Importing output pairwise orthologs tables generated with
-  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
+  `generate_ortholog_tables_all`
 
 - [`retrieve_core_orthologs()`](https://drostlab.github.io/orthologr/reference/retrieve_core_orthologs.md)
-  : Retrieve a core set of orthologous gene loci from several pairwise
-  ortholog tables
+  : Retrieve a core set of orthologs from pairwise ortholog tables
 
 - [`filter_core_set()`](https://drostlab.github.io/orthologr/reference/filter_core_set.md)
-  : Helper function to extract a core set of orthologous gene loci
+  : Helper function to extract a core set of orthologs
 
 ## OrthoFinder2 Interface
 
@@ -151,14 +150,14 @@ Infer orthologous long non-coding RNAs (lncRNAs) and summarise results.
 - [`orthologs_lnc()`](https://drostlab.github.io/orthologr/reference/orthologs_lnc.md)
   : Orthology Inference of lncRNAs
 - [`lnc_map_core_orthologs()`](https://drostlab.github.io/orthologr/reference/lnc_map_core_orthologs.md)
-  : Retrieve a core set of orthologous lncRNAs from the pairwise lncRNA
-  orthologs map
+  : Retrieve a core set of orthologous lncRNAs (deprecated)
 - [`lnc_map_counts()`](https://drostlab.github.io/orthologr/reference/lnc_map_counts.md)
   : Count number of orthologous lncRNAs per pairwise species comparison
 - [`map_generator_lnc()`](https://drostlab.github.io/orthologr/reference/map_generator_lnc.md)
   : Infer orthologous lncRNAs between multiple species
 - [`filter_core_set_lnc()`](https://drostlab.github.io/orthologr/reference/filter_core_set_lnc.md)
   : Helper function to extract a core set of orthologous lncRNAs
+  (deprecated)
 
 ## Promoter Divergence
 
@@ -178,24 +177,21 @@ comparisons.
   :
 
   A line plot visualizing the number of pairwise orthologs within a
-  ortho table generated with
-  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
+  ortho table generated with `generate_ortholog_tables_all`
 
 - [`plot_diverse_homology_thresholds()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds.md)
   :
 
   Diverse line plots visualizing the number of pairwise orthologs within
-  a ortho table generated with
-  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
-  based on different sets of homology thresholds.
+  a ortho table generated with `generate_ortholog_tables_all` based on
+  different sets of homology thresholds.
 
 - [`plot_diverse_homology_thresholds_core_orthologs()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds_core_orthologs.md)
   :
 
   Diverse line plots visualizing the number of core orthologs within a
-  ortho table generated with
-  [`generate_ortholog_tables_all`](https://drostlab.github.io/orthologr/reference/generate_ortholog_tables_all.html)
-  based on different sets of homology thresholds.
+  ortho table generated with `generate_ortholog_tables_all` based on
+  different sets of homology thresholds.
 
 - [`testCoreOrthoParamsGeneLocus()`](https://drostlab.github.io/orthologr/reference/testCoreOrthoParamsGeneLocus.md)
   :

@@ -10,6 +10,7 @@ orthofinder2(
   use_existing_output = FALSE,
   import_type = NULL,
   comp_cores = 1,
+  orthogroup_only = TRUE,
   of_path = NULL
 )
 ```
@@ -46,6 +47,13 @@ orthofinder2(
 
   number of cores that shall be used for parallel processing. Default is
   `cores = 1`.
+
+- orthogroup_only:
+
+  logical, default `TRUE`. When `TRUE`, OrthoFinder is run with the
+  `-og` flag, which stops the analysis after orthogroup inference and
+  skips the more computationally expensive gene-tree and orthologue
+  inference steps. Set to `FALSE` to run the full OrthoFinder pipeline.
 
 - of_path:
 

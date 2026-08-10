@@ -1,9 +1,10 @@
-# Retrieve a core set of orthologous lncRNAs from the pairwise lncRNA orthologs map
+# Retrieve a core set of orthologous lncRNAs (deprecated)
 
-Given a lnc_map table generated with
-[`map_generator_lnc`](https://drostlab.github.io/orthologr/reference/map_generator_lnc.md),
-this function will determine a core set of lncRNA orthologs that are
-shared between all species.
+This function is deprecated and will be removed in a future release.
+Please use
+[`retrieve_core_orthologs`](https://drostlab.github.io/orthologr/reference/retrieve_core_orthologs.md)
+instead, which now handles both protein-coding gene tables and lncRNA
+maps automatically.
 
 ## Usage
 
@@ -21,8 +22,7 @@ lnc_map_core_orthologs(lnc_map, species_order)
 - species_order:
 
   a character string specifying species names listed in the order of
-  phylogenetic/taxonomic distance from the query species. The species
-  names must match with the species names present in the `lnc_map`.
+  phylogenetic/taxonomic distance from the query species.
 
 ## Author
 

@@ -50,10 +50,15 @@ dNdS(
 
 - aligner:
 
-  a character string specifying the sequence aligner. The options are
-  `diamond` and `blast`. The option `diamond` uses DIAMOND2 which is up
-  to 10 000X folds faster than BLASTP while retaining the sensitivity of
-  BLASTP. Thus, the default is `aligner` = `diamond`.
+  a character string specifying the sequence aligner. Options are:
+
+  - `aligner = "diamond"` (Default): sequence alignment is performed
+    using DIAMOND2
+
+  - `aligner = "blast"`: sequence alignment is performed using BLASTP.
+
+  The option diamond uses DIAMOND2 which is up to 10 000X folds faster
+  than BLASTP while retaining the sensitivity of BLASTP.
 
 - sensitivity_mode:
 
@@ -81,7 +86,7 @@ dNdS(
 - seq_type:
 
   a character string specifying the sequence type stored in the input
-  file.Options are are:
+  file. Options are:
 
   - `seq_type = "cds"` (Default): sequence are translated to protein
     sequences

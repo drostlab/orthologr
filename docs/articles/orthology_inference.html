@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Orthology Inference using orthologr</h1>
             
-            <h4 data-toc-skip class="date">2026-06-26</h4>
+            <h4 data-toc-skip class="date">2026-08-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/orthology_inference.Rmd" class="external-link"><code>vignettes/orthology_inference.Rmd</code></a></small>
       <div class="d-none name"><code>orthology_inference.Rmd</code></div>
@@ -84,6 +84,7 @@ wide orthology inference following two different paradigms:</p>
 <blockquote>
 <ol style="list-style-type: decimal">
 <li><p>orthology inference based on 1-1 orthology relationship using
+<code>DIAMOND2 reciprocal best hit</code> (default, recommended) or
 <code>BLAST reciprocal best hit</code></p></li>
 <li><p>orthology inference based on 1-many homology relationship using
 orthologous groups (OrthoFinder2)</p></li>
@@ -96,8 +97,21 @@ sequences stored in fasta files for a set of organisms as input and
 performs orthology inference to detect orthologous genes or orthologous
 groups within the given organisms based on selected orthology inference
 programs.</p>
-<p>The following interfaces are (yet) implemented in the
+<p>The following interfaces are implemented in the
 <code><a href="../reference/orthologs.html">orthologs()</a></code> function:</p>
+<div class="section level3">
+<h3 id="diamond2-based-methods-recommended">DIAMOND2 based methods (recommended):<a class="anchor" aria-label="anchor" href="#diamond2-based-methods-recommended"></a>
+</h3>
+<ul>
+<li><p>DIAMOND2 reciprocal best hit (DIAMOND_RBH): see
+<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code>. <strong>This is the default</strong>
+(<code>ortho_detection = "DIAMOND_RBH"</code>). DIAMOND2 is up to
+10,000× faster than BLAST in default mode and retains full BLAST-level
+sensitivity in <code>ultra-sensitive</code> mode.</p></li>
+<li><p>DIAMOND2 best hit (DIAMOND_BH): see
+<code><a href="../reference/diamond_best.html">diamond_best()</a></code>.</p></li>
+</ul>
+</div>
 <div class="section level3">
 <h3 id="blast-based-methods">BLAST based methods:<a class="anchor" aria-label="anchor" href="#blast-based-methods"></a>
 </h3>
@@ -106,14 +120,6 @@ programs.</p>
 <li><p>BLASTp reciprocal best hit (RBH): see
 <code><a href="../reference/blast_rec.html">blast_rec()</a></code>.</p></li>
 </ul>
-<div class="section level4">
-<h4 id="advantages">Advantages:<a class="anchor" aria-label="anchor" href="#advantages"></a>
-</h4>
-</div>
-<div class="section level4">
-<h4 id="disadvantages">Disadvantages:<a class="anchor" aria-label="anchor" href="#disadvantages"></a>
-</h4>
-</div>
 </div>
 <div class="section level3">
 <h3 id="orthogroup-based-methods">Orthogroup based methods:<a class="anchor" aria-label="anchor" href="#orthogroup-based-methods"></a>
@@ -123,17 +129,9 @@ programs.</p>
 <a href="https://github.com/davidemms/OrthoFinder" class="external-link">Orthofinder2</a>:
 see <code><a href="../reference/orthofinder2.html">orthofinder2()</a></code>.</li>
 </ul>
-<div class="section level4">
-<h4 id="advantages-1">Advantages:<a class="anchor" aria-label="anchor" href="#advantages-1"></a>
-</h4>
-</div>
-<div class="section level4">
-<h4 id="disadvantages-1">Disadvantages:<a class="anchor" aria-label="anchor" href="#disadvantages-1"></a>
-</h4>
-</div>
 </div>
 <div class="section level3">
-<h3 id="examples-blast-based-methods">Examples: BLAST based methods<a class="anchor" aria-label="anchor" href="#examples-blast-based-methods"></a>
+<h3 id="examples-diamond2-based-methods-default">Examples: DIAMOND2 based methods (default)<a class="anchor" aria-label="anchor" href="#examples-diamond2-based-methods-default"></a>
 </h3>
 <p>Using a simple example stored in the package environment of
 <code>orthologr</code> you can get an impression on how to use the
@@ -143,73 +141,60 @@ see <code><a href="../reference/orthofinder2.html">orthofinder2()</a></code>.</l
 already installed on your machine and are executable via either the
 default execution PATH or you specifically define the location of the
 executable file via the <code>path</code> argument that can be passed to
-<code><a href="../reference/orthologs.html">orthologs()</a></code>.</p>
+<code><a href="../reference/orthologs.html">orthologs()</a></code>. For DIAMOND2-based methods (the default), make
+sure <a href="https://github.com/bbuchfink/diamond" class="external-link">DIAMOND2</a> is
+installed. See the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
+Vignette</a> for details.</p>
 <p>In the following examples, we will use toy fasta files stored within
 the <code>orthologr</code> package:
 <code>system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></span>
+<code class="sourceCode R"><span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit (default)</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
-<span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span>
-<span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running blastp: 2.9.0+ ...
-
-
-Building a new DB, current time: 07/06/2019 16:22:29
-New DB name:   blastdb_ortho_lyra_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_lyra_aa.fasta_protein.fasta
-Sequence type: Protein
-Deleted existing BLAST database with identical name.
-Keep Linkouts: T
-Keep MBits: T
-Maximum file size: 1000000000B
-Adding sequences from FASTA; added 20 sequences in 0.00440097 seconds.
-Running blastp: 2.9.0+ ...
-
-
-Building a new DB, current time: 07/06/2019 16:22:30
-New DB name:   blastdb_ortho_thal_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
-Sequence type: Protein
-Deleted existing BLAST database with identical name.
-Keep Linkouts: T
-Keep MBits: T
-Maximum file size: 1000000000B
-Adding sequences from FASTA; added 20 sequences in 0.003829 seconds.
-# A tibble: 20 x 21
+<pre><code>Running diamond version 2.2.1 ...
+sensitivity mode: fast
+creating a diamond database
+Starting DIAMOND2 search ...
+DIAMOND2 search completed in 0.02 sec.
+Running diamond version 2.2.1 ...
+sensitivity mode: fast
+creating a diamond database
+Starting DIAMOND2 search ...
+DIAMOND2 search completed in 0.02 sec.
+# A tibble: 20 × 21
 # Groups:   query_id [20]
-   query_id subject_id perc_identity num_ident_match... alig_length
-   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt;
- 1 AT1G010... 333554|PA...          74.0              347         469
- 2 AT1G010... 470181|PA...          91.1              224         246
- 3 AT1G010... 470180|PA...          95.5              343         359
- 4 AT1G010... 333551|PA...          92.0             1812        1970
- 5 AT1G010... 909874|PA...         100                213         213
- 6 AT1G010... 470177|PA...          89.5              580         648
- 7 AT1G010... 918864|PA...          95.1              348         366
- 8 AT1G010... 909871|PA...          90.3              271         300
- 9 AT1G010... 470171|PA...          96.8              420         434
-10 AT1G011... 333544|PA...          93.6              494         528
-11 AT1G011... 918858|PA...          99.2              525         529
-12 AT1G011... 470161|PA...          98.4              446         453
-13 AT1G011... 918855|PA...          72.6              207         285
-14 AT1G011... 918854|PA...          84.9              152         179
-15 AT1G011... 311317|PA...          85.6               83          97
-16 AT1G011... 909860|PA...          92.6              287         310
-17 AT1G011... 311315|PA...          94.2              502         533
-18 AT1G012... 470156|PA...          95.8              228         238
-19 AT1G012... 311313|PA...          95.3              102         107
-20 AT1G012... 470155|PA...          96.7             1021        1056
-# ... with 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
-#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
-#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;int&gt;, qcovhsp &lt;int&gt;,
-#   s_start &lt;int&gt;, s_end &lt;dbl&gt;, s_len &lt;dbl&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;chr&gt;, score_raw &lt;dbl&gt;
-&gt;</code></pre>
+   query_id    subject_id        perc_identity num_ident_matches alig_length
+   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 AT1G01010.1 333554|PACid:160…          73.2               347         474
+ 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
+ 3 AT1G01030.1 470180|PACid:160…          93.3               335         359
+ 4 AT1G01040.1 333551|PACid:160…          93.4              1840        1969
+ 5 AT1G01050.1 909874|PACid:160…         100                 213         213
+ 6 AT1G01060.3 470177|PACid:160…          87.5               567         648
+ 7 AT1G01070.1 918864|PACid:160…          92.6               339         366
+ 8 AT1G01080.1 909871|PACid:160…          89.3               268         300
+ 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
+10 AT1G01110.2 333544|PACid:160…          87.7               463         528
+11 AT1G01120.1 918858|PACid:160…          99.2               525         529
+12 AT1G01140.3 470161|PACid:160…          98.5               446         453
+13 AT1G01150.1 918855|PACid:160…          72.6               207         285
+14 AT1G01160.1 918854|PACid:160…          78.8               141         179
+15 AT1G01170.2 311317|PACid:160…          85.6                83          97
+16 AT1G01180.1 909860|PACid:160…          92.6               287         310
+17 AT1G01190.1 311315|PACid:160…          94.2               502         533
+18 AT1G01200.1 470156|PACid:160…          95.8               228         238
+19 AT1G01210.1 311313|PACid:160…          95.3               102         107
+20 AT1G01220.1 470155|PACid:160…          96.5              1019        1056
+# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
+#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;,
+#   qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;,
+#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
 <p>This small example returns 20 orthologous genes between
 <em>Arabidopsis thaliana</em> and <em>Arabidopsis lyrata</em>. As you
 can see, the <code>query_file</code> and <code>subject_files</code>
@@ -231,39 +216,38 @@ protein sequences to run orthology inference based on protein
 sequences.</p>
 <p><strong>The advantage of this type of output is that in addition to
 having the orthology relationship between genes from two different
-genomes, users also retrieve the BLAST results of the respective
-orthology relationship which allows them to perform subsequent filtering
-for either more conservative or more liberal orthology
-relationships.</strong></p>
+genomes, users also retrieve the DIAMOND2 alignment results of the
+respective orthology relationship (in the same format as BLAST) which
+allows them to perform subsequent filtering for either more conservative
+or more liberal orthology relationships.</strong></p>
 <p><strong>Note</strong>: future versions of <code>orthologr</code> will
 allow to perform orthology inference using DNA sequences. Nevertheless,
 since most orthology inference methods or paradigms rely on protein
 sequences, the first version of <code>orthologr</code> will follow this
 paradigm.</p>
-<p>In case you have to specify the path to the corresponding orthology
-inference method you can use the <code>path</code> argument as
-follows:</p>
+<p>In case you have to specify the path to DIAMOND2 you can use the
+<code>path</code> argument as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># using an external execution path</span></span>
+<code class="sourceCode R"><span><span class="co"># using an external execution path for DIAMOND2</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span>
-<span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
-<span>          path            <span class="op">=</span> <span class="st">"here/path/to/blastp"</span>, </span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
+<span>          path            <span class="op">=</span> <span class="st">"here/path/to/diamond"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>When you are working on a multicore machine, you can also specify the
 <code>comp_cores</code> argument that will allow you to run all analyses
 in parallel (to speed up computations).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># running orthology inference in parallel using 2 cores</span></span>
+<code class="sourceCode R"><span><span class="co"># running DIAMOND2 orthology inference in parallel using 2 cores</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>, </span>
-<span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code># A tibble: 20 x 12
+<pre><code># A tibble: 20 x 21
 # Groups:   query_id [20]
    query_id subject_id perc_identity alig_length
    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;
@@ -287,10 +271,11 @@ in parallel (to speed up computations).</p>
 18 AT1G012... 470156|PA...          95.8         238
 19 AT1G012... 311313|PA...          95.3         107
 20 AT1G012... 470155|PA...          96.7        1056
-# ... with 8 more variables: mismatches &lt;dbl&gt;,
-#   gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
-#   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;dbl&gt;</code></pre>
+# ... with 17 more variables: mismatches &lt;dbl&gt;,
+#   gap_openings &lt;dbl&gt;, n_gaps &lt;dbl&gt;, pos_match &lt;dbl&gt;, ppos &lt;dbl&gt;,
+#   q_start &lt;dbl&gt;, q_end &lt;dbl&gt;, q_len &lt;dbl&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
+#   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, s_len &lt;dbl&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
 <p>In this case 2 cores are being used to perform parallel processing,
 the <code>clean_folders</code> argument specifies that all files
 returned by the corresponding orthology inference method are removed
@@ -303,6 +288,219 @@ after analyses.</p>
 <code><a href="../reference/orthologs.html">orthologs()</a></code> function for each orthology inference
 program.</p>
 <div class="section level3">
+<h3 id="diamond2-best-hit-recommended">DIAMOND2 best hit (recommended)<a class="anchor" aria-label="anchor" href="#diamond2-best-hit-recommended"></a>
+</h3>
+<p>The DIAMOND2 best hit method is a uni-directional DIAMOND2 best hit
+search of a <code>query organism A</code> against a
+<code>subject organism B</code> based on the <code>e-value</code>. It
+uses the same hit-filtering logic as <code><a href="../reference/blast_best.html">blast_best()</a></code> but is
+substantially faster.</p>
+<p>Orthology Inference using DIAMOND2 best hit can be performed by
+specifying the argument <code>ortho_detection = "DIAMOND_BH"</code> and
+one computing core <code>comp_core = 1</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># perform orthology inference using DIAMOND2 best hit</span></span>
+<span><span class="co"># and fasta sequence files storing protein sequences</span></span>
+<span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_BH"</span>,</span>
+<span>          clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code># A tibble: 20 × 21
+# Groups:   query_id [20]
+   query_id    subject_id  perc_identity num_ident_matches alig_length
+   &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 AT1G01010.1 333554|PAC…          73.2               347         474
+ 2 AT1G01020.1 470181|PAC…          91.1               224         246
+ 3 AT1G01030.1 470180|PAC…          93.3               335         359
+ 4 AT1G01040.1 333551|PAC…          93.4              1840        1969
+ 5 AT1G01050.1 909874|PAC…         100                 213         213
+ 6 AT1G01060.3 470177|PAC…          87.5               567         648
+ 7 AT1G01070.1 918864|PAC…          92.6               339         366
+ 8 AT1G01080.1 909871|PAC…          89.3               268         300
+ 9 AT1G01090.1 470171|PAC…          96.8               420         434
+10 AT1G01110.2 333544|PAC…          87.7               463         528
+11 AT1G01120.1 918858|PAC…          99.2               525         529
+12 AT1G01140.3 470161|PAC…          98.5               446         453
+13 AT1G01150.1 918855|PAC…          72.6               207         285
+14 AT1G01160.1 918854|PAC…          78.8               141         179
+15 AT1G01170.2 311317|PAC…          85.6                83          97
+16 AT1G01180.1 909860|PAC…          92.6               287         310
+17 AT1G01190.1 311315|PAC…          94.2               502         533
+18 AT1G01200.1 470156|PAC…          95.8               228         238
+19 AT1G01210.1 311313|PAC…          95.3               102         107
+20 AT1G01220.1 470155|PAC…          96.5              1019        1056
+# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
+#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
+#   s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<p>The resulting table stores the orthologous gene pairs and the
+corresponding alignment statistics. DIAMOND2 returns additional columns
+compared to BLAST (e.g. <code>n_gaps</code>, <code>pos_match</code>,
+<code>ppos</code>, <code>q_len</code>, <code>qcov</code>,
+<code>s_len</code>, <code>score_raw</code>).</p>
+</div>
+<div class="section level3">
+<h3 id="diamond2-reciprocal-best-hit-default-recommended">DIAMOND2 reciprocal best hit (default, recommended)<a class="anchor" aria-label="anchor" href="#diamond2-reciprocal-best-hit-default-recommended"></a>
+</h3>
+<p>The DIAMOND2 reciprocal best hit is a bi-directional DIAMOND2 best
+hit search of a <code>query organism A</code> against a
+<code>subject organism B</code> based on the <code>e-value</code>. This
+is the <strong>default</strong> method in <code><a href="../reference/orthologs.html">orthologs()</a></code>.</p>
+<p>The algorithm runs as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p><code>bh_A &lt;- diamond_best(A, B)</code></p></li>
+<li><p><code>bh_B &lt;- diamond_best(B, A)</code></p></li>
+<li><p><code>join(bh_A, bh_B)</code> by tuple
+<code>(query_id, subject_id)</code></p></li>
+</ol>
+<p>Only when the tuple <code>(query_id, subject_id)</code> is returned
+as best hit in both DIAMOND2 directions is it retained as an orthologous
+gene pair.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit (default)</span></span>
+<span><span class="co"># and fasta sequence files storing protein sequences</span></span>
+<span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
+<span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code># A tibble: 20 × 21
+# Groups:   query_id [20]
+   query_id    subject_id  perc_identity num_ident_matches alig_length
+   &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 AT1G01010.1 333554|PAC…          73.2               347         474
+ 2 AT1G01020.1 470181|PAC…          91.1               224         246
+ 3 AT1G01030.1 470180|PAC…          93.3               335         359
+ 4 AT1G01040.1 333551|PAC…          93.4              1840        1969
+ 5 AT1G01050.1 909874|PAC…         100                 213         213
+ 6 AT1G01060.3 470177|PAC…          87.5               567         648
+ 7 AT1G01070.1 918864|PAC…          92.6               339         366
+ 8 AT1G01080.1 909871|PAC…          89.3               268         300
+ 9 AT1G01090.1 470171|PAC…          96.8               420         434
+10 AT1G01110.2 333544|PAC…          87.7               463         528
+11 AT1G01120.1 918858|PAC…          99.2               525         529
+12 AT1G01140.3 470161|PAC…          98.5               446         453
+13 AT1G01150.1 918855|PAC…          72.6               207         285
+14 AT1G01160.1 918854|PAC…          78.8               141         179
+15 AT1G01170.2 311317|PAC…          85.6                83          97
+16 AT1G01180.1 909860|PAC…          92.6               287         310
+17 AT1G01190.1 311315|PAC…          94.2               502         533
+18 AT1G01200.1 470156|PAC…          95.8               228         238
+19 AT1G01210.1 311313|PAC…          95.3               102         107
+20 AT1G01220.1 470155|PAC…          96.5              1019        1056
+# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
+#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
+#   s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<p>You can also adjust the DIAMOND2 sensitivity level using the
+<code>sensitivity_mode</code> argument. The default is
+<code>"fast"</code>, but for more distant species comparisons you may
+want <code>"sensitive"</code> or <code>"ultra-sensitive"</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># DIAMOND2 RBH with ultra-sensitive mode (equivalent to BLAST sensitivity)</span></span>
+<span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          subject_files    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          seq_type         <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection  <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
+<span>          sensitivity_mode <span class="op">=</span> <span class="st">"ultra-sensitive"</span>,</span>
+<span>          clean_folders    <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          comp_cores       <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p>The full set of sensitivity modes available in DIAMOND2 is:</p>
+<table class="table">
+<thead><tr class="header">
+<th><code>sensitivity_mode</code></th>
+<th>Speed</th>
+<th>Use case</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>"faster"</code></td>
+<td>Fastest</td>
+<td>Hits &gt;70% identity</td>
+</tr>
+<tr class="even">
+<td><code>"fast"</code></td>
+<td>Fast (default)</td>
+<td>Hits &gt;70% identity</td>
+</tr>
+<tr class="odd">
+<td><code>"mid-sensitive"</code></td>
+<td>Moderate</td>
+<td>Between fast and sensitive</td>
+</tr>
+<tr class="even">
+<td><code>"sensitive"</code></td>
+<td>Sensitive</td>
+<td>Full sensitivity for hits &gt;40% identity</td>
+</tr>
+<tr class="odd">
+<td><code>"more-sensitive"</code></td>
+<td>More sensitive</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>"very-sensitive"</code></td>
+<td>Very sensitive</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>"ultra-sensitive"</code></td>
+<td>BLAST-equivalent</td>
+<td>Most sensitive; slowest</td>
+</tr>
+</tbody>
+</table>
+<p>To retrieve the full DIAMOND2 hit table for subsequent analyses, set
+<code>clean_folders = FALSE</code>. The corresponding hit table can then
+be found in <code>file.path(tempdir(), "_blast_db")</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit</span></span>
+<span><span class="va">RBH</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
+<span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
+<span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">RBH</span><span class="op">)</span></span></code></pre></div>
+<pre><code>Rows: 20
+Columns: 21
+Groups: query_id [20]
+$ query_id          &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1…
+$ subject_id        &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:160…
+$ perc_identity     &lt;dbl&gt; 73.2, 91.1, 93.3, 93.4, 100.0, 87.5, 92.6,…
+$ num_ident_matches &lt;int&gt; 347, 224, 335, 1840, 213, 567, 339, 268, 4…
+$ alig_length       &lt;int&gt; 474, 246, 359, 1969, 213, 648, 366, 300, 4…
+$ mismatches        &lt;int&gt; 75, 22, 20, 58, 0, 71, 23, 25, 8, 65, 4, 6…
+$ gap_openings      &lt;int&gt; 8, 0, 2, 7, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, …
+$ n_gaps            &lt;int&gt; 52, 0, 4, 71, 0, 10, 4, 7, 6, 0, 0, 1, 10,…
+$ pos_match         &lt;int&gt; 369, 231, 338, 1870, 213, 586, 342, 275, 4…
+$ ppos              &lt;dbl&gt; 77.8, 93.9, 94.2, 95.0, 100.0, 90.4, 93.4,…
+$ q_start           &lt;int&gt; 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, …
+$ q_end             &lt;int&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 4…
+$ q_len             &lt;int&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 4…
+$ qcov              &lt;dbl&gt; 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
+$ qcovhsp           &lt;dbl&gt; 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
+$ s_start           &lt;int&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2,…
+$ s_end             &lt;int&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 4…
+$ s_len             &lt;int&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 4…
+$ evalue            &lt;dbl&gt; 1.37e-211, 2.27e-156, 4.01e-210, 0.00e+00,…
+$ bit_score         &lt;dbl&gt; 582, 426, 571, 3544, 427, 1028, 614, 494, …
+$ score_raw         &lt;dbl&gt; 1500, 1094, 1471, 9190, 1098, 2658, 1583, …</code></pre>
+</div>
+<div class="section level3">
 <h3 id="blastp-best-hit">BLASTp best hit<a class="anchor" aria-label="anchor" href="#blastp-best-hit"></a>
 </h3>
 <p>The BLASTp best hit method is a uni-directional BLAST best hit search
@@ -311,7 +509,7 @@ of a <code>query organism A</code> against a
 <p>Orthology Inference using BLASTp best hit can be performed by
 specifying the argument <code>ortho_detection = "BH"</code> and one
 computing core <code>comp_core = 1</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># perform orthology inference using BLAST best hit</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -320,38 +518,37 @@ computing core <code>comp_core = 1</code>:</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"BH"</span>, </span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code> # A tibble: 20 x 12
+<pre><code># A tibble: 20 × 21
 # Groups:   query_id [20]
-   query_id subject_id perc_identity alig_length
-   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;       &lt;dbl&gt;
- 1 AT1G010... 333554|PA...          74.0         469
- 2 AT1G010... 470181|PA...          91.1         246
- 3 AT1G010... 470180|PA...          95.5         359
- 4 AT1G010... 333551|PA...          92.0        1970
- 5 AT1G010... 909874|PA...         100           213
- 6 AT1G010... 470177|PA...          89.5         648
- 7 AT1G010... 918864|PA...          95.1         366
- 8 AT1G010... 909871|PA...          90.3         300
- 9 AT1G010... 470171|PA...          96.8         434
-10 AT1G011... 333544|PA...          93.6         528
-11 AT1G011... 918858|PA...          99.2         529
-12 AT1G011... 470161|PA...          98.4         453
-13 AT1G011... 918855|PA...          72.6         285
-14 AT1G011... 918854|PA...          84.9         179
-15 AT1G011... 311317|PA...          85.6          97
-16 AT1G011... 909860|PA...          92.6         310
-17 AT1G011... 311315|PA...          94.2         533
-18 AT1G012... 470156|PA...          95.8         238
-19 AT1G012... 311313|PA...          95.3         107
-20 AT1G012... 470155|PA...          96.7        1056
-# ... with 8 more variables: mismatches &lt;dbl&gt;,
-#   gap_openings &lt;dbl&gt;, q_start &lt;dbl&gt;, q_end &lt;dbl&gt;,
-#   s_start &lt;dbl&gt;, s_end &lt;dbl&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;dbl&gt;</code></pre>
+   query_id    subject_id  perc_identity num_ident_matches alig_length
+   &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 AT1G01010.1 333554|PAC…          74.0               347         469
+ 2 AT1G01020.1 470181|PAC…          91.1               224         246
+ 3 AT1G01030.1 470180|PAC…          95.5               343         359
+ 4 AT1G01040.1 333551|PAC…          92.0              1812        1970
+ 5 AT1G01050.1 909874|PAC…         100                 213         213
+ 6 AT1G01060.3 470177|PAC…          89.5               580         648
+ 7 AT1G01070.1 918864|PAC…          95.1               348         366
+ 8 AT1G01080.1 909871|PAC…          90.3               271         300
+ 9 AT1G01090.1 470171|PAC…          96.8               420         434
+10 AT1G01110.2 333544|PAC…          93.6               494         528
+11 AT1G01120.1 918858|PAC…          99.2               525         529
+12 AT1G01140.3 470161|PAC…          98.5               446         453
+13 AT1G01150.1 918855|PAC…          72.6               207         285
+14 AT1G01160.1 918854|PAC…          84.9               152         179
+15 AT1G01170.2 311317|PAC…          85.6                83          97
+16 AT1G01180.1 909860|PAC…          92.6               287         310
+17 AT1G01190.1 311315|PAC…          94.2               502         533
+18 AT1G01200.1 470156|PAC…          95.8               228         238
+19 AT1G01210.1 311313|PAC…          95.3               102         107
+20 AT1G01220.1 470155|PAC…          96.7              1021        1056
+# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
+#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
+#   s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
 <p>The resulting table stores the orthologous gene pairs and the
-corresponding e-value of the best hit. By specifying
-<code>detailed_output = TRUE</code> more information of the BLAST result
-can be obtained.</p>
+corresponding BLAST alignment statistics.</p>
 </div>
 <div class="section level3">
 <h3 id="blastp-best-reciprocal-hit">BLASTp best reciprocal hit<a class="anchor" aria-label="anchor" href="#blastp-best-reciprocal-hit"></a>
@@ -371,10 +568,7 @@ search of a <code>query organism A</code> against a
 <code>e-value</code> in both BLAST directions, the corresponding tupel
 <code>(query_id, subject_id)</code> is retained as orthologous gene
 pair.</p>
-<p>As demonstrated before a simple call of <code><a href="../reference/orthologs.html">orthologs()</a></code>
-using <code>ortho_detection = "RBH"</code> and one computing core
-<code>comp_core = 1</code> can be performed as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></span>
@@ -385,61 +579,36 @@ using <code>ortho_detection = "RBH"</code> and one computing core
 <span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code>
-      query_id            subject_id evalue
-1  AT1G01010.1 333554|PACid:16033839  0e+00
-2  AT1G01020.1 470181|PACid:16064328 7e-166
-3  AT1G01030.1 470180|PACid:16054974  0e+00
-4  AT1G01040.1 333551|PACid:16057793  0e+00
-5  AT1G01050.1 909874|PACid:16064489 2e-160
-6  AT1G01060.3 470177|PACid:16043374  0e+00
-7  AT1G01070.1 918864|PACid:16052578  0e+00
-8  AT1G01080.1 909871|PACid:16053217 1e-178
-9  AT1G01090.1 470171|PACid:16052860  0e+00
-10 AT1G01110.2 333544|PACid:16034284  0e+00
-11 AT1G01120.1 918858|PACid:16049140  0e+00
-12 AT1G01140.3 470161|PACid:16036015  0e+00
-13 AT1G01150.1 918855|PACid:16037307 3e-150
-14 AT1G01160.1 918854|PACid:16044153  1e-93
-15 AT1G01170.2 311317|PACid:16052302  3e-54
-16 AT1G01180.1 909860|PACid:16056125  0e+00
-17 AT1G01190.1 311315|PACid:16059488  0e+00
-18 AT1G01200.1 470156|PACid:16041002 3e-172
-19 AT1G01210.1 311313|PACid:16057125  7e-76
-20 AT1G01220.1 470155|PACid:16047984  0e+00
+<pre><code># A tibble: 20 × 21
+# Groups:   query_id [20]
+   query_id    subject_id  perc_identity num_ident_matches alig_length
+   &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 AT1G01010.1 333554|PAC…          74.0               347         469
+ 2 AT1G01020.1 470181|PAC…          91.1               224         246
+ 3 AT1G01030.1 470180|PAC…          95.5               343         359
+ 4 AT1G01040.1 333551|PAC…          92.0              1812        1970
+ 5 AT1G01050.1 909874|PAC…         100                 213         213
+ 6 AT1G01060.3 470177|PAC…          89.5               580         648
+ 7 AT1G01070.1 918864|PAC…          95.1               348         366
+ 8 AT1G01080.1 909871|PAC…          90.3               271         300
+ 9 AT1G01090.1 470171|PAC…          96.8               420         434
+10 AT1G01110.2 333544|PAC…          93.6               494         528
+11 AT1G01120.1 918858|PAC…          99.2               525         529
+12 AT1G01140.3 470161|PAC…          98.5               446         453
+13 AT1G01150.1 918855|PAC…          72.6               207         285
+14 AT1G01160.1 918854|PAC…          84.9               152         179
+15 AT1G01170.2 311317|PAC…          85.6                83          97
+16 AT1G01180.1 909860|PAC…          92.6               287         310
+17 AT1G01190.1 311315|PAC…          94.2               502         533
+18 AT1G01200.1 470156|PAC…          95.8               228         238
+19 AT1G01210.1 311313|PAC…          95.3               102         107
+20 AT1G01220.1 470155|PAC…          96.7              1021        1056
+# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
+#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
+#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
+#   s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;,
+#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;
 </code></pre>
-<p>When you need more parameters returned by <code>RBH</code>, you can
-specify the <code>detailed_output = TRUE</code> argument to obtain all
-BLAST parameters.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></span>
-<span><span class="co"># and fasta sequence files storing protein sequences</span></span>
-<span><span class="va">RBH</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>          subject_files     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>          seq_type          <span class="op">=</span> <span class="st">"protein"</span>, </span>
-<span>          ortho_detection   <span class="op">=</span> <span class="st">"RBH"</span>,</span>
-<span>          detailed_output   <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>          clean_folders     <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          comp_cores        <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">RBH</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Variables:
-$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G01040.1"...
-$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064328", "470180|...
-$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 95.08, 90.33, 9...
-$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 529, 45...
-$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0, 20,...
-$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0, 0, 0
-$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1, 1, 1
-$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 529, 45...
-$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1, 1, 1
-$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 529, 45...
-$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, 0e+00, 1e-178,...
-$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1092, ...</code></pre>
 <p>In case you would like to store the corresponding
 <code>hit tables</code> returned by BLAST for subsequent analyses, you
 can specify the <code>clean_folders = FALSE</code> argument. The
@@ -448,6 +617,84 @@ corresponding BLAST hit table can then be found in
 <p>A detailed overview of further analyses that can be done with the
 corresponding BLAST output can be found in the <a href="https://drostlab.github.io/orthologr/articles/blast.html">BLAST
 vignette</a>.</p>
+<!-- ## Multi-species ortholog table workflow -->
+<!-- The pairwise functions above compare one query against one subject at a time. When you want to -->
+<!-- compare a query species against **several** subject species and then identify a **core set** of -->
+<!-- orthologs conserved across all of them, `orthologr` provides a four-step pipeline: -->
+<!-- | Step | Function | What it does | -->
+<!-- |------|----------|--------------| -->
+<!-- | 1 | `map_generator_dnds()` | Pairwise BLAST + dNdS between query and every subject; writes one CSV per species pair | -->
+<!-- | 2 | `generate_ortholog_tables_all()` | Combines those CSVs with GTF/GFF annotation files to resolve gene loci from splice variants | -->
+<!-- | 3 | `import_ortholog_tables_all()` | Re-reads saved ortholog tables from disk (skip if you kept the in-memory result from step 2) | -->
+<!-- | 4 | `retrieve_core_orthologs()` | Retains only gene loci with an ortholog in **every** subject species | -->
+<!-- ### Step 1: Generate pairwise dNdS maps -->
+<!-- `map_generator_dnds()` iterates over all CDS files in `subjects_folder`, runs pairwise orthology -->
+<!-- inference and dNdS estimation against the query, and writes one CSV per species pair to -->
+<!-- `output_folder`. -->
+<!-- ```{r, eval=FALSE} -->
+<!-- library(orthologr) -->
+<!-- map_generator_dnds( -->
+<!--   query_file      = "path/to/query_cds.fasta", -->
+<!--   subjects_folder = "path/to/subject_cds_files/", -->
+<!--   output_folder   = "dnds_maps/", -->
+<!--   ortho_detection = "DIAMOND_RBH", -->
+<!--   aa_aln_type     = "pairwise", -->
+<!--   aa_aln_tool     = "NW", -->
+<!--   codon_aln_tool  = "pal2nal", -->
+<!--   dnds_est_method = "Comeron", -->
+<!--   comp_cores      = 1 -->
+<!-- ) -->
+<!-- ``` -->
+<!-- The toy files bundled with the package can be used to test this: -->
+<!-- ```{r, eval=FALSE} -->
+<!-- map_generator_dnds( -->
+<!--   query_file      = system.file("seqs/ortho_thal_cds.fasta", package = "orthologr"), -->
+<!--   subjects_folder = system.file("seqs/map_gen_example",      package = "orthologr"), -->
+<!--   output_folder   = "orthologr_dnds_maps/", -->
+<!--   aa_aln_type     = "pairwise", -->
+<!--   aa_aln_tool     = "NW", -->
+<!--   codon_aln_tool  = "pal2nal", -->
+<!--   dnds_est_method = "Comeron", -->
+<!--   comp_cores      = 1 -->
+<!-- ) -->
+<!-- ``` -->
+<!-- ### Step 2: Build gene-locus ortholog tables -->
+<!-- `generate_ortholog_tables_all()` takes the dNdS CSVs from step 1 and a set of GTF/GFF annotation -->
+<!-- files to resolve splice variants to gene loci, producing a combined ortholog table with columns -->
+<!-- `query_species`, `subject_species`, `query_gene_locus_id`, `query_id`, `subject_id`, `dN`, `dS`, -->
+<!-- `dNdS`, and standard alignment statistics. -->
+<!-- `output_type = "gene_locus"` (default) retains one representative splice variant per gene locus — -->
+<!-- the one with the lowest e-value (longest isoform used as tiebreaker). Use -->
+<!-- `output_type = "splice_variant"` to keep all splice variant pairings. -->
+<!-- ```{r, eval=FALSE} -->
+<!-- ortho_tbl <- generate_ortholog_tables_all( -->
+<!--   dNdS_folder               = "dnds_maps/", -->
+<!--   annotation_file_query     = "path/to/query_annotation.gtf", -->
+<!--   annotation_folder_subject = "path/to/subject_annotations/", -->
+<!--   output_folder             = "ortholog_tables/", -->
+<!--   output_type               = "gene_locus",    # or "splice_variant" -->
+<!--   format                    = c("gtf", "gtf")  # adjust to "gff" as needed -->
+<!-- ) -->
+<!-- ``` -->
+<!-- ### Step 3: Re-import saved tables (optional) -->
+<!-- If you need to reload the ortholog tables in a later session without rerunning steps 1–2, use -->
+<!-- `import_ortholog_tables_all()`: -->
+<!-- ```{r, eval=FALSE} -->
+<!-- ortho_tbl <- import_ortholog_tables_all(ortholog_tables_folder = "ortholog_tables/") -->
+<!-- ``` -->
+<!-- ### Step 4: Retrieve the core ortholog set -->
+<!-- `retrieve_core_orthologs()` filters the combined table to gene loci that have an ortholog in -->
+<!-- **every** subject species. Pass the subject species in phylogenetic order (closest relative first) -->
+<!-- via `species_order`. -->
+<!-- ```{r, eval=FALSE} -->
+<!-- core_orthologs <- retrieve_core_orthologs( -->
+<!--   ortho_tables = ortho_tbl, -->
+<!--   species_order = c("Arabidopsis_lyrata", "Brassica_rapa", "Capsella_rubella") -->
+<!-- ) -->
+<!-- ``` -->
+<!-- The returned table has the same schema as `ortho_tbl` but contains only gene loci conserved across -->
+<!-- all species, making it a convenient starting point for comparative analyses such as divergence -->
+<!-- stratigraphy (see the [Divergence Stratigraphy vignette](https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html)). -->
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

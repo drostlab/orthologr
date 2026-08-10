@@ -182,7 +182,7 @@ realign_result <- deepclust_realign(
   clusters = clusters
 )
 
-# 3. Alternatively, supply the path to the deepclust TSV directly
+# 2. Alternatively, supply the path to the deepclust TSV directly
 realign_result <- deepclust_realign(
   input_file = c(
     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -191,7 +191,7 @@ realign_result <- deepclust_realign(
   clusters = "/path/to/deepclust_output.tsv"
 )
 
-# 4. Incorporate into deepclust_annotate without re-running deepclust
+# 3. Incorporate into deepclust_annotate without re-running deepclust
 profile <- deepclust_annotate(
   input_file = c(
     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),

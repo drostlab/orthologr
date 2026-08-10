@@ -19,7 +19,8 @@ select_orthologs(
 
 - dnds_tbl:
 
-  a tibble returned by `link{dNdS}`.
+  a tibble returned by
+  [`dNdS`](https://drostlab.github.io/orthologr/reference/dNdS.md).
 
 - annotation_file_query:
 

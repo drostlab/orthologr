@@ -52,6 +52,7 @@
 <span>  use_existing_output <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  import_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  comp_cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  orthogroup_only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  of_path <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -81,6 +82,13 @@ Options are:</p><ul><li><p><code>import_type = "orthogroups_core"</code></p></li
 
 <dt id="arg-comp-cores">comp_cores<a class="anchor" aria-label="anchor" href="#arg-comp-cores"></a></dt>
 <dd><p>number of cores that shall be used for parallel processing. Default is <code>cores = 1</code>.</p></dd>
+
+
+<dt id="arg-orthogroup-only">orthogroup_only<a class="anchor" aria-label="anchor" href="#arg-orthogroup-only"></a></dt>
+<dd><p>logical, default <code>TRUE</code>. When <code>TRUE</code>, OrthoFinder is run with the
+<code>-og</code> flag, which stops the analysis after orthogroup inference and skips the more
+computationally expensive gene-tree and orthologue inference steps. Set to <code>FALSE</code> to
+run the full OrthoFinder pipeline.</p></dd>
 
 
 <dt id="arg-of-path">of_path<a class="anchor" aria-label="anchor" href="#arg-of-path"></a></dt>
