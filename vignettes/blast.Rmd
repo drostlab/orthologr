@@ -80,26 +80,37 @@ glimpse(hit_tbl)
 ```
 
 ```
-Variables:
-$ query_id      (chr) "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
-$ subject_id    (chr) "333554|PACid:16033839", "470181|PACid:16064...
-$ perc_identity (dbl) 73.99, 91.06, 95.54, 91.98, 100.00, 89.51, 9...
-$ alig_length   (dbl) 469, 246, 359, 1970, 213, 648, 366, 300, 434...
-$ mismatches    (dbl) 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
-$ gap_openings  (dbl) 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
-$ q_start       (dbl) 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
-$ q_end         (dbl) 430, 246, 359, 1910, 213, 646, 366, 294, 429...
-$ s_start       (dbl) 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
-$ s_end         (dbl) 466, 246, 355, 1963, 213, 640, 362, 299, 433...
-$ evalue        (dbl) 0e+00, 7e-166, 0e+00, 0e+00, 2e-160, 0e+00, ...
-$ bit_score     (dbl) 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
+Rows: 20
+Columns: 21
+$ query_id          <chr> "AT1G01010.1", "AT1G01020.1", "AT1G01030.1",...
+$ subject_id        <chr> "333554|PACid:16033839", "470181|PACid:16064...
+$ perc_identity     <dbl> 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 9...
+$ num_ident_matches <int> 347, 224, 343, 1812, 213, 580, 348, 271, 420...
+$ alig_length       <int> 469, 246, 359, 1970, 213, 648, 366, 300, 434...
+$ mismatches        <int> 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, ...
+$ gap_openings      <int> 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1...
+$ n_gaps            <int> 42, 0, 4, 73, 0, 10, 4, 7, 6, 0, 0, 1, 10, 8, 14...
+$ pos_match         <int> 370, 231, 346, 1853, 213, 601, 351, 279, 425...
+$ ppos              <dbl> 78.89, 93.90, 96.38, 94.06, 100.00, 92.75, 95.90...
+$ q_start           <int> 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2,...
+$ q_end             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ q_len             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 429...
+$ qcov              <dbl> 100, 100, 100, 99, 100, 100, 100, 100, 100...
+$ qcovhsp           <dbl> 100, 100, 100, 99, 100, 100, 100, 100, 100...
+$ s_start           <int> 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4...
+$ s_end             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ s_len             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 433...
+$ evalue            <dbl> 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162...
+$ bit_score         <dbl> 627, 454, 698, 3704, 437, 1037, 696, 491, 85...
+$ score_raw         <dbl> 1617, 1169, 1801, 9604, 1125, 2681, 1797, 1264...
 ```
 
 As you can see, the hit table shows the output of the BLAST+ search. The `blast()` function
 runs `blastp` as default BLAST+ algorithm. Different BLAST+ algorithms can be selected by
 specifying the `blast_algorithm` argument, e.g. `blast_algorithm = "tblastn"`. See `?blast` for further details.
-The `blast()` function returns the BLAST arguments: `query_id`, `subject_id`, `perc_identity`,
-`alig_length`, `mismatches`, `gap_openings`, `q_start`, `q_end`, `s_start`, `s_end`, `evalue`, and `bit_score`.
+The `blast()` function returns 21 columns: `query_id`, `subject_id`, `perc_identity`, `num_ident_matches`,
+`alig_length`, `mismatches`, `gap_openings`, `n_gaps`, `pos_match`, `ppos`, `q_start`, `q_end`, `q_len`,
+`qcov`, `qcovhsp`, `s_start`, `s_end`, `s_len`, `evalue`, `bit_score`, and `score_raw`.
 
 Since `blast()` stores the hit table returned by BLAST in a data.table object, you can access each column,
 using the [data.table notation](https://r-datatable.com).
@@ -162,21 +173,22 @@ glimpse(hit_tbl)
 ```
 
 ```
-A tibble: 78 x 12
-   query_id subject_id perc_identity alig_length mismatches gap_openings
-   <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
- 1 AT1G010... 311334|PA...          43.6         165         81            4
- 2 AT1G010... 333554|PA...          74.0         469         80            8
- 3 AT1G010... 909883|PA...          34.5         354        162           12
- 4 AT1G010... 918785|PA...          33.8         160         80            6
- 5 AT1G010... 470181|PA...          91.1         246         22            0
- 6 AT1G010... 470180|PA...          95.5         359         12            2
- 7 AT1G010... 333551|PA...          92.0        1970         85           10
- 8 AT1G010... 909874|PA...         100           213          0            0
- 9 AT1G010... 311286|PA...          64.5          62         22            0
-10 AT1G010... 470177|PA...          89.5         648         58            5
- with 68 more rows, and 6 more variables: q_start <dbl>, q_end <dbl>,
- s_start <dbl>, s_end <dbl>, evalue <dbl>, bit_score <dbl>
+# A tibble: 78 x 21
+   query_id subject_id perc_identity num_ident_matches alig_length mismatches gap_openings
+   <chr>    <chr>              <dbl>             <int>       <int>      <int>        <int>
+ 1 AT1G010... 311334|PA...          43.6                72         165         81            4
+ 2 AT1G010... 333554|PA...          74.0               347         469         80            8
+ 3 AT1G010... 909883|PA...          34.5               122         354        162           12
+ 4 AT1G010... 918785|PA...          33.8                54         160         80            6
+ 5 AT1G010... 470181|PA...          91.1               224         246         22            0
+ 6 AT1G010... 470180|PA...          95.5               343         359         12            2
+ 7 AT1G010... 333551|PA...          92.0              1812        1970         85           10
+ 8 AT1G010... 909874|PA...         100                 213         213          0            0
+ 9 AT1G010... 311286|PA...          64.5                40          62         22            0
+10 AT1G010... 470177|PA...          89.5               580         648         58            5
+# ... with 68 more rows, and 14 more variables: n_gaps <int>, pos_match <int>, ppos <dbl>,
+# q_start <int>, q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
+# s_start <int>, s_end <int>, s_len <int>, evalue <dbl>, bit_score <dbl>, score_raw <dbl>
 ```
 
 In all cases the default `e-value` BLAST+ searches is `1E-5` and the default `blast_algorithm`
@@ -599,38 +611,37 @@ blast_best(query_file    = system.file('seqs/ortho_thal_cds.fasta', package = 'o
 ```
 
 ```
-A tibble: 20 x 12
-Groups:   query_id [20]
-   query_id subject_id perc_identity alig_length mismatches gap_openings
-   <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
- 1 AT1G010... 333554|PA...          74.0         469         80            8
- 2 AT1G010... 470181|PA...          91.1         246         22            0
- 3 AT1G010... 470180|PA...          95.5         359         12            2
- 4 AT1G010... 333551|PA...          92.0        1970         85           10
- 5 AT1G010... 909874|PA...         100           213          0            0
- 6 AT1G010... 470177|PA...          89.5         648         58            5
- 7 AT1G010... 918864|PA...          95.1         366         14            2
- 8 AT1G010... 909871|PA...          90.3         300         22            2
- 9 AT1G010... 470171|PA...          96.8         434          8            3
-10 AT1G011... 333544|PA...          93.6         528         34            0
-11 AT1G011... 918858|PA...          99.2         529          4            0
-12 AT1G011... 470161|PA...          98.5         453          6            1
-13 AT1G011... 918855|PA...          72.6         285         68            3
-14 AT1G011... 918854|PA...          84.9         179         19            2
-15 AT1G011... 311317|PA...          85.6          97          0            1
-16 AT1G011... 909860|PA...          92.6         310         20            1
-17 AT1G011... 311315|PA...          94.2         533         30            1
-18 AT1G012... 470156|PA...          95.8         238         10            0
-19 AT1G012... 311313|PA...          95.3         107          5            0
-20 AT1G012... 470155|PA...          96.7        1056         35            0
- with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
-   s_end <dbl>, evalue <dbl>, bit_score <dbl>
+# A tibble: 20 x 21
+# Groups:   query_id [20]
+   query_id subject_id perc_identity num_ident_matches alig_length mismatches gap_openings
+   <chr>    <chr>              <dbl>             <int>       <int>      <int>        <int>
+ 1 AT1G010... 333554|PA...          74.0               347         469         80            8
+ 2 AT1G010... 470181|PA...          91.1               224         246         22            0
+ 3 AT1G010... 470180|PA...          95.5               343         359         12            2
+ 4 AT1G010... 333551|PA...          92.0              1812        1970         85           10
+ 5 AT1G010... 909874|PA...         100                 213         213          0            0
+ 6 AT1G010... 470177|PA...          89.5               580         648         58            5
+ 7 AT1G010... 918864|PA...          95.1               348         366         14            2
+ 8 AT1G010... 909871|PA...          90.3               271         300         22            2
+ 9 AT1G010... 470171|PA...          96.8               420         434          8            3
+10 AT1G011... 333544|PA...          93.6               494         528         34            0
+11 AT1G011... 918858|PA...          99.2               525         529          4            0
+12 AT1G011... 470161|PA...          98.5               446         453          6            1
+13 AT1G011... 918855|PA...          72.6               207         285         68            3
+14 AT1G011... 918854|PA...          84.9               152         179         19            2
+15 AT1G011... 311317|PA...          85.6                83          97          0            1
+16 AT1G011... 909860|PA...          92.6               287         310         20            1
+17 AT1G011... 311315|PA...          94.2               502         533         30            1
+18 AT1G012... 470156|PA...          95.8               228         238         10            0
+19 AT1G012... 311313|PA...          95.3               102         107          5            0
+20 AT1G012... 470155|PA...          96.7              1021        1056         35            0
+# ... with 14 more variables: n_gaps <int>, pos_match <int>, ppos <dbl>,
+#   q_start <int>, q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
+#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
+#   bit_score <dbl>, score_raw <dbl>
 ```
 
-The `blast_best()` function returns: `query_id`, `subject_id`, and `eval`.
-
-In case you need more parameters returned by a BLAST+ best hit search, you
-can specify the `detailed_output` argument (`detailed_output = TRUE`).
+The `blast_best()` function returns 21 columns: the same format as `blast()`. The most commonly used columns are `query_id`, `subject_id`, `perc_identity`, `alig_length`, `evalue`, and `bit_score`.
 
 ```{r,eval=FALSE}
 # BLAST+ best hit search
@@ -641,21 +652,30 @@ dplyr::glimpse(best_hit_tbl)
 ```
 
 ```
-Observations: 20
-Variables: 12
+Rows: 20
+Columns: 21
 Groups: query_id [20]
-$ query_id      <chr> "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010...
-$ subject_id    <chr> "333554|PACid:16033839", "470181|PACid:16064328", "47...
-$ perc_identity <dbl> 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 95.0...
-$ alig_length   <dbl> 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 52...
-$ mismatches    <dbl> 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0...
-$ gap_openings  <dbl> 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0...
-$ q_start       <dbl> 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1,...
-$ q_end         <dbl> 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52...
-$ s_start       <dbl> 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1...
-$ s_end         <dbl> 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52...
-$ evalue        <dbl> 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162, 0...
-$ bit_score     <dbl> 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1...
+$ query_id          <chr> "AT1G01010.1", "AT1G01020.1", "AT1G01030.1", "AT1G010...
+$ subject_id        <chr> "333554|PACid:16033839", "470181|PACid:16064328", "47...
+$ perc_identity     <dbl> 73.987, 91.057, 95.543, 91.980, 100.000, 89.506, 95.0...
+$ num_ident_matches <int> 347, 224, 343, 1812, 213, 580, 348, 271, 420, 494...
+$ alig_length       <int> 469, 246, 359, 1970, 213, 648, 366, 300, 434, 528, 52...
+$ mismatches        <int> 80, 22, 12, 85, 0, 58, 14, 22, 8, 34, 4, 6, 68, 19, 0...
+$ gap_openings      <int> 8, 0, 2, 10, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, 1, 1, 1, 0...
+$ n_gaps            <int> 42, 0, 4, 73, 0, 10, 4, 7, 6, 0, 0, 1, 10, 8, 14...
+$ pos_match         <int> 370, 231, 346, 1853, 213, 601, 351, 279, 425, 507...
+$ ppos              <dbl> 78.89, 93.90, 96.38, 94.06, 100.00, 92.75, 95.90...
+$ q_start           <int> 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, 2, 1, 1, 1,...
+$ q_end             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52...
+$ q_len             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 429, 528, 52...
+$ qcov              <dbl> 100, 100, 100, 99, 100, 100, 100, 100, 100, 100...
+$ qcovhsp           <dbl> 100, 100, 100, 99, 100, 100, 100, 100, 100, 100...
+$ s_start           <int> 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2, 4, 1, 6, 1...
+$ s_end             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52...
+$ s_len             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 433, 528, 52...
+$ evalue            <dbl> 0.00e+00, 8.91e-168, 0.00e+00, 0.00e+00, 3.27e-162, 0...
+$ bit_score         <dbl> 627, 454, 698, 3704, 437, 1037, 696, 491, 859, 972, 1...
+$ score_raw         <dbl> 1617, 1169, 1801, 9604, 1125, 2681, 1797, 1264...
 ```
 
 ## The blast_rec() function
@@ -674,32 +694,34 @@ blast_rec(query_file   = system.file('seqs/ortho_thal_cds.fasta', package = 'ort
 
 
 ```
- A tibble: 20 x 12
- Groups:   query_id 
-   query_id subject_id perc_identity alig_length mismatches gap_openings
-   <chr>    <chr>              <dbl>       <dbl>      <dbl>        <dbl>
- 1 AT1G010... 333554|PA...          74.0         469         80            8
- 2 AT1G010... 470181|PA...          91.1         246         22            0
- 3 AT1G010... 470180|PA...          95.5         359         12            2
- 4 AT1G010... 333551|PA...          92.0        1970         85           10
- 5 AT1G010... 909874|PA...         100           213          0            0
- 6 AT1G010... 470177|PA...          89.5         648         58            5
- 7 AT1G010... 918864|PA...          95.1         366         14            2
- 8 AT1G010... 909871|PA...          90.3         300         22            2
- 9 AT1G010... 470171|PA...          96.8         434          8            3
-10 AT1G011... 333544|PA...          93.6         528         34            0
-11 AT1G011... 918858|PA...          99.2         529          4            0
-12 AT1G011... 470161|PA...          98.5         453          6            1
-13 AT1G011... 918855|PA...          72.6         285         68            3
-14 AT1G011... 918854|PA...          84.9         179         19            2
-15 AT1G011... 311317|PA...          85.6          97          0            1
-16 AT1G011... 909860|PA...          92.6         310         20            1
-17 AT1G011... 311315|PA...          94.2         533         30            1
-18 AT1G012... 470156|PA...          95.8         238         10            0
-19 AT1G012... 311313|PA...          95.3         107          5            0
-20 AT1G012... 470155|PA...          96.7        1056         35            0
- with 6 more variables: q_start <dbl>, q_end <dbl>, s_start <dbl>,
-   s_end <dbl>, evalue <dbl>, bit_score <dbl>
+# A tibble: 20 x 21
+# Groups:   query_id [20]
+   query_id subject_id perc_identity num_ident_matches alig_length mismatches gap_openings
+   <chr>    <chr>              <dbl>             <int>       <int>      <int>        <int>
+ 1 AT1G010... 333554|PA...          74.0               347         469         80            8
+ 2 AT1G010... 470181|PA...          91.1               224         246         22            0
+ 3 AT1G010... 470180|PA...          95.5               343         359         12            2
+ 4 AT1G010... 333551|PA...          92.0              1812        1970         85           10
+ 5 AT1G010... 909874|PA...         100                 213         213          0            0
+ 6 AT1G010... 470177|PA...          89.5               580         648         58            5
+ 7 AT1G010... 918864|PA...          95.1               348         366         14            2
+ 8 AT1G010... 909871|PA...          90.3               271         300         22            2
+ 9 AT1G010... 470171|PA...          96.8               420         434          8            3
+10 AT1G011... 333544|PA...          93.6               494         528         34            0
+11 AT1G011... 918858|PA...          99.2               525         529          4            0
+12 AT1G011... 470161|PA...          98.5               446         453          6            1
+13 AT1G011... 918855|PA...          72.6               207         285         68            3
+14 AT1G011... 918854|PA...          84.9               152         179         19            2
+15 AT1G011... 311317|PA...          85.6                83          97          0            1
+16 AT1G011... 909860|PA...          92.6               287         310         20            1
+17 AT1G011... 311315|PA...          94.2               502         533         30            1
+18 AT1G012... 470156|PA...          95.8               228         238         10            0
+19 AT1G012... 311313|PA...          95.3               102         107          5            0
+20 AT1G012... 470155|PA...          96.7              1021        1056         35            0
+# ... with 14 more variables: n_gaps <int>, pos_match <int>, ppos <dbl>,
+#   q_start <int>, q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
+#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
+#   bit_score <dbl>, score_raw <dbl>
 ```
 
 ### The set_blast() function
