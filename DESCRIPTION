@@ -46,6 +46,8 @@ Suggests:
     testthat (>= 3.0.0),
     pkgload,
     metablastr
+Remotes:
+    drostlab/metablastr
 RdMacros: Rdpack
 LinkingTo: Rcpp
 URL: https://drostlab.github.io/orthologr, https://github.com/drostlab/orthologr

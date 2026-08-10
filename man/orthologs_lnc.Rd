@@ -47,7 +47,7 @@ See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
 \item{path}{a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
+For "BH" and "RBH": path to BLAST.}
 }
 \value{
 A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
@@ -102,8 +102,6 @@ orthologs_lnc(query_file      = system.file('seqs/ortho_thal_cds.fasta', package
 }
 \references{
 BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
-
-ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 }
 \seealso{
 \code{\link{blast_rec}}, \code{\link{dNdS}}

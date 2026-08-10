@@ -2,19 +2,54 @@
 % Please edit documentation in R/retrieve_core_orthologs.R
 \name{retrieve_core_orthologs}
 \alias{retrieve_core_orthologs}
-\title{Retrieve a core set of orthologous gene loci from several pairwise ortholog tables}
+\title{Retrieve a core set of orthologs from pairwise ortholog tables}
 \usage{
 retrieve_core_orthologs(ortho_tables, species_order)
 }
 \arguments{
-\item{ortho_tables}{a \code{ortho tables} that was generated with \code{\link{generate_ortholog_tables_all}}.}
+\item{ortho_tables}{an ortholog table generated with \code{\link{generate_ortholog_tables_all}}
+or a lncRNA map generated with \code{\link{map_generator_lnc}}.}
 
-\item{species_order}{a character string specifying species names listed in the order of phylogenetic/taxonomic distance from the query species.
-The species names must match with the species names present in the \code{ortho_tables}.}
+\item{species_order}{a character string specifying species names listed in the order of
+phylogenetic/taxonomic distance from the query species. The species names must match
+the species names present in \code{ortho_tables}.}
 }
 \description{
-Given a ortho table generated with \code{\link{generate_ortholog_tables_all}},
-this function will determine a core set of orthologs that are shared between all species.
+Given an ortholog table generated with \code{\link{generate_ortholog_tables_all}}
+or a lncRNA map generated with \code{\link{map_generator_lnc}}, this function determines
+a core set of orthologs that are shared between all species.
+
+Both table types are supported and detected automatically:
+\itemize{
+  \item Protein-coding tables use species column \code{subject_species} and query column
+        \code{query_gene_locus_id}.
+  \item lncRNA maps use species column \code{species} and query column \code{query_id}.
+}
+}
+\examples{
+# Protein-coding ortholog table (subject_species + query_gene_locus_id)
+ortho_tbl <- tibble::tibble(
+  query_species       = "Arabidopsis_thaliana",
+  subject_species     = rep(c("Arabidopsis_lyrata", "Brassica_rapa"), each = 3),
+  query_id            = rep(c("AT1G01010.1", "AT1G01020.1", "AT1G01030.1"), 2),
+  query_gene_locus_id = rep(c("AT1G01010", "AT1G01020", "AT1G01030"), 2),
+  subject_id          = paste0("subj_", seq_len(6)),
+  q_len               = rep(c(430L, 246L, 359L), 2),
+  alig_length         = rep(c(430L, 246L, 355L), 2)
+)
+retrieve_core_orthologs(ortho_tbl,
+                        species_order = c("Arabidopsis_lyrata", "Brassica_rapa"))
+
+# lncRNA map (species + query_id) — column layout detected automatically
+lnc_tbl <- tibble::tibble(
+  species     = rep(c("Arabidopsis_lyrata", "Brassica_rapa"), each = 2),
+  query_id    = rep(c("lnc001", "lnc002"), 2),
+  subject_id  = paste0("slnc_", seq_len(4)),
+  q_len       = rep(c(500L, 800L), 2),
+  alig_length = rep(c(490L, 800L), 2)
+)
+retrieve_core_orthologs(lnc_tbl,
+                        species_order = c("Arabidopsis_lyrata", "Brassica_rapa"))
 }
 \author{
 Hajk-Georg Drost

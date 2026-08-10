@@ -11,11 +11,14 @@ orthologs(
   outgroup_file = NULL,
   eval = "1E-5",
   format = "fasta",
-  ortho_detection = "RBH",
+  ortho_detection = "DIAMOND_RBH",
+  sensitivity_mode = "fast",
+  max.target.seqs = 10000,
   delete_corrupt_cds = FALSE,
   cdd.path = NULL,
   path = NULL,
   add_params = NULL,
+  diamond_params = NULL,
   comp_cores = 1,
   quiet = FALSE,
   clean_folders = FALSE
@@ -24,98 +27,122 @@ orthologs(
 \arguments{
 \item{query_file}{a character string specifying the path to the sequence file of interest (query organism).}
 
-\item{subject_files}{a character string specifying the paths to the sequence files of interest (subject organisms).
-Different orthology inference methods can detect orthologs using multiple subject organisms, e.g. "OrthoMCL", and "PO" (ProteinOrtho).}
+\item{subject_files}{a character string specifying the paths to the sequence files of interest (subject organisms).}
 
 \item{seq_type}{a character string specifying the sequence type stored in the input file.
-Options are are: "cds", "protein", or "dna". In case of "cds", sequence are translated to protein sequences,
-in case of "dna", cds prediction is performed on the corresponding sequences which subsequently are
+Options are: "cds", "protein", or "dna". In case of "cds", sequences are translated to protein sequences,
+in case of "dna", CDS prediction is performed on the corresponding sequences which are subsequently
 translated to protein sequences. Default is \code{seq_type} = "protein".}
 
-\item{outgroup_file}{a character string specifying the paths to the sequence files of interest (outgroup organisms).
-This argument is only used by \code{InParanoid}.}
+\item{outgroup_file}{currently unused; reserved for future use.}
 
-\item{eval}{a numeric value specifying the E-Value cutoff for BLAST hit detection.}
+\item{eval}{a numeric value specifying the E-Value cutoff for hit detection.}
 
-\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta", "gbk". Default is "fasta".}
+\item{format}{a character string specifying the file format of the sequence file, e.g. "fasta". Default is "fasta".}
 
-\item{ortho_detection}{a character string specifying the orthology inference method that shall be performed
-to detect orthologous genes. Default is \code{ortho_detection} = "RBH" (BLAST reciprocal best hit).
-Further methods are: "RBH" (BLAST reciprocal best hit), "PO" (ProteinOrtho), and "OrthoMCL.}
+\item{ortho_detection}{a character string specifying the orthology inference method to use.
+Default is \code{ortho_detection} = \code{"DIAMOND_RBH"} (DIAMOND2 reciprocal best hit).
+Available methods:
+\itemize{
+  \item \code{"DIAMOND_RBH"}: DIAMOND2 reciprocal best hit (default; fast, recommended)
+  \item \code{"DIAMOND_BH"}: DIAMOND2 best hit
+  \item \code{"RBH"}: BLAST reciprocal best hit
+  \item \code{"BH"}: BLAST best hit
+  \item \code{"Orthofinder2"}: OrthoFinder2 (currently under development)
+}}
 
-\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should be removed from the input \code{file}. This is the case when the length of coding sequences cannot be divided by 3 and thus the coding sequence contains at least one corrupt base triplet.}
+\item{sensitivity_mode}{a character string specifying the DIAMOND2 sensitivity level.
+Only used when \code{ortho_detection} is \code{"DIAMOND_RBH"} or \code{"DIAMOND_BH"}.
+Options: \code{"faster"}, \code{"fast"} (default), \code{"mid-sensitive"},
+\code{"sensitive"}, \code{"more-sensitive"}, \code{"very-sensitive"}, \code{"ultra-sensitive"}.}
 
-\item{cdd.path}{path to the cdd database folder (specify when using \code{ortho_detection} = \code{"DELTA"}).}
+\item{max.target.seqs}{a numeric value specifying the number of aligned sequences to keep (DIAMOND2 only).
+Default is \code{10000}.}
 
-\item{path}{a character string specifying the path to the corresponding orthology inference tool.
-For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.}
+\item{delete_corrupt_cds}{a logical value indicating whether sequences with corrupt base triplets should
+be removed from the input \code{file}. Default is \code{FALSE}.}
 
-\item{add_params}{a character string specifying additional parameters that shall be handed to the orthology inference method (tool).
-Default is \code{add_params} = \code{NULL}.}
+\item{cdd.path}{currently unused; reserved for future use.}
+
+\item{path}{a character string specifying the path to the orthology inference tool executable.}
+
+\item{add_params}{a character string specifying additional parameters passed to the orthology inference tool.
+For DIAMOND2 methods, use \code{diamond_params} instead. Default is \code{NULL}.}
+
+\item{diamond_params}{a character string specifying additional parameters passed to DIAMOND2.
+Only used when \code{ortho_detection} is \code{"DIAMOND_RBH"} or \code{"DIAMOND_BH"}.
+Default is \code{NULL}.}
 
 \item{comp_cores}{a numeric value specifying the number of cores to be used for multicore computations.}
 
 \item{quiet}{a logical value specifying whether a successful interface call shall be printed out.}
 
-\item{clean_folders}{a boolean value spefiying whether all internall folders storing the output of used programs
+\item{clean_folders}{a boolean value specifying whether all internal folders storing the output of used programs
 shall be removed. Default is \code{clean_folders} = \code{FALSE}.}
 }
 \value{
-A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of orthologous genes
-in the second column and the amino acid sequences in the third column.
+A data.table storing the query_ids of orthologous genes in the first column, the subject_ids of
+orthologous genes in the second column and the amino acid sequences in the third column.
 }
 \description{
-This function takes nucleotide or protein sequences for a set of organisms 
+This function takes nucleotide or protein sequences for a set of organisms
 and performs orthology inference to detect orthologous genes within the given organisms
 based on selected orthology inference programs.
 }
 \details{
 This function takes sequence files of a query organism and a subject organism and performs orthology inference
-using a defined orthology inference method to dectect orthologous genes.
+using a defined orthology inference method to detect orthologous genes.
 
 The following interfaces are implemented in the \code{orthologs} function:
- 
-BLAST based methods:
 
+DIAMOND2 based methods (recommended):
 \itemize{
-  \item BLAST best hit (BH) 
-  \item BLAST reciprocal best hit (RBH)
-  \item DELTA-BLAST reciprocal best hit (DELTA)
+  \item DIAMOND2 reciprocal best hit (\code{"DIAMOND_RBH"}) — default
+  \item DIAMOND2 best hit (\code{"DIAMOND_BH"})
+}
+
+BLAST based methods:
+\itemize{
+  \item BLAST reciprocal best hit (\code{"RBH"})
+  \item BLAST best hit (\code{"BH"})
 }
 }
 \examples{
 \dontrun{
 
-### BLAST Best Hit
+### DIAMOND2 Reciprocal Best Hit (default)
 
-# perform orthology inference using BLAST best hit
-# and fasta sequence files storing protein sequences
 orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "BH")
+          seq_type        = "protein")
+
+
+### DIAMOND2 Best Hit
+
+orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+          subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
+          seq_type        = "protein",
+          ortho_detection = "DIAMOND_BH")
 
 
 ### BLAST Reciprocal Best Hit
 
-# perform orthology inference using BLAST reciprocal best hit
-# and fasta sequence files storing protein sequences
 orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
+          seq_type        = "protein",
           ortho_detection = "RBH")
-          
-          
-# multicore version          
+
+
+### BLAST Best Hit
+
 orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
-          seq_type        = "protein", 
-          ortho_detection = "RBH", 
-          comp_cores      = 2)          
+          seq_type        = "protein",
+          ortho_detection = "BH")
 }
 }
 \seealso{
-\code{\link{blast_rec}}, \code{\link{dNdS}}
+\code{\link{diamond_rec}}, \code{\link{diamond_best}}, \code{\link{blast_rec}}, \code{\link{dNdS}}
 }
 \author{
 Hajk-Georg Drost
