@@ -23,7 +23,7 @@
 #' See details here: https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/bty833/5106166 .
 #' @param output.path path to which output shall be stored.
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
-#' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
+#' For "BH" and "RBH": path to BLAST.
 #' @param comp_cores a numeric value specifying the number of cores to be used for multicore computations.
 #' @details 
 #' This function takes sequence files of a query organism and a subject organism and performs orthology inference
@@ -45,8 +45,6 @@
 #' @references
 #' 
 #' BLAST: https://blast.ncbi.nlm.nih.gov/blastcgihelp.shtml
-#' 
-#' ProteinOrtho: https://www.bioinf.uni-leipzig.de/Software/proteinortho/
 #'
 #' @examples \dontrun{
 #' 
