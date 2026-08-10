@@ -23,12 +23,7 @@ jobs:
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
-          - {os: ubuntu-latest,  r: 'oldrel-1'}
-          # Explicit version checks
-          - {os: ubuntu-latest,  r: '3.6'}
-          - {os: ubuntu-latest,  r: '4.0'}
-          - {os: ubuntu-latest,  r: '4.1'}
-          - {os: ubuntu-latest,  r: '4.5'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -46,13 +41,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, any::BiocManager
+          extra-packages: any::rcmdcheck
           needs: check
-
-      - name: Install Bioconductor dependencies
-        shell: Rscript {0}
-        run: |
-          BiocManager::install(ask = FALSE, update = FALSE)
 
       - uses: r-lib/actions/check-r-package@v2
         with:

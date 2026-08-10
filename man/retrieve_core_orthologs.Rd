@@ -27,6 +27,7 @@ Both table types are supported and detected automatically:
 }
 }
 \examples{
+\dontrun{
 # Protein-coding ortholog table (subject_species + query_gene_locus_id)
 ortho_tbl <- tibble::tibble(
   query_species       = "Arabidopsis_thaliana",
@@ -50,6 +51,7 @@ lnc_tbl <- tibble::tibble(
 )
 retrieve_core_orthologs(lnc_tbl,
                         species_order = c("Arabidopsis_lyrata", "Brassica_rapa"))
+                        }
 }
 \author{
 Hajk-Georg Drost

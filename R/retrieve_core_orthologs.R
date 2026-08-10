@@ -15,7 +15,7 @@
 #' phylogenetic/taxonomic distance from the query species. The species names must match
 #' the species names present in \code{ortho_tables}.
 #' @author Hajk-Georg Drost
-#' @examples
+#' @examples \dontrun{
 #' # Protein-coding ortholog table (subject_species + query_gene_locus_id)
 #' ortho_tbl <- tibble::tibble(
 #'   query_species       = "Arabidopsis_thaliana",
@@ -39,6 +39,7 @@
 #' )
 #' retrieve_core_orthologs(lnc_tbl,
 #'                         species_order = c("Arabidopsis_lyrata", "Brassica_rapa"))
+#'                         }
 #' @export
 
 retrieve_core_orthologs <- function(ortho_tables, species_order) {

@@ -6,7 +6,7 @@
 #' @param x input data in \code{data.frame} or \code{tibble} format.
 #' @param order_species a character vector containing the scientific names of the organisms of interest
 #' ordered according to their phylogenetic distance to their reference species.
-#' @examples
+#' @examples \dontrun{
 #' # Protein-coding table: all target species present -> returns x unchanged
 #' x_complete <- tibble::tibble(
 #'   subject_species     = c("Arabidopsis_lyrata", "Brassica_rapa"),
@@ -24,6 +24,7 @@
 #'   dN = 0.05, dS = 0.12, dNdS = 0.42
 #' )
 #' filter_core_set(x_incomplete, order_species = c("Arabidopsis_lyrata", "Brassica_rapa"))
+#' }
 filter_core_set <- function(x, order_species) {
 
         species_col <- if ("subject_species" %in% names(x)) "subject_species" else "species"

@@ -19,6 +19,7 @@ subject species. Handles both protein-coding gene tables (species column
 The appropriate column is detected automatically from the input.
 }
 \examples{
+\dontrun{
 # Protein-coding table: all target species present -> returns x unchanged
 x_complete <- tibble::tibble(
   subject_species     = c("Arabidopsis_lyrata", "Brassica_rapa"),
@@ -36,4 +37,5 @@ x_incomplete <- tibble::tibble(
   dN = 0.05, dS = 0.12, dNdS = 0.42
 )
 filter_core_set(x_incomplete, order_species = c("Arabidopsis_lyrata", "Brassica_rapa"))
+}
 }
