@@ -1,6 +1,10 @@
-# Helper function to extract a core set of orthologous lncRNAs
+# Helper function to extract a core set of orthologous lncRNAs (deprecated)
 
-Helper function to extract a core set of orthologous lncRNAs.
+This function is deprecated and will be removed in a future release.
+Please use
+[`filter_core_set`](https://drostlab.github.io/orthologr/reference/filter_core_set.md)
+instead, which now handles both protein-coding gene tables and lncRNA
+maps automatically.
 
 ## Usage
 

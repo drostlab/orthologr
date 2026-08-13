@@ -22,8 +22,9 @@ The following Algorithm implemented in
 defines **Divergence Stratigraphy** as method (see [Drost et al.,
 2015](https://academic.oup.com/mbe/article/32/5/1221/1125964)):
 
-1.  Orthology Inference using BLAST best reciprocal hit (“RBH”) based on
-    blastp
+1.  Orthology Inference using DIAMOND2 reciprocal best hit (“RBH”) —
+    default (`aligner = "diamond"`); BLAST can be used by setting
+    `aligner = "blast"`
 
 2.  Pairwise global amino acid alignments of orthologous genes using the
     [Needleman-Wunsch
@@ -65,25 +66,27 @@ algorithm](https://www.sciencedirect.com/science/article/pii/0022283670900574),
 [PAL2NAL](https://bio.tools/pal2nal/) and [Comeron’s method
 (1995)](https://link.springer.com/article/10.1007/BF00173196) are
 already included in the `orthologr` package and do not have to be
-installed separately. Nevertheless, users need to make sure **they have
-BLAST installed on their machine before using the
-[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)function**.
+installed separately. By default,
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+uses **DIAMOND2** for orthology inference (step 1), which is
+substantially faster than BLAST. Users need to make sure **they have
+DIAMOND2 installed on their machine** before running
+[`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
+Alternatively, BLAST can be used by setting `aligner = "blast"`.
 
-**Note**: The following examples assume that the **BLAST** program is
-installed and stored in the default execution path `usr/local/bin`. In
-case users do not have **BLAST** installed yet or the following command
-in R produces a different output, please consult the [Installation
-Vignette](https://drostlab.github.io/orthologr/articles/Install.html) to
-correctly set up the **BLAST** program to perform **Divergence
-Stratigraphy**.
+**Note**: The following examples assume that
+[**DIAMOND2**](https://github.com/bbuchfink/diamond) is installed and
+accessible from the default execution path. Please consult the
+[Installation
+Vignette](https://drostlab.github.io/orthologr/articles/Install.html)
+for instructions on installing DIAMOND2 or BLAST.
 
 ``` r
 
-system("blastp -version")
+system("diamond --version")
 ```
 
-    blastp: 2.2.30+
-    Package: blast 2.2.30, build Oct 27 2014 17:10:51
+    diamond version 2.1.8
 
 ## Divergence Map Computations
 
@@ -157,19 +160,19 @@ installed before running any `biomartr` functions.
 ### Computation Time
 
 **Please note that** performing **Divergence Stratigraphy** with two
-large genomes using BLAST+ can take (even on a multicore machine) some
-time -\> **up to several hours**. On a 4 core machine with 3.4 GHz i7
-processors the computation time of generating a divergence map between
-*A. thaliana* and *A. lyrata* was **2.5-3 hours**.
+large genomes can take some time even on a multicore machine. Using the
+default DIAMOND2 aligner, the computation time is significantly reduced
+compared to BLAST. For reference, on a 4-core machine with 3.4 GHz i7
+processors, generating a divergence map between *A. thaliana* and *A.
+lyrata* with BLAST took **2.5–3 hours**; DIAMOND2 in `fast` mode
+completes the same task in a fraction of that time.
 
 The `comp_cores` argument implemented in the
 [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
 function allows users to specify the number of cores they would like to
-use on their machine. The default value is `comp_cores = 1` which might
-take **10-12h** to execute. So users need to make sure that they use all
-cores available on their machine to speed up the computation time.
-
-(Note, the wall clock time is now reduced with the `diamond`.)
+use on their machine. The default value is `comp_cores = 1`. Make sure
+to set `comp_cores` to the number of available cores on your machine to
+speed up computation.
 
 ## Running `divergence_stratigraphy()`
 
@@ -203,11 +206,12 @@ console (`quiet = FALSE`) or not (`quiet = TRUE`).
 
 library(orthologr)
 
-# compute the divergence map of A. thaliana
+# compute the divergence map of A. thaliana using DIAMOND2 (default)
 Athaliana_DM <- divergence_stratigraphy(
                          query_file      = "path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa",
                          subject_file    = "path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa",
-                         eval            = "1E-5", 
+                         eval            = "1E-5",
+                         aligner         = "diamond",
                          ortho_detection = "RBH",
                          comp_cores      = 1, 
                          quiet           = TRUE, 
@@ -224,11 +228,12 @@ package:
 
 library(orthologr)
 
-# performing standard divergence stratigraphy
+# performing standard divergence stratigraphy using DIAMOND2 (default)
  divergence_stratigraphy(
       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      eval            = "1E-5", 
+      eval            = "1E-5",
+      aligner         = "diamond",
       ortho_detection = "RBH", 
       dnds.threshold  = 2,
       comp_cores      = 1, 
@@ -237,29 +242,30 @@ library(orthologr)
 ```
 
 
-       divergence_strata    query_id
-    1                 10 AT1G01010.1
-    2                  9 AT1G01020.1
-    3                  5 AT1G01030.1
-    4                  4 AT1G01040.1
-    5                  1 AT1G01050.1
-    6                  9 AT1G01060.3
-    7                  6 AT1G01070.1
-    8                  8 AT1G01080.1
-    9                  2 AT1G01090.1
-    10                 7 AT1G01110.2
-    11                 2 AT1G01120.1
-    12                 3 AT1G01140.3
-    13                10 AT1G01150.1
-    14                 8 AT1G01160.1
-    15                 1 AT1G01170.2
-    16                 6 AT1G01180.1
-    17                 7 AT1G01190.1
-    18                 4 AT1G01200.1
-    19                 5 AT1G01210.1
-    20                 3 AT1G01220.1
+       DS    query_id
+    1  10 AT1G01010.1
+    2   9 AT1G01020.1
+    3   5 AT1G01030.1
+    4   4 AT1G01040.1
+    5   1 AT1G01050.1
+    6   9 AT1G01060.3
+    7   6 AT1G01070.1
+    8   8 AT1G01080.1
+    9   2 AT1G01090.1
+    10  7 AT1G01110.2
+    11  2 AT1G01120.1
+    12  3 AT1G01140.3
+    13 10 AT1G01150.1
+    14  8 AT1G01160.1
+    15  1 AT1G01170.2
+    16  6 AT1G01180.1
+    17  7 AT1G01190.1
+    18  4 AT1G01200.1
+    19  5 AT1G01210.1
+    20  3 AT1G01220.1
 
-The resulting output is a `Divergence Map` of the 20 example genes.
+The resulting output is a `Divergence Map` of the 20 example genes. The
+column `DS` contains the divergence stratum (1–10) for each gene.
 
 To save corresponding `Divergenec Maps` to a hard drive users can pass
 the resulting
@@ -293,27 +299,30 @@ Several argument combinations can be specified in
 This section introduces additional output options of
 [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
 
-#### Example: `blast_path`
+#### Example: `aligner_path`
 
 Sometimes the machine users are working on does not allow them to
-install **BLAST** in the default execution path `usr/local/bin`. For
-this purpose the `blast_path` argument is implemented in
+install **DIAMOND2** (or **BLAST**) in the default execution path
+`usr/local/bin`. For this purpose the `aligner_path` argument is
+implemented in
 [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md).
-This argument takes an character string specifying the `PATH` to the
-user’s `blastp` execution file that is stored in a different place than
-`usr/local/bin`.
+This argument takes a character string specifying the `PATH` to the
+user’s `diamond` (or `blastp`) executable stored in a non-standard
+location.
 
-The following example shows a possible specification of `blast_path`.
+The following example shows a possible specification of `aligner_path`
+when using DIAMOND2 (the default).
 
 ``` r
 
 library(orthologr)
 
-# performing standard divergence stratigraphy
+# performing standard divergence stratigraphy with a custom DIAMOND2 path
  divergence_stratigraphy(
       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
       subject_file    = system.file('seqs/ortho_lyra_cds.fasta', package = 'orthologr'),
-      blast_path      = "here/the/path/to/blastp", 
+      aligner         = "diamond",
+      aligner_path    = "here/the/path/to/diamond",
       eval            = "1E-5", 
       ortho_detection = "RBH", 
       dnds.threshold  = 2, 
@@ -323,27 +332,27 @@ library(orthologr)
 ```
 
 
-       divergence_strata    query_id
-    1                 10 AT1G01010.1
-    2                  9 AT1G01020.1
-    3                  5 AT1G01030.1
-    4                  4 AT1G01040.1
-    5                  1 AT1G01050.1
-    6                  9 AT1G01060.3
-    7                  6 AT1G01070.1
-    8                  8 AT1G01080.1
-    9                  2 AT1G01090.1
-    10                 7 AT1G01110.2
-    11                 2 AT1G01120.1
-    12                 3 AT1G01140.3
-    13                10 AT1G01150.1
-    14                 8 AT1G01160.1
-    15                 1 AT1G01170.2
-    16                 6 AT1G01180.1
-    17                 7 AT1G01190.1
-    18                 4 AT1G01200.1
-    19                 5 AT1G01210.1
-    20                 3 AT1G01220.1
+       DS    query_id
+    1  10 AT1G01010.1
+    2   9 AT1G01020.1
+    3   5 AT1G01030.1
+    4   4 AT1G01040.1
+    5   1 AT1G01050.1
+    6   9 AT1G01060.3
+    7   6 AT1G01070.1
+    8   8 AT1G01080.1
+    9   2 AT1G01090.1
+    10  7 AT1G01110.2
+    11  2 AT1G01120.1
+    12  3 AT1G01140.3
+    13 10 AT1G01150.1
+    14  8 AT1G01160.1
+    15  1 AT1G01170.2
+    16  6 AT1G01180.1
+    17  7 AT1G01190.1
+    18  4 AT1G01200.1
+    19  5 AT1G01210.1
+    20  3 AT1G01220.1
 
 #### Example: `ds.values`
 

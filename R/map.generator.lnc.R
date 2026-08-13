@@ -30,7 +30,7 @@
 #' @param progress_bar should a progress bar be shown. Default is \code{progress_bar = TRUE}.
 #' @param sep a file separator that is used to store maps as csv file.
 #' @param path a character string specifying the path to the corresponding orthology inference tool.
-#' For "BH" and "RBH": path to BLAST, "PO": path to ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
+#' For "BH" and "RBH": path to BLAST.
 #' @param ... additional parameters that shall be passed to  \code{\link{dNdS}}.
 #' @note According to Sarropoulos, I., et al. (2019) orthology detection of lncRNAs was performed by reciprocal BLAST searches. Significant hits with an e-value <= 10-3 were selected having an alignment identity >= 10\% OR a minimum alignment length >= 50 nucleotides. 
 #' @details

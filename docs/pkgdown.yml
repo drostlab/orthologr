@@ -8,7 +8,7 @@ articles:
   Install: Install.html
   orthology_inference: orthology_inference.html
   sequence_alignments: sequence_alignments.html
-last_built: 2026-06-26T13:18Z
+last_built: 2026-08-10T14:28Z
 urls:
   reference: https://drostlab.github.io/orthologr/reference
   article: https://drostlab.github.io/orthologr/articles

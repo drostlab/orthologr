@@ -121,8 +121,7 @@ map_generator_lnc(
 - path:
 
   a character string specifying the path to the corresponding orthology
-  inference tool. For "BH" and "RBH": path to BLAST, "PO": path to
-  ProteinOrtho 5.07, "OrthoMCL": path to OrthoMCL.
+  inference tool. For "BH" and "RBH": path to BLAST.
 
 - ...:
 
@@ -176,7 +175,7 @@ map_generator_lnc(
 if (FALSE) { # \dontrun{
 # parameter settings based on Sarropoulos, I., et al. (2019)
 map_generator_lnc(
-   query_file,,
+   query_file,
    subjects_folder,
    eval                  = 1E-3,
    ortho_detection       = "RBH",

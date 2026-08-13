@@ -374,44 +374,51 @@ blast <- function(query_file,
                 )
         
         # define the colClasses for faster file streaming
-        # col_Classes <- c(rep("character", 2), "double", rep("integer", 6), "double", rep("integer", 6), rep("double", 3))
+        col_Classes <- c(rep("character", 2),
+                         "double",
+                         rep("integer", 6),
+                         "double",
+                         rep("integer", 3),
+                         rep("double", 2),
+                         rep("integer", 3),
+                         rep("double", 3))
         
         tryCatch({
-                # hit_table <- data.table::fread(
-                #         input      = output,
-                #         sep        = "\t",
-                #         header     = FALSE,
-                #         colClasses = col_Classes
-                # )
+                hit_table <- data.table::fread(
+                        input      = output,
+                        sep        = "\t",
+                        header     = FALSE,
+                        colClasses = col_Classes
+                )
                 
-                hit_table <-  data.table::as.data.table(readr::read_delim(file = output, delim = "\t", 
-                                                                          col_names = FALSE,
-                                                                          col_types = readr::cols(
-                                                                                  "X1" = readr::col_character(),
-                                                                                  "X2" = readr::col_character(),
-                                                                                  "X3" = readr::col_double(),
-                                                                                  "X4" = readr::col_integer(),
-                                                                                  "X5" = readr::col_integer(),
-                                                                                  "X6" = readr::col_integer(),
-                                                                                  "X7" = readr::col_integer(),
-                                                                                  "X8" = readr::col_integer(),
-                                                                                  "X9" = readr::col_integer(),
-                                                                                  "X10" = readr::col_double(),
-                                                                                  "X11" = readr::col_integer(),
-                                                                                  "X12" = readr::col_integer(),
-                                                                                  "X13" = readr::col_integer(),
-                                                                                  "X14" = readr::col_double(),
-                                                                                  "X15" = readr::col_double(),
-                                                                                  "X16" = readr::col_integer(),
-                                                                                  "X17" = readr::col_integer(),
-                                                                                  "X18" = readr::col_integer(),
-                                                                                  "X19" = readr::col_double(),
-                                                                                  "X20" = readr::col_number(),          
-                                                                                  "X21" = readr::col_double() )))
+                # hit_table <-  data.table::as.data.table(readr::read_delim(file = output, delim = "\t", 
+                #                                                           col_names = FALSE,
+                #                                                           col_types = readr::cols(
+                #                                                                   "X1" = readr::col_character(),
+                #                                                                   "X2" = readr::col_character(),
+                #                                                                   "X3" = readr::col_double(),
+                #                                                                   "X4" = readr::col_integer(),
+                #                                                                   "X5" = readr::col_integer(),
+                #                                                                   "X6" = readr::col_integer(),
+                #                                                                   "X7" = readr::col_integer(),
+                #                                                                   "X8" = readr::col_integer(),
+                #                                                                   "X9" = readr::col_integer(),
+                #                                                                   "X10" = readr::col_double(),
+                #                                                                   "X11" = readr::col_integer(),
+                #                                                                   "X12" = readr::col_integer(),
+                #                                                                   "X13" = readr::col_integer(),
+                #                                                                   "X14" = readr::col_double(),
+                #                                                                   "X15" = readr::col_double(),
+                #                                                                   "X16" = readr::col_integer(),
+                #                                                                   "X17" = readr::col_integer(),
+                #                                                                   "X18" = readr::col_integer(),
+                #                                                                   "X19" = readr::col_double(),
+                #                                                                   "X20" = readr::col_number(),          
+                #                                                                   "X21" = readr::col_double() )))
                 
                 data.table::setnames(
                         x   = hit_table,
-                        old = paste0("X", 1:length(blast_table_names)),
+                        old = paste0("V", 1:length(blast_table_names)), # "X" if readr is used
                         new = blast_table_names
                 )
                 

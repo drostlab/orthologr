@@ -14,7 +14,7 @@ SystemRequirements: C++11, Perl
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Depends:
-    R (>= 3.1.1)
+    R (>= 3.6)
 Imports:
     data.table (>= 1.9.4),
     seqinr,
@@ -27,7 +27,6 @@ Imports:
     Biostrings (>= 2.52.0),
     pwalign (>= 1.6.0),
     stringr (>= 0.6.2),
-    dtplyr,
     rtracklayer,
     tibble,
     readr,
@@ -47,6 +46,8 @@ Suggests:
     testthat (>= 3.0.0),
     pkgload,
     metablastr
+Remotes:
+    drostlab/metablastr
 RdMacros: Rdpack
 LinkingTo: Rcpp
 URL: https://drostlab.github.io/orthologr, https://github.com/drostlab/orthologr

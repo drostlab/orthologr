@@ -233,6 +233,7 @@ deepclust_annotate <- function(
         seqtype_fasta <- if (seq_type == "protein") "AA" else "DNA"
 
         message("Building sequence ID library from ", length(file_paths), " file(s) ...")
+        t_lib_start <- proc.time()["elapsed"]
 
         seq_library <- do.call(rbind, lapply(seq_along(file_paths), function(i) {
                 seqs <- seqinr::read.fasta(
@@ -246,6 +247,15 @@ deepclust_annotate <- function(
                         file_name = file_labels[i]
                 )
         }))
+
+        t_lib_elapsed <- proc.time()["elapsed"] - t_lib_start
+        message(
+                "Sequence ID library built in ",
+                if (t_lib_elapsed >= 60)
+                        paste0(round(t_lib_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_lib_elapsed, 2), " sec.")
+        )
         
         dup_ids <- seq_library$member_id[duplicated(seq_library$member_id)]
         if (length(dup_ids) > 0) {
@@ -280,11 +290,22 @@ deepclust_annotate <- function(
         }
 
         # 3. join member_id with the sequence library
-        profile <- dplyr::left_join(cluster_result, seq_library, by = "member_id")
+        message("Joining sequence library onto cluster result ...")
+        t_join_start <- proc.time()["elapsed"]
+        profile      <- dplyr::left_join(cluster_result, seq_library, by = "member_id")
+        t_join_elapsed <- proc.time()["elapsed"] - t_join_start
+        message(
+                "Left join completed in ",
+                if (t_join_elapsed >= 60)
+                        paste0(round(t_join_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_join_elapsed, 2), " sec.")
+        )
 
         # 4. optionally join alignment statistics from deepclust_realign
         if (!is.null(realign)) {
                 message("Joining deepclust_realign alignment statistics ...")
+                t_realign_join_start <- proc.time()["elapsed"]
                 realign_cols <- c("representative_id", "member_id",
                                   "approx_pident", "evalue",
                                   "bitscore", "qcovhsp", "scovhsp")
@@ -292,6 +313,14 @@ deepclust_annotate <- function(
                         profile,
                         realign[, realign_cols],
                         by = c("representative_id", "member_id")
+                )
+                t_realign_join_elapsed <- proc.time()["elapsed"] - t_realign_join_start
+                message(
+                        "Realign join completed in ",
+                        if (t_realign_join_elapsed >= 60)
+                                paste0(round(t_realign_join_elapsed / 60, 2), " min.")
+                        else
+                                paste0(round(t_realign_join_elapsed, 2), " sec.")
                 )
         }
 

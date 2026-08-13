@@ -260,8 +260,16 @@ deepclust <- function(
                 deepclust_run <- paste0(deepclust_run, ' --quiet')
 
         message("Running diamond deepclust ...")
-
-        status <- system(deepclust_run)
+        t_deepclust_start   <- proc.time()["elapsed"]
+        status              <- system(deepclust_run)
+        t_deepclust_elapsed <- proc.time()["elapsed"] - t_deepclust_start
+        message(
+                "diamond deepclust completed in ",
+                if (t_deepclust_elapsed >= 60)
+                        paste0(round(t_deepclust_elapsed / 60, 2), " min.")
+                else
+                        paste0(round(t_deepclust_elapsed, 2), " sec.")
+        )
         if (!identical(status, 0L)) {
                 stop(
                         "diamond deepclust exited with non-zero status: ", status,
@@ -271,22 +279,29 @@ deepclust <- function(
         }
 
         tryCatch({
-                cluster_table <- data.table::as.data.table(
-                        readr::read_tsv(
-                                file           = output,
-                                col_names      = FALSE,
-                                col_types      = readr::cols(
-                                        X1 = readr::col_character(),
-                                        X2 = readr::col_character()
-                                ),
-                                show_col_types = FALSE
-                        )
-                )
-
-                data.table::setnames(
-                        cluster_table,
-                        old = c("X1", "X2"),
-                        new = c("representative_id", "member_id")
+                # cluster_table <- data.table::as.data.table(
+                #         readr::read_tsv(
+                #                 file           = output,
+                #                 col_names      = FALSE,
+                #                 col_types      = readr::cols(
+                #                         X1 = readr::col_character(),
+                #                         X2 = readr::col_character()
+                #                 ),
+                #                 show_col_types = FALSE
+                #         )
+                # )
+                # 
+                # data.table::setnames(
+                #         cluster_table,
+                #         old = c("X1", "X2"),
+                #         new = c("representative_id", "member_id")
+                # )
+                
+                cluster_table <- data.table::fread(
+                        file    = output,
+                        header  = FALSE,
+                        col.names = c("representative_id", "member_id"),
+                        colClasses = "character"
                 )
 
                 setwd(file.path(currwd))

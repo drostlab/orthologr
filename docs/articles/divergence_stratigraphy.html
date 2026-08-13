@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Performing Divergence Stratigraphy</h1>
             
-            <h4 data-toc-skip class="date">2026-06-26</h4>
+            <h4 data-toc-skip class="date">2026-08-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/divergence_stratigraphy.Rmd" class="external-link"><code>vignettes/divergence_stratigraphy.Rmd</code></a></small>
       <div class="d-none name"><code>divergence_stratigraphy.Rmd</code></div>
@@ -94,8 +94,9 @@ find a short example and discussion about the usefulness of
 Stratigraphy</strong> as method (see <a href="https://academic.oup.com/mbe/article/32/5/1221/1125964" class="external-link">Drost et
 al., 2015</a>):</p>
 <ol style="list-style-type: decimal">
-<li><p>Orthology Inference using BLAST best reciprocal hit (“RBH”) based
-on blastp</p></li>
+<li><p>Orthology Inference using DIAMOND2 reciprocal best hit (“RBH”) —
+default (<code>aligner = "diamond"</code>); BLAST can be used by setting
+<code>aligner = "blast"</code></p></li>
 <li><p>Pairwise global amino acid alignments of orthologous genes using
 the <a href="https://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
 algorithm</a></p></li>
@@ -127,21 +128,20 @@ Divergence Stratum has (almost) the same number of genes.</p>
 <p>In <code>orthologr</code> the <a href="https://www.sciencedirect.com/science/article/pii/0022283670900574" class="external-link">Needleman-Wunsch
 algorithm</a>, <a href="https://bio.tools/pal2nal/" class="external-link">PAL2NAL</a> and <a href="https://link.springer.com/article/10.1007/BF00173196" class="external-link">Comeron’s
 method (1995)</a> are already included in the <code>orthologr</code>
-package and do not have to be installed separately. Nevertheless, users
-need to make sure <strong>they have BLAST installed on their machine
-before using the
-<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>function</strong>.</p>
-<p><strong>Note</strong>: The following examples assume that the
-<strong>BLAST</strong> program is installed and stored in the default
-execution path <code>usr/local/bin</code>. In case users do not have
-<strong>BLAST</strong> installed yet or the following command in R
-produces a different output, please consult the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
-Vignette</a> to correctly set up the <strong>BLAST</strong> program to
-perform <strong>Divergence Stratigraphy</strong>.</p>
+package and do not have to be installed separately. By default,
+<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> uses <strong>DIAMOND2</strong>
+for orthology inference (step 1), which is substantially faster than
+BLAST. Users need to make sure <strong>they have DIAMOND2 installed on
+their machine</strong> before running
+<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>. Alternatively, BLAST can be used
+by setting <code>aligner = "blast"</code>.</p>
+<p><strong>Note</strong>: The following examples assume that <a href="https://github.com/bbuchfink/diamond" class="external-link"><strong>DIAMOND2</strong></a>
+is installed and accessible from the default execution path. Please
+consult the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
+Vignette</a> for instructions on installing DIAMOND2 or BLAST.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"blastp -version"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>blastp: 2.2.30+
-Package: blast 2.2.30, build Oct 27 2014 17:10:51</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>diamond version 2.1.8</code></pre>
 <div class="section level2">
 <h2 id="divergence-map-computations">Divergence Map Computations<a class="anchor" aria-label="anchor" href="#divergence-map-computations"></a>
 </h2>
@@ -213,21 +213,19 @@ installed before running any <code>biomartr</code> functions.</p>
 <h3 id="computation-time">Computation Time<a class="anchor" aria-label="anchor" href="#computation-time"></a>
 </h3>
 <p><strong>Please note that</strong> performing <strong>Divergence
-Stratigraphy</strong> with two large genomes using BLAST+ can take (even
-on a multicore machine) some time -&gt; <strong>up to several
-hours</strong>. On a 4 core machine with 3.4 GHz i7 processors the
-computation time of generating a divergence map between <em>A.
-thaliana</em> and <em>A. lyrata</em> was <strong>2.5-3
-hours</strong>.</p>
+Stratigraphy</strong> with two large genomes can take some time even on
+a multicore machine. Using the default DIAMOND2 aligner, the computation
+time is significantly reduced compared to BLAST. For reference, on a
+4-core machine with 3.4 GHz i7 processors, generating a divergence map
+between <em>A. thaliana</em> and <em>A. lyrata</em> with BLAST took
+<strong>2.5–3 hours</strong>; DIAMOND2 in <code>fast</code> mode
+completes the same task in a fraction of that time.</p>
 <p>The <code>comp_cores</code> argument implemented in the
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> function allows users to specify
 the number of cores they would like to use on their machine. The default
-value is <code>comp_cores = 1</code> which might take
-<strong>10-12h</strong> to execute. So users need to make sure that they
-use all cores available on their machine to speed up the computation
-time.</p>
-<p>(Note, the wall clock time is now reduced with the
-<code>diamond</code>.)</p>
+value is <code>comp_cores = 1</code>. Make sure to set
+<code>comp_cores</code> to the number of available cores on your machine
+to speed up computation.</p>
 </div>
 </div>
 <div class="section level2">
@@ -259,11 +257,12 @@ interface call should be printed out to the console
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># compute the divergence map of A. thaliana</span></span>
+<span><span class="co"># compute the divergence map of A. thaliana using DIAMOND2 (default)</span></span>
 <span><span class="va">Athaliana_DM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>                         query_file      <span class="op">=</span> <span class="st">"path/to/Arabidopsis_thaliana.TAIR10.23.cds.all.fa"</span>,</span>
 <span>                         subject_file    <span class="op">=</span> <span class="st">"path/to/Arabidopsis_lyrata.v.1.0.23.cds.all.fa"</span>,</span>
-<span>                         eval            <span class="op">=</span> <span class="st">"1E-5"</span>, </span>
+<span>                         eval            <span class="op">=</span> <span class="st">"1E-5"</span>,</span>
+<span>                         aligner         <span class="op">=</span> <span class="st">"diamond"</span>,</span>
 <span>                         ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>,</span>
 <span>                         comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>                         quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
@@ -275,41 +274,43 @@ Stratigraphy</strong> with 20 example genes that are stored in the
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># performing standard divergence stratigraphy</span></span>
+<span><span class="co"># performing standard divergence stratigraphy using DIAMOND2 (default)</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>      eval            <span class="op">=</span> <span class="st">"1E-5"</span>, </span>
+<span>      eval            <span class="op">=</span> <span class="st">"1E-5"</span>,</span>
+<span>      aligner         <span class="op">=</span> <span class="st">"diamond"</span>,</span>
 <span>      ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>
-   divergence_strata    query_id
-1                 10 AT1G01010.1
-2                  9 AT1G01020.1
-3                  5 AT1G01030.1
-4                  4 AT1G01040.1
-5                  1 AT1G01050.1
-6                  9 AT1G01060.3
-7                  6 AT1G01070.1
-8                  8 AT1G01080.1
-9                  2 AT1G01090.1
-10                 7 AT1G01110.2
-11                 2 AT1G01120.1
-12                 3 AT1G01140.3
-13                10 AT1G01150.1
-14                 8 AT1G01160.1
-15                 1 AT1G01170.2
-16                 6 AT1G01180.1
-17                 7 AT1G01190.1
-18                 4 AT1G01200.1
-19                 5 AT1G01210.1
-20                 3 AT1G01220.1
+   DS    query_id
+1  10 AT1G01010.1
+2   9 AT1G01020.1
+3   5 AT1G01030.1
+4   4 AT1G01040.1
+5   1 AT1G01050.1
+6   9 AT1G01060.3
+7   6 AT1G01070.1
+8   8 AT1G01080.1
+9   2 AT1G01090.1
+10  7 AT1G01110.2
+11  2 AT1G01120.1
+12  3 AT1G01140.3
+13 10 AT1G01150.1
+14  8 AT1G01160.1
+15  1 AT1G01170.2
+16  6 AT1G01180.1
+17  7 AT1G01190.1
+18  4 AT1G01200.1
+19  5 AT1G01210.1
+20  3 AT1G01220.1
 </code></pre>
 <p>The resulting output is a <code>Divergence Map</code> of the 20
-example genes.</p>
+example genes. The column <code>DS</code> contains the divergence
+stratum (1–10) for each gene.</p>
 <p>To save corresponding <code>Divergenec Maps</code> to a hard drive
 users can pass the resulting <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>
 output to a variable and then use the <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table()</a></code>
@@ -336,25 +337,27 @@ function implemented in R to store the <code>Divergenec Map</code> as
 <code><a href="../reference/divergence_stratigraphy.html">?divergence_stratigraphy</a></code>). This section introduces
 additional output options of <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>.</p>
 <div class="section level4">
-<h4 id="example-blast_path">Example: <code>blast_path</code><a class="anchor" aria-label="anchor" href="#example-blast_path"></a>
+<h4 id="example-aligner_path">Example: <code>aligner_path</code><a class="anchor" aria-label="anchor" href="#example-aligner_path"></a>
 </h4>
 <p>Sometimes the machine users are working on does not allow them to
-install <strong>BLAST</strong> in the default execution path
-<code>usr/local/bin</code>. For this purpose the <code>blast_path</code>
-argument is implemented in <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>. This
-argument takes an character string specifying the <code>PATH</code> to
-the user’s <code>blastp</code> execution file that is stored in a
-different place than <code>usr/local/bin</code>.</p>
+install <strong>DIAMOND2</strong> (or <strong>BLAST</strong>) in the
+default execution path <code>usr/local/bin</code>. For this purpose the
+<code>aligner_path</code> argument is implemented in
+<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>. This argument takes a character
+string specifying the <code>PATH</code> to the user’s
+<code>diamond</code> (or <code>blastp</code>) executable stored in a
+non-standard location.</p>
 <p>The following example shows a possible specification of
-<code>blast_path</code>.</p>
+<code>aligner_path</code> when using DIAMOND2 (the default).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># performing standard divergence stratigraphy</span></span>
+<span><span class="co"># performing standard divergence stratigraphy with a custom DIAMOND2 path</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
-<span>      blast_path      <span class="op">=</span> <span class="st">"here/the/path/to/blastp"</span>, </span>
+<span>      aligner         <span class="op">=</span> <span class="st">"diamond"</span>,</span>
+<span>      aligner_path    <span class="op">=</span> <span class="st">"here/the/path/to/diamond"</span>,</span>
 <span>      eval            <span class="op">=</span> <span class="st">"1E-5"</span>, </span>
 <span>      ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">2</span>, </span>
@@ -362,27 +365,27 @@ different place than <code>usr/local/bin</code>.</p>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>
-   divergence_strata    query_id
-1                 10 AT1G01010.1
-2                  9 AT1G01020.1
-3                  5 AT1G01030.1
-4                  4 AT1G01040.1
-5                  1 AT1G01050.1
-6                  9 AT1G01060.3
-7                  6 AT1G01070.1
-8                  8 AT1G01080.1
-9                  2 AT1G01090.1
-10                 7 AT1G01110.2
-11                 2 AT1G01120.1
-12                 3 AT1G01140.3
-13                10 AT1G01150.1
-14                 8 AT1G01160.1
-15                 1 AT1G01170.2
-16                 6 AT1G01180.1
-17                 7 AT1G01190.1
-18                 4 AT1G01200.1
-19                 5 AT1G01210.1
-20                 3 AT1G01220.1
+   DS    query_id
+1  10 AT1G01010.1
+2   9 AT1G01020.1
+3   5 AT1G01030.1
+4   4 AT1G01040.1
+5   1 AT1G01050.1
+6   9 AT1G01060.3
+7   6 AT1G01070.1
+8   8 AT1G01080.1
+9   2 AT1G01090.1
+10  7 AT1G01110.2
+11  2 AT1G01120.1
+12  3 AT1G01140.3
+13 10 AT1G01150.1
+14  8 AT1G01160.1
+15  1 AT1G01170.2
+16  6 AT1G01180.1
+17  7 AT1G01190.1
+18  4 AT1G01200.1
+19  5 AT1G01210.1
+20  3 AT1G01220.1
 </code></pre>
 </div>
 <div class="section level4">

@@ -13,6 +13,10 @@
 #' \item \code{import_type = ""}
 #' }
 #' @param comp_cores number of cores that shall be used for parallel processing. Default is \code{cores = 1}.
+#' @param orthogroup_only logical, default \code{TRUE}. When \code{TRUE}, OrthoFinder is run with the
+#' \code{-og} flag, which stops the analysis after orthogroup inference and skips the more
+#' computationally expensive gene-tree and orthologue inference steps. Set to \code{FALSE} to
+#' run the full OrthoFinder pipeline.
 #' @param of_path a character string specifying the path to the locally installed \code{orthofinder} executable.
 #' A possible specification could be \code{of_path = "/opt/miniconda3/bin/"} which internally will translate to
 #' \code{/opt/miniconda3/bin/orthofinder}. The default is \code{of_path = NULL} which means that orthofinder assumes
@@ -43,6 +47,7 @@ orthofinder2 <-
                  use_existing_output = FALSE,
                  import_type = NULL,
                  comp_cores = 1,
+                 orthogroup_only = TRUE,
                  of_path = NULL) {
                 is_installed_orthofinder(path = of_path)
                 
@@ -107,6 +112,10 @@ orthofinder2 <-
                         # output is stored in OrthoFinder/Results_DATE , where DATE is in format: Nov08 for 08 th November
                         # or in this case OrthoFinder/Results_DATE_basename(proteome_folder)
                         
+                        # -og might be unstable in the future
+                        # https://github.com/OrthoFinder/OrthoFinder/issues/74
+                        og_flag <- if (orthogroup_only) " -og" else ""
+                        
                         if (dirname(proteome_folder) == ".") {
                                 if (is.null(of_path)) {
                                         system(
@@ -120,7 +129,8 @@ orthofinder2 <-
                                                         " -a ",
                                                         cores,
                                                         " -S diamond -n ",
-                                                        basename(proteome_folder)
+                                                        basename(proteome_folder),
+                                                        og_flag
                                                 )
                                         )
                                 } else {
@@ -146,7 +156,8 @@ orthofinder2 <-
                                                         " -a ",
                                                         cores,
                                                         " -S diamond -n ",
-                                                        basename(proteome_folder)
+                                                        basename(proteome_folder),
+                                                        og_flag
                                                 )
                                         )
                                 }
@@ -162,7 +173,8 @@ orthofinder2 <-
                                                         " -a ",
                                                         cores,
                                                         " -S diamond -n ",
-                                                        basename(proteome_folder)
+                                                        basename(proteome_folder),
+                                                        og_flag
                                                 )
                                         )
                                 } else {
@@ -186,7 +198,8 @@ orthofinder2 <-
                                                         " -a ",
                                                         cores,
                                                         " -S diamond -n ",
-                                                        basename(proteome_folder)
+                                                        basename(proteome_folder),
+                                                        og_flag
                                                 )
                                         )
                                 }
