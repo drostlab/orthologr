@@ -45,7 +45,8 @@ Suggests:
     devtools (>= 1.6.1),
     testthat (>= 3.0.0),
     pkgload,
-    metablastr
+    metablastr,
+    rlang
 Remotes:
     drostlab/metablastr
 RdMacros: Rdpack
