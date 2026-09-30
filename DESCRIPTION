@@ -35,7 +35,8 @@ Imports:
     scales,
     Rdpack,
     R.utils,
-    benchmarkme
+    benchmarkme,
+    rlang
 Suggests:
     knitr (>= 1.6),
     DBI (>= 0.3.1),
@@ -45,8 +46,7 @@ Suggests:
     devtools (>= 1.6.1),
     testthat (>= 3.0.0),
     pkgload,
-    metablastr,
-    rlang
+    metablastr
 Remotes:
     drostlab/metablastr
 RdMacros: Rdpack
