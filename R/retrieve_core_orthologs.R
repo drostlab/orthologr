@@ -40,6 +40,7 @@
 #' retrieve_core_orthologs(lnc_tbl,
 #'                         species_order = c("Arabidopsis_lyrata", "Brassica_rapa"))
 #'                         }
+#' @importFrom rlang .data
 #' @export
 
 retrieve_core_orthologs <- function(ortho_tables, species_order) {

@@ -1,3 +1,6 @@
+# Suppress R CMD CHECK NOTEs for data.table's `.()` alias and other NSE symbols
+utils::globalVariables(".")
+
 test <- function(x){ print(paste0("Test ",x," passed.","\n"))}
 
 
