@@ -39,6 +39,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/deepclust.html">Protein Clustering with DIAMOND DeepClust</a></li>
     <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
     <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
@@ -284,9 +285,45 @@ Stratigraphy</strong> with 20 example genes that are stored in the
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;    DS    query_id</span></span>
+<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;    DS    query_id</span></span>
 <span><span class="co">#&gt; 1  10 AT1G01010.1</span></span>
 <span><span class="co">#&gt; 2   9 AT1G01020.1</span></span>
 <span><span class="co">#&gt; 3   5 AT1G01030.1</span></span>
@@ -306,7 +343,7 @@ Stratigraphy</strong> with 20 example genes that are stored in the
 <span><span class="co">#&gt; 17  7 AT1G01190.1</span></span>
 <span><span class="co">#&gt; 18  4 AT1G01200.1</span></span>
 <span><span class="co">#&gt; 19  5 AT1G01210.1</span></span>
-<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre>
+<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre></div>
 <p>The resulting output is a <code>Divergence Map</code> of the 20
 example genes. The column <code>DS</code> contains the divergence
 stratum (1–10) for each gene.</p>
@@ -315,7 +352,7 @@ users can pass the resulting <code><a href="../reference/divergence_stratigraphy
 output to a variable and then use the <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table()</a></code>
 function implemented in R to store the <code>Divergenec Map</code> as
 <code>*.csv</code> file.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Athaliana_DM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span> <span class="va">...</span> <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span>x         <span class="op">=</span> <span class="va">Athaliana_DM</span>, </span>
@@ -348,7 +385,7 @@ string specifying the <code>PATH</code> to the user’s
 non-standard location.</p>
 <p>The following example shows a possible specification of
 <code>aligner_path</code> when using DIAMOND2 (the default).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy with a custom DIAMOND2 path</span></span>
@@ -402,7 +439,7 @@ the <code>ds.values</code> argument in
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> allowing them to retrieve a
 <code>dNdS Map</code> instead of a <code>Divergence Map</code>. For this
 purpose users need to set <code>ds.values = FALSE</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy</span></span>
@@ -416,9 +453,45 @@ purpose users need to set <code>ds.values = FALSE</code>.</p>
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;       dNdS    query_id</span></span>
+<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;       dNdS    query_id</span></span>
 <span><span class="co">#&gt; 1  0.41950 AT1G01010.1</span></span>
 <span><span class="co">#&gt; 2  0.38790 AT1G01020.1</span></span>
 <span><span class="co">#&gt; 3  0.11850 AT1G01030.1</span></span>
@@ -438,7 +511,7 @@ purpose users need to set <code>ds.values = FALSE</code>.</p>
 <span><span class="co">#&gt; 17 0.17730 AT1G01190.1</span></span>
 <span><span class="co">#&gt; 18 0.11370 AT1G01200.1</span></span>
 <span><span class="co">#&gt; 19 0.13420 AT1G01210.1</span></span>
-<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre></div>
 <p>The corresponding output now stores <code>dNdS</code> values instead
 of <code>DS</code> values in the first column.</p>
 </div>
@@ -454,8 +527,9 @@ organism. The <code>subject.id</code> argument implemented in
 GeneIDs of the orthologous genes of the <code>subject</code> organism.
 For this purpose users need to specify
 <code>subject.id = TRUE</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># receive a Divergence Map with DS | query GeneID | orthologous subject GeneID </span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># receive a Divergence Map with DS | query GeneID | orthologous subject GeneID </span></span>
 <span><span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -464,9 +538,45 @@ For this purpose users need to specify
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;    DS    query_id            subject_id</span></span>
+<span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;    DS    query_id            subject_id</span></span>
 <span><span class="co">#&gt; 1  10 AT1G01010.1 333554|PACid:16033839</span></span>
 <span><span class="co">#&gt; 2   9 AT1G01020.1 470181|PACid:16064328</span></span>
 <span><span class="co">#&gt; 3   5 AT1G01030.1 470180|PACid:16054974</span></span>
@@ -486,14 +596,15 @@ For this purpose users need to specify
 <span><span class="co">#&gt; 17  7 AT1G01190.1 311315|PACid:16059488</span></span>
 <span><span class="co">#&gt; 18  4 AT1G01200.1 470156|PACid:16041002</span></span>
 <span><span class="co">#&gt; 19  5 AT1G01210.1 311313|PACid:16057125</span></span>
-<span><span class="co">#&gt; 20  3 AT1G01220.1 470155|PACid:16047984</span></span></code></pre>
+<span><span class="co">#&gt; 20  3 AT1G01220.1 470155|PACid:16047984</span></span></code></pre></div>
 <p>The resulting output now shows DS values, query GeneIDs, and
 orthologous subject GeneIDs.</p>
 <p>A similar output can be generated for <code>dNdS</code> values
 instead of <code>DS</code> values by specifying
 <code>ds.values = FALSE</code> and <code>subject.id = TRUE</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID </span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID </span></span>
 <span><span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>      subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -503,9 +614,45 @@ instead of <code>DS</code> values by specifying
 <span>      ds.values       <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;       dNdS    query_id            subject_id</span></span>
+<span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;       dNdS    query_id            subject_id</span></span>
 <span><span class="co">#&gt; 1  0.41950 AT1G01010.1 333554|PACid:16033839</span></span>
 <span><span class="co">#&gt; 2  0.38790 AT1G01020.1 470181|PACid:16064328</span></span>
 <span><span class="co">#&gt; 3  0.11850 AT1G01030.1 470180|PACid:16054974</span></span>
@@ -525,7 +672,7 @@ instead of <code>DS</code> values by specifying
 <span><span class="co">#&gt; 17 0.17730 AT1G01190.1 311315|PACid:16059488</span></span>
 <span><span class="co">#&gt; 18 0.11370 AT1G01200.1 470156|PACid:16041002</span></span>
 <span><span class="co">#&gt; 19 0.13420 AT1G01210.1 311313|PACid:16057125</span></span>
-<span><span class="co">#&gt; 20 0.10230 AT1G01220.1 470155|PACid:16047984</span></span></code></pre>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1 470155|PACid:16047984</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="example-dnds-threshold">Example: <code>dnds.threshold</code><a class="anchor" aria-label="anchor" href="#example-dnds-threshold"></a>
@@ -546,7 +693,7 @@ orthologous genes rarely take values &gt; 2. Nevertheless, in case you
 wish to extend or reduce the upper threshold for dNdS values, you can
 specify the <code>dnds.threshold</code> in
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># upper threshold for dNdS: dnds.threshold = 5</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -557,9 +704,45 @@ specify the <code>dnds.threshold</code> in
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;       dNdS    query_id</span></span>
+<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 5 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;       dNdS    query_id</span></span>
 <span><span class="co">#&gt; 1  0.41950 AT1G01010.1</span></span>
 <span><span class="co">#&gt; 2  0.38790 AT1G01020.1</span></span>
 <span><span class="co">#&gt; 3  0.11850 AT1G01030.1</span></span>
@@ -579,7 +762,7 @@ specify the <code>dnds.threshold</code> in
 <span><span class="co">#&gt; 17 0.17730 AT1G01190.1</span></span>
 <span><span class="co">#&gt; 18 0.11370 AT1G01200.1</span></span>
 <span><span class="co">#&gt; 19 0.13420 AT1G01210.1</span></span>
-<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="example-ortho_detection">Example: <code>ortho_detection</code><a class="anchor" aria-label="anchor" href="#example-ortho_detection"></a>
@@ -598,7 +781,7 @@ Inference Vignette</a> for details). For example in Quint et al., 2012
 hit, the method <strong>BLAST</strong> best hit (BH) was used to perform
 orthology inference within the <strong>Divergence Stratigraphy</strong>
 algorithm.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># orthology inference method: ortho_detection = "BH"</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -609,9 +792,40 @@ algorithm.</p>
 <span>      dnds.threshold  <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt;    DS    query_id</span></span>
+<span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Proceeding with the aligner: diamond</span></span>
+<span><span class="co">#&gt; Running Divergence Stratigraphy ...</span></span>
+<span><span class="co">#&gt; Filtering out NA values in dN or dS and all values with dNdS &gt; 2 ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting orthology inference (BH) and dNdS estimation (Comeron) using the follwing parameters:</span></span>
+<span><span class="co">#&gt; query = 'ortho_thal_cds.fasta'</span></span>
+<span><span class="co">#&gt; subject = 'ortho_lyra_cds.fasta'</span></span>
+<span><span class="co">#&gt; aligner = 'diamond'</span></span>
+<span><span class="co">#&gt; sensitivity_mode = 'fast'</span></span>
+<span><span class="co">#&gt; seq_type = 'cds'</span></span>
+<span><span class="co">#&gt; e-value: 1E-5</span></span>
+<span><span class="co">#&gt; aa_aln_type = 'pairwise'</span></span>
+<span><span class="co">#&gt; aa_aln_tool = 'NW'</span></span>
+<span><span class="co">#&gt; comp_cores = '1'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Starting Orthology Inference ...</span></span>
+<span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span>
+<span><span class="co">#&gt; sensitivity mode: fast</span></span>
+<span><span class="co">#&gt; creating a diamond database</span></span>
+<span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span>
+<span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span>
+<span><span class="co">#&gt; Orthology Inference Completed.</span></span>
+<span><span class="co">#&gt; Starting dN/dS Estimation ...</span></span>
+<span><span class="co">#&gt; dN/dS Estimation Completed.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Please cite the following paper when using orthologr for your own research:</span></span>
+<span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Initial input contains 20 rows.</span></span>
+<span><span class="co">#&gt; Filtering done. New output table contains 20 rows.</span></span>
+<span><span class="co">#&gt; Divergence Stratigraphy completed successfully.</span></span>
+<span><span class="co">#&gt;    DS    query_id</span></span>
 <span><span class="co">#&gt; 1  10 AT1G01010.1</span></span>
 <span><span class="co">#&gt; 2   9 AT1G01020.1</span></span>
 <span><span class="co">#&gt; 3   5 AT1G01030.1</span></span>
@@ -631,7 +845,7 @@ algorithm.</p>
 <span><span class="co">#&gt; 17  7 AT1G01190.1</span></span>
 <span><span class="co">#&gt; 18  4 AT1G01200.1</span></span>
 <span><span class="co">#&gt; 19  5 AT1G01210.1</span></span>
-<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre>
+<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre></div>
 </div>
 </div>
 </div>

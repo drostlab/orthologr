@@ -39,6 +39,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/deepclust.html">Protein Clustering with DIAMOND DeepClust</a></li>
     <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
     <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
@@ -161,23 +162,22 @@ searches can even be scaled towards genome and proteome comparisons.</p>
 <p>The <code><a href="../reference/blast.html">blast()</a></code> function provides the easiest way to perform
 a BLAST search.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># performing a BLAST search using blastp (default)</span></span>
-<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># look at results</span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">hit_tbl</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Rows: 20</span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="co"># performing a BLAST search using blastp (default)</span></span>
+<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                 subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co"># look at results</span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">hit_tbl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 20</span></span>
 <span><span class="co">#&gt; Columns: 21</span></span>
 <span><span class="co">#&gt; $ query_id          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "AT1G01010.1"<span style="color: #949494;">, </span>"AT1G01020.1"<span style="color: #949494;">, </span>"AT1G01030.1"<span style="color: #949494;">, </span>"AT1G01040.1"<span style="color: #949494;">, </span>"AT1G01050.1"<span style="color: #949494;">, </span>"AT1G01060.3"<span style="color: #949494;">, </span>"AT1G01070.1"<span style="color: #949494;">, </span>"AT1G01080.1"<span style="color: #949494;">, </span>"AT1G01090.1"<span style="color: #949494;">, </span>"AT1G01110.2"<span style="color: #949494;">, </span>"AT1G01120.1"<span style="color: #949494;">, </span>"AT1G01140.3"<span style="color: #949494;">, </span>"AT1G01150.1"<span style="color: #949494;">, </span>"AT1G01160.1"<span style="color: #949494;">, </span>"AT1G01170.2"<span style="color: #949494;">, </span>"AT1G01180.1"<span style="color: #949494;">, </span>"AT1G01190.1"<span style="color: #949494;">, </span>"AT1G01200.1"<span style="color: #949494;">, </span>"AT1G01210.1"<span style="color: #949494;">, </span>"AT1G01220.1"</span></span>
 <span><span class="co">#&gt; $ subject_id        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "333554|PACid:16033839"<span style="color: #949494;">, </span>"470181|PACid:16064328"<span style="color: #949494;">, </span>"470180|PACid:16054974"<span style="color: #949494;">, </span>"333551|PACid:16057793"<span style="color: #949494;">, </span>"909874|PACid:16064489"<span style="color: #949494;">, </span>"470177|PACid:16043374"<span style="color: #949494;">, </span>"918864|PACid:16052578"<span style="color: #949494;">, </span>"909871|PACid:16053217"<span style="color: #949494;">, </span>"470171|PACid:16052860"<span style="color: #949494;">, </span>"333544|PACid:16034284"<span style="color: #949494;">, </span>"918858|PACid:16049140"<span style="color: #949494;">, </span>"470161|PACid:16036015"<span style="color: #949494;">, </span>"918855|PACid:16037307"<span style="color: #949494;">, </span>"918854|PACid:16044153"<span style="color: #949494;">, </span>"311317|PACid:16052302"<span style="color: #949494;">, </span>"909860|PACid:16056125"<span style="color: #949494;">, </span>"311315|PACid:16059488"<span style="color: #949494;">, </span>"470156|PACid:16041002"<span style="color: #949494;">, </span>"311313|PACid:16057125"<span style="color: #949494;">, </span>"470155|PACid:16047984"</span></span>
@@ -199,7 +199,7 @@ a BLAST search.</p>
 <span><span class="co">#&gt; $ s_len             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 466<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>355<span style="color: #949494;">, </span>1963<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>640<span style="color: #949494;">, </span>362<span style="color: #949494;">, </span>299<span style="color: #949494;">, </span>433<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>453<span style="color: #949494;">, </span>294<span style="color: #949494;">, </span>225<span style="color: #949494;">, </span>100<span style="color: #949494;">, </span>316<span style="color: #949494;">, </span>540<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
 <span><span class="co">#&gt; $ evalue            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.00e+00<span style="color: #949494;">, </span>8.91e-168<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>3.27e-162<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>1.21e-180<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>4.13e-152<span style="color: #949494;">, </span>2.39e-95<span style="color: #949494;">, </span>1.18e-55<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>3.85e-174<span style="color: #949494;">, </span>1.81e-77<span style="color: #949494;">, </span>0.00e+00</span></span>
 <span><span class="co">#&gt; $ bit_score         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 627<span style="color: #949494;">, </span>454<span style="color: #949494;">, </span>698<span style="color: #949494;">, </span>3704<span style="color: #949494;">, </span>437<span style="color: #949494;">, </span>1037<span style="color: #949494;">, </span>696<span style="color: #949494;">, </span>491<span style="color: #949494;">, </span>859<span style="color: #949494;">, </span>972<span style="color: #949494;">, </span>1092<span style="color: #949494;">, </span>918<span style="color: #949494;">, </span>421<span style="color: #949494;">, </span>268<span style="color: #949494;">, </span>158<span style="color: #949494;">, </span>576<span style="color: #949494;">, </span>1036<span style="color: #949494;">, </span>470<span style="color: #949494;">, </span>215<span style="color: #949494;">, </span>2106</span></span>
-<span><span class="co">#&gt; $ score_raw         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1617<span style="color: #949494;">, </span>1169<span style="color: #949494;">, </span>1801<span style="color: #949494;">, </span>9604<span style="color: #949494;">, </span>1125<span style="color: #949494;">, </span>2681<span style="color: #949494;">, </span>1797<span style="color: #949494;">, </span>1264<span style="color: #949494;">, </span>2220<span style="color: #949494;">, </span>2512<span style="color: #949494;">, </span>2825<span style="color: #949494;">, </span>2372<span style="color: #949494;">, </span>1082<span style="color: #949494;">, </span>685<span style="color: #949494;">, </span>400<span style="color: #949494;">, </span>1484<span style="color: #949494;">, </span>2679<span style="color: #949494;">, </span>1209<span style="color: #949494;">, </span>547<span style="color: #949494;">, </span>5456</span></span></code></pre>
+<span><span class="co">#&gt; $ score_raw         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1617<span style="color: #949494;">, </span>1169<span style="color: #949494;">, </span>1801<span style="color: #949494;">, </span>9604<span style="color: #949494;">, </span>1125<span style="color: #949494;">, </span>2681<span style="color: #949494;">, </span>1797<span style="color: #949494;">, </span>1264<span style="color: #949494;">, </span>2220<span style="color: #949494;">, </span>2512<span style="color: #949494;">, </span>2825<span style="color: #949494;">, </span>2372<span style="color: #949494;">, </span>1082<span style="color: #949494;">, </span>685<span style="color: #949494;">, </span>400<span style="color: #949494;">, </span>1484<span style="color: #949494;">, </span>2679<span style="color: #949494;">, </span>1209<span style="color: #949494;">, </span>547<span style="color: #949494;">, </span>5456</span></span></code></pre></div>
 <p>As you can see, the hit table shows the output of the BLAST+ search.
 The <code><a href="../reference/blast.html">blast()</a></code> function runs <code>blastp</code> as default
 BLAST+ algorithm. Different BLAST+ algorithms can be selected by
@@ -219,16 +219,18 @@ columns: <code>query_id</code>, <code>subject_id</code>,
 a data.table object, you can access each column, using the <a href="https://r-datatable.com" class="external-link">data.table notation</a>.</p>
 <p>In case you need to specify the <code>PATH</code> to BLAST+ please
 use the <code>path</code> argument:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># performing a BLAST search using blastp (default)</span></span>
-<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, path <span class="op">=</span> <span class="st">"/path/to/blastp"</span><span class="op">)</span></span>
+<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                 subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                 path         <span class="op">=</span> <span class="st">"/path/to/blastp"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="va">hit_tbl</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># access columns: query_id, subject_id, evalue, and bit_score</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">bit_score</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 4</span></span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">bit_score</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 4</span></span></span>
 <span><span class="co">#&gt;    query_id    subject_id               evalue bit_score</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839 0   <span style="color: #949494;"> </span>           627</span></span>
@@ -250,16 +252,16 @@ use the <code>path</code> argument:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106</span></span></code></pre></div>
 <p>The <code><a href="../reference/blast.html">blast()</a></code> function also allows you to pass additional
 parameters to the BLAST+ search using the <code>blast_params</code>
 argument. In the following example, a remote BLAST+ search is
 performed.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>                 subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>                 blast_params <span class="op">=</span> <span class="st">"-qcov_hsp_perc 0.9"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">hit_tbl</span><span class="op">)</span></span></code></pre></div>
 <pre><code>Rows: 20
 Columns: 21
@@ -290,11 +292,14 @@ $ score_raw         &lt;dbl&gt; 1617, 1169, 1801, 9604, 1125, 2681, 1797, 1264, 
 <p>Since BLAST+ searches can be computationally expensive, it is
 possible to specify the <code>comp_cores</code> argument when working
 with an multicore machine.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># BLAST computations using the comp_cores parameter: here with 2 cores</span></span>
-<span><span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, comp_cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># BLAST computations using the comp_cores parameter: here with 2 cores</span></span>
+<span><span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>      subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>      comp_cores   <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
 <span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          74.0               347         469         80            8     42       370  78.9       1   430   430   100     100       1   466   466 0   <span style="color: #949494;"> </span>           627      <span style="text-decoration: underline;">1</span>617</span></span>
@@ -316,7 +321,7 @@ with an multicore machine.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536    99      99       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036      <span style="text-decoration: underline;">2</span>679</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238   100     100       1   238   238 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470      <span style="text-decoration: underline;">1</span>209</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215       547</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre></div>
 <p>The <code>query_file</code> and <code>subject_file</code> arguments
 specify the path to the corresponding fasta files storing the
 <code>CDS</code> files, <code>amino acid</code> files, or
@@ -354,22 +359,23 @@ strategy</a> to detect for example <code>one-to-one</code>,
 <code>one-to-many</code>, and <code>many-to-many</code> gene homology
 relationships.</p>
 <p>Here a simple example:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co"># perform a blastp search of 20 A. thaliana genes against 1000 A. lyrata genes</span></span>
-<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds_1000.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<pre><code><span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span></span>
+<span><span class="va">hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast.html">blast</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                 subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span>
+<span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span></span>
+<span><span class="co"># determine 'one-to-many' and 'one-to-one' gene relationships</span></span>
 <span><span class="va">rel_hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span><span class="op">)</span>, n_genes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># look at results</span></span>
-<span><span class="va">rel_hit_tbl</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 2</span></span></span>
+<span><span class="va">rel_hit_tbl</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 2</span></span></span>
 <span><span class="co">#&gt;    query_id    n_genes</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1       4</span></span>
@@ -391,18 +397,18 @@ relationships.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1       6</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1       7</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1       1</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1       1</span></span></code></pre></div>
 <p>Now you can sort genes into classes: <code>one-to-one</code> and
 <code>one-to-many</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># classify into 'one-to-one' relationships</span></span>
 <span><span class="va">one_to_one</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">rel_hit_tbl</span>, <span class="va">n_genes</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co"># classify into 'one-to-many' relationships</span></span>
 <span><span class="va">one_to_many</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">rel_hit_tbl</span>, <span class="va">n_genes</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># look at one_to_one</span></span>
-<span><span class="va">one_to_one</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 2</span></span></span>
+<span><span class="va">one_to_one</span> </span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 2</span></span></span>
 <span><span class="co">#&gt;    query_id    n_genes</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01020.1       1</span></span>
@@ -416,11 +422,11 @@ relationships.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01170.2       1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01180.1       1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01210.1       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01220.1       1</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01220.1       1</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># look at one_to_many</span></span>
-<span><span class="va">one_to_many</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
+<span><span class="va">one_to_many</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
 <span><span class="co">#&gt;   query_id    n_genes</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> AT1G01010.1       4</span></span>
@@ -430,7 +436,7 @@ relationships.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> AT1G01120.1       3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AT1G01140.3      36</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> AT1G01190.1       6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> AT1G01200.1       7</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> AT1G01200.1       7</span></span></code></pre></div>
 <p>Now we can treat classes: <code>one_to_one</code> and
 <code>one_to_many</code> differently:</p>
 </div>
@@ -439,11 +445,11 @@ relationships.</p>
 </h3>
 <p>We can now retrieve the blast hit entries for the one-to-one hits by
 joining the tables <code>one_to_one</code> and <code>hit_tbl</code>.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># look at the evalue, perc_identity, and alig_length of one_to_one genes</span></span>
-<span><span class="va">oo_genes</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">one_to_one</span>, <span class="va">hit_tbl</span>, by <span class="op">=</span> <span class="st">"query_id"</span><span class="op">)</span></span>
-<span><span class="va">oo_genes</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 22</span></span></span>
+<span><span class="va">oo_genes</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">one_to_one</span>, <span class="va">hit_tbl</span> , by <span class="op">=</span> <span class="st">"query_id"</span><span class="op">)</span></span>
+<span><span class="va">oo_genes</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 22</span></span></span>
 <span><span class="co">#&gt;    query_id    n_genes subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01020.1       1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246   100     100       1   246   246 4.33<span style="color: #949494;">e</span><span style="color: #BB0000;">-166</span>       454      <span style="text-decoration: underline;">1</span>169</span></span>
@@ -457,7 +463,7 @@ joining the tables <code>one_to_one</code> and <code>hit_tbl</code>.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01170.2       1 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84    99      99       4   100   100 5.75<span style="color: #949494;">e</span><span style="color: #BB0000;">- 54</span>       158       400</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01180.1       1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479    64      64       1   310   316 0   <span style="color: #949494;"> </span>           576      <span style="text-decoration: underline;">1</span>484</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01210.1       1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 8.80<span style="color: #949494;">e</span><span style="color: #BB0000;">- 76</span>       215       547</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01220.1       1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01220.1       1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre></div>
 <p>This way, users will have all blast information of
 <code>one_to_one</code> hits available.</p>
 </div>
@@ -474,12 +480,12 @@ goal: <code>one_to_one</code> genes must have a minimum
 <code>alignment length of 300</code>, a
 p<code>erc_identity of &gt; 80 percent</code> and an
 <code>e-value &lt; 1E-5</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter for 'homologous' hits</span></span>
-<span><span class="va">true_orthologs</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oo_genes</span>, <span class="va">evalue</span> <span class="op">&lt;</span> <span class="fl">1e-05</span>, <span class="va">perc_identity</span> <span class="op">&gt;</span> <span class="fl">80</span>, <span class="va">alig_length</span> <span class="op">&gt;</span> <span class="fl">300</span><span class="op">)</span></span>
+<span><span class="va">true_orthologs</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">oo_genes</span>, <span class="va">evalue</span> <span class="op">&lt;</span> <span class="fl">1e-5</span>, <span class="va">perc_identity</span> <span class="op">&gt;</span> <span class="fl">80</span>, <span class="va">alig_length</span> <span class="op">&gt;</span> <span class="fl">300</span><span class="op">)</span></span>
 <span><span class="co"># look at results</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">true_orthologs</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">true_orthologs</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   query_id    subject_id            evalue perc_identity alig_length</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> AT1G01030.1 470180|PACid:16054974      0          95.5         359</span></span>
@@ -487,7 +493,7 @@ p<code>erc_identity of &gt; 80 percent</code> and an
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> AT1G01090.1 470171|PACid:16052860      0          96.8         434</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> AT1G01110.2 333544|PACid:16034284      0          93.6         528</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> AT1G01180.1 909860|PACid:16056125      0          92.6         310</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AT1G01220.1 470155|PACid:16047984      0          96.7        <span style="text-decoration: underline;">1</span>056</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AT1G01220.1 470155|PACid:16047984      0          96.7        <span style="text-decoration: underline;">1</span>056</span></span></code></pre></div>
 <p>This way we could filter out a high confidence set of homologous
 genes from the <code>one_to_one</code> class of genes.</p>
 <p>In reality most homology inference programs and methods perform way
@@ -506,10 +512,10 @@ to distinguish between orthologous and paralogous genes.</p>
 <p>Here we want to address the question how to deal with multiple hits
 returned by <code>BLAST+</code>.</p>
 <p>Again we investigate all <code>one_to_many</code> genes:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># look at results</span></span>
-<span><span class="va">one_to_many</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># look at results </span></span>
+<span><span class="va">one_to_many</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
 <span><span class="co">#&gt;   query_id    n_genes</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> AT1G01010.1       4</span></span>
@@ -519,14 +525,14 @@ returned by <code>BLAST+</code>.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> AT1G01120.1       3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AT1G01140.3      36</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> AT1G01190.1       6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> AT1G01200.1       7</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> AT1G01200.1       7</span></span></code></pre></div>
 <p>When looking at gene_id <code>AT1G01200.1</code> we see that it was
 found 7 times in the corresponding subject set of <em>A.
 lyrata</em>.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># look at all 7 hits found</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span> <span class="op">==</span> <span class="st">"AT1G01200.1"</span><span class="op">)</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span> <span class="op">==</span> <span class="st">"AT1G01200.1"</span><span class="op">)</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 5</span></span></span>
 <span><span class="co">#&gt;   query_id    subject_id               evalue perc_identity alig_length</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> AT1G01200.1 470156|PACid:16041002 1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-172</span>          95.8         238</span></span>
@@ -535,7 +541,7 @@ lyrata</em>.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> AT1G01200.1 919287|PACid:16060536 4.42<span style="color: #949494;">e</span><span style="color: #BB0000;">- 70</span>          58.1         179</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> AT1G01200.1 919355|PACid:16050170 2.40<span style="color: #949494;">e</span><span style="color: #BB0000;">- 73</span>          53.3         212</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AT1G01200.1 919721|PACid:16036935 2.63<span style="color: #949494;">e</span><span style="color: #BB0000;">- 81</span>          59.3         204</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> AT1G01200.1 919852|PACid:16055066 4.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-  7</span>          24.0         154</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> AT1G01200.1 919852|PACid:16055066 4.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-  7</span>          24.0         154</span></span></code></pre></div>
 <p>Now we have to decide which hit shall be considered as potential
 <em>homolog</em>.</p>
 <p>In this example <code>subject_id</code>
@@ -555,25 +561,25 @@ the other direction to detect matches in the query sequences. Only when
 both blast seaches in both directions result in the same hit pair:
 BLAST(A,B) = BLAST(B,A) the hit will be considered as true ortholog
 relationship.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run blast best reciprocal hit function</span></span>
-<span><span class="va">rbh_hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast_rec.html">blast_rec</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds_1000.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<pre><code><span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<pre><code><span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># look at results</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">rbh_hit_tbl</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 5</span></span></span>
+<span><span class="va">rbh_hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast_rec.html">blast_rec</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                         subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span>
+<span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span>
+<span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co"># look at results</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">rbh_hit_tbl</span>, <span class="va">query_id</span>, <span class="va">subject_id</span>, <span class="va">evalue</span>, <span class="va">perc_identity</span>, <span class="va">alig_length</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
 <span><span class="co">#&gt;    query_id    subject_id               evalue perc_identity alig_length</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -596,7 +602,7 @@ relationship.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488 0   <span style="color: #949494;"> </span>              94.2         533</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002 1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-172</span>          95.8         238</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125 8.80<span style="color: #949494;">e</span><span style="color: #BB0000;">- 76</span>          95.3         107</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984 0   <span style="color: #949494;"> </span>              96.7        <span style="text-decoration: underline;">1</span>056</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984 0   <span style="color: #949494;"> </span>              96.7        <span style="text-decoration: underline;">1</span>056</span></span></code></pre></div>
 <p>When we now look at gene <code>AT1G01200.1</code> we find that after
 an reciprocal blast approach subject gene
 <code>470181|PACid:16064328</code> rather than the subject gene
@@ -606,76 +612,75 @@ importance of using bidirectional blast to determine orthology
 relationships.</p>
 <p>An alternative analysis that can be performed with these three
 candidate subject genes is the following:</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># read CDS sequences of the 20 example query genes of A. thaliana</span></span>
-<span><span class="va">Ath.cds</span> <span class="op">&lt;-</span> <span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
+<span><span class="va">Ath.cds</span> <span class="op">&lt;-</span> <span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span>file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
 <span><span class="co"># read CDS sequences of the 1000 example subject genes of A. lyrata</span></span>
-<span><span class="va">Aly.cds</span> <span class="op">&lt;-</span> <span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds_1000.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<pre><code><span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span></code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># show the sequence of gene AT1G01070.1</span></span>
-<span><span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span>, <span class="va">seqs</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgtagcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaatggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaatggtcgatcatttcgtcagtggccttctcggggcgagtttgatgcagtttttctttttgcttggtctgtcgtacacgtcagcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttggcccttattttcaggactgaaaatgtgaagattctaaagaccaaagcaggaatgttgaaggtgattggaactttgatctgtataagtggagctttgttcttaacattttacaaaggcccacaaatatcaaactctcactctcactctcacggtggggcttcccacaacaacaacgatcaagacaaggccaataattggcttcttggatgtctttatttaaccataggaacagtgttgctatctctatggatgttgtttcaagggactttaagtattaagtacccttgcaaatactcgagcacttgtcttatgtcaattttcgcggcatttcaatgtgctctcttgagcctttacaagagcagagacgttaatgattggatcatagatgatagattcgttatcaccgtcatcatatacgctggagtggtaggacaagcaatgacgacggttgcaacaacatgggggattaaaaaattaggagctgtgttcgcatcggcgtttttcccacttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcactagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcaggaatggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</span></span></code></pre>
+<span><span class="va">Aly.cds</span> <span class="op">&lt;-</span> <span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span>file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds_1000.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; There seem to be 12 coding sequences in your input dataset which cannot be properly divided in base triplets, because their sequence length cannot be divided by 3.</span></span>
+<span><span class="co">#&gt; A fasta file storing all corrupted coding sequences for inspection was generated and stored at '/Users/sodai/Desktop/projects/R/orthologr/vignettes/ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; You chose option 'delete_corrupt_cds = TRUE', thus corrupted coding sequences were removed.If after consulting the file 'ortho_lyra_cds_1000.fasta_corrupted_cds_seqs.fasta' you still wish to retain all coding sequences please specify the argument 'delete_corrupt_cds = FALSE'.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co"># show the sequence of gene AT1G01070.1</span></span>
+<span><span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span> , <span class="va">seqs</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgtagcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaatggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaatggtcgatcatttcgtcagtggccttctcggggcgagtttgatgcagtttttctttttgcttggtctgtcgtacacgtcagcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttggcccttattttcaggactgaaaatgtgaagattctaaagaccaaagcaggaatgttgaaggtgattggaactttgatctgtataagtggagctttgttcttaacattttacaaaggcccacaaatatcaaactctcactctcactctcacggtggggcttcccacaacaacaacgatcaagacaaggccaataattggcttcttggatgtctttatttaaccataggaacagtgttgctatctctatggatgttgtttcaagggactttaagtattaagtacccttgcaaatactcgagcacttgtcttatgtcaattttcgcggcatttcaatgtgctctcttgagcctttacaagagcagagacgttaatgattggatcatagatgatagattcgttatcaccgtcatcatatacgctggagtggtaggacaagcaatgacgacggttgcaacaacatgggggattaaaaaattaggagctgtgttcgcatcggcgtttttcccacttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcactagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcaggaatggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa"</span></span></code></pre></div>
 <p>Now users can perform a global alignment between the CDS sequences of
 <code>AT1G01070.1</code> and the three subject genes as follows:</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Loading required package: BiocGenerics</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: generics</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'generics'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/pwalign" class="external-link">pwalign</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: BiocGenerics</span></span>
+<span><span class="co">#&gt; Loading required package: generics</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     explain</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; Attaching package: 'generics'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff, setequal, union</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'BiocGenerics'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt;     explain</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     combine</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff, setequal, union</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     IQR, mad, sd, var, xtabs</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; Attaching package: 'BiocGenerics'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     anyDuplicated, aperm, append, as.data.frame, basename, cbind, colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique, unsplit, which.max, which.min</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: S4Vectors</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: stats4</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'S4Vectors'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt;     combine</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     first, rename</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following object is masked from 'package:utils':</span></span>
+<span><span class="co">#&gt;     IQR, mad, sd, var, xtabs</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     findMatches</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt;     anyDuplicated, aperm, append, as.data.frame, basename, cbind, colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank, rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique, unsplit, which.max, which.min</span></span>
+<span><span class="co">#&gt; Loading required package: S4Vectors</span></span>
+<span><span class="co">#&gt; Loading required package: stats4</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     expand.grid, I, unname</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: IRanges</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'IRanges'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; Attaching package: 'S4Vectors'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     collapse, desc, slice</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: XVector</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; Loading required package: Seqinfo</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'Biostrings'</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt;     first, rename</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:utils':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     strsplit</span></span></code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/pwalign" class="external-link">pwalign</a></span><span class="op">)</span></span>
-<span><span class="co"># perform 3 global alignments between: AT1G01070.1 and 918864|PACid:16052578, 919693|PACid:16048878, 919961|PACid:16062329</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">Aly.cds</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span> <span class="op">==</span> <span class="st">"AT1G01070.1"</span><span class="op">)</span>, <span class="va">subject_id</span><span class="op">)</span><span class="op">)</span>, <span class="va">seqs</span><span class="op">]</span>, <span class="va">pairwiseAlignment</span>, pattern <span class="op">=</span> <span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span>, <span class="va">seqs</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"global"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; $...</span></span>
+<span><span class="co">#&gt;     findMatches</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     expand.grid, I, unname</span></span>
+<span><span class="co">#&gt; Loading required package: IRanges</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'IRanges'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:dplyr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     collapse, desc, slice</span></span>
+<span><span class="co">#&gt; Loading required package: XVector</span></span>
+<span><span class="co">#&gt; Loading required package: Seqinfo</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'Biostrings'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     strsplit</span></span>
+<span><span class="co"># perform 3 global alignments between:  AT1G01070.1 and 918864|PACid:16052578, </span></span>
+<span><span class="co"># 919693|PACid:16048878, 919961|PACid:16062329</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">Aly.cds</span><span class="op">[</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">hit_tbl</span>, <span class="va">query_id</span> <span class="op">==</span> <span class="st">"AT1G01070.1"</span><span class="op">)</span>, <span class="va">subject_id</span><span class="op">)</span><span class="op">)</span>, <span class="va">seqs</span> <span class="op">]</span>, <span class="va">pairwiseAlignment</span>, </span>
+<span>       pattern <span class="op">=</span> <span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span> , <span class="va">seqs</span><span class="op">]</span>, type    <span class="op">=</span> <span class="st">"global"</span> <span class="op">)</span></span>
+<span><span class="co">#&gt; $...</span></span>
 <span><span class="co">#&gt; Global PairwiseAlignmentsSingleSubject (1 of 1)</span></span>
 <span><span class="co">#&gt; pattern: atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgtagcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaatggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaatggtcgatcatttcgtcagtggccttctcggggcgagtttgatgcagtttttctttttgcttggtctgtcgtacacgtcagcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttg...agagacgttaatgattggatcatagatgatagattcgttatcaccgtcatcatatacgctggagtggtaggacaagcaatgacgacggttgcaacaacatgggggattaaaaaattaggagctgtgttcgcatcggcgtttttcccacttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcactagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcaggaatggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa</span></span>
 <span><span class="co">#&gt; subject: atgggtgaaggtatgattggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaacgtagcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaatggctatttccgctttcattttggttccctttgcctatatcttggaaaggaaaacaagaccacagataacgtttaggctaatgatcgatcatttcgtcagtggccttctcggggcgagtttgatgcaatttttctttttgcttggtctgtcgtacacgtcagcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttg...agagacgttaatgattggatcatcgatgatagattcgtgatcaccgtcatcatatacgctggagtggtaggacaagcaatgtcgacggtagcaacaacatgggggataaagaaattaggagctgtgttcgcatcggcattttttccacttactctcatttcggctactctatttgatttcctaattttacacactcctttataccttggaagtgtgattggatcactagtgaccataacgggtctctacatgtttttgtggggcaagaacaaagaaacggaatcatcaactgcattgtcttctcgaatggataatgaagctcaaaata------ttaataaggataacgactctaagtcgcccgtttaa</span></span>
@@ -691,7 +696,7 @@ candidate subject genes is the following:</p>
 <span><span class="co">#&gt; Global PairwiseAlignmentsSingleSubject (1 of 1)</span></span>
 <span><span class="co">#&gt; pattern: atggctggagatatgcaaggagtgagagtagtagaaaaatattcaccggtcatagtgatggtgatgtcaaatgtagcgatgggttcggtgaatgcacttgtgaagaaagctcttgatgttggtgtgaaccatatggtcattggtgcttatcgaatggctatttccgctttaattttggttccctttgcctatgtcttggaaaggaaaacaagaccacaaataacgtttaggctaatggtcgatcatttcgtcagtggccttctcggggcgagtttgatgcagtttttctttttgcttggtctgtcgtacacgtcagcaactgtttcgtgtgctttggtaagcatgttgcctgcaatcaccttcgctttg...agagacgttaatgattggatcatagatgatagattcgttatcaccgtcatcatatacgctggagtggtaggacaagcaatgacgacggttgcaacaacatgggggattaaaaaattaggagctgtgttcgcatcggcgtttttcccacttactctcatttcggctactctatttgatttcctcattttacacactcctttataccttggaagtgtgattggatcactagtgaccataacgggtctctacatgttcttgtgggggaagaacaaagaaacggaatcatcaactgcattgtcttcaggaatggataacgaagctcaatatactactcctaataaggataacgactctaagtcgcccgtttaa</span></span>
 <span><span class="co">#&gt; subject: atgagtgaggatatgggaggagtgaaagtagtctcaaaatggccaccggttatagttatggtggcatcacaagtagcgatgggttcggtgaatgcacttgtgaagaaagctctcgatgttggtgtgaaccatatgatcgttggtgcttatcgaatggctatttcctcgctcattctggctcctattgcctattttttggaaaggaaaataataccgcaaataacgtttaggctaatggtcgatcatttcatcagtggtttgctcggggcaagtttgatgcaatttttctatttgctgggtctgtcgtatacgtcagcaactgttgcgtgtgctttggtaagcttgatgcctgcaatcaccttcgctttc...agagatcttaaacattggatcatcgatgatggatttgtgatcggtgtcatcgtatatgctggagtgataggacaagcaatgtcgactgtagcagcgacatggggaataacgagattaggagctgttttcgcatcagcaattatgccagtttctctaatttcggctactctattcgatttcctaatcttagacactcctttatacctcggaagtgtgattggatcagtagtaacaataataggtctttacgtgttcttgtggggtaagaacaaagaaatggaagcat---------------------------------------------------------------------------------aa</span></span>
-<span><span class="co">#&gt; score: 486.462</span></span></code></pre>
+<span><span class="co">#&gt; score: 486.462</span></span></code></pre></div>
 <p><strong>Note</strong>: To obtain the score value, you need to specify
 the <code>scoreOnly = TRUE</code> in the <code>pairwiseAlignment</code>
 function.</p>
@@ -704,21 +709,24 @@ performed using the <code>blast</code> functions implemented in
 <code>orthologr</code>.</p>
 <p>Another useful analysis can be to take the length of the initial
 query genes into account using the <code><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar()</a></code> function:</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># show the length distribution of all genes stored in 'Ath.cds'</span></span>
-<span><span class="va">Ath.cds</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt;  [1] 1290  738 1077 5730  639 1938 1098  882 1287 1584 1587 1356 1038  588  252 1437 1608  714  321 3168</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># show the length distribution of all genes</span></span>
+<span><span class="co"># stored in "Ath.cds"</span></span>
+<span><span class="va">Ath.cds</span><span class="op">[</span> , <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] 1290  738 1077 5730  639 1938 1098  882 1287 1584 1587 1356 1038  588  252 1437 1608  714  321 3168</span></span></code></pre></div>
 <p>Or the length of a specific gene:</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] 1098</span></span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">Ath.cds</span><span class="op">[</span><span class="st">"AT1G01070.1"</span> , <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 1098</span></span></code></pre></div>
 <p>This way you can easily visualize the length distribution of genes
 stored in your query organism file.</p>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Ath.cds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds_1000.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
-<span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Ath.cds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read.cds.html">read.cds</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds_1000.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                    format <span class="op">=</span> <span class="st">"fasta"</span><span class="op">)</span></span>
+<span>                    </span>
 <span><span class="co"># look at sequence length distributions</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">Ath.cds</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span>, breaks <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">Ath.cds</span><span class="op">[</span> , <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">seqs</span><span class="op">)</span><span class="op">]</span>, breaks <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p><img src="blast_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
@@ -731,11 +739,13 @@ BLAST+ best hit searches (only based on the minimum e-value) and returns
 the best hit when performing a BLAST+ search of a query organisms (or
 set of query genes) against a subject organism (or set of subject
 genes).</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># performing gene orthology inference using the best hit (BH) method</span></span>
-<span><span class="fu"><a href="../reference/blast_best.html">blast_best</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, clean_folders <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="fu"><a href="../reference/blast_best.html">blast_best</a></span><span class="op">(</span>query_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>           subject_file  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>           clean_folders <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
 <span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -758,20 +768,20 @@ genes).</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536    99      99       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036      <span style="text-decoration: underline;">2</span>679</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238   100     100       1   238   238 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470      <span style="text-decoration: underline;">1</span>209</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215       547</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre></div>
 <p>The <code><a href="../reference/blast_best.html">blast_best()</a></code> function returns 21 columns: the same
 format as <code><a href="../reference/blast.html">blast()</a></code>. The most commonly used columns are
 <code>query_id</code>, <code>subject_id</code>,
 <code>perc_identity</code>, <code>alig_length</code>,
 <code>evalue</code>, and <code>bit_score</code>.</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># BLAST+ best hit search</span></span>
-<span><span class="va">best_hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast_best.html">blast_best</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># look at results</span></span>
-<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">best_hit_tbl</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Rows: 20</span></span>
+<span><span class="va">best_hit_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blast_best.html">blast_best</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>                           subject_file    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co"># look at results</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">best_hit_tbl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Rows: 20</span></span>
 <span><span class="co">#&gt; Columns: 21</span></span>
 <span><span class="co">#&gt; Groups: query_id [20]</span></span>
 <span><span class="co">#&gt; $ query_id          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "AT1G01010.1"<span style="color: #949494;">, </span>"AT1G01020.1"<span style="color: #949494;">, </span>"AT1G01030.1"<span style="color: #949494;">, </span>"AT1G01040.1"<span style="color: #949494;">, </span>"AT1G01050.1"<span style="color: #949494;">, </span>"AT1G01060.3"<span style="color: #949494;">, </span>"AT1G01070.1"<span style="color: #949494;">, </span>"AT1G01080.1"<span style="color: #949494;">, </span>"AT1G01090.1"<span style="color: #949494;">, </span>"AT1G01110.2"<span style="color: #949494;">, </span>"AT1G01120.1"<span style="color: #949494;">, </span>"AT1G01140.3"<span style="color: #949494;">, </span>"AT1G01150.1"<span style="color: #949494;">, </span>"AT1G01160.1"<span style="color: #949494;">, </span>"AT1G01170.2"<span style="color: #949494;">, </span>"AT1G01180.1"<span style="color: #949494;">, </span>"AT1G01190.1"<span style="color: #949494;">, </span>"AT1G01200.1"<span style="color: #949494;">, </span>"AT1G01210.1"<span style="color: #949494;">, </span>"AT1G01220.1"</span></span>
@@ -794,7 +804,7 @@ format as <code><a href="../reference/blast.html">blast()</a></code>. The most c
 <span><span class="co">#&gt; $ s_len             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 466<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>355<span style="color: #949494;">, </span>1963<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>640<span style="color: #949494;">, </span>362<span style="color: #949494;">, </span>299<span style="color: #949494;">, </span>433<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>453<span style="color: #949494;">, </span>294<span style="color: #949494;">, </span>225<span style="color: #949494;">, </span>100<span style="color: #949494;">, </span>316<span style="color: #949494;">, </span>540<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
 <span><span class="co">#&gt; $ evalue            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.00e+00<span style="color: #949494;">, </span>8.91e-168<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>3.27e-162<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>1.21e-180<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>4.13e-152<span style="color: #949494;">, </span>2.39e-95<span style="color: #949494;">, </span>1.18e-55<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>3.85e-174<span style="color: #949494;">, </span>1.81e-77<span style="color: #949494;">, </span>0.00e+00</span></span>
 <span><span class="co">#&gt; $ bit_score         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 627<span style="color: #949494;">, </span>454<span style="color: #949494;">, </span>698<span style="color: #949494;">, </span>3704<span style="color: #949494;">, </span>437<span style="color: #949494;">, </span>1037<span style="color: #949494;">, </span>696<span style="color: #949494;">, </span>491<span style="color: #949494;">, </span>859<span style="color: #949494;">, </span>972<span style="color: #949494;">, </span>1092<span style="color: #949494;">, </span>918<span style="color: #949494;">, </span>421<span style="color: #949494;">, </span>268<span style="color: #949494;">, </span>158<span style="color: #949494;">, </span>576<span style="color: #949494;">, </span>1036<span style="color: #949494;">, </span>470<span style="color: #949494;">, </span>215<span style="color: #949494;">, </span>2106</span></span>
-<span><span class="co">#&gt; $ score_raw         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1617<span style="color: #949494;">, </span>1169<span style="color: #949494;">, </span>1801<span style="color: #949494;">, </span>9604<span style="color: #949494;">, </span>1125<span style="color: #949494;">, </span>2681<span style="color: #949494;">, </span>1797<span style="color: #949494;">, </span>1264<span style="color: #949494;">, </span>2220<span style="color: #949494;">, </span>2512<span style="color: #949494;">, </span>2825<span style="color: #949494;">, </span>2372<span style="color: #949494;">, </span>1082<span style="color: #949494;">, </span>685<span style="color: #949494;">, </span>400<span style="color: #949494;">, </span>1484<span style="color: #949494;">, </span>2679<span style="color: #949494;">, </span>1209<span style="color: #949494;">, </span>547<span style="color: #949494;">, </span>5456</span></span></code></pre>
+<span><span class="co">#&gt; $ score_raw         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1617<span style="color: #949494;">, </span>1169<span style="color: #949494;">, </span>1801<span style="color: #949494;">, </span>9604<span style="color: #949494;">, </span>1125<span style="color: #949494;">, </span>2681<span style="color: #949494;">, </span>1797<span style="color: #949494;">, </span>1264<span style="color: #949494;">, </span>2220<span style="color: #949494;">, </span>2512<span style="color: #949494;">, </span>2825<span style="color: #949494;">, </span>2372<span style="color: #949494;">, </span>1082<span style="color: #949494;">, </span>685<span style="color: #949494;">, </span>400<span style="color: #949494;">, </span>1484<span style="color: #949494;">, </span>2679<span style="color: #949494;">, </span>1209<span style="color: #949494;">, </span>547<span style="color: #949494;">, </span>5456</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-blast_rec-function">The blast_rec() function<a class="anchor" aria-label="anchor" href="#the-blast_rec-function"></a>
@@ -805,12 +815,13 @@ BLAST+ reciprocal best hit searches are used to perform orthology
 inference.</p>
 <p>Running <code><a href="../reference/blast_rec.html">blast_rec()</a></code> using default parameter
 settings:</p>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># performing gene orthology inference using the reciprocal best hit (RBH) method</span></span>
-<span><span class="fu"><a href="../reference/blast_rec.html">blast_rec</a></span><span class="op">(</span>query_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>, subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
-<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
-<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="fu"><a href="../reference/blast_rec.html">blast_rec</a></span><span class="op">(</span>query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
+<span>          subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
 <span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -833,7 +844,7 @@ settings:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536    99      99       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036      <span style="text-decoration: underline;">2</span>679</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238   100     100       1   238   238 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470      <span style="text-decoration: underline;">1</span>209</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215       547</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-set_blast-function">The set_blast() function<a class="anchor" aria-label="anchor" href="#the-set_blast-function"></a>
@@ -843,10 +854,10 @@ sequence type, such as “cds”, “protein”, or “dna” in a standard sequ
 file format such as “fasta”, etc. and depending of the makedb parameter
 either creates a blast-able database, or returns the corresponding
 protein sequences as data.table object for further BLAST searches.</p>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using set_blast() to generate a blastable sequence database</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/set_blast.html">set_blast</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Key: &lt;geneids&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/set_blast.html">set_blast</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> , <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Key: &lt;geneids&gt;</span></span>
 <span><span class="co">#&gt;        geneids</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: AT1G01010.1</span></span>
@@ -858,7 +869,7 @@ protein sequences as data.table object for further BLAST searches.</p>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                aa</span></span>
 <span><span class="co">#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                            &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1: MEDQVGFGFRPNDEELVGHYLRNKIEGNTSRDVEVAISEVNICSYDPWNLRFQSKYKSRDAMWYFFSRRENNKGNRQSRTTVSGKWKLTGESVEVKDQWGFCSEGFRGKIGHKRVLVFLDGRYPDKTKSDWVIHEFHYDLLPEHQRTYVICRLEYKGDDADILSAYAIDPTPAFVPNMTSSAGSVVNQSRQRNSGSYNTYSEYDSANHGQQFNENSNIMQQQPLQGSFNPLLEYDFANHGGQWLSDYIDLQQQVPYLAPYENESEMIWKHVIEENFEFLVDERTSMQQHYSDHRPKKPVSGVLPDDSSDTETGSMIFEDTSSSTDSVGSSDEPGHTRIDDIPSLNIIEPLHNYKAQEQPKQQSKEKVISSQKSECEWKMAEDSIKIPPSTNTVKQSWIVLENAQWNYLKNMIIGVLLFISVISWIILVG*</span></span>
-<span><span class="co">#&gt; 2:                                                                                                                                                                                         MAASEHRCVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAINPATVNIQHLLWKLVFAYLLLDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLVWEFPMSVIFFVDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</span></span></code></pre>
+<span><span class="co">#&gt; 2:                                                                                                                                                                                         MAASEHRCVGCGFRVKSLFIQYSPGNIRLMKCGNCKEVADEYIECERMIIFIDLILHRPKVYRHVLYNAINPATVNIQHLLWKLVFAYLLLDCYRSLLLRKSDEESSFSDSPVLLSIKVLIGVLSANAAFIISFAIATKGLLNEVSRRREIMLGIFISSYFKIFLLAMLVWEFPMSVIFFVDILLLTSNSMALKVMTESTMTRCIAVCLIAHLIRFLVGQIFEPTIFLIQIGSLLQYMSYFFRIV*</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="advanced-blast-analyses">Advanced BLAST+ analyses<a class="anchor" aria-label="anchor" href="#advanced-blast-analyses"></a>

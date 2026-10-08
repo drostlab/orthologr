@@ -25,6 +25,10 @@ the these programming languages:
 
 - [**C++11**](https://isocpp.org/about)
 
+For Windows users, see the [Setting up DIAMOND2 and BLAST+ on
+Windows](https://drostlab.github.io/orthologr/articles/setup_windows.html#install-rtools)
+vignette for details on installing a C++ compiler (Rtools).
+
 - [**Perl**](https://www.perl.org) \>= 5.12
 
 Please make sure these programming languages are installed and
@@ -53,7 +57,10 @@ most orthology inference methods.
   Windows](https://www.ncbi.nlm.nih.gov/books/NBK52637/)) -\> Please
   carefully read the `Environment Variables` section of the
   `installation manual: Windows` and make sure the execution `PATH`
-  variable is set correctly.
+  variable is set correctly. For Windows users, see also the [Setting up
+  DIAMOND2 and BLAST+ on
+  Windows](https://drostlab.github.io/orthologr/articles/setup_windows.md)
+  vignette.
 - On a Unix machine (see [installation manual:
   Unix](https://www.ncbi.nlm.nih.gov/books/NBK52640/)) -\> Please
   carefully read the `Configuration` section of the
@@ -153,9 +160,6 @@ R.
 system("blastp -version")
 ```
 
-    blastp: 2.2.31+
-    Package: blast 2.2.31, build Oct 27 2014 17:10:51
-
 **You should see this output if BLAST was installed correctly.**
 
 In case you find the following output:
@@ -190,7 +194,10 @@ inference.
 1.  Go to the download site in the [`DIAMOND2`
     wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and
     follow the instructions for installation. `DIAMOND2` is supported on
-    Linux, macOS and Windows.
+    Linux, macOS and Windows. For Windows users, see also the [Setting
+    up DIAMOND2 and BLAST+ on
+    Windows](https://drostlab.github.io/orthologr/articles/setup_windows.md)
+    vignette.
 
 2.  Check the installation of `DIAMOND2` by running the command
 
@@ -211,8 +218,6 @@ arise when installing `DIAMOND2` on macOS.
 # test whether diamond is correctly installed on your machine
 system("diamond --version")
 ```
-
-    diamond version 2.1.8
 
 **You should see this output if `DIAMOND2` was installed correctly.**
 
