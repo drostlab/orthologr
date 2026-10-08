@@ -1,0 +1,107 @@
+---
+title: "Protein Clustering with DIAMOND DeepClust"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Protein Clustering with DIAMOND DeepClust}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+options(width = 750)
+library(orthologr)
+has_diamond <- nzchar(Sys.which("diamond"))
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE,
+  eval = has_diamond)
+```
+
+[DIAMOND DeepClust](https://github.com/bbuchfink/diamond) is a cascaded, ultra-fast method for clustering protein sequences at scale. It extends DIAMOND2 with a multi-pass clustering strategy that retains sensitivity at low sequence identity, making it practical for large proteome comparisons where reciprocal best hit methods become computationally expensive.
+
+`orthologr` has three functions for working with `diamond deepclust`:
+
+- `deepclust()` — cluster a set of protein sequences into homologous groups
+- `deepclust_annotate()` — attach metadata to clusters
+- `deepclust_realign()` — refine the alignment of sequences within each cluster
+
+All three functions work with protein sequences only.
+
+## `deepclust()`
+
+`deepclust()` takes a fasta file of protein sequences and returns a data frame mapping each sequence to a cluster ID.
+
+```{r,eval=TRUE}
+library(orthologr)
+
+clusters <- deepclust(
+  input_file = c(
+    system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+    system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+  )
+)
+
+clusters
+```
+
+## `deepclust_annotate()`
+
+`deepclust_annotate()` takes the output of `deepclust()` and attaches functional annotations to each cluster.
+
+```{r,eval=TRUE}
+annotated <- deepclust_annotate(
+  input_file = c(
+    system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+    system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+  )
+)
+
+annotated
+```
+
+
+or use a named list to control the file_name column labels
+
+```{r,eval=TRUE}
+annotated <- deepclust_annotate(
+  input_file = list(
+    "thal" = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+    "lyra" = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+  )
+)
+annotated
+```
+
+```{r,eval=TRUE}
+# Stricter clustering with custom thresholds
+annotated <- deepclust_annotate(
+  input_file = c(
+    system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+    system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+  ),
+  approx_id    = 50,
+  mutual_cover = 90,
+  comp_cores   = 4
+)
+annotated
+```
+
+## `deepclust_realign()`
+
+`deepclust_realign()` refines the multiple sequence alignment within each cluster, which can improve downstream dN/dS estimation or phylogenetic inference.
+
+```{r,eval=TRUE}
+realign_result <- deepclust_realign(
+  input_file = c(
+    system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
+    system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr')
+  ),
+  clusters = clusters
+)
+
+realign_result
+```
+
+This feature is still under development. More information about the DeepClust algorithm can be found in the [DIAMOND DeepClust paper](https://www.nature.com/articles/s41592-026-03030-z).
