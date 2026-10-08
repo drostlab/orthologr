@@ -10,10 +10,12 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 options(width = 750)
+has_diamond <- nzchar(Sys.which("diamond"))
 knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
-  tidy = FALSE)
+  tidy = FALSE,
+  eval = has_diamond)
 ```
 
 The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.

@@ -10,10 +10,13 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 options(width = 750)
+library(orthologr)
+has_blast <- nzchar(Sys.which("blastp"))
 knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
-  tidy = FALSE)
+  tidy = FALSE,
+  eval = has_blast)
 ```
 
 * [1. Getting started with BLAST](#getting-started)

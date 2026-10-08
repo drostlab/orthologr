@@ -10,10 +10,14 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 options(width = 750)
+library(orthologr)
+has_diamond <- nzchar(Sys.which("diamond"))
+has_blast   <- nzchar(Sys.which("blastp"))
 knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
-  tidy = FALSE)
+  tidy = FALSE,
+  eval = has_diamond)
 ```
 
 Orthology Inference is the process of detecting [orthologous genes](https://www.biostars.org/p/1595/) between a query organism and
@@ -234,7 +238,7 @@ against a `subject organism B` based on the `e-value`.
 Orthology Inference using BLASTp best hit can be performed by specifying the argument `ortho_detection = "BH"`
 and one computing core `comp_core = 1`:
 
-```{r,eval=TRUE}
+```{r,eval=has_blast}
 # perform orthology inference using BLAST best hit
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -265,7 +269,7 @@ In other words, only in case the tuple `(query_id, subject_id)` is returned as b
 based on the `e-value` in both BLAST directions, the corresponding tupel `(query_id, subject_id)`
 is retained as orthologous gene pair.
 
-```{r,eval=TRUE}
+```{r,eval=has_blast}
 
 library(orthologr)
 

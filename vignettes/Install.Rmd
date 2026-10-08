@@ -129,7 +129,7 @@ PATH="/Users/User/Downloads/ncbi-blast-2.17.0+/bin:${PATH}"
 
 After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
 
-```{r,eval=TRUE}
+```{r,eval=nzchar(Sys.which("blastp"))}
 # test whether blastp is correctly installed on your machine
 system("blastp -version")
 ```
@@ -168,7 +168,7 @@ Check the `Additional tips for macOS` section in the `BLAST` installation instru
 
 3) After installing the `DIAMOND2` program you can open an R session and type the following command to check whether or not `DIAMOND2` can be executed from R.
 
-```{r,eval=TRUE}
+```{r,eval=nzchar(Sys.which("diamond"))}
 # test whether diamond is correctly installed on your machine
 system("diamond --version")
 ```
