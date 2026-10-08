@@ -13,6 +13,7 @@ options(width = 750)
 has_diamond <- nzchar(Sys.which("diamond"))
 knitr::opts_chunk$set(
   comment = "#>",
+  collapse = TRUE,
   error = FALSE,
   tidy = FALSE,
   eval = has_diamond)

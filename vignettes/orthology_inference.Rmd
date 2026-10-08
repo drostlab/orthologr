@@ -15,6 +15,7 @@ has_diamond <- nzchar(Sys.which("diamond"))
 has_blast   <- nzchar(Sys.which("blastp"))
 knitr::opts_chunk$set(
   comment = "#>",
+  collapse = TRUE,
   error = FALSE,
   tidy = FALSE,
   eval = has_diamond)
@@ -51,6 +52,9 @@ The following interfaces are implemented in the `orthologs()` function:
 
 - [Orthofinder2](https://github.com/davidemms/OrthoFinder): see `orthofinder2()`.
 
+### Clustering based methods:
+
+- [DIAMOND DeepClust](https://github.com/bbuchfink/diamond): ultra-fast protein sequence clustering that retains sensitivity at low sequence identity. Useful for large proteome comparisons where pairwise hit methods become expensive. See `deepclust()` and the [DeepClust vignette](https://drostlab.github.io/orthologr/articles/deepclust.html) for details.
 
 ### Examples: DIAMOND2 based methods (default)
 
