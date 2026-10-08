@@ -42,7 +42,7 @@ This section is about building `orthologr` itself, not about DIAMOND2 or
 BLAST+. `orthologr` ships compiled C++ code (used, for example, by
 `gestimator()`), so installing it from source on Windows — via
 `install.packages()`, `devtools::install_github()`, or
-`devtools::load_all()` — requires a working compiler toolchain. Windows does
+`devtools::load_all()` — _may_ require a working compiler toolchain. Windows does
 not include one by default, so you need to install
 [**Rtools**](https://cran.r-project.org/bin/windows/Rtools/).
 
@@ -87,10 +87,9 @@ If `DIAMOND2` or `BLAST+` is not yet installed, see the
 ## Set PATH for the current R session (temporary)
 
 This option adds each tool's folder to the `PATH` environment variable for
-the duration of the current R session only. It's useful for one-off scripts
-or interactive `devtools::test()` runs without changing any system
-settings, and it avoids having to pass a `path` argument to every
-`orthologr` function call.
+the duration of the current R session only. It's useful for one-off scripts 
+without changing any system settings, and it avoids having to pass a 
+`path` argument to every `orthologr` function call.
 
 ```{r,eval=FALSE}
 Sys.setenv(
@@ -138,15 +137,12 @@ now call `normalizePath()` on any supplied `path`, so relative paths (e.g.
 failed because Windows' `system()` could not resolve relative executable
 paths.
 
-This fix applies to `DIAMOND2`. `BLAST+` has a separate, unrelated issue on
-Windows: `is_installed_blast()` (used internally by `blast()`,
-`blast_best()`, and `blast_rec()`) builds its check using Unix shell syntax
-(`export PATH=$PATH:...`), which `cmd.exe` does not understand. As a
-result, passing `path` to any BLAST+-related function **always fails on
-Windows**, regardless of whether the path is relative or absolute. Until
-this is fixed, Windows users should always make `blastp` discoverable via
-`PATH` — either the temporary approach in this vignette, or by adding the
-`BLAST+` `bin` folder to the persistent Windows `PATH`:
+This fix applies to both `DIAMOND2` and `BLAST+`: `is_installed_blast()`
+(used internally by `blast()`, `blast_best()`, and `blast_rec()`) now uses
+the same `file.path()`-based approach, so passing a `path` argument works
+correctly on Windows. If you prefer not to pass `path` every call, you can
+make `blastp` permanently discoverable by adding the `BLAST+` `bin` folder
+to the persistent Windows `PATH`:
 
 1. Get the absolute path to the folder containing `blastp.exe`, e.g.
    `C:\Program Files\NCBI\blast-2.17.0+\bin`.
