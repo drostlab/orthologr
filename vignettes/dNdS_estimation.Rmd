@@ -75,7 +75,7 @@ for details.
 The following example shall illustrate a dNdS estimation process.
 
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 # get a dNdS table using:
 # 1) DIAMOND2 reciprocal best hit for orthology inference (default; aligner = "diamond", ortho_detection = "RBH")
@@ -104,7 +104,7 @@ returned by `dNdS()` and filters the output by the following criteria:
 3) all dNdS values >= the specified `dnds.threshold` are omitted
 
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 # get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
 Ath_Aly_dnds <- dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),

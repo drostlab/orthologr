@@ -71,7 +71,7 @@ See the [Installation Vignette](https://drostlab.github.io/orthologr/articles/In
 In the following examples, we will use toy fasta files stored within the `orthologr` package: `system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')`.
 
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 # perform orthology inference using DIAMOND2 reciprocal best hit (default)
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file    = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -117,7 +117,7 @@ When you are working on a multicore machine, you can also specify the `comp_core
 argument that will allow you to run all analyses in parallel (to speed up computations).
 
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 # running DIAMOND2 orthology inference in parallel using 2 cores
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
@@ -144,7 +144,7 @@ against a `subject organism B` based on the `e-value`. It uses the same hit-filt
 Orthology Inference using DIAMOND2 best hit can be performed by specifying the argument `ortho_detection = "DIAMOND_BH"`
 and one computing core `comp_core = 1`:
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 # perform orthology inference using DIAMOND2 best hit
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -175,7 +175,7 @@ The algorithm runs as follows:
 Only when the tuple `(query_id, subject_id)` is returned as best hit in both DIAMOND2 directions
 is it retained as an orthologous gene pair.
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 
 # perform orthology inference using DIAMOND2 reciprocal best hit (default)
@@ -191,7 +191,7 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
 You can also adjust the DIAMOND2 sensitivity level using the `sensitivity_mode` argument. The default
 is `"fast"`, but for more distant species comparisons you may want `"sensitive"` or `"ultra-sensitive"`:
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 
 # DIAMOND2 RBH with ultra-sensitive mode (equivalent to BLAST sensitivity)
@@ -219,7 +219,7 @@ The full set of sensitivity modes available in DIAMOND2 is:
 To retrieve the full DIAMOND2 hit table for subsequent analyses, set `clean_folders = FALSE`.
 The corresponding hit table can then be found in `file.path(tempdir(), "_blast_db")`.
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 library(dplyr)
 

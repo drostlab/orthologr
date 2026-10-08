@@ -4,109 +4,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Orthology Inference using orthologr • orthologr</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Orthology Inference using orthologr">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Orthology Inference using orthologr">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="../index.html">orthologr</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/blast.html">BLAST searches using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a>
-    </li>
-    <li>
-      <a href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/Install.html">Installing Prerequisite Tools</a>
-    </li>
-    <li>
-      <a href="../articles/orthology_inference.html">Orthology Inference using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
+    <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
+    <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/drostlab/orthologr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/drostlab/orthologr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Orthology Inference using orthologr</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Orthology Inference using orthologr</h1>
             
-            <h4 data-toc-skip class="date">2026-09-18</h4>
+            <h4 data-toc-skip class="date">2026-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/orthology_inference.Rmd" class="external-link"><code>vignettes/orthology_inference.Rmd</code></a></small>
-      <div class="hidden name"><code>orthology_inference.Rmd</code></div>
-
+      <div class="d-none name"><code>orthology_inference.Rmd</code></div>
     </div>
 
     
@@ -179,7 +144,7 @@ default execution PATH or you specifically define the location of the
 executable file via the <code>path</code> argument that can be passed to
 <code><a href="../reference/orthologs.html">orthologs()</a></code>. For DIAMOND2-based methods (the default), make
 sure <a href="https://github.com/bbuchfink/diamond" class="external-link">DIAMOND2</a> is
-installed. See the <a href="https://drostlab.github.io/orthologr/articles/Install.html" class="external-link">Installation
+installed. See the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
 Vignette</a> for details.</p>
 <p>In the following examples, we will use toy fasta files stored within
 the <code>orthologr</code> package:
@@ -193,45 +158,40 @@ the <code>orthologr</code> package:
 <span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id     perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;                  &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PACid:…          73.2               347         474
- 2 AT1G01020.1 470181|PACid:…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:…          93.3               335         359
- 4 AT1G01040.1 333551|PACid:…          93.4              1840        1969
- 5 AT1G01050.1 909874|PACid:…         100                 213         213
- 6 AT1G01060.3 470177|PACid:…          87.5               567         648
- 7 AT1G01070.1 918864|PACid:…          92.6               339         366
- 8 AT1G01080.1 909871|PACid:…          89.3               268         300
- 9 AT1G01090.1 470171|PACid:…          96.8               420         434
-10 AT1G01110.2 333544|PACid:…          87.7               463         528
-11 AT1G01120.1 918858|PACid:…          99.2               525         529
-12 AT1G01140.3 470161|PACid:…          98.5               446         453
-13 AT1G01150.1 918855|PACid:…          72.6               207         285
-14 AT1G01160.1 918854|PACid:…          78.8               141         179
-15 AT1G01170.2 311317|PACid:…          85.6                83          97
-16 AT1G01180.1 909860|PACid:…          92.6               287         310
-17 AT1G01190.1 311315|PACid:…          94.2               502         533
-18 AT1G01200.1 470156|PACid:…          95.8               228         238
-19 AT1G01210.1 311313|PACid:…          95.3               102         107
-20 AT1G01220.1 470155|PACid:…          96.5              1019        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
-#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
-#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;,
-#   s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;,
-#   score_raw &lt;dbl&gt;</code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          73.2               347         474         75            8     52       369  77.8       1   430   430 100     100         1   466   466 1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-211</span>       582      <span style="text-decoration: underline;">1</span>500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246 100     100         1   246   246 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span>       426      <span style="text-decoration: underline;">1</span>094</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          93.3               335         359         20            2      4       338  94.2       1   359   359 100     100         1   355   355 4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-210</span>       571      <span style="text-decoration: underline;">1</span>471</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          93.4              <span style="text-decoration: underline;">1</span>840        <span style="text-decoration: underline;">1</span>969         58            7     71      <span style="text-decoration: underline;">1</span>870  95         6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910  99.7    99.7       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>544      <span style="text-decoration: underline;">9</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213 100     100         1   213   213 4.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-158</span>       427      <span style="text-decoration: underline;">1</span>098</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          87.5               567         648         71            5     10       586  90.4       1   646   646 100     100         1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>028      <span style="text-decoration: underline;">2</span>658</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          92.6               339         366         23            2      4       342  93.4       1   366   366 100     100         1   362   362 6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span>       614      <span style="text-decoration: underline;">1</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          89.3               268         300         25            2      7       275  91.7       1   294   294 100     100         1   299   299 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-181</span>       494      <span style="text-decoration: underline;">1</span>271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429 100     100         1   433   433 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-305</span>       817      <span style="text-decoration: underline;">2</span>110</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          87.7               463         528         65            0      0       475  90         1   528   528 100     100         1   528   528 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-309</span>       837      <span style="text-decoration: underline;">2</span>162</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529 100     100         1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>029      <span style="text-decoration: underline;">2</span>661</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452 100     100         1   453   453 0   <span style="color: #949494;"> </span>           865      <span style="text-decoration: underline;">2</span>235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346  82.4    82.4      16   290   294 5.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>       410      <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          78.8               141         179         30            2      8       145  81         4   175   196  87.8    87.8       2   179   225 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 94</span>       266       680</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84  98.8    98.8       4   100   100 8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 57</span>       161       408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479  64.1    64.1       1   310   316 4.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-214</span>       584      <span style="text-decoration: underline;">1</span>506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536  99.4    99.4       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>007      <span style="text-decoration: underline;">2</span>603</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238 100     100         1   238   238 6.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-163</span>       441      <span style="text-decoration: underline;">1</span>135</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107 100     100         1   107   107 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 80</span>       222       566</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.5              <span style="text-decoration: underline;">1</span>019        <span style="text-decoration: underline;">1</span>056         37            0      0      <span style="text-decoration: underline;">1</span>035  98         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 100     100         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>016      <span style="text-decoration: underline;">5</span>224</span></span></code></pre>
 <p>This small example returns 20 orthologous genes between
 <em>Arabidopsis thaliana</em> and <em>Arabidopsis lyrata</em>. As you
 can see, the <code>query_file</code> and <code>subject_files</code>
@@ -264,7 +224,7 @@ sequences, the first version of <code>orthologr</code> will follow this
 paradigm.</p>
 <p>In case you have to specify the path to DIAMOND2 you can use the
 <code>path</code> argument as follows:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using an external execution path for DIAMOND2</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -276,7 +236,7 @@ paradigm.</p>
 <p>When you are working on a multicore machine, you can also specify the
 <code>comp_cores</code> argument that will allow you to run all analyses
 in parallel (to speed up computations).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># running DIAMOND2 orthology inference in parallel using 2 cores</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -284,44 +244,40 @@ in parallel (to speed up computations).</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id        perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PACid:160…          73.2               347         474
- 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:160…          93.3               335         359
- 4 AT1G01040.1 333551|PACid:160…          93.4              1840        1969
- 5 AT1G01050.1 909874|PACid:160…         100                 213         213
- 6 AT1G01060.3 470177|PACid:160…          87.5               567         648
- 7 AT1G01070.1 918864|PACid:160…          92.6               339         366
- 8 AT1G01080.1 909871|PACid:160…          89.3               268         300
- 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
-10 AT1G01110.2 333544|PACid:160…          87.7               463         528
-11 AT1G01120.1 918858|PACid:160…          99.2               525         529
-12 AT1G01140.3 470161|PACid:160…          98.5               446         453
-13 AT1G01150.1 918855|PACid:160…          72.6               207         285
-14 AT1G01160.1 918854|PACid:160…          78.8               141         179
-15 AT1G01170.2 311317|PACid:160…          85.6                83          97
-16 AT1G01180.1 909860|PACid:160…          92.6               287         310
-17 AT1G01190.1 311315|PACid:160…          94.2               502         533
-18 AT1G01200.1 470156|PACid:160…          95.8               228         238
-19 AT1G01210.1 311313|PACid:160…          95.3               102         107
-20 AT1G01220.1 470155|PACid:160…          96.5              1019        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
-#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;,
-#   qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;,
-#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          73.2               347         474         75            8     52       369  77.8       1   430   430 100     100         1   466   466 1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-211</span>       582      <span style="text-decoration: underline;">1</span>500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246 100     100         1   246   246 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span>       426      <span style="text-decoration: underline;">1</span>094</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          93.3               335         359         20            2      4       338  94.2       1   359   359 100     100         1   355   355 4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-210</span>       571      <span style="text-decoration: underline;">1</span>471</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          93.4              <span style="text-decoration: underline;">1</span>840        <span style="text-decoration: underline;">1</span>969         58            7     71      <span style="text-decoration: underline;">1</span>870  95         6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910  99.7    99.7       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>544      <span style="text-decoration: underline;">9</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213 100     100         1   213   213 4.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-158</span>       427      <span style="text-decoration: underline;">1</span>098</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          87.5               567         648         71            5     10       586  90.4       1   646   646 100     100         1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>028      <span style="text-decoration: underline;">2</span>658</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          92.6               339         366         23            2      4       342  93.4       1   366   366 100     100         1   362   362 6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span>       614      <span style="text-decoration: underline;">1</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          89.3               268         300         25            2      7       275  91.7       1   294   294 100     100         1   299   299 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-181</span>       494      <span style="text-decoration: underline;">1</span>271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429 100     100         1   433   433 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-305</span>       817      <span style="text-decoration: underline;">2</span>110</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          87.7               463         528         65            0      0       475  90         1   528   528 100     100         1   528   528 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-309</span>       837      <span style="text-decoration: underline;">2</span>162</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529 100     100         1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>029      <span style="text-decoration: underline;">2</span>661</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452 100     100         1   453   453 0   <span style="color: #949494;"> </span>           865      <span style="text-decoration: underline;">2</span>235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346  82.4    82.4      16   290   294 5.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>       410      <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          78.8               141         179         30            2      8       145  81         4   175   196  87.8    87.8       2   179   225 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 94</span>       266       680</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84  98.8    98.8       4   100   100 8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 57</span>       161       408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479  64.1    64.1       1   310   316 4.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-214</span>       584      <span style="text-decoration: underline;">1</span>506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536  99.4    99.4       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>007      <span style="text-decoration: underline;">2</span>603</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238 100     100         1   238   238 6.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-163</span>       441      <span style="text-decoration: underline;">1</span>135</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107 100     100         1   107   107 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 80</span>       222       566</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.5              <span style="text-decoration: underline;">1</span>019        <span style="text-decoration: underline;">1</span>056         37            0      0      <span style="text-decoration: underline;">1</span>035  98         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 100     100         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>016      <span style="text-decoration: underline;">5</span>224</span></span></code></pre>
 <p>In this case 2 cores are being used to perform parallel processing,
 the <code>clean_folders</code> argument specifies that all files
 returned by the corresponding orthology inference method are removed
@@ -344,7 +300,7 @@ substantially faster.</p>
 <p>Orthology Inference using DIAMOND2 best hit can be performed by
 specifying the argument <code>ortho_detection = "DIAMOND_BH"</code> and
 one computing core <code>comp_core = 1</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># perform orthology inference using DIAMOND2 best hit</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -353,39 +309,35 @@ one computing core <code>comp_core = 1</code>:</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_BH"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id        perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PACid:160…          73.2               347         474
- 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:160…          93.3               335         359
- 4 AT1G01040.1 333551|PACid:160…          93.4              1840        1969
- 5 AT1G01050.1 909874|PACid:160…         100                 213         213
- 6 AT1G01060.3 470177|PACid:160…          87.5               567         648
- 7 AT1G01070.1 918864|PACid:160…          92.6               339         366
- 8 AT1G01080.1 909871|PACid:160…          89.3               268         300
- 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
-10 AT1G01110.2 333544|PACid:160…          87.7               463         528
-11 AT1G01120.1 918858|PACid:160…          99.2               525         529
-12 AT1G01140.3 470161|PACid:160…          98.5               446         453
-13 AT1G01150.1 918855|PACid:160…          72.6               207         285
-14 AT1G01160.1 918854|PACid:160…          78.8               141         179
-15 AT1G01170.2 311317|PACid:160…          85.6                83          97
-16 AT1G01180.1 909860|PACid:160…          92.6               287         310
-17 AT1G01190.1 311315|PACid:160…          94.2               502         533
-18 AT1G01200.1 470156|PACid:160…          95.8               228         238
-19 AT1G01210.1 311313|PACid:160…          95.3               102         107
-20 AT1G01220.1 470155|PACid:160…          96.5              1019        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
-#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;,
-#   qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;,
-#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          73.2               347         474         75            8     52       369  77.8       1   430   430 100     100         1   466   466 1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-211</span>       582      <span style="text-decoration: underline;">1</span>500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246 100     100         1   246   246 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span>       426      <span style="text-decoration: underline;">1</span>094</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          93.3               335         359         20            2      4       338  94.2       1   359   359 100     100         1   355   355 4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-210</span>       571      <span style="text-decoration: underline;">1</span>471</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          93.4              <span style="text-decoration: underline;">1</span>840        <span style="text-decoration: underline;">1</span>969         58            7     71      <span style="text-decoration: underline;">1</span>870  95         6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910  99.7    99.7       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>544      <span style="text-decoration: underline;">9</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213 100     100         1   213   213 4.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-158</span>       427      <span style="text-decoration: underline;">1</span>098</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          87.5               567         648         71            5     10       586  90.4       1   646   646 100     100         1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>028      <span style="text-decoration: underline;">2</span>658</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          92.6               339         366         23            2      4       342  93.4       1   366   366 100     100         1   362   362 6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span>       614      <span style="text-decoration: underline;">1</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          89.3               268         300         25            2      7       275  91.7       1   294   294 100     100         1   299   299 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-181</span>       494      <span style="text-decoration: underline;">1</span>271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429 100     100         1   433   433 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-305</span>       817      <span style="text-decoration: underline;">2</span>110</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          87.7               463         528         65            0      0       475  90         1   528   528 100     100         1   528   528 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-309</span>       837      <span style="text-decoration: underline;">2</span>162</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529 100     100         1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>029      <span style="text-decoration: underline;">2</span>661</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452 100     100         1   453   453 0   <span style="color: #949494;"> </span>           865      <span style="text-decoration: underline;">2</span>235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346  82.4    82.4      16   290   294 5.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>       410      <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          78.8               141         179         30            2      8       145  81         4   175   196  87.8    87.8       2   179   225 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 94</span>       266       680</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84  98.8    98.8       4   100   100 8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 57</span>       161       408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479  64.1    64.1       1   310   316 4.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-214</span>       584      <span style="text-decoration: underline;">1</span>506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536  99.4    99.4       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>007      <span style="text-decoration: underline;">2</span>603</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238 100     100         1   238   238 6.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-163</span>       441      <span style="text-decoration: underline;">1</span>135</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107 100     100         1   107   107 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 80</span>       222       566</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.5              <span style="text-decoration: underline;">1</span>019        <span style="text-decoration: underline;">1</span>056         37            0      0      <span style="text-decoration: underline;">1</span>035  98         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 100     100         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>016      <span style="text-decoration: underline;">5</span>224</span></span></code></pre>
 <p>The resulting table stores the orthologous gene pairs and the
 corresponding alignment statistics. DIAMOND2 returns additional columns
 compared to BLAST (e.g. <code>n_gaps</code>, <code>pos_match</code>,
@@ -409,8 +361,8 @@ is the <strong>default</strong> method in <code><a href="../reference/orthologs.
 <p>Only when the tuple <code>(query_id, subject_id)</code> is returned
 as best hit in both DIAMOND2 directions is it retained as an orthologous
 gene pair.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit (default)</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
@@ -420,41 +372,46 @@ gene pair.</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code># A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id  perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PAC…          73.2               347         474
- 2 AT1G01020.1 470181|PAC…          91.1               224         246
- 3 AT1G01030.1 470180|PAC…          93.3               335         359
- 4 AT1G01040.1 333551|PAC…          93.4              1840        1969
- 5 AT1G01050.1 909874|PAC…         100                 213         213
- 6 AT1G01060.3 470177|PAC…          87.5               567         648
- 7 AT1G01070.1 918864|PAC…          92.6               339         366
- 8 AT1G01080.1 909871|PAC…          89.3               268         300
- 9 AT1G01090.1 470171|PAC…          96.8               420         434
-10 AT1G01110.2 333544|PAC…          87.7               463         528
-11 AT1G01120.1 918858|PAC…          99.2               525         529
-12 AT1G01140.3 470161|PAC…          98.5               446         453
-13 AT1G01150.1 918855|PAC…          72.6               207         285
-14 AT1G01160.1 918854|PAC…          78.8               141         179
-15 AT1G01170.2 311317|PAC…          85.6                83          97
-16 AT1G01180.1 909860|PAC…          92.6               287         310
-17 AT1G01190.1 311315|PAC…          94.2               502         533
-18 AT1G01200.1 470156|PAC…          95.8               228         238
-19 AT1G01210.1 311313|PAC…          95.3               102         107
-20 AT1G01220.1 470155|PAC…          96.5              1019        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;,
-#   n_gaps &lt;int&gt;, pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;,
-#   q_end &lt;int&gt;, q_len &lt;int&gt;, qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;,
-#   s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;, evalue &lt;dbl&gt;,
-#   bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          73.2               347         474         75            8     52       369  77.8       1   430   430 100     100         1   466   466 1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-211</span>       582      <span style="text-decoration: underline;">1</span>500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246 100     100         1   246   246 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span>       426      <span style="text-decoration: underline;">1</span>094</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          93.3               335         359         20            2      4       338  94.2       1   359   359 100     100         1   355   355 4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-210</span>       571      <span style="text-decoration: underline;">1</span>471</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          93.4              <span style="text-decoration: underline;">1</span>840        <span style="text-decoration: underline;">1</span>969         58            7     71      <span style="text-decoration: underline;">1</span>870  95         6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910  99.7    99.7       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>544      <span style="text-decoration: underline;">9</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213 100     100         1   213   213 4.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-158</span>       427      <span style="text-decoration: underline;">1</span>098</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          87.5               567         648         71            5     10       586  90.4       1   646   646 100     100         1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>028      <span style="text-decoration: underline;">2</span>658</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          92.6               339         366         23            2      4       342  93.4       1   366   366 100     100         1   362   362 6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span>       614      <span style="text-decoration: underline;">1</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          89.3               268         300         25            2      7       275  91.7       1   294   294 100     100         1   299   299 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-181</span>       494      <span style="text-decoration: underline;">1</span>271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429 100     100         1   433   433 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-305</span>       817      <span style="text-decoration: underline;">2</span>110</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          87.7               463         528         65            0      0       475  90         1   528   528 100     100         1   528   528 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-309</span>       837      <span style="text-decoration: underline;">2</span>162</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529 100     100         1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>029      <span style="text-decoration: underline;">2</span>661</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452 100     100         1   453   453 0   <span style="color: #949494;"> </span>           865      <span style="text-decoration: underline;">2</span>235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346  82.4    82.4      16   290   294 5.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>       410      <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          78.8               141         179         30            2      8       145  81         4   175   196  87.8    87.8       2   179   225 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 94</span>       266       680</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84  98.8    98.8       4   100   100 8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 57</span>       161       408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479  64.1    64.1       1   310   316 4.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-214</span>       584      <span style="text-decoration: underline;">1</span>506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536  99.4    99.4       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>007      <span style="text-decoration: underline;">2</span>603</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238 100     100         1   238   238 6.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-163</span>       441      <span style="text-decoration: underline;">1</span>135</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107 100     100         1   107   107 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 80</span>       222       566</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.5              <span style="text-decoration: underline;">1</span>019        <span style="text-decoration: underline;">1</span>056         37            0      0      <span style="text-decoration: underline;">1</span>035  98         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 100     100         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>016      <span style="text-decoration: underline;">5</span>224</span></span></code></pre>
 <p>You can also adjust the DIAMOND2 sensitivity level using the
 <code>sensitivity_mode</code> argument. The default is
 <code>"fast"</code>, but for more distant species comparisons you may
 want <code>"sensitive"</code> or <code>"ultra-sensitive"</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># DIAMOND2 RBH with ultra-sensitive mode (equivalent to BLAST sensitivity)</span></span>
 <span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -464,6 +421,40 @@ want <code>"sensitive"</code> or <code>"ultra-sensitive"</code>:</p>
 <span>          sensitivity_mode <span class="op">=</span> <span class="st">"ultra-sensitive"</span>,</span>
 <span>          clean_folders    <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores       <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: ultra-sensitive</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.33 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: ultra-sensitive</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.33 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          73.2               347         474         75            8     52       369  77.8       1   430   430 100     100         1   466   466 1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-211</span>       582      <span style="text-decoration: underline;">1</span>500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246 100     100         1   246   246 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span>       426      <span style="text-decoration: underline;">1</span>094</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          93.3               335         359         20            2      4       338  94.2       1   359   359 100     100         1   355   355 4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-210</span>       571      <span style="text-decoration: underline;">1</span>471</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          93.4              <span style="text-decoration: underline;">1</span>840        <span style="text-decoration: underline;">1</span>969         58            7     71      <span style="text-decoration: underline;">1</span>870  95         6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910  99.7    99.7       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>544      <span style="text-decoration: underline;">9</span>190</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213 100     100         1   213   213 4.47<span style="color: #949494;">e</span><span style="color: #BB0000;">-158</span>       427      <span style="text-decoration: underline;">1</span>098</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          87.5               567         648         71            5     10       586  90.4       1   646   646 100     100         1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>028      <span style="text-decoration: underline;">2</span>658</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          92.6               339         366         23            2      4       342  93.4       1   366   366 100     100         1   362   362 6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span>       614      <span style="text-decoration: underline;">1</span>583</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          89.3               268         300         25            2      7       275  91.7       1   294   294 100     100         1   299   299 1.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-181</span>       494      <span style="text-decoration: underline;">1</span>271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429 100     100         1   433   433 5.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-305</span>       817      <span style="text-decoration: underline;">2</span>110</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          87.7               463         528         65            0      0       475  90         1   528   528 100     100         1   528   528 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">-309</span>       837      <span style="text-decoration: underline;">2</span>162</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529 100     100         1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>029      <span style="text-decoration: underline;">2</span>661</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452 100     100         1   453   453 0   <span style="color: #949494;"> </span>           865      <span style="text-decoration: underline;">2</span>235</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346  82.4    82.4      16   290   294 5.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-148</span>       410      <span style="text-decoration: underline;">1</span>055</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          78.8               141         179         30            2      8       145  81         4   175   196  87.8    87.8       2   179   225 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">- 94</span>       266       680</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84  98.8    98.8       4   100   100 8.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 57</span>       161       408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479  64.1    64.1       1   310   316 4.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-214</span>       584      <span style="text-decoration: underline;">1</span>506</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536  99.4    99.4       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>007      <span style="text-decoration: underline;">2</span>603</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238 100     100         1   238   238 6.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-163</span>       441      <span style="text-decoration: underline;">1</span>135</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107 100     100         1   107   107 2.04<span style="color: #949494;">e</span><span style="color: #BB0000;">- 80</span>       222       566</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.5              <span style="text-decoration: underline;">1</span>019        <span style="text-decoration: underline;">1</span>056         37            0      0      <span style="text-decoration: underline;">1</span>035  98         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 100     100         1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>016      <span style="text-decoration: underline;">5</span>224</span></span></code></pre>
 <p>The full set of sensitivity modes available in DIAMOND2 is:</p>
 <table class="table">
 <thead><tr class="header">
@@ -512,43 +503,61 @@ want <code>"sensitive"</code> or <code>"ultra-sensitive"</code>:</p>
 <p>To retrieve the full DIAMOND2 hit table for subsequent analyses, set
 <code>clean_folders = FALSE</code>. The corresponding hit table can then
 be found in <code>file.path(tempdir(), "_blast_db")</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit</span></span>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># perform orthology inference using DIAMOND2 reciprocal best hit</span></span>
 <span><span class="va">RBH</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          subject_files   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_lyra_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
 <span>          seq_type        <span class="op">=</span> <span class="st">"protein"</span>,</span>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"DIAMOND_RBH"</span>,</span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">RBH</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Rows: 20
-Columns: 21
-Groups: query_id [20]
-$ query_id          &lt;chr&gt; "AT1G01010.1", "AT1G01020.1", "AT1G01030.1…
-$ subject_id        &lt;chr&gt; "333554|PACid:16033839", "470181|PACid:160…
-$ perc_identity     &lt;dbl&gt; 73.2, 91.1, 93.3, 93.4, 100.0, 87.5, 92.6,…
-$ num_ident_matches &lt;int&gt; 347, 224, 335, 1840, 213, 567, 339, 268, 4…
-$ alig_length       &lt;int&gt; 474, 246, 359, 1969, 213, 648, 366, 300, 4…
-$ mismatches        &lt;int&gt; 75, 22, 20, 58, 0, 71, 23, 25, 8, 65, 4, 6…
-$ gap_openings      &lt;int&gt; 8, 0, 2, 7, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, …
-$ n_gaps            &lt;int&gt; 52, 0, 4, 71, 0, 10, 4, 7, 6, 0, 0, 1, 10,…
-$ pos_match         &lt;int&gt; 369, 231, 338, 1870, 213, 586, 342, 275, 4…
-$ ppos              &lt;dbl&gt; 77.8, 93.9, 94.2, 95.0, 100.0, 90.4, 93.4,…
-$ q_start           &lt;int&gt; 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, …
-$ q_end             &lt;int&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 4…
-$ q_len             &lt;int&gt; 430, 246, 359, 1910, 213, 646, 366, 294, 4…
-$ qcov              &lt;dbl&gt; 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
-$ qcovhsp           &lt;dbl&gt; 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
-$ s_start           &lt;int&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2,…
-$ s_end             &lt;int&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 4…
-$ s_len             &lt;int&gt; 466, 246, 355, 1963, 213, 640, 362, 299, 4…
-$ evalue            &lt;dbl&gt; 1.37e-211, 2.27e-156, 4.01e-210, 0.00e+00,…
-$ bit_score         &lt;dbl&gt; 582, 426, 571, 3544, 427, 1028, 614, 494, …
-$ score_raw         &lt;dbl&gt; 1500, 1094, 1471, 9190, 1098, 2658, 1583, …</code></pre>
+<span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Running diamond version 2.2.1 ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; sensitivity mode: fast</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; creating a diamond database</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Starting DIAMOND2 search ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; DIAMOND2 search completed in 0.03 sec.</span></span></code></pre>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">RBH</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Rows: 20</span></span>
+<span><span class="co">#&gt; Columns: 21</span></span>
+<span><span class="co">#&gt; Groups: query_id [20]</span></span>
+<span><span class="co">#&gt; $ query_id          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "AT1G01010.1"<span style="color: #949494;">, </span>"AT1G01020.1"<span style="color: #949494;">, </span>"AT1G01030.1"<span style="color: #949494;">, </span>"AT1G01040.1"<span style="color: #949494;">, </span>"AT1G01050.1"<span style="color: #949494;">, </span>"AT1G01060.3"<span style="color: #949494;">, </span>"AT1G01070.1"<span style="color: #949494;">, </span>"AT1G01080.1"<span style="color: #949494;">, </span>"AT1G01090.1"<span style="color: #949494;">, </span>"AT1G01110.2"<span style="color: #949494;">, </span>"AT1G01120.1"<span style="color: #949494;">, </span>"AT1G01140.3"<span style="color: #949494;">, </span>"AT1G01150.1"<span style="color: #949494;">, </span>"AT1G01160.1"<span style="color: #949494;">, </span>"AT1G01170.2"<span style="color: #949494;">, </span>"AT1G01180.1"<span style="color: #949494;">, </span>"AT1G01190.1"<span style="color: #949494;">, </span>"AT1G01200.1"<span style="color: #949494;">, </span>"AT1G01210.1"<span style="color: #949494;">, </span>"AT1G01220.1"</span></span>
+<span><span class="co">#&gt; $ subject_id        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "333554|PACid:16033839"<span style="color: #949494;">, </span>"470181|PACid:16064328"<span style="color: #949494;">, </span>"470180|PACid:16054974"<span style="color: #949494;">, </span>"333551|PACid:16057793"<span style="color: #949494;">, </span>"909874|PACid:16064489"<span style="color: #949494;">, </span>"470177|PACid:16043374"<span style="color: #949494;">, </span>"918864|PACid:16052578"<span style="color: #949494;">, </span>"909871|PACid:16053217"<span style="color: #949494;">, </span>"470171|PACid:16052860"<span style="color: #949494;">, </span>"333544|PACid:16034284"<span style="color: #949494;">, </span>"918858|PACid:16049140"<span style="color: #949494;">, </span>"470161|PACid:16036015"<span style="color: #949494;">, </span>"918855|PACid:16037307"<span style="color: #949494;">, </span>"918854|PACid:16044153"<span style="color: #949494;">, </span>"311317|PACid:16052302"<span style="color: #949494;">, </span>"909860|PACid:16056125"<span style="color: #949494;">, </span>"311315|PACid:16059488"<span style="color: #949494;">, </span>"470156|PACid:16041002"<span style="color: #949494;">, </span>"311313|PACid:16057125"<span style="color: #949494;">, </span>"470155|PACid:16047984"</span></span>
+<span><span class="co">#&gt; $ perc_identity     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 73.2<span style="color: #949494;">, </span>91.1<span style="color: #949494;">, </span>93.3<span style="color: #949494;">, </span>93.4<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>87.5<span style="color: #949494;">, </span>92.6<span style="color: #949494;">, </span>89.3<span style="color: #949494;">, </span>96.8<span style="color: #949494;">, </span>87.7<span style="color: #949494;">, </span>99.2<span style="color: #949494;">, </span>98.5<span style="color: #949494;">, </span>72.6<span style="color: #949494;">, </span>78.8<span style="color: #949494;">, </span>85.6<span style="color: #949494;">, </span>92.6<span style="color: #949494;">, </span>94.2<span style="color: #949494;">, </span>95.8<span style="color: #949494;">, </span>95.3<span style="color: #949494;">, </span>96.5</span></span>
+<span><span class="co">#&gt; $ num_ident_matches <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 347<span style="color: #949494;">, </span>224<span style="color: #949494;">, </span>335<span style="color: #949494;">, </span>1840<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>567<span style="color: #949494;">, </span>339<span style="color: #949494;">, </span>268<span style="color: #949494;">, </span>420<span style="color: #949494;">, </span>463<span style="color: #949494;">, </span>525<span style="color: #949494;">, </span>446<span style="color: #949494;">, </span>207<span style="color: #949494;">, </span>141<span style="color: #949494;">, </span>83<span style="color: #949494;">, </span>287<span style="color: #949494;">, </span>502<span style="color: #949494;">, </span>228<span style="color: #949494;">, </span>102<span style="color: #949494;">, </span>1019</span></span>
+<span><span class="co">#&gt; $ alig_length       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 474<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>359<span style="color: #949494;">, </span>1969<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>648<span style="color: #949494;">, </span>366<span style="color: #949494;">, </span>300<span style="color: #949494;">, </span>434<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>453<span style="color: #949494;">, </span>285<span style="color: #949494;">, </span>179<span style="color: #949494;">, </span>97<span style="color: #949494;">, </span>310<span style="color: #949494;">, </span>533<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
+<span><span class="co">#&gt; $ mismatches        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 75<span style="color: #949494;">, </span>22<span style="color: #949494;">, </span>20<span style="color: #949494;">, </span>58<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>71<span style="color: #949494;">, </span>23<span style="color: #949494;">, </span>25<span style="color: #949494;">, </span>8<span style="color: #949494;">, </span>65<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>6<span style="color: #949494;">, </span>68<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>20<span style="color: #949494;">, </span>30<span style="color: #949494;">, </span>10<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>37</span></span>
+<span><span class="co">#&gt; $ gap_openings      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 8<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>7<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0</span></span>
+<span><span class="co">#&gt; $ n_gaps            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 52<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>71<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>10<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>7<span style="color: #949494;">, </span>6<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>10<span style="color: #949494;">, </span>8<span style="color: #949494;">, </span>14<span style="color: #949494;">, </span>3<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0<span style="color: #949494;">, </span>0</span></span>
+<span><span class="co">#&gt; $ pos_match         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 369<span style="color: #949494;">, </span>231<span style="color: #949494;">, </span>338<span style="color: #949494;">, </span>1870<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>586<span style="color: #949494;">, </span>342<span style="color: #949494;">, </span>275<span style="color: #949494;">, </span>425<span style="color: #949494;">, </span>475<span style="color: #949494;">, </span>527<span style="color: #949494;">, </span>448<span style="color: #949494;">, </span>234<span style="color: #949494;">, </span>145<span style="color: #949494;">, </span>83<span style="color: #949494;">, </span>296<span style="color: #949494;">, </span>518<span style="color: #949494;">, </span>233<span style="color: #949494;">, </span>105<span style="color: #949494;">, </span>1035</span></span>
+<span><span class="co">#&gt; $ ppos              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 77.8<span style="color: #949494;">, </span>93.9<span style="color: #949494;">, </span>94.2<span style="color: #949494;">, </span>95.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>90.4<span style="color: #949494;">, </span>93.4<span style="color: #949494;">, </span>91.7<span style="color: #949494;">, </span>97.9<span style="color: #949494;">, </span>90.0<span style="color: #949494;">, </span>99.6<span style="color: #949494;">, </span>98.9<span style="color: #949494;">, </span>82.1<span style="color: #949494;">, </span>81.0<span style="color: #949494;">, </span>85.6<span style="color: #949494;">, </span>95.5<span style="color: #949494;">, </span>97.2<span style="color: #949494;">, </span>97.9<span style="color: #949494;">, </span>98.1<span style="color: #949494;">, </span>98.0</span></span>
+<span><span class="co">#&gt; $ q_start           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>6<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>5<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1</span></span>
+<span><span class="co">#&gt; $ q_end             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 430<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>359<span style="color: #949494;">, </span>1910<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>646<span style="color: #949494;">, </span>366<span style="color: #949494;">, </span>294<span style="color: #949494;">, </span>429<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>452<span style="color: #949494;">, </span>289<span style="color: #949494;">, </span>175<span style="color: #949494;">, </span>84<span style="color: #949494;">, </span>307<span style="color: #949494;">, </span>533<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
+<span><span class="co">#&gt; $ q_len             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 430<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>359<span style="color: #949494;">, </span>1910<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>646<span style="color: #949494;">, </span>366<span style="color: #949494;">, </span>294<span style="color: #949494;">, </span>429<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>452<span style="color: #949494;">, </span>346<span style="color: #949494;">, </span>196<span style="color: #949494;">, </span>84<span style="color: #949494;">, </span>479<span style="color: #949494;">, </span>536<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
+<span><span class="co">#&gt; $ qcov              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>99.7<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>82.4<span style="color: #949494;">, </span>87.8<span style="color: #949494;">, </span>98.8<span style="color: #949494;">, </span>64.1<span style="color: #949494;">, </span>99.4<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0</span></span>
+<span><span class="co">#&gt; $ qcovhsp           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>99.7<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>82.4<span style="color: #949494;">, </span>87.8<span style="color: #949494;">, </span>98.8<span style="color: #949494;">, </span>64.1<span style="color: #949494;">, </span>99.4<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0<span style="color: #949494;">, </span>100.0</span></span>
+<span><span class="co">#&gt; $ s_start           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>16<span style="color: #949494;">, </span>2<span style="color: #949494;">, </span>4<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>6<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1<span style="color: #949494;">, </span>1</span></span>
+<span><span class="co">#&gt; $ s_end             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 466<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>355<span style="color: #949494;">, </span>1963<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>640<span style="color: #949494;">, </span>362<span style="color: #949494;">, </span>299<span style="color: #949494;">, </span>433<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>453<span style="color: #949494;">, </span>290<span style="color: #949494;">, </span>179<span style="color: #949494;">, </span>100<span style="color: #949494;">, </span>310<span style="color: #949494;">, </span>537<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
+<span><span class="co">#&gt; $ s_len             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 466<span style="color: #949494;">, </span>246<span style="color: #949494;">, </span>355<span style="color: #949494;">, </span>1963<span style="color: #949494;">, </span>213<span style="color: #949494;">, </span>640<span style="color: #949494;">, </span>362<span style="color: #949494;">, </span>299<span style="color: #949494;">, </span>433<span style="color: #949494;">, </span>528<span style="color: #949494;">, </span>529<span style="color: #949494;">, </span>453<span style="color: #949494;">, </span>294<span style="color: #949494;">, </span>225<span style="color: #949494;">, </span>100<span style="color: #949494;">, </span>316<span style="color: #949494;">, </span>540<span style="color: #949494;">, </span>238<span style="color: #949494;">, </span>107<span style="color: #949494;">, </span>1056</span></span>
+<span><span class="co">#&gt; $ evalue            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1.37e-211<span style="color: #949494;">, </span>2.27e-156<span style="color: #949494;">, </span>4.01e-210<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>4.47e-158<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>6.01e-227<span style="color: #949494;">, </span>1.14e-181<span style="color: #949494;">, </span>5.41e-305<span style="color: #949494;">, </span>1.18e-309<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>5.31e-148<span style="color: #949494;">, </span>1.62e-94<span style="color: #949494;">, </span>8.03e-57<span style="color: #949494;">, </span>4.57e-214<span style="color: #949494;">, </span>0.00e+00<span style="color: #949494;">, </span>6.96e-163<span style="color: #949494;">, </span>2.04e-80<span style="color: #949494;">, </span>0.00e+00</span></span>
+<span><span class="co">#&gt; $ bit_score         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 582<span style="color: #949494;">, </span>426<span style="color: #949494;">, </span>571<span style="color: #949494;">, </span>3544<span style="color: #949494;">, </span>427<span style="color: #949494;">, </span>1028<span style="color: #949494;">, </span>614<span style="color: #949494;">, </span>494<span style="color: #949494;">, </span>817<span style="color: #949494;">, </span>837<span style="color: #949494;">, </span>1029<span style="color: #949494;">, </span>865<span style="color: #949494;">, </span>410<span style="color: #949494;">, </span>266<span style="color: #949494;">, </span>161<span style="color: #949494;">, </span>584<span style="color: #949494;">, </span>1007<span style="color: #949494;">, </span>441<span style="color: #949494;">, </span>222<span style="color: #949494;">, </span>2016</span></span>
+<span><span class="co">#&gt; $ score_raw         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1500<span style="color: #949494;">, </span>1094<span style="color: #949494;">, </span>1471<span style="color: #949494;">, </span>9190<span style="color: #949494;">, </span>1098<span style="color: #949494;">, </span>2658<span style="color: #949494;">, </span>1583<span style="color: #949494;">, </span>1271<span style="color: #949494;">, </span>2110<span style="color: #949494;">, </span>2162<span style="color: #949494;">, </span>2661<span style="color: #949494;">, </span>2235<span style="color: #949494;">, </span>1055<span style="color: #949494;">, </span>680<span style="color: #949494;">, </span>408<span style="color: #949494;">, </span>1506<span style="color: #949494;">, </span>2603<span style="color: #949494;">, </span>1135<span style="color: #949494;">, </span>566<span style="color: #949494;">, </span>5224</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="blastp-best-hit">BLASTp best hit<a class="anchor" aria-label="anchor" href="#blastp-best-hit"></a>
@@ -559,7 +568,7 @@ of a <code>query organism A</code> against a
 <p>Orthology Inference using BLASTp best hit can be performed by
 specifying the argument <code>ortho_detection = "BH"</code> and one
 computing core <code>comp_core = 1</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># perform orthology inference using BLAST best hit</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
 <span><span class="fu">orthologr</span><span class="fu">::</span><span class="fu"><a href="../reference/orthologs.html">orthologs</a></span><span class="op">(</span>query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_aa.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -568,46 +577,31 @@ computing core <code>comp_core = 1</code>:</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"BH"</span>, </span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running blastp: 2.17.0+ ...
-
-
-Building a new DB, current time: 09/09/2026 16:56:56
-New DB name:   /private/var/folders/wj/wmnpz2b95jg73d0s075qm81w0000gn/T/RtmpB6whnk/_blast_db/blastdb_ortho_lyra_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_lyra_aa.fasta_protein.fasta
-Sequence type: Protein
-Keep MBits: T
-Maximum file size: 3000000000B
-Adding sequences from FASTA; added 20 sequences in 0.00140405 seconds.
-
-
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id        perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PACid:160…          74.0               347         469
- 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:160…          95.5               343         359
- 4 AT1G01040.1 333551|PACid:160…          92.0              1812        1970
- 5 AT1G01050.1 909874|PACid:160…         100                 213         213
- 6 AT1G01060.3 470177|PACid:160…          89.5               580         648
- 7 AT1G01070.1 918864|PACid:160…          95.1               348         366
- 8 AT1G01080.1 909871|PACid:160…          90.3               271         300
- 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
-10 AT1G01110.2 333544|PACid:160…          93.6               494         528
-11 AT1G01120.1 918858|PACid:160…          99.2               525         529
-12 AT1G01140.3 470161|PACid:160…          98.5               446         453
-13 AT1G01150.1 918855|PACid:160…          72.6               207         285
-14 AT1G01160.1 918854|PACid:160…          84.9               152         179
-15 AT1G01170.2 311317|PACid:160…          85.6                83          97
-16 AT1G01180.1 909860|PACid:160…          92.6               287         310
-17 AT1G01190.1 311315|PACid:160…          94.2               502         533
-18 AT1G01200.1 470156|PACid:160…          95.8               228         238
-19 AT1G01210.1 311313|PACid:160…          95.3               102         107
-20 AT1G01220.1 470155|PACid:160…          96.7              1021        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
-#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;,
-#   qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;,
-#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;</code></pre>
+<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          74.0               347         469         80            8     42       370  78.9       1   430   430   100     100       1   466   466 0   <span style="color: #949494;"> </span>           627      <span style="text-decoration: underline;">1</span>617</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246   100     100       1   246   246 8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-168</span>       454      <span style="text-decoration: underline;">1</span>169</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          95.5               343         359         12            2      4       346  96.4       1   359   359   100     100       1   355   355 0   <span style="color: #949494;"> </span>           698      <span style="text-decoration: underline;">1</span>801</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          92.0              <span style="text-decoration: underline;">1</span>812        <span style="text-decoration: underline;">1</span>970         85           10     73      <span style="text-decoration: underline;">1</span>853  94.1       6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910    99      99       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>704      <span style="text-decoration: underline;">9</span>604</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213   100     100       1   213   213 3.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-162</span>       437      <span style="text-decoration: underline;">1</span>125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          89.5               580         648         58            5     10       601  92.8       1   646   646   100     100       1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>037      <span style="text-decoration: underline;">2</span>681</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          95.1               348         366         14            2      4       351  95.9       1   366   366   100     100       1   362   362 0   <span style="color: #949494;"> </span>           696      <span style="text-decoration: underline;">1</span>797</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          90.3               271         300         22            2      7       279  93         1   294   294   100     100       1   299   299 1.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-180</span>       491      <span style="text-decoration: underline;">1</span>264</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429   100     100       1   433   433 0   <span style="color: #949494;"> </span>           859      <span style="text-decoration: underline;">2</span>220</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          93.6               494         528         34            0      0       507  96.0       1   528   528   100     100       1   528   528 0   <span style="color: #949494;"> </span>           972      <span style="text-decoration: underline;">2</span>512</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529   100     100       1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>092      <span style="text-decoration: underline;">2</span>825</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452   100     100       1   453   453 0   <span style="color: #949494;"> </span>           918      <span style="text-decoration: underline;">2</span>372</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346    82      82      16   290   294 4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-152</span>       421      <span style="text-decoration: underline;">1</span>082</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          84.9               152         179         19            2      8       157  87.7       4   175   196    88      88       2   179   225 2.39<span style="color: #949494;">e</span><span style="color: #BB0000;">- 95</span>       268       685</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84    99      99       4   100   100 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 55</span>       158       400</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479    64      64       1   310   316 0   <span style="color: #949494;"> </span>           576      <span style="text-decoration: underline;">1</span>484</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536    99      99       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036      <span style="text-decoration: underline;">2</span>679</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238   100     100       1   238   238 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470      <span style="text-decoration: underline;">1</span>209</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215       547</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
 <p>The resulting table stores the orthologous gene pairs and the
 corresponding BLAST alignment statistics.</p>
 </div>
@@ -629,8 +623,8 @@ search of a <code>query organism A</code> against a
 <code>e-value</code> in both BLAST directions, the corresponding tupel
 <code>(query_id, subject_id)</code> is retained as orthologous gene
 pair.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># perform orthology inference using BLAST reciprocal best hit</span></span>
 <span><span class="co"># and fasta sequence files storing protein sequences</span></span>
@@ -640,55 +634,39 @@ pair.</p>
 <span>          ortho_detection <span class="op">=</span> <span class="st">"RBH"</span>, </span>
 <span>          clean_folders   <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>          comp_cores      <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code>Running blastp: 2.17.0+ ...
-
-
-Building a new DB, current time: 09/09/2026 16:57:32
-New DB name:   /private/var/folders/wj/wmnpz2b95jg73d0s075qm81w0000gn/T/RtmpB6whnk/_blast_db/blastdb_ortho_thal_aa.fasta_protein.fasta
-New DB title:  blastdb_ortho_thal_aa.fasta_protein.fasta
-Sequence type: Protein
-Deleted existing Protein BLAST database named /private/var/folders/wj/wmnpz2b95jg73d0s075qm81w0000gn/T/RtmpB6whnk/_blast_db/blastdb_ortho_thal_aa.fasta_protein.fasta
-Keep MBits: T
-Maximum file size: 3000000000B
-Adding sequences from FASTA; added 20 sequences in 0.000917912 seconds.
-
-
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id        perc_identity num_ident_matches alig_length
-   &lt;chr&gt;       &lt;chr&gt;                     &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
- 1 AT1G01010.1 333554|PACid:160…          74.0               347         469
- 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:160…          95.5               343         359
- 4 AT1G01040.1 333551|PACid:160…          92.0              1812        1970
- 5 AT1G01050.1 909874|PACid:160…         100                 213         213
- 6 AT1G01060.3 470177|PACid:160…          89.5               580         648
- 7 AT1G01070.1 918864|PACid:160…          95.1               348         366
- 8 AT1G01080.1 909871|PACid:160…          90.3               271         300
- 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
-10 AT1G01110.2 333544|PACid:160…          93.6               494         528
-11 AT1G01120.1 918858|PACid:160…          99.2               525         529
-12 AT1G01140.3 470161|PACid:160…          98.5               446         453
-13 AT1G01150.1 918855|PACid:160…          72.6               207         285
-14 AT1G01160.1 918854|PACid:160…          84.9               152         179
-15 AT1G01170.2 311317|PACid:160…          85.6                83          97
-16 AT1G01180.1 909860|PACid:160…          92.6               287         310
-17 AT1G01190.1 311315|PACid:160…          94.2               502         533
-18 AT1G01200.1 470156|PACid:160…          95.8               228         238
-19 AT1G01210.1 311313|PACid:160…          95.3               102         107
-20 AT1G01220.1 470155|PACid:160…          96.7              1021        1056
-# ℹ 16 more variables: mismatches &lt;int&gt;, gap_openings &lt;int&gt;, n_gaps &lt;int&gt;,
-#   pos_match &lt;int&gt;, ppos &lt;dbl&gt;, q_start &lt;int&gt;, q_end &lt;int&gt;, q_len &lt;int&gt;,
-#   qcov &lt;dbl&gt;, qcovhsp &lt;dbl&gt;, s_start &lt;int&gt;, s_end &lt;int&gt;, s_len &lt;int&gt;,
-#   evalue &lt;dbl&gt;, bit_score &lt;dbl&gt;, score_raw &lt;dbl&gt;
-</code></pre>
+<pre><code><span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span>
+<span><span class="co">#&gt; Running blastp: 2.17.0+ ...</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   query_id [20]</span></span></span>
+<span><span class="co">#&gt;    query_id    subject_id            perc_identity num_ident_matches alig_length mismatches gap_openings n_gaps pos_match  ppos q_start q_end q_len  qcov qcovhsp s_start s_end s_len    evalue bit_score score_raw</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AT1G01010.1 333554|PACid:16033839          74.0               347         469         80            8     42       370  78.9       1   430   430   100     100       1   466   466 0   <span style="color: #949494;"> </span>           627      <span style="text-decoration: underline;">1</span>617</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> AT1G01020.1 470181|PACid:16064328          91.1               224         246         22            0      0       231  93.9       1   246   246   100     100       1   246   246 8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-168</span>       454      <span style="text-decoration: underline;">1</span>169</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> AT1G01030.1 470180|PACid:16054974          95.5               343         359         12            2      4       346  96.4       1   359   359   100     100       1   355   355 0   <span style="color: #949494;"> </span>           698      <span style="text-decoration: underline;">1</span>801</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AT1G01040.1 333551|PACid:16057793          92.0              <span style="text-decoration: underline;">1</span>812        <span style="text-decoration: underline;">1</span>970         85           10     73      <span style="text-decoration: underline;">1</span>853  94.1       6  <span style="text-decoration: underline;">1</span>910  <span style="text-decoration: underline;">1</span>910    99      99       2  <span style="text-decoration: underline;">1</span>963  <span style="text-decoration: underline;">1</span>963 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">3</span>704      <span style="text-decoration: underline;">9</span>604</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> AT1G01050.1 909874|PACid:16064489         100                 213         213          0            0      0       213 100         1   213   213   100     100       1   213   213 3.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-162</span>       437      <span style="text-decoration: underline;">1</span>125</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> AT1G01060.3 470177|PACid:16043374          89.5               580         648         58            5     10       601  92.8       1   646   646   100     100       1   640   640 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>037      <span style="text-decoration: underline;">2</span>681</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AT1G01070.1 918864|PACid:16052578          95.1               348         366         14            2      4       351  95.9       1   366   366   100     100       1   362   362 0   <span style="color: #949494;"> </span>           696      <span style="text-decoration: underline;">1</span>797</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> AT1G01080.1 909871|PACid:16053217          90.3               271         300         22            2      7       279  93         1   294   294   100     100       1   299   299 1.21<span style="color: #949494;">e</span><span style="color: #BB0000;">-180</span>       491      <span style="text-decoration: underline;">1</span>264</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> AT1G01090.1 470171|PACid:16052860          96.8               420         434          8            3      6       425  97.9       1   429   429   100     100       1   433   433 0   <span style="color: #949494;"> </span>           859      <span style="text-decoration: underline;">2</span>220</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> AT1G01110.2 333544|PACid:16034284          93.6               494         528         34            0      0       507  96.0       1   528   528   100     100       1   528   528 0   <span style="color: #949494;"> </span>           972      <span style="text-decoration: underline;">2</span>512</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> AT1G01120.1 918858|PACid:16049140          99.2               525         529          4            0      0       527  99.6       1   529   529   100     100       1   529   529 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>092      <span style="text-decoration: underline;">2</span>825</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> AT1G01140.3 470161|PACid:16036015          98.5               446         453          6            1      1       448  98.9       1   452   452   100     100       1   453   453 0   <span style="color: #949494;"> </span>           918      <span style="text-decoration: underline;">2</span>372</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> AT1G01150.1 918855|PACid:16037307          72.6               207         285         68            3     10       234  82.1       5   289   346    82      82      16   290   294 4.13<span style="color: #949494;">e</span><span style="color: #BB0000;">-152</span>       421      <span style="text-decoration: underline;">1</span>082</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> AT1G01160.1 918854|PACid:16044153          84.9               152         179         19            2      8       157  87.7       4   175   196    88      88       2   179   225 2.39<span style="color: #949494;">e</span><span style="color: #BB0000;">- 95</span>       268       685</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> AT1G01170.2 311317|PACid:16052302          85.6                83          97          0            1     14        83  85.6       2    84    84    99      99       4   100   100 1.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 55</span>       158       400</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> AT1G01180.1 909860|PACid:16056125          92.6               287         310         20            1      3       296  95.5       1   307   479    64      64       1   310   316 0   <span style="color: #949494;"> </span>           576      <span style="text-decoration: underline;">1</span>484</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> AT1G01190.1 311315|PACid:16059488          94.2               502         533         30            1      1       518  97.2       1   533   536    99      99       6   537   540 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">1</span>036      <span style="text-decoration: underline;">2</span>679</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> AT1G01200.1 470156|PACid:16041002          95.8               228         238         10            0      0       233  97.9       1   238   238   100     100       1   238   238 3.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-174</span>       470      <span style="text-decoration: underline;">1</span>209</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> AT1G01210.1 311313|PACid:16057125          95.3               102         107          5            0      0       105  98.1       1   107   107   100     100       1   107   107 1.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 77</span>       215       547</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> AT1G01220.1 470155|PACid:16047984          96.7              <span style="text-decoration: underline;">1</span>021        <span style="text-decoration: underline;">1</span>056         35            0      0      <span style="text-decoration: underline;">1</span>037  98.2       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056   100     100       1  <span style="text-decoration: underline;">1</span>056  <span style="text-decoration: underline;">1</span>056 0   <span style="color: #949494;"> </span>          <span style="text-decoration: underline;">2</span>106      <span style="text-decoration: underline;">5</span>456</span></span></code></pre>
 <p>In case you would like to store the corresponding
 <code>hit tables</code> returned by BLAST for subsequent analyses, you
 can specify the <code>clean_folders = FALSE</code> argument. The
 corresponding BLAST hit table can then be found in
 <code>file.path(tempdir(),"_blast_db")</code>.</p>
 <p>A detailed overview of further analyses that can be done with the
-corresponding BLAST output can be found in the <a href="https://drostlab.github.io/orthologr/articles/blast.html" class="external-link">BLAST
+corresponding BLAST output can be found in the <a href="https://drostlab.github.io/orthologr/articles/blast.html">BLAST
 vignette</a>.</p>
 <!-- ## Multi-species ortholog table workflow -->
 <!-- The pairwise functions above compare one query against one subject at a time. When you want to -->
@@ -770,29 +748,22 @@ vignette</a>.</p>
 <!-- stratigraphy (see the [Divergence Stratigraphy vignette](https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html)). -->
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Hajk-Georg Drost.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 

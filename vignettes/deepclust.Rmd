@@ -14,6 +14,7 @@ library(orthologr)
 has_diamond <- nzchar(Sys.which("diamond"))
 knitr::opts_chunk$set(
   comment = "#>",
+  collapse = TRUE,
   error = FALSE,
   tidy = FALSE,
   eval = has_diamond)
@@ -33,7 +34,7 @@ All three functions work with protein sequences only.
 
 `deepclust()` takes a fasta file of protein sequences and returns a data frame mapping each sequence to a cluster ID.
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 library(orthologr)
 
 clusters <- deepclust(
@@ -50,7 +51,7 @@ clusters
 
 `deepclust_annotate()` takes the output of `deepclust()` and attaches functional annotations to each cluster.
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 annotated <- deepclust_annotate(
   input_file = c(
     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -64,7 +65,7 @@ annotated
 
 or use a named list to control the file_name column labels
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 annotated <- deepclust_annotate(
   input_file = list(
     "thal" = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -74,7 +75,7 @@ annotated <- deepclust_annotate(
 annotated
 ```
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 # Stricter clustering with custom thresholds
 annotated <- deepclust_annotate(
   input_file = c(
@@ -92,7 +93,7 @@ annotated
 
 `deepclust_realign()` refines the multiple sequence alignment within each cluster, which can improve downstream dN/dS estimation or phylogenetic inference.
 
-```{r,eval=TRUE}
+```{r,eval=has_diamond}
 realign_result <- deepclust_realign(
   input_file = c(
     system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),

@@ -4,109 +4,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Performing Divergence Stratigraphy • orthologr</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Performing Divergence Stratigraphy">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Performing Divergence Stratigraphy">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">orthologr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.3</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="../index.html">orthologr</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/blast.html">BLAST searches using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a>
-    </li>
-    <li>
-      <a href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/Install.html">Installing Prerequisite Tools</a>
-    </li>
-    <li>
-      <a href="../articles/orthology_inference.html">Orthology Inference using orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a>
-    </li>
-    <li>
-      <a href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
+    <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
+    <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a></li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/drostlab/orthologr/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/drostlab/orthologr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Performing Divergence Stratigraphy</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Performing Divergence Stratigraphy</h1>
             
-            <h4 data-toc-skip class="date">2026-09-18</h4>
+            <h4 data-toc-skip class="date">2026-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/divergence_stratigraphy.Rmd" class="external-link"><code>vignettes/divergence_stratigraphy.Rmd</code></a></small>
-      <div class="hidden name"><code>divergence_stratigraphy.Rmd</code></div>
-
+      <div class="d-none name"><code>divergence_stratigraphy.Rmd</code></div>
     </div>
 
     
@@ -173,11 +138,10 @@ their machine</strong> before running
 by setting <code>aligner = "blast"</code>.</p>
 <p><strong>Note</strong>: The following examples assume that <a href="https://github.com/bbuchfink/diamond" class="external-link"><strong>DIAMOND2</strong></a>
 is installed and accessible from the default execution path. Please
-consult the <a href="https://drostlab.github.io/orthologr/articles/Install.html" class="external-link">Installation
+consult the <a href="https://drostlab.github.io/orthologr/articles/Install.html">Installation
 Vignette</a> for instructions on installing DIAMOND2 or BLAST.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>diamond version 2.1.8</code></pre>
 <div class="section level2">
 <h2 id="divergence-map-computations">Divergence Map Computations<a class="anchor" aria-label="anchor" href="#divergence-map-computations"></a>
 </h2>
@@ -290,8 +254,8 @@ will be removed after the <code>Divergence Map</code> was returned. The
 <code>quiet</code> argument indicates whether or not a successful
 interface call should be printed out to the console
 (<code>quiet = FALSE</code>) or not (<code>quiet = TRUE</code>).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># compute the divergence map of A. thaliana using DIAMOND2 (default)</span></span>
 <span><span class="va">Athaliana_DM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -307,8 +271,8 @@ interface call should be printed out to the console
 complete genomes, users can first run a test <strong>Divergence
 Stratigraphy</strong> with 20 example genes that are stored in the
 <code>orthologr</code> package:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy using DIAMOND2 (default)</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -321,29 +285,28 @@ Stratigraphy</strong> with 20 example genes that are stored in the
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>
-   DS    query_id
-1  10 AT1G01010.1
-2   9 AT1G01020.1
-3   5 AT1G01030.1
-4   4 AT1G01040.1
-5   1 AT1G01050.1
-6   9 AT1G01060.3
-7   6 AT1G01070.1
-8   8 AT1G01080.1
-9   2 AT1G01090.1
-10  7 AT1G01110.2
-11  2 AT1G01120.1
-12  3 AT1G01140.3
-13 10 AT1G01150.1
-14  8 AT1G01160.1
-15  1 AT1G01170.2
-16  6 AT1G01180.1
-17  7 AT1G01190.1
-18  4 AT1G01200.1
-19  5 AT1G01210.1
-20  3 AT1G01220.1
-</code></pre>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;    DS    query_id</span></span>
+<span><span class="co">#&gt; 1  10 AT1G01010.1</span></span>
+<span><span class="co">#&gt; 2   9 AT1G01020.1</span></span>
+<span><span class="co">#&gt; 3   5 AT1G01030.1</span></span>
+<span><span class="co">#&gt; 4   4 AT1G01040.1</span></span>
+<span><span class="co">#&gt; 5   1 AT1G01050.1</span></span>
+<span><span class="co">#&gt; 6   9 AT1G01060.3</span></span>
+<span><span class="co">#&gt; 7   6 AT1G01070.1</span></span>
+<span><span class="co">#&gt; 8   8 AT1G01080.1</span></span>
+<span><span class="co">#&gt; 9   2 AT1G01090.1</span></span>
+<span><span class="co">#&gt; 10  7 AT1G01110.2</span></span>
+<span><span class="co">#&gt; 11  2 AT1G01120.1</span></span>
+<span><span class="co">#&gt; 12  3 AT1G01140.3</span></span>
+<span><span class="co">#&gt; 13 10 AT1G01150.1</span></span>
+<span><span class="co">#&gt; 14  8 AT1G01160.1</span></span>
+<span><span class="co">#&gt; 15  1 AT1G01170.2</span></span>
+<span><span class="co">#&gt; 16  6 AT1G01180.1</span></span>
+<span><span class="co">#&gt; 17  7 AT1G01190.1</span></span>
+<span><span class="co">#&gt; 18  4 AT1G01200.1</span></span>
+<span><span class="co">#&gt; 19  5 AT1G01210.1</span></span>
+<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre>
 <p>The resulting output is a <code>Divergence Map</code> of the 20
 example genes. The column <code>DS</code> contains the divergence
 stratum (1–10) for each gene.</p>
@@ -386,7 +349,7 @@ non-standard location.</p>
 <p>The following example shows a possible specification of
 <code>aligner_path</code> when using DIAMOND2 (the default).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy with a custom DIAMOND2 path</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
@@ -440,7 +403,7 @@ the <code>ds.values</code> argument in
 <code>dNdS Map</code> instead of a <code>Divergence Map</code>. For this
 purpose users need to set <code>ds.values = FALSE</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr" class="external-link">orthologr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># performing standard divergence stratigraphy</span></span>
 <span><span class="co"># but receive a dNdS Map instead of a Divergence Map</span></span>
@@ -454,28 +417,28 @@ purpose users need to set <code>ds.values = FALSE</code>.</p>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>      dNdS    query_id
-1  0.41950 AT1G01010.1
-2  0.38790 AT1G01020.1
-3  0.11850 AT1G01030.1
-4  0.11560 AT1G01040.1
-5  0.00000 AT1G01050.1
-6  0.39670 AT1G01060.3
-7  0.17280 AT1G01070.1
-8  0.32170 AT1G01080.1
-9  0.04174 AT1G01090.1
-10 0.26620 AT1G01110.2
-11 0.02317 AT1G01120.1
-12 0.04324 AT1G01140.3
-13 0.64120 AT1G01150.1
-14 0.37310 AT1G01160.1
-15 0.00000 AT1G01170.2
-16 0.16830 AT1G01180.1
-17 0.17730 AT1G01190.1
-18 0.11370 AT1G01200.1
-19 0.13420 AT1G01210.1
-20 0.10230 AT1G01220.1
-</code></pre>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;       dNdS    query_id</span></span>
+<span><span class="co">#&gt; 1  0.41950 AT1G01010.1</span></span>
+<span><span class="co">#&gt; 2  0.38790 AT1G01020.1</span></span>
+<span><span class="co">#&gt; 3  0.11850 AT1G01030.1</span></span>
+<span><span class="co">#&gt; 4  0.11560 AT1G01040.1</span></span>
+<span><span class="co">#&gt; 5  0.00000 AT1G01050.1</span></span>
+<span><span class="co">#&gt; 6  0.39670 AT1G01060.3</span></span>
+<span><span class="co">#&gt; 7  0.17280 AT1G01070.1</span></span>
+<span><span class="co">#&gt; 8  0.32170 AT1G01080.1</span></span>
+<span><span class="co">#&gt; 9  0.04174 AT1G01090.1</span></span>
+<span><span class="co">#&gt; 10 0.26620 AT1G01110.2</span></span>
+<span><span class="co">#&gt; 11 0.02317 AT1G01120.1</span></span>
+<span><span class="co">#&gt; 12 0.04324 AT1G01140.3</span></span>
+<span><span class="co">#&gt; 13 0.64120 AT1G01150.1</span></span>
+<span><span class="co">#&gt; 14 0.37310 AT1G01160.1</span></span>
+<span><span class="co">#&gt; 15 0.00000 AT1G01170.2</span></span>
+<span><span class="co">#&gt; 16 0.16830 AT1G01180.1</span></span>
+<span><span class="co">#&gt; 17 0.17730 AT1G01190.1</span></span>
+<span><span class="co">#&gt; 18 0.11370 AT1G01200.1</span></span>
+<span><span class="co">#&gt; 19 0.13420 AT1G01210.1</span></span>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre>
 <p>The corresponding output now stores <code>dNdS</code> values instead
 of <code>DS</code> values in the first column.</p>
 </div>
@@ -491,7 +454,7 @@ organism. The <code>subject.id</code> argument implemented in
 GeneIDs of the orthologous genes of the <code>subject</code> organism.
 For this purpose users need to specify
 <code>subject.id = TRUE</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># receive a Divergence Map with DS | query GeneID | orthologous subject GeneID </span></span>
 <span><span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -502,33 +465,34 @@ For this purpose users need to specify
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>   DS    query_id            subject_id
-1  10 AT1G01010.1 333554|PACid:16033839
-2   9 AT1G01020.1 470181|PACid:16064328
-3   5 AT1G01030.1 470180|PACid:16054974
-4   4 AT1G01040.1 333551|PACid:16057793
-5   1 AT1G01050.1 909874|PACid:16064489
-6   9 AT1G01060.3 470177|PACid:16043374
-7   6 AT1G01070.1 918864|PACid:16052578
-8   8 AT1G01080.1 909871|PACid:16053217
-9   2 AT1G01090.1 470171|PACid:16052860
-10  7 AT1G01110.2 333544|PACid:16034284
-11  2 AT1G01120.1 918858|PACid:16049140
-12  3 AT1G01140.3 470161|PACid:16036015
-13 10 AT1G01150.1 918855|PACid:16037307
-14  8 AT1G01160.1 918854|PACid:16044153
-15  1 AT1G01170.2 311317|PACid:16052302
-16  6 AT1G01180.1 909860|PACid:16056125
-17  7 AT1G01190.1 311315|PACid:16059488
-18  4 AT1G01200.1 470156|PACid:16041002
-19  5 AT1G01210.1 311313|PACid:16057125
-20  3 AT1G01220.1 470155|PACid:16047984</code></pre>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;    DS    query_id            subject_id</span></span>
+<span><span class="co">#&gt; 1  10 AT1G01010.1 333554|PACid:16033839</span></span>
+<span><span class="co">#&gt; 2   9 AT1G01020.1 470181|PACid:16064328</span></span>
+<span><span class="co">#&gt; 3   5 AT1G01030.1 470180|PACid:16054974</span></span>
+<span><span class="co">#&gt; 4   4 AT1G01040.1 333551|PACid:16057793</span></span>
+<span><span class="co">#&gt; 5   1 AT1G01050.1 909874|PACid:16064489</span></span>
+<span><span class="co">#&gt; 6   9 AT1G01060.3 470177|PACid:16043374</span></span>
+<span><span class="co">#&gt; 7   6 AT1G01070.1 918864|PACid:16052578</span></span>
+<span><span class="co">#&gt; 8   8 AT1G01080.1 909871|PACid:16053217</span></span>
+<span><span class="co">#&gt; 9   2 AT1G01090.1 470171|PACid:16052860</span></span>
+<span><span class="co">#&gt; 10  7 AT1G01110.2 333544|PACid:16034284</span></span>
+<span><span class="co">#&gt; 11  2 AT1G01120.1 918858|PACid:16049140</span></span>
+<span><span class="co">#&gt; 12  3 AT1G01140.3 470161|PACid:16036015</span></span>
+<span><span class="co">#&gt; 13 10 AT1G01150.1 918855|PACid:16037307</span></span>
+<span><span class="co">#&gt; 14  8 AT1G01160.1 918854|PACid:16044153</span></span>
+<span><span class="co">#&gt; 15  1 AT1G01170.2 311317|PACid:16052302</span></span>
+<span><span class="co">#&gt; 16  6 AT1G01180.1 909860|PACid:16056125</span></span>
+<span><span class="co">#&gt; 17  7 AT1G01190.1 311315|PACid:16059488</span></span>
+<span><span class="co">#&gt; 18  4 AT1G01200.1 470156|PACid:16041002</span></span>
+<span><span class="co">#&gt; 19  5 AT1G01210.1 311313|PACid:16057125</span></span>
+<span><span class="co">#&gt; 20  3 AT1G01220.1 470155|PACid:16047984</span></span></code></pre>
 <p>The resulting output now shows DS values, query GeneIDs, and
 orthologous subject GeneIDs.</p>
 <p>A similar output can be generated for <code>dNdS</code> values
 instead of <code>DS</code> values by specifying
 <code>ds.values = FALSE</code> and <code>subject.id = TRUE</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID </span></span>
 <span><span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -540,27 +504,28 @@ instead of <code>DS</code> values by specifying
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>      subject.id      <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>      dNdS    query_id            subject_id
-1  0.41950 AT1G01010.1 333554|PACid:16033839
-2  0.38790 AT1G01020.1 470181|PACid:16064328
-3  0.11850 AT1G01030.1 470180|PACid:16054974
-4  0.11560 AT1G01040.1 333551|PACid:16057793
-5  0.00000 AT1G01050.1 909874|PACid:16064489
-6  0.39670 AT1G01060.3 470177|PACid:16043374
-7  0.17280 AT1G01070.1 918864|PACid:16052578
-8  0.32170 AT1G01080.1 909871|PACid:16053217
-9  0.04174 AT1G01090.1 470171|PACid:16052860
-10 0.26620 AT1G01110.2 333544|PACid:16034284
-11 0.02317 AT1G01120.1 918858|PACid:16049140
-12 0.04324 AT1G01140.3 470161|PACid:16036015
-13 0.64120 AT1G01150.1 918855|PACid:16037307
-14 0.37310 AT1G01160.1 918854|PACid:16044153
-15 0.00000 AT1G01170.2 311317|PACid:16052302
-16 0.16830 AT1G01180.1 909860|PACid:16056125
-17 0.17730 AT1G01190.1 311315|PACid:16059488
-18 0.11370 AT1G01200.1 470156|PACid:16041002
-19 0.13420 AT1G01210.1 311313|PACid:16057125
-20 0.10230 AT1G01220.1 470155|PACid:16047984</code></pre>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;       dNdS    query_id            subject_id</span></span>
+<span><span class="co">#&gt; 1  0.41950 AT1G01010.1 333554|PACid:16033839</span></span>
+<span><span class="co">#&gt; 2  0.38790 AT1G01020.1 470181|PACid:16064328</span></span>
+<span><span class="co">#&gt; 3  0.11850 AT1G01030.1 470180|PACid:16054974</span></span>
+<span><span class="co">#&gt; 4  0.11560 AT1G01040.1 333551|PACid:16057793</span></span>
+<span><span class="co">#&gt; 5  0.00000 AT1G01050.1 909874|PACid:16064489</span></span>
+<span><span class="co">#&gt; 6  0.39670 AT1G01060.3 470177|PACid:16043374</span></span>
+<span><span class="co">#&gt; 7  0.17280 AT1G01070.1 918864|PACid:16052578</span></span>
+<span><span class="co">#&gt; 8  0.32170 AT1G01080.1 909871|PACid:16053217</span></span>
+<span><span class="co">#&gt; 9  0.04174 AT1G01090.1 470171|PACid:16052860</span></span>
+<span><span class="co">#&gt; 10 0.26620 AT1G01110.2 333544|PACid:16034284</span></span>
+<span><span class="co">#&gt; 11 0.02317 AT1G01120.1 918858|PACid:16049140</span></span>
+<span><span class="co">#&gt; 12 0.04324 AT1G01140.3 470161|PACid:16036015</span></span>
+<span><span class="co">#&gt; 13 0.64120 AT1G01150.1 918855|PACid:16037307</span></span>
+<span><span class="co">#&gt; 14 0.37310 AT1G01160.1 918854|PACid:16044153</span></span>
+<span><span class="co">#&gt; 15 0.00000 AT1G01170.2 311317|PACid:16052302</span></span>
+<span><span class="co">#&gt; 16 0.16830 AT1G01180.1 909860|PACid:16056125</span></span>
+<span><span class="co">#&gt; 17 0.17730 AT1G01190.1 311315|PACid:16059488</span></span>
+<span><span class="co">#&gt; 18 0.11370 AT1G01200.1 470156|PACid:16041002</span></span>
+<span><span class="co">#&gt; 19 0.13420 AT1G01210.1 311313|PACid:16057125</span></span>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1 470155|PACid:16047984</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="example-dnds-threshold">Example: <code>dnds.threshold</code><a class="anchor" aria-label="anchor" href="#example-dnds-threshold"></a>
@@ -581,7 +546,7 @@ orthologous genes rarely take values &gt; 2. Nevertheless, in case you
 wish to extend or reduce the upper threshold for dNdS values, you can
 specify the <code>dnds.threshold</code> in
 <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># upper threshold for dNdS: dnds.threshold = 5</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -593,6 +558,28 @@ specify the <code>dnds.threshold</code> in
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;       dNdS    query_id</span></span>
+<span><span class="co">#&gt; 1  0.41950 AT1G01010.1</span></span>
+<span><span class="co">#&gt; 2  0.38790 AT1G01020.1</span></span>
+<span><span class="co">#&gt; 3  0.11850 AT1G01030.1</span></span>
+<span><span class="co">#&gt; 4  0.11560 AT1G01040.1</span></span>
+<span><span class="co">#&gt; 5  0.00000 AT1G01050.1</span></span>
+<span><span class="co">#&gt; 6  0.39670 AT1G01060.3</span></span>
+<span><span class="co">#&gt; 7  0.17280 AT1G01070.1</span></span>
+<span><span class="co">#&gt; 8  0.32170 AT1G01080.1</span></span>
+<span><span class="co">#&gt; 9  0.04174 AT1G01090.1</span></span>
+<span><span class="co">#&gt; 10 0.26620 AT1G01110.2</span></span>
+<span><span class="co">#&gt; 11 0.02317 AT1G01120.1</span></span>
+<span><span class="co">#&gt; 12 0.04324 AT1G01140.3</span></span>
+<span><span class="co">#&gt; 13 0.64120 AT1G01150.1</span></span>
+<span><span class="co">#&gt; 14 0.37310 AT1G01160.1</span></span>
+<span><span class="co">#&gt; 15 0.00000 AT1G01170.2</span></span>
+<span><span class="co">#&gt; 16 0.16830 AT1G01180.1</span></span>
+<span><span class="co">#&gt; 17 0.17730 AT1G01190.1</span></span>
+<span><span class="co">#&gt; 18 0.11370 AT1G01200.1</span></span>
+<span><span class="co">#&gt; 19 0.13420 AT1G01210.1</span></span>
+<span><span class="co">#&gt; 20 0.10230 AT1G01220.1</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="example-ortho_detection">Example: <code>ortho_detection</code><a class="anchor" aria-label="anchor" href="#example-ortho_detection"></a>
@@ -605,13 +592,13 @@ convention, the <code>ortho_detection</code> argument allows users to
 perform orthology inference within the <strong>Divergence
 Stratigraphy</strong> algorithm that is based on any orthology inference
 method implemented in <code>orthologr</code> (see
-<code><a href="../reference/orthologs.html">?orthologs</a></code> or <a href="https://drostlab.github.io/orthologr/articles/orthology_inference.html" class="external-link">Orthology
+<code><a href="../reference/orthologs.html">?orthologs</a></code> or <a href="https://drostlab.github.io/orthologr/articles/orthology_inference.html">Orthology
 Inference Vignette</a> for details). For example in Quint et al., 2012
 <em>Nature</em> instead of using <strong>BLAST</strong> best reciprocal
 hit, the method <strong>BLAST</strong> best hit (BH) was used to perform
 orthology inference within the <strong>Divergence Stratigraphy</strong>
 algorithm.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># orthology inference method: ortho_detection = "BH"</span></span>
 <span> <span class="fu"><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy</a></span><span class="op">(</span></span>
 <span>      query_file      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'seqs/ortho_thal_cds.fasta'</span>, package <span class="op">=</span> <span class="st">'orthologr'</span><span class="op">)</span>,</span>
@@ -623,27 +610,28 @@ algorithm.</p>
 <span>      comp_cores      <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>      quiet           <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>      clean_folders   <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>   DS    query_id
-1  10 AT1G01010.1
-2   9 AT1G01020.1
-3   5 AT1G01030.1
-4   4 AT1G01040.1
-5   1 AT1G01050.1
-6   9 AT1G01060.3
-7   6 AT1G01070.1
-8   8 AT1G01080.1
-9   2 AT1G01090.1
-10  7 AT1G01110.2
-11  2 AT1G01120.1
-12  3 AT1G01140.3
-13 10 AT1G01150.1
-14  8 AT1G01160.1
-15  1 AT1G01170.2
-16  6 AT1G01180.1
-17  7 AT1G01190.1
-18  4 AT1G01200.1
-19  5 AT1G01210.1
-20  3 AT1G01220.1</code></pre>
+<pre><code><span><span class="co">#&gt; Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.</span></span></code></pre>
+<pre><code><span><span class="co">#&gt;    DS    query_id</span></span>
+<span><span class="co">#&gt; 1  10 AT1G01010.1</span></span>
+<span><span class="co">#&gt; 2   9 AT1G01020.1</span></span>
+<span><span class="co">#&gt; 3   5 AT1G01030.1</span></span>
+<span><span class="co">#&gt; 4   4 AT1G01040.1</span></span>
+<span><span class="co">#&gt; 5   1 AT1G01050.1</span></span>
+<span><span class="co">#&gt; 6   9 AT1G01060.3</span></span>
+<span><span class="co">#&gt; 7   6 AT1G01070.1</span></span>
+<span><span class="co">#&gt; 8   8 AT1G01080.1</span></span>
+<span><span class="co">#&gt; 9   2 AT1G01090.1</span></span>
+<span><span class="co">#&gt; 10  7 AT1G01110.2</span></span>
+<span><span class="co">#&gt; 11  2 AT1G01120.1</span></span>
+<span><span class="co">#&gt; 12  3 AT1G01140.3</span></span>
+<span><span class="co">#&gt; 13 10 AT1G01150.1</span></span>
+<span><span class="co">#&gt; 14  8 AT1G01160.1</span></span>
+<span><span class="co">#&gt; 15  1 AT1G01170.2</span></span>
+<span><span class="co">#&gt; 16  6 AT1G01180.1</span></span>
+<span><span class="co">#&gt; 17  7 AT1G01190.1</span></span>
+<span><span class="co">#&gt; 18  4 AT1G01200.1</span></span>
+<span><span class="co">#&gt; 19  5 AT1G01210.1</span></span>
+<span><span class="co">#&gt; 20  3 AT1G01220.1</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -668,29 +656,22 @@ analyses based on an existing <code>Divergence Map</code> can easily be
 done by using the <code>myTAI</code> package. You can consult the <a href="https://drostlab.github.io/myTAI/articles/other-strata.html" class="external-link">Introduction
 to the myTAI package Vignette</a> for more details.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Hajk-Georg Drost.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hajk-Georg Drost.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 
