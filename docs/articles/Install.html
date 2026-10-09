@@ -39,11 +39,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/deepclust.html">Protein Clustering with DIAMOND DeepClust</a></li>
     <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
     <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
     <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -67,7 +69,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Installing Prerequisite Tools</h1>
             
-            <h4 data-toc-skip class="date">2026-08-10</h4>
+            <h4 data-toc-skip class="date">2026-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/Install.Rmd" class="external-link"><code>vignettes/Install.Rmd</code></a></small>
       <div class="d-none name"><code>Install.Rmd</code></div>
@@ -100,8 +102,14 @@ on the these programming languages:</p>
 <li><p><a href="https://cran.r-project.org" class="external-link"><strong>R</strong></a> &gt;=
 3.1.1</p></li>
 <li><p><a href="https://isocpp.org/about" class="external-link"><strong>C++11</strong></a></p></li>
-<li><p><a href="https://www.perl.org" class="external-link"><strong>Perl</strong></a> &gt;=
-5.12</p></li>
+</ul>
+<p>For Windows users, see the <a href="setup_windows.html#install-rtools">Setting up DIAMOND2 and BLAST+
+on Windows</a> vignette for details on installing a C++ compiler
+(Rtools).</p>
+<ul>
+<li>
+<a href="https://www.perl.org" class="external-link"><strong>Perl</strong></a> &gt;=
+5.12</li>
 </ul>
 <p>Please make sure these programming languages are installed and
 executable on the machines you are going to run <code>orthologr</code>
@@ -131,7 +139,9 @@ and download the system specific BLAST program.</p></li>
 Windows</a>) -&gt; Please carefully read the
 <code>Environment Variables</code> section of the
 <code>installation manual: Windows</code> and make sure the execution
-<code>PATH</code> variable is set correctly.</li>
+<code>PATH</code> variable is set correctly. For Windows users, see also
+the <a href="setup_windows.html">Setting up DIAMOND2 and BLAST+ on
+Windows</a> vignette.</li>
 <li>On a Unix machine (see <a href="https://www.ncbi.nlm.nih.gov/books/NBK52640/" class="external-link">installation manual:
 Unix</a>) -&gt; Please carefully read the <code>Configuration</code>
 section of the <code>installation manual: Unix</code> and make sure the
@@ -214,8 +224,6 @@ R.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># test whether blastp is correctly installed on your machine</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"blastp -version"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>blastp: 2.2.31+
-Package: blast 2.2.31, build Oct 27 2014 17:10:51</code></pre>
 <p><strong>You should see this output if BLAST was installed
 correctly.</strong></p>
 <p>In case you find the following output:</p>
@@ -252,7 +260,9 @@ faster</em> orthology inference.</p>
 <ol style="list-style-type: decimal">
 <li><p>Go to the download site in the <a href="https://github.com/bbuchfink/diamond/wiki/2.-Installation" class="external-link"><code>DIAMOND2</code>
 wiki</a> and follow the instructions for installation.
-<code>DIAMOND2</code> is supported on Linux, macOS and Windows.</p></li>
+<code>DIAMOND2</code> is supported on Linux, macOS and Windows. For
+Windows users, see also the <a href="setup_windows.html">Setting up
+DIAMOND2 and BLAST+ on Windows</a> vignette.</p></li>
 <li><p>Check the installation of <code>DIAMOND2</code> by running the
 command</p></li>
 </ol>
@@ -266,10 +276,9 @@ macOS.</p>
 session and type the following command to check whether or not
 <code>DIAMOND2</code> can be executed from R.</li>
 </ol>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># test whether diamond is correctly installed on your machine</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
-<pre><code>diamond version 2.1.8</code></pre>
 <p><strong>You should see this output if <code>DIAMOND2</code> was
 installed correctly.</strong></p>
 <p>In case you find the following output:</p>

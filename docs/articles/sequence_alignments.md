@@ -18,7 +18,7 @@ Prior to be able to use all sequence alignment functions implemented in
 interest. The above mentioned functions provide interfaces to the
 following alignment programs:
 
-### The `multi_aln()` function
+### Overview of the `multi_aln()` function
 
 - **ClustalW** : Advanced multiple alignment tool of nucleic acid and
   protein sequences

@@ -282,6 +282,9 @@ multi_aln <- function(file,
                       quiet          = FALSE, 
                       clean_folders  = FALSE){
         
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         if(!is.multiple_aln_tool(tool))
                 stop("Please choose a tool that is supported by this function.")
         

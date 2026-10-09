@@ -49,6 +49,9 @@ orthofinder2 <-
                  comp_cores = 1,
                  orthogroup_only = TRUE,
                  of_path = NULL) {
+                if (!is.null(of_path))
+                        of_path <- normalizePath(of_path, mustWork = FALSE)
+                
                 is_installed_orthofinder(path = of_path)
                 
                 if (!is.null(import_type)) {
@@ -125,9 +128,9 @@ orthofinder2 <-
                                                                 file.path(getwd(), proteome_folder)
                                                         ),
                                                         " -t ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -a ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -S diamond -n ",
                                                         basename(proteome_folder),
                                                         og_flag
@@ -152,9 +155,9 @@ orthofinder2 <-
                                                                 file.path(getwd(), proteome_folder)
                                                         ),
                                                         " -t ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -a ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -S diamond -n ",
                                                         basename(proteome_folder),
                                                         og_flag
@@ -169,9 +172,9 @@ orthofinder2 <-
                                                         "/opt/miniconda3/bin/orthofinder -f ",
                                                         ws_wrap(proteome_folder),
                                                         " -t ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -a ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -S diamond -n ",
                                                         basename(proteome_folder),
                                                         og_flag
@@ -194,9 +197,9 @@ orthofinder2 <-
                                                         " -f ",
                                                         ws_wrap(proteome_folder),
                                                         " -t ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -a ",
-                                                        cores,
+                                                        comp_cores,
                                                         " -S diamond -n ",
                                                         basename(proteome_folder),
                                                         og_flag

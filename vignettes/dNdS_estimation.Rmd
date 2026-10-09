@@ -10,10 +10,13 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 options(width = 750)
+has_diamond <- nzchar(Sys.which("diamond"))
 knitr::opts_chunk$set(
   comment = "#>",
+  collapse = TRUE,
   error = FALSE,
-  tidy = FALSE)
+  tidy = FALSE,
+  eval = has_diamond)
 ```
 
 The dN/dS ratio quantifies the mode and strength of selection acting on a pair of orthologous genes.
@@ -72,7 +75,7 @@ for details.
 The following example shall illustrate a dNdS estimation process.
 
 
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 library(orthologr)
 # get a dNdS table using:
 # 1) DIAMOND2 reciprocal best hit for orthology inference (default; aligner = "diamond", ortho_detection = "RBH")
@@ -90,37 +93,6 @@ dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'ortho
      dnds_est.method = "Comeron", 
      comp_cores      = 1)
 ```
-
-
-```
-# A tibble: 20 x 24
-   query_id subject_id      dN    dS   dNdS perc_identity num_ident_matches alig_length
-   <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>             <int>       <int>
- 1 AT1G010... 333554|PA... 0.106   0.254 0.420           73.2               347         474
- 2 AT1G010... 470181|PA... 0.0402  0.104 0.388           91.1               224         246
- 3 AT1G010... 470180|PA... 0.0150  0.126 0.118           93.3               335         359
- 4 AT1G010... 333551|PA... 0.0135  0.116 0.116           93.4              1840        1969
- 5 AT1G010... 909874|PA... 0       0.175 0              100                 213         213
- 6 AT1G010... 470177|PA... 0.0449  0.113 0.397           87.5               567         648
- 7 AT1G010... 918864|PA... 0.0183  0.106 0.173           92.6               339         366
- 8 AT1G010... 909871|PA... 0.0340  0.106 0.322           89.3               268         300
- 9 AT1G010... 470171|PA... 0.00910 0.218 0.0417          96.8               420         434
-10 AT1G011... 333544|PA... 0.0325  0.122 0.266           87.7               463         528
-11 AT1G011... 918858|PA... 0.00307 0.133 0.0232          99.2               525         529
-12 AT1G011... 470161|PA... 0.00567 0.131 0.0432          98.5               446         453
-13 AT1G011... 918855|PA... 0.13    0.203 0.641           72.6               207         285
-14 AT1G011... 918854|PA... 0.105   0.280 0.373           78.8               141         179
-15 AT1G011... 311317|PA... 0       0.306 0               85.6                83          97
-16 AT1G011... 909860|PA... 0.0297  0.176 0.168           92.6               287         310
-17 AT1G011... 311315|PA... 0.0287  0.162 0.177           94.2               502         533
-18 AT1G012... 470156|PA... 0.0190  0.168 0.114           95.8               228         238
-19 AT1G012... 311313|PA... 0.0207  0.154 0.134           95.3               102         107
-20 AT1G012... 470155|PA... 0.0157  0.153 0.102           96.5              1019        1056
-# ... with 16 more variables: mismatches <int>, gap_openings <int>, n_gaps <int>,
-#   pos_match <int>, ppos <dbl>, q_start <int>, q_end <int>, q_len <int>,
-#   qcov <dbl>, qcovhsp <dbl>, s_start <int>, s_end <int>, s_len <int>,
-#   evalue <dbl>, bit_score <dbl>, score_raw <dbl>
-```
 Some outputs include `NA` values. To filter for `NA` values or a specific `dnds.threshold`,
 you can use the `filter_dNdS()` function. The `filter_dNdS()` function takes the output data.table 
 returned by `dNdS()` and filters the output by the following criteria:
@@ -132,7 +104,7 @@ returned by `dNdS()` and filters the output by the following criteria:
 3) all dNdS values >= the specified `dnds.threshold` are omitted
 
 
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 library(orthologr)
 # get dNdS estimated for orthologous genes between A. thaliana and A. lyrata
 Ath_Aly_dnds <- dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -149,39 +121,6 @@ Ath_Aly_dnds <- dNdS(query_file      = system.file('seqs/ortho_thal_cds.fasta', 
 # 2) all dS values having an NA value are omitted
 # 3) all dNdS values >= 2 are omitted
 filter_dNdS(Ath_Aly_dnds, dnds.threshold = 2)
-```
-
-```
-Filtering out NA values in dN or dS and all values with dNdS > 2 ...
-Initial input contains 20 rows.
-Filtering done. New output table contains 20 rows.
-# A tibble: 20 x 24
-   query_id subject_id      dN    dS   dNdS perc_identity num_ident_matches alig_length
-   <chr>    <chr>        <dbl> <dbl>  <dbl>         <dbl>             <int>       <int>
- 1 AT1G010... 333554|PA... 0.106   0.254 0.420           73.2               347         474
- 2 AT1G010... 470181|PA... 0.0402  0.104 0.388           91.1               224         246
- 3 AT1G010... 470180|PA... 0.0150  0.126 0.118           93.3               335         359
- 4 AT1G010... 333551|PA... 0.0135  0.116 0.116           93.4              1840        1969
- 5 AT1G010... 909874|PA... 0       0.175 0              100                 213         213
- 6 AT1G010... 470177|PA... 0.0449  0.113 0.397           87.5               567         648
- 7 AT1G010... 918864|PA... 0.0183  0.106 0.173           92.6               339         366
- 8 AT1G010... 909871|PA... 0.0340  0.106 0.322           89.3               268         300
- 9 AT1G010... 470171|PA... 0.00910 0.218 0.0417          96.8               420         434
-10 AT1G011... 333544|PA... 0.0325  0.122 0.266           87.7               463         528
-11 AT1G011... 918858|PA... 0.00307 0.133 0.0232          99.2               525         529
-12 AT1G011... 470161|PA... 0.00567 0.131 0.0432          98.5               446         453
-13 AT1G011... 918855|PA... 0.13    0.203 0.641           72.6               207         285
-14 AT1G011... 918854|PA... 0.105   0.280 0.373           78.8               141         179
-15 AT1G011... 311317|PA... 0       0.306 0               85.6                83          97
-16 AT1G011... 909860|PA... 0.0297  0.176 0.168           92.6               287         310
-17 AT1G011... 311315|PA... 0.0287  0.162 0.177           94.2               502         533
-18 AT1G012... 470156|PA... 0.0190  0.168 0.114           95.8               228         238
-19 AT1G012... 311313|PA... 0.0207  0.154 0.134           95.3               102         107
-20 AT1G012... 470155|PA... 0.0157  0.153 0.102           96.5              1019        1056
-# ... with 16 more variables: mismatches <int>, gap_openings <int>, n_gaps <int>,
-#   pos_match <int>, ppos <dbl>, q_start <int>, q_end <int>, q_len <int>,
-#   qcov <dbl>, qcovhsp <dbl>, s_start <int>, s_end <int>, s_len <int>,
-#   evalue <dbl>, bit_score <dbl>, score_raw <dbl>
 ```
 
 The `dNdS()` function can be used choosing the following options:

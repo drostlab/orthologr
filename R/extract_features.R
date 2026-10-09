@@ -4,7 +4,8 @@
 #' @param format either \code{format = "gtf"} or \code{format = "gff"}.
 #' @export
 extract_features <- function(x, format) {
-        
+        type <- NULL
+
         if (!is.element(format, c("gtf", "gff")))
                 stop("Please choose a format that is supported by this function: format = 'gtf' or format = 'gff'.", call. = FALSE)
         

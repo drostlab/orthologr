@@ -3,6 +3,7 @@ query_cds    <- system.file("seqs/ortho_thal_cds.fasta", package = "orthologr")
 subject_cds  <- system.file("seqs/ortho_lyra_cds.fasta", package = "orthologr")
 
 diamond_available <- isTRUE(tryCatch(is_installed_diamond(), error = function(e) FALSE))
+kaks_calculator_available <- isTRUE(tryCatch(is_installed_kaks_calculator(), error = function(e) FALSE))
 
 test_that("divergence_stratigraphy() errors on invalid ortho_detection ...", {
         expect_error(
@@ -116,6 +117,7 @@ test_that("divergence_stratigraphy() works with BH ortho_detection ...", {
 
 test_that("divergence_stratigraphy() works with NG method ...", {
         skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
+        skip_if_not(kaks_calculator_available, "KaKs_Calculator is not installed or not on PATH")
         result <- divergence_stratigraphy(
                 query_file      = query_cds,
                 subject_file    = subject_cds,

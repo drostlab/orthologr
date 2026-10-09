@@ -48,6 +48,9 @@ set_diamond <- function(
                 quiet       = TRUE,
                 ...){
         
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
         # CONCERNING THE CASE THAT A POTENTIAL USER
         # COULD INSERT SOME NON-CDS SEQUENCES

@@ -35,7 +35,8 @@ Imports:
     scales,
     Rdpack,
     R.utils,
-    benchmarkme
+    benchmarkme,
+    rlang
 Suggests:
     knitr (>= 1.6),
     DBI (>= 0.3.1),
@@ -54,4 +55,4 @@ URL: https://drostlab.github.io/orthologr, https://github.com/drostlab/orthologr
 BugReports: https://github.com/drostlab/orthologr/issues
 Config/testthat/edition: 3
 Encoding: UTF-8
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

@@ -111,6 +111,9 @@ diamond <- function(
         if (!is.element(database_maker, c("diamond", "blast")))
                 stop("Please choose either: 'diamond' or 'blast' as database_maker.", call. = FALSE)
         
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         is_installed_diamond(diamond_exec_path = path)
         
         if (is.null(path)) {

@@ -45,8 +45,10 @@
 #' }.
 #' @param aa_aln_tool a character string specifying the program that should be used e.g. "clustalw".
 #' @param aa_aln_path a character string specifying the path to the multiple alignment program (in case you don't use the default path).
-#' @param aa_aln_params  a character string specifying additional parameters that shall be passed to the selected alignment tool. Default is \code{aa_aln_params} = \code{NULL} 
-#' (no addintional parameters are passed to the selected alignment tool).
+#' @param aa_aln_params a character string specifying additional command-line parameters to pass to the amino acid alignment tool
+#' selected via \code{aa_aln_tool} (e.g. \code{"clustalw"} for multiple alignment or \code{"NW"} for pairwise alignment).
+#' Note: this controls the amino acid alignment step only, not the initial DIAMOND or BLAST homology search
+#' (use \code{aligner_params} for that). Default is \code{aa_aln_params} = \code{NULL} (no additional parameters are forwarded).
 #' @param codon_aln_tool a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
 #' Right now only "pal2nal" can be selected as codon alignment tool.
 #' @param kaks_calc_path a character string specifying the execution path to KaKs_Calculator. Default is \code{kaks_calc_path} = \code{NULL}
@@ -513,6 +515,7 @@ dNdS <- function(query_file,
                                   aa_aln_type     = aa_aln_type,
                                   aa_aln_tool     = aa_aln_tool,
                                   aa_aln_path     = aa_aln_path,
+                                  aa_aln_params   = aa_aln_params,
                                   codon_aln_tool  = codon_aln_tool, 
                                   kaks_calc_path  = kaks_calc_path, 
                                   store_locally   = store_locally,

@@ -10,10 +10,15 @@ vignette: >
 
 ```{r, echo = FALSE, message = FALSE}
 options(width = 750)
+library(orthologr)
+has_diamond <- nzchar(Sys.which("diamond"))
+has_blast   <- nzchar(Sys.which("blastp"))
 knitr::opts_chunk$set(
   comment = "#>",
+  collapse = TRUE,
   error = FALSE,
-  tidy = FALSE)
+  tidy = FALSE,
+  eval = has_diamond)
 ```
 
 Orthology Inference is the process of detecting [orthologous genes](https://www.biostars.org/p/1595/) between a query organism and
@@ -47,6 +52,9 @@ The following interfaces are implemented in the `orthologs()` function:
 
 - [Orthofinder2](https://github.com/davidemms/OrthoFinder): see `orthofinder2()`.
 
+### Clustering based methods:
+
+- [DIAMOND DeepClust](https://github.com/bbuchfink/diamond): ultra-fast protein sequence clustering that retains sensitivity at low sequence identity. Useful for large proteome comparisons where pairwise hit methods become expensive. See `deepclust()` and the [DeepClust vignette](https://drostlab.github.io/orthologr/articles/deepclust.html) for details.
 
 ### Examples: DIAMOND2 based methods (default)
 
@@ -63,8 +71,7 @@ See the [Installation Vignette](https://drostlab.github.io/orthologr/articles/In
 In the following examples, we will use toy fasta files stored within the `orthologr` package: `system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr')`.
 
 
-
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 # perform orthology inference using DIAMOND2 reciprocal best hit (default)
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file    = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -73,48 +80,6 @@ orthologr::orthologs(query_file    = system.file('seqs/ortho_thal_aa.fasta', pac
           ortho_detection = "DIAMOND_RBH",
           comp_cores      = 1,
           clean_folders   = FALSE)
-```
-
-
-```
-Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-Running diamond version 2.2.1 ...
-sensitivity mode: fast
-creating a diamond database
-Starting DIAMOND2 search ...
-DIAMOND2 search completed in 0.02 sec.
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id        perc_identity num_ident_matches alig_length
-   <chr>       <chr>                     <dbl>             <int>       <int>
- 1 AT1G01010.1 333554|PACid:160…          73.2               347         474
- 2 AT1G01020.1 470181|PACid:160…          91.1               224         246
- 3 AT1G01030.1 470180|PACid:160…          93.3               335         359
- 4 AT1G01040.1 333551|PACid:160…          93.4              1840        1969
- 5 AT1G01050.1 909874|PACid:160…         100                 213         213
- 6 AT1G01060.3 470177|PACid:160…          87.5               567         648
- 7 AT1G01070.1 918864|PACid:160…          92.6               339         366
- 8 AT1G01080.1 909871|PACid:160…          89.3               268         300
- 9 AT1G01090.1 470171|PACid:160…          96.8               420         434
-10 AT1G01110.2 333544|PACid:160…          87.7               463         528
-11 AT1G01120.1 918858|PACid:160…          99.2               525         529
-12 AT1G01140.3 470161|PACid:160…          98.5               446         453
-13 AT1G01150.1 918855|PACid:160…          72.6               207         285
-14 AT1G01160.1 918854|PACid:160…          78.8               141         179
-15 AT1G01170.2 311317|PACid:160…          85.6                83          97
-16 AT1G01180.1 909860|PACid:160…          92.6               287         310
-17 AT1G01190.1 311315|PACid:160…          94.2               502         533
-18 AT1G01200.1 470156|PACid:160…          95.8               228         238
-19 AT1G01210.1 311313|PACid:160…          95.3               102         107
-20 AT1G01220.1 470155|PACid:160…          96.5              1019        1056
-# ℹ 16 more variables: mismatches <int>, gap_openings <int>, n_gaps <int>,
-#   pos_match <int>, ppos <dbl>, q_start <int>, q_end <int>, q_len <int>,
-#   qcov <dbl>, qcovhsp <dbl>, s_start <int>, s_end <int>, s_len <int>,
-#   evalue <dbl>, bit_score <dbl>, score_raw <dbl>
 ```
 
 
@@ -136,7 +101,6 @@ of `orthologr` will follow this paradigm.
 In case you have to specify the path to DIAMOND2 you can use the `path` argument as follows:
 
 
-
 ```{r,eval=FALSE}
 # using an external execution path for DIAMOND2
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -153,7 +117,7 @@ When you are working on a multicore machine, you can also specify the `comp_core
 argument that will allow you to run all analyses in parallel (to speed up computations).
 
 
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 # running DIAMOND2 orthology inference in parallel using 2 cores
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
           subject_files   = system.file('seqs/ortho_lyra_aa.fasta', package = 'orthologr'),
@@ -161,39 +125,6 @@ orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', p
           ortho_detection = "DIAMOND_RBH",
           clean_folders   = FALSE,
           comp_cores      = 2)
-```
-
-
-```
-# A tibble: 20 x 21
-# Groups:   query_id [20]
-   query_id subject_id perc_identity alig_length
-   <chr>    <chr>              <dbl>       <dbl>
- 1 AT1G010... 333554|PA...          74.0         469
- 2 AT1G010... 470181|PA...          91.1         246
- 3 AT1G010... 470180|PA...          95.5         359
- 4 AT1G010... 333551|PA...          92.0        1970
- 5 AT1G010... 909874|PA...         100           213
- 6 AT1G010... 470177|PA...          89.5         648
- 7 AT1G010... 918864|PA...          95.1         366
- 8 AT1G010... 909871|PA...          90.3         300
- 9 AT1G010... 470171|PA...          96.8         434
-10 AT1G011... 333544|PA...          93.6         528
-11 AT1G011... 918858|PA...          99.2         529
-12 AT1G011... 470161|PA...          98.4         453
-13 AT1G011... 918855|PA...          72.6         285
-14 AT1G011... 918854|PA...          84.9         179
-15 AT1G011... 311317|PA...          85.6          97
-16 AT1G011... 909860|PA...          92.6         310
-17 AT1G011... 311315|PA...          94.2         533
-18 AT1G012... 470156|PA...          95.8         238
-19 AT1G012... 311313|PA...          95.3         107
-20 AT1G012... 470155|PA...          96.7        1056
-# ... with 17 more variables: mismatches <dbl>,
-#   gap_openings <dbl>, n_gaps <dbl>, pos_match <dbl>, ppos <dbl>,
-#   q_start <dbl>, q_end <dbl>, q_len <dbl>, qcov <dbl>, qcovhsp <dbl>,
-#   s_start <dbl>, s_end <dbl>, s_len <dbl>, evalue <dbl>,
-#   bit_score <dbl>, score_raw <dbl>
 ```
 
 In this case 2 cores are being used to perform parallel processing, the `clean_folders` argument
@@ -205,7 +136,7 @@ are removed after analyses.
 In this section small examples will illustrate the use
 of the `orthologs()` function for each orthology inference program.
 
-### DIAMOND2 best hit (recommended)
+### DIAMOND2 best hit
 
 The DIAMOND2 best hit method is a uni-directional DIAMOND2 best hit search of a `query organism A`
 against a `subject organism B` based on the `e-value`. It uses the same hit-filtering logic as `blast_best()` but is substantially faster.
@@ -213,7 +144,7 @@ against a `subject organism B` based on the `e-value`. It uses the same hit-filt
 Orthology Inference using DIAMOND2 best hit can be performed by specifying the argument `ortho_detection = "DIAMOND_BH"`
 and one computing core `comp_core = 1`:
 
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 # perform orthology inference using DIAMOND2 best hit
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -222,38 +153,6 @@ orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', p
           ortho_detection = "DIAMOND_BH",
           clean_folders   = TRUE,
           comp_cores      = 1)
-```
-
-```
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id  perc_identity num_ident_matches alig_length
-   <chr>       <chr>               <dbl>             <int>       <int>
- 1 AT1G01010.1 333554|PAC…          73.2               347         474
- 2 AT1G01020.1 470181|PAC…          91.1               224         246
- 3 AT1G01030.1 470180|PAC…          93.3               335         359
- 4 AT1G01040.1 333551|PAC…          93.4              1840        1969
- 5 AT1G01050.1 909874|PAC…         100                 213         213
- 6 AT1G01060.3 470177|PAC…          87.5               567         648
- 7 AT1G01070.1 918864|PAC…          92.6               339         366
- 8 AT1G01080.1 909871|PAC…          89.3               268         300
- 9 AT1G01090.1 470171|PAC…          96.8               420         434
-10 AT1G01110.2 333544|PAC…          87.7               463         528
-11 AT1G01120.1 918858|PAC…          99.2               525         529
-12 AT1G01140.3 470161|PAC…          98.5               446         453
-13 AT1G01150.1 918855|PAC…          72.6               207         285
-14 AT1G01160.1 918854|PAC…          78.8               141         179
-15 AT1G01170.2 311317|PAC…          85.6                83          97
-16 AT1G01180.1 909860|PAC…          92.6               287         310
-17 AT1G01190.1 311315|PAC…          94.2               502         533
-18 AT1G01200.1 470156|PAC…          95.8               228         238
-19 AT1G01210.1 311313|PAC…          95.3               102         107
-20 AT1G01220.1 470155|PAC…          96.5              1019        1056
-# ℹ 16 more variables: mismatches <int>, gap_openings <int>,
-#   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
-#   q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
-#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
-#   bit_score <dbl>, score_raw <dbl>
 ```
 
 The resulting table stores the orthologous gene pairs and the corresponding alignment statistics.
@@ -276,8 +175,7 @@ The algorithm runs as follows:
 Only when the tuple `(query_id, subject_id)` is returned as best hit in both DIAMOND2 directions
 is it retained as an orthologous gene pair.
 
-```{r,eval=FALSE}
-
+```{r,eval=has_diamond}
 library(orthologr)
 
 # perform orthology inference using DIAMOND2 reciprocal best hit (default)
@@ -288,46 +186,12 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           ortho_detection = "DIAMOND_RBH",
           clean_folders   = FALSE,
           comp_cores      = 1)
-
-```
-
-
-```
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id  perc_identity num_ident_matches alig_length
-   <chr>       <chr>               <dbl>             <int>       <int>
- 1 AT1G01010.1 333554|PAC…          73.2               347         474
- 2 AT1G01020.1 470181|PAC…          91.1               224         246
- 3 AT1G01030.1 470180|PAC…          93.3               335         359
- 4 AT1G01040.1 333551|PAC…          93.4              1840        1969
- 5 AT1G01050.1 909874|PAC…         100                 213         213
- 6 AT1G01060.3 470177|PAC…          87.5               567         648
- 7 AT1G01070.1 918864|PAC…          92.6               339         366
- 8 AT1G01080.1 909871|PAC…          89.3               268         300
- 9 AT1G01090.1 470171|PAC…          96.8               420         434
-10 AT1G01110.2 333544|PAC…          87.7               463         528
-11 AT1G01120.1 918858|PAC…          99.2               525         529
-12 AT1G01140.3 470161|PAC…          98.5               446         453
-13 AT1G01150.1 918855|PAC…          72.6               207         285
-14 AT1G01160.1 918854|PAC…          78.8               141         179
-15 AT1G01170.2 311317|PAC…          85.6                83          97
-16 AT1G01180.1 909860|PAC…          92.6               287         310
-17 AT1G01190.1 311315|PAC…          94.2               502         533
-18 AT1G01200.1 470156|PAC…          95.8               228         238
-19 AT1G01210.1 311313|PAC…          95.3               102         107
-20 AT1G01220.1 470155|PAC…          96.5              1019        1056
-# ℹ 16 more variables: mismatches <int>, gap_openings <int>,
-#   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
-#   q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
-#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
-#   bit_score <dbl>, score_raw <dbl>
 ```
 
 You can also adjust the DIAMOND2 sensitivity level using the `sensitivity_mode` argument. The default
 is `"fast"`, but for more distant species comparisons you may want `"sensitive"` or `"ultra-sensitive"`:
 
-```{r,eval=FALSE}
+```{r,eval=has_diamond}
 library(orthologr)
 
 # DIAMOND2 RBH with ultra-sensitive mode (equivalent to BLAST sensitivity)
@@ -355,8 +219,7 @@ The full set of sensitivity modes available in DIAMOND2 is:
 To retrieve the full DIAMOND2 hit table for subsequent analyses, set `clean_folders = FALSE`.
 The corresponding hit table can then be found in `file.path(tempdir(), "_blast_db")`.
 
-```{r,eval=FALSE}
-
+```{r,eval=has_diamond}
 library(orthologr)
 library(dplyr)
 
@@ -369,34 +232,6 @@ RBH <- orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', packa
           comp_cores      = 1)
 
 glimpse(RBH)
-
-```
-
-```
-Rows: 20
-Columns: 21
-Groups: query_id [20]
-$ query_id          <chr> "AT1G01010.1", "AT1G01020.1", "AT1G01030.1…
-$ subject_id        <chr> "333554|PACid:16033839", "470181|PACid:160…
-$ perc_identity     <dbl> 73.2, 91.1, 93.3, 93.4, 100.0, 87.5, 92.6,…
-$ num_ident_matches <int> 347, 224, 335, 1840, 213, 567, 339, 268, 4…
-$ alig_length       <int> 474, 246, 359, 1969, 213, 648, 366, 300, 4…
-$ mismatches        <int> 75, 22, 20, 58, 0, 71, 23, 25, 8, 65, 4, 6…
-$ gap_openings      <int> 8, 0, 2, 7, 0, 5, 2, 2, 3, 0, 0, 1, 3, 2, …
-$ n_gaps            <int> 52, 0, 4, 71, 0, 10, 4, 7, 6, 0, 0, 1, 10,…
-$ pos_match         <int> 369, 231, 338, 1870, 213, 586, 342, 275, 4…
-$ ppos              <dbl> 77.8, 93.9, 94.2, 95.0, 100.0, 90.4, 93.4,…
-$ q_start           <int> 1, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 5, 4, …
-$ q_end             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 4…
-$ q_len             <int> 430, 246, 359, 1910, 213, 646, 366, 294, 4…
-$ qcov              <dbl> 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
-$ qcovhsp           <dbl> 100.0, 100.0, 100.0, 99.7, 100.0, 100.0, 1…
-$ s_start           <int> 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 16, 2,…
-$ s_end             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 4…
-$ s_len             <int> 466, 246, 355, 1963, 213, 640, 362, 299, 4…
-$ evalue            <dbl> 1.37e-211, 2.27e-156, 4.01e-210, 0.00e+00,…
-$ bit_score         <dbl> 582, 426, 571, 3544, 427, 1028, 614, 494, …
-$ score_raw         <dbl> 1500, 1094, 1471, 9190, 1098, 2658, 1583, …
 ```
 
 ### BLASTp best hit
@@ -407,7 +242,7 @@ against a `subject organism B` based on the `e-value`.
 Orthology Inference using BLASTp best hit can be performed by specifying the argument `ortho_detection = "BH"`
 and one computing core `comp_core = 1`:
 
-```{r,eval=FALSE}
+```{r,eval=has_blast}
 # perform orthology inference using BLAST best hit
 # and fasta sequence files storing protein sequences
 orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'orthologr'),
@@ -416,38 +251,6 @@ orthologr::orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', p
           ortho_detection = "BH", 
           clean_folders   = TRUE,
           comp_cores      = 1)
-```
-
-```
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id  perc_identity num_ident_matches alig_length
-   <chr>       <chr>               <dbl>             <int>       <int>
- 1 AT1G01010.1 333554|PAC…          74.0               347         469
- 2 AT1G01020.1 470181|PAC…          91.1               224         246
- 3 AT1G01030.1 470180|PAC…          95.5               343         359
- 4 AT1G01040.1 333551|PAC…          92.0              1812        1970
- 5 AT1G01050.1 909874|PAC…         100                 213         213
- 6 AT1G01060.3 470177|PAC…          89.5               580         648
- 7 AT1G01070.1 918864|PAC…          95.1               348         366
- 8 AT1G01080.1 909871|PAC…          90.3               271         300
- 9 AT1G01090.1 470171|PAC…          96.8               420         434
-10 AT1G01110.2 333544|PAC…          93.6               494         528
-11 AT1G01120.1 918858|PAC…          99.2               525         529
-12 AT1G01140.3 470161|PAC…          98.5               446         453
-13 AT1G01150.1 918855|PAC…          72.6               207         285
-14 AT1G01160.1 918854|PAC…          84.9               152         179
-15 AT1G01170.2 311317|PAC…          85.6                83          97
-16 AT1G01180.1 909860|PAC…          92.6               287         310
-17 AT1G01190.1 311315|PAC…          94.2               502         533
-18 AT1G01200.1 470156|PAC…          95.8               228         238
-19 AT1G01210.1 311313|PAC…          95.3               102         107
-20 AT1G01220.1 470155|PAC…          96.7              1021        1056
-# ℹ 16 more variables: mismatches <int>, gap_openings <int>,
-#   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
-#   q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
-#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
-#   bit_score <dbl>, score_raw <dbl>
 ```
 
 The resulting table stores the orthologous gene pairs and the corresponding BLAST alignment statistics.
@@ -470,7 +273,7 @@ In other words, only in case the tuple `(query_id, subject_id)` is returned as b
 based on the `e-value` in both BLAST directions, the corresponding tupel `(query_id, subject_id)`
 is retained as orthologous gene pair.
 
-```{r,eval=FALSE}
+```{r,eval=has_blast}
 
 library(orthologr)
 
@@ -482,40 +285,6 @@ orthologs(query_file      = system.file('seqs/ortho_thal_aa.fasta', package = 'o
           ortho_detection = "RBH", 
           clean_folders   = FALSE,
           comp_cores      = 1)
-```
-
-
-```
-# A tibble: 20 × 21
-# Groups:   query_id [20]
-   query_id    subject_id  perc_identity num_ident_matches alig_length
-   <chr>       <chr>               <dbl>             <int>       <int>
- 1 AT1G01010.1 333554|PAC…          74.0               347         469
- 2 AT1G01020.1 470181|PAC…          91.1               224         246
- 3 AT1G01030.1 470180|PAC…          95.5               343         359
- 4 AT1G01040.1 333551|PAC…          92.0              1812        1970
- 5 AT1G01050.1 909874|PAC…         100                 213         213
- 6 AT1G01060.3 470177|PAC…          89.5               580         648
- 7 AT1G01070.1 918864|PAC…          95.1               348         366
- 8 AT1G01080.1 909871|PAC…          90.3               271         300
- 9 AT1G01090.1 470171|PAC…          96.8               420         434
-10 AT1G01110.2 333544|PAC…          93.6               494         528
-11 AT1G01120.1 918858|PAC…          99.2               525         529
-12 AT1G01140.3 470161|PAC…          98.5               446         453
-13 AT1G01150.1 918855|PAC…          72.6               207         285
-14 AT1G01160.1 918854|PAC…          84.9               152         179
-15 AT1G01170.2 311317|PAC…          85.6                83          97
-16 AT1G01180.1 909860|PAC…          92.6               287         310
-17 AT1G01190.1 311315|PAC…          94.2               502         533
-18 AT1G01200.1 470156|PAC…          95.8               228         238
-19 AT1G01210.1 311313|PAC…          95.3               102         107
-20 AT1G01220.1 470155|PAC…          96.7              1021        1056
-# ℹ 16 more variables: mismatches <int>, gap_openings <int>,
-#   n_gaps <int>, pos_match <int>, ppos <dbl>, q_start <int>,
-#   q_end <int>, q_len <int>, qcov <dbl>, qcovhsp <dbl>,
-#   s_start <int>, s_end <int>, s_len <int>, evalue <dbl>,
-#   bit_score <dbl>, score_raw <dbl>
-
 ```
 
 In case you would like to store the corresponding `hit tables` returned by BLAST for

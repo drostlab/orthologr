@@ -1,0 +1,162 @@
+---
+title: "Setting up DIAMOND2 and BLAST+ on Windows"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Setting up DIAMOND2 and BLAST+ on Windows}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+options(width = 750)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  error = FALSE,
+  tidy = FALSE)
+```
+
+* [1. Getting started](#getting-started)
+* [2. Install Rtools](#install-rtools)
+* [3. Confirm the location of the executables](#confirm-the-location-of-the-executables)
+* [4. Set PATH for the current R session (temporary)](#set-path-for-the-current-r-session-temporary)
+* [5. Verify the installation](#verify-the-installation)
+* [6. Additional information](#additional-information)
+
+## Getting Started
+
+`DIAMOND2` and `BLAST+` are external executables that `orthologr` shells out
+to (e.g. `diamond()`, `deepclust()`, `deepclust_realign()`, `blast()`,
+`blast_best()`, `blast_rec()`). Neither is an R package, so on Windows both
+must be installed separately and made discoverable to R before these
+interface functions can be used. See the [Install](Install.html) vignette
+for general installation instructions across platforms.
+
+This vignette focuses on Windows, and describes the quickest way to make
+both tools discoverable for a single R session without touching your
+system-wide configuration: temporarily adding their folders to `PATH`.
+
+## Install Rtools
+
+This section is about building `orthologr` itself, not about DIAMOND2 or
+BLAST+. `orthologr` ships compiled C++ code (used, for example, by
+`gestimator()`), so installing it from source on Windows — via
+`install.packages()`, `devtools::install_github()`, or
+`devtools::load_all()` — _may_ require a working compiler toolchain. Windows does
+not include one by default, so you need to install
+[**Rtools**](https://cran.r-project.org/bin/windows/Rtools/).
+
+1. Check your R version (`R.version.string`) and download the matching
+   Rtools installer from the CRAN Rtools page (e.g. Rtools45 for R 4.5.x).
+2. Run the installer with default settings.
+3. Restart RStudio.
+4. Verify the toolchain is available:
+
+```{r,eval=FALSE}
+pkgbuild::check_build_tools(debug = TRUE)
+Sys.which("make")
+```
+
+If `make` resolves to an empty string, or `pkgbuild::has_build_tools()`
+returns `FALSE`, Rtools was not installed correctly (a common cause is an
+interrupted or incomplete installer run, which can leave an empty
+`c:\rtoolsNN` folder despite `PATH` being set correctly) — reinstall Rtools
+before continuing.
+
+Once Rtools is confirmed working, `devtools::load_all()` and
+`R CMD INSTALL` should be able to compile `orthologr`'s C++ sources.
+
+## Confirm the location of the executables
+
+Before doing anything else, confirm that `diamond.exe` and `blastp.exe`
+actually exist where you expect them. Example locations:
+
+```
+C:/Users/<you>/Desktop/R_projects/installations/diamond.exe
+C:/Program Files/NCBI/blast-2.17.0+/bin/blastp.exe
+```
+
+```{r,eval=FALSE}
+file.exists("C:/Users/<you>/Desktop/R_projects/installations/diamond.exe")
+file.exists("C:/Program Files/NCBI/blast-2.17.0+/bin/blastp.exe")
+```
+
+If `DIAMOND2` or `BLAST+` is not yet installed, see the
+[Install](Install.html#install-blast) vignette for download links.
+
+## Set PATH for the current R session (temporary)
+
+This option adds each tool's folder to the `PATH` environment variable for
+the duration of the current R session only. It's useful for one-off scripts 
+without changing any system settings, and it avoids having to pass a 
+`path` argument to every `orthologr` function call.
+
+```{r,eval=FALSE}
+Sys.setenv(
+  PATH = paste(
+    "C:/Users/<you>/Desktop/R_projects/installations",
+    "C:/Program Files/NCBI/blast-2.17.0+/bin",
+    Sys.getenv("PATH"),
+    sep = ";"
+  )
+)
+```
+
+This change is lost as soon as the R session ends, so you'll need to re-run
+it every time you start a new session (e.g. by adding it to a project
+`.Rprofile`).
+
+## Verify the installation
+
+```{r,eval=FALSE}
+Sys.which("diamond")
+Sys.which("blastp")
+```
+
+Both should now return the full path to the executable instead of `""`.
+You can additionally confirm that `orthologr` itself detects both tools:
+
+```{r,eval=FALSE}
+is_installed_diamond()
+is_installed_blast()
+```
+
+```
+[1] TRUE
+[1] TRUE
+```
+
+## Additional information
+
+`orthologr`'s interface functions (`diamond()`, `deepclust()`,
+`deepclust_realign()`, `blast()`, `blast_best()`, `blast_rec()`, and their
+underlying `is_installed_*()` checks) accept a `path` argument for cases
+where you don't want to rely on `PATH` at all. Internally these functions
+now call `normalizePath()` on any supplied `path`, so relative paths (e.g.
+`path = "../installations"`) resolve correctly on Windows — this previously
+failed because Windows' `system()` could not resolve relative executable
+paths.
+
+This fix applies to both `DIAMOND2` and `BLAST+`: `is_installed_blast()`
+(used internally by `blast()`, `blast_best()`, and `blast_rec()`) now uses
+the same `file.path()`-based approach, so passing a `path` argument works
+correctly on Windows. If you prefer not to pass `path` every call, you can
+make `blastp` permanently discoverable by adding the `BLAST+` `bin` folder
+to the persistent Windows `PATH`:
+
+1. Get the absolute path to the folder containing `blastp.exe`, e.g.
+   `C:\Program Files\NCBI\blast-2.17.0+\bin`.
+2. Open **Start Menu → "Edit the system environment variables"**.
+3. Click **Environment Variables...**.
+4. Under **User variables** (or **System variables** for all users), select
+   `Path` and click **Edit...**.
+5. Click **New** and paste the absolute folder path (no trailing backslash,
+   no filename — just the directory).
+6. Click **OK** on all dialogs to save, then **restart RStudio**
+   (environment variable changes aren't picked up by already-running
+   processes).
+7. Verify with `Sys.which("blastp")`.
+
+The same persistent approach also works for `DIAMOND2`, and is preferable
+to the temporary session-only option if you use `orthologr` regularly.

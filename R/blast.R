@@ -138,6 +138,9 @@ blast <- function(query_file,
                              call. = FALSE)
         }
         
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         is_installed_blast(path = path)
         
         if (is.null(path)) {

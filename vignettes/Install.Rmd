@@ -32,6 +32,8 @@ the these programming languages:
  
  - [__C++11__](https://isocpp.org/about)
  
+ For Windows users, see the [Setting up DIAMOND2 and BLAST+ on Windows](setup_windows.html#install-rtools) vignette for details on installing a C++ compiler (Rtools).
+ 
  - [__Perl__](https://www.perl.org) >= 5.12
  
  Please make sure these programming languages are installed and executable on the machines you are going to run `orthologr` on.
@@ -49,7 +51,7 @@ The `orthologr` package provides interfaces to the pairwise alignment tools, `BL
 2) Install BLAST :  
 
 * On a Windows machine (see [installation manual: Windows](https://www.ncbi.nlm.nih.gov/books/NBK52637/))
--> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly.
+-> Please carefully read the `Environment Variables` section of the `installation manual: Windows` and make sure the execution `PATH` variable is set correctly. For Windows users, see also the [Setting up DIAMOND2 and BLAST+ on Windows](setup_windows.html) vignette.
 * On a Unix machine (see [installation manual: Unix](https://www.ncbi.nlm.nih.gov/books/NBK52640/)) 
 -> Please carefully read the `Configuration` section of the `installation manual: Unix` and make sure the execution `PATH` variable is set correctly to `usr/local/bin`.
 
@@ -127,14 +129,9 @@ PATH="/Users/User/Downloads/ncbi-blast-2.17.0+/bin:${PATH}"
 
 After installing the BLAST program you can open an R session and type the following command to check whether or not BLAST can be executed from R.
 
-```{r,eval=FALSE}
+```{r,eval=nzchar(Sys.which("blastp"))}
 # test whether blastp is correctly installed on your machine
 system("blastp -version")
-```
-
-```
-blastp: 2.2.31+
-Package: blast 2.2.31, build Oct 27 2014 17:10:51
 ```
 
 __You should see this output if BLAST was installed correctly.__
@@ -159,7 +156,7 @@ These interface functions to BLAST+ are implemented in `orthologr`:
 
 [__DIAMOND2__](https://github.com/bbuchfink/diamond) (= Double Index alignment of Next-generation sequencing data) finds, like `BLAST`, regions of similarity between biological sequences. Unlike `BLAST` it is much much faster (up to 10 000X faster in the default `fast` mode and over 80X faster in the `ultra-sensitive` mode, which is as sensitive as `BLAST`). Thus, `DIAMOND2` facilitates _even faster_ orthology inference.
 
-1) Go to the download site in the [`DIAMOND2` wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and follow the instructions for installation. `DIAMOND2` is supported on Linux, macOS and Windows.
+1) Go to the download site in the [`DIAMOND2` wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and follow the instructions for installation. `DIAMOND2` is supported on Linux, macOS and Windows. For Windows users, see also the [Setting up DIAMOND2 and BLAST+ on Windows](setup_windows.html) vignette.
 
 2) Check the installation of `DIAMOND2` by running the command
 
@@ -171,13 +168,9 @@ Check the `Additional tips for macOS` section in the `BLAST` installation instru
 
 3) After installing the `DIAMOND2` program you can open an R session and type the following command to check whether or not `DIAMOND2` can be executed from R.
 
-```{r,eval=FALSE}
+```{r,eval=nzchar(Sys.which("diamond"))}
 # test whether diamond is correctly installed on your machine
 system("diamond --version")
-```
-
-```
-diamond version 2.1.8
 ```
 
 __You should see this output if `DIAMOND2` was installed correctly.__

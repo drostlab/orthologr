@@ -130,6 +130,18 @@ deepclust_realign <- function(
         save.output        = NULL,
         quiet              = TRUE) {
 
+        # validate that all supplied sequence files exist before doing any work
+        missing_files <- input_file[!file.exists(input_file)]
+        if (length(missing_files) > 0)
+                stop(
+                        "The following input file(s) were not found:\n",
+                        paste(missing_files, collapse = "\n"),
+                        call. = FALSE
+                )
+
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         is_installed_diamond(diamond_exec_path = path)
 
         if (is.null(path)) {
@@ -149,15 +161,6 @@ deepclust_realign <- function(
         if (comp_cores > cores)
                 stop("You chose more cores than are available on your machine.",
                      call. = FALSE)
-
-        # validate that all supplied sequence files exist before doing any work
-        missing_files <- input_file[!file.exists(input_file)]
-        if (length(missing_files) > 0)
-                stop(
-                        "The following input file(s) were not found:\n",
-                        paste(missing_files, collapse = "\n"),
-                        call. = FALSE
-                )
 
         # ensure the shared temp directory exists early
         if (!file.exists(file.path(tempdir(), "_blast_db")))

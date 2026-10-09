@@ -54,6 +54,9 @@ set_blast <- function(file,
                       makedb_type = "protein",
                       ...){
         
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
+        
         # HERE WE NEED TO INSERT SOME QUALITY CONTROL
         # CONCERNING THE CASE THAT A POTENTIAL USER
         # COULD INSERT SOME NON-CDS SEQUENCES

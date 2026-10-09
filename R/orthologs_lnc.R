@@ -85,6 +85,8 @@ orthologs_lnc <- function(query_file,
                       output.path = getwd(),
                       comp_cores      = 1,
                       path = NULL) {
+        if (!is.null(path))
+                path <- normalizePath(path, mustWork = FALSE)
         
         message("Starting orthology inference of lncRNAs between query species: ", basename(query_file), " and subject species: ", basename(subject_file))
         

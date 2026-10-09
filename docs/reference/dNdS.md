@@ -172,10 +172,13 @@ dNdS(
 
 - aa_aln_params:
 
-  a character string specifying additional parameters that shall be
-  passed to the selected alignment tool. Default is `aa_aln_params` =
-  `NULL` (no addintional parameters are passed to the selected alignment
-  tool).
+  a character string specifying additional command-line parameters to
+  pass to the amino acid alignment tool selected via `aa_aln_tool` (e.g.
+  `"clustalw"` for multiple alignment or `"NW"` for pairwise alignment).
+  Note: this controls the amino acid alignment step only, not the
+  initial DIAMOND or BLAST homology search (use `aligner_params` for
+  that). Default is `aa_aln_params` = `NULL` (no additional parameters
+  are forwarded).
 
 - codon_aln_tool:
 

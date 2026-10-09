@@ -39,11 +39,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/deepclust.html">Protein Clustering with DIAMOND DeepClust</a></li>
     <li><a class="dropdown-item" href="../articles/divergence_stratigraphy.html">Performing Divergence Stratigraphy</a></li>
     <li><a class="dropdown-item" href="../articles/dNdS_estimation.html">Orthology inference dNdS estimation of orthologous genes using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/Install.html">Installing Prerequisite Tools</a></li>
     <li><a class="dropdown-item" href="../articles/orthology_inference.html">Orthology Inference using orthologr</a></li>
     <li><a class="dropdown-item" href="../articles/sequence_alignments.html">Sequence alignments with orthologr</a></li>
+    <li><a class="dropdown-item" href="../articles/setup_windows.html">Setting up DIAMOND2 and BLAST+ on Windows</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -67,7 +69,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Sequence alignments with orthologr</h1>
             
-            <h4 data-toc-skip class="date">2026-08-10</h4>
+            <h4 data-toc-skip class="date">2026-10-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/sequence_alignments.Rmd" class="external-link"><code>vignettes/sequence_alignments.Rmd</code></a></small>
       <div class="d-none name"><code>sequence_alignments.Rmd</code></div>
@@ -95,7 +97,7 @@ in <code>orthologr</code> you need to install corresponding alignment
 tools of interest. The above mentioned functions provide interfaces to
 the following alignment programs:</p>
 <div class="section level3">
-<h3 id="the-multi_aln-function">The <code>multi_aln()</code> function<a class="anchor" aria-label="anchor" href="#the-multi_aln-function"></a>
+<h3 id="overview-of-the-multi_aln-function">Overview of the <code>multi_aln()</code> function<a class="anchor" aria-label="anchor" href="#overview-of-the-multi_aln-function"></a>
 </h3>
 <ul>
 <li><p><strong>ClustalW</strong> : Advanced multiple alignment tool of
@@ -309,7 +311,7 @@ If unsure which option to use:
 </div>
 </div>
 <div class="section level2">
-<h2 id="the-multi_aln-function-1">The <code>multi_aln()</code> function<a class="anchor" aria-label="anchor" href="#the-multi_aln-function-1"></a>
+<h2 id="the-multi_aln-function">The <code>multi_aln()</code> function<a class="anchor" aria-label="anchor" href="#the-multi_aln-function"></a>
 </h2>
 <p>The <code><a href="../reference/multi_aln.html">multi_aln()</a></code> function is an interface function
 between R and common multiple sequence alignment tools. When working

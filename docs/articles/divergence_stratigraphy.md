@@ -86,8 +86,6 @@ for instructions on installing DIAMOND2 or BLAST.
 system("diamond --version")
 ```
 
-    diamond version 2.1.8
-
 ## Divergence Map Computations
 
 In [Drost et al., 2015 *Mol. Biol.
@@ -239,30 +237,65 @@ library(orthologr)
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+#> 
+#> Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>    DS    query_id
+#> 1  10 AT1G01010.1
+#> 2   9 AT1G01020.1
+#> 3   5 AT1G01030.1
+#> 4   4 AT1G01040.1
+#> 5   1 AT1G01050.1
+#> 6   9 AT1G01060.3
+#> 7   6 AT1G01070.1
+#> 8   8 AT1G01080.1
+#> 9   2 AT1G01090.1
+#> 10  7 AT1G01110.2
+#> 11  2 AT1G01120.1
+#> 12  3 AT1G01140.3
+#> 13 10 AT1G01150.1
+#> 14  8 AT1G01160.1
+#> 15  1 AT1G01170.2
+#> 16  6 AT1G01180.1
+#> 17  7 AT1G01190.1
+#> 18  4 AT1G01200.1
+#> 19  5 AT1G01210.1
+#> 20  3 AT1G01220.1
 ```
-
-
-       DS    query_id
-    1  10 AT1G01010.1
-    2   9 AT1G01020.1
-    3   5 AT1G01030.1
-    4   4 AT1G01040.1
-    5   1 AT1G01050.1
-    6   9 AT1G01060.3
-    7   6 AT1G01070.1
-    8   8 AT1G01080.1
-    9   2 AT1G01090.1
-    10  7 AT1G01110.2
-    11  2 AT1G01120.1
-    12  3 AT1G01140.3
-    13 10 AT1G01150.1
-    14  8 AT1G01160.1
-    15  1 AT1G01170.2
-    16  6 AT1G01180.1
-    17  7 AT1G01190.1
-    18  4 AT1G01200.1
-    19  5 AT1G01210.1
-    20  3 AT1G01220.1
 
 The resulting output is a `Divergence Map` of the 20 example genes. The
 column `DS` contains the divergence stratum (1–10) for each gene.
@@ -383,29 +416,65 @@ library(orthologr)
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+#> 
+#> Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>       dNdS    query_id
+#> 1  0.41950 AT1G01010.1
+#> 2  0.38790 AT1G01020.1
+#> 3  0.11850 AT1G01030.1
+#> 4  0.11560 AT1G01040.1
+#> 5  0.00000 AT1G01050.1
+#> 6  0.39670 AT1G01060.3
+#> 7  0.17280 AT1G01070.1
+#> 8  0.32170 AT1G01080.1
+#> 9  0.04174 AT1G01090.1
+#> 10 0.26620 AT1G01110.2
+#> 11 0.02317 AT1G01120.1
+#> 12 0.04324 AT1G01140.3
+#> 13 0.64120 AT1G01150.1
+#> 14 0.37310 AT1G01160.1
+#> 15 0.00000 AT1G01170.2
+#> 16 0.16830 AT1G01180.1
+#> 17 0.17730 AT1G01190.1
+#> 18 0.11370 AT1G01200.1
+#> 19 0.13420 AT1G01210.1
+#> 20 0.10230 AT1G01220.1
 ```
-
-          dNdS    query_id
-    1  0.41950 AT1G01010.1
-    2  0.38790 AT1G01020.1
-    3  0.11850 AT1G01030.1
-    4  0.11560 AT1G01040.1
-    5  0.00000 AT1G01050.1
-    6  0.39670 AT1G01060.3
-    7  0.17280 AT1G01070.1
-    8  0.32170 AT1G01080.1
-    9  0.04174 AT1G01090.1
-    10 0.26620 AT1G01110.2
-    11 0.02317 AT1G01120.1
-    12 0.04324 AT1G01140.3
-    13 0.64120 AT1G01150.1
-    14 0.37310 AT1G01160.1
-    15 0.00000 AT1G01170.2
-    16 0.16830 AT1G01180.1
-    17 0.17730 AT1G01190.1
-    18 0.11370 AT1G01200.1
-    19 0.13420 AT1G01210.1
-    20 0.10230 AT1G01220.1
 
 The corresponding output now stores `dNdS` values instead of `DS` values
 in the first column.
@@ -424,6 +493,7 @@ allows users to retrieve the GeneIDs of the orthologous genes of the
 
 ``` r
 
+
 # receive a Divergence Map with DS | query GeneID | orthologous subject GeneID 
 divergence_stratigraphy(
       query_file      = system.file('seqs/ortho_thal_cds.fasta', package = 'orthologr'),
@@ -434,29 +504,65 @@ divergence_stratigraphy(
       quiet           = TRUE,
       clean_folders   = TRUE,
       subject.id      = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+#> 
+#> Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>    DS    query_id            subject_id
+#> 1  10 AT1G01010.1 333554|PACid:16033839
+#> 2   9 AT1G01020.1 470181|PACid:16064328
+#> 3   5 AT1G01030.1 470180|PACid:16054974
+#> 4   4 AT1G01040.1 333551|PACid:16057793
+#> 5   1 AT1G01050.1 909874|PACid:16064489
+#> 6   9 AT1G01060.3 470177|PACid:16043374
+#> 7   6 AT1G01070.1 918864|PACid:16052578
+#> 8   8 AT1G01080.1 909871|PACid:16053217
+#> 9   2 AT1G01090.1 470171|PACid:16052860
+#> 10  7 AT1G01110.2 333544|PACid:16034284
+#> 11  2 AT1G01120.1 918858|PACid:16049140
+#> 12  3 AT1G01140.3 470161|PACid:16036015
+#> 13 10 AT1G01150.1 918855|PACid:16037307
+#> 14  8 AT1G01160.1 918854|PACid:16044153
+#> 15  1 AT1G01170.2 311317|PACid:16052302
+#> 16  6 AT1G01180.1 909860|PACid:16056125
+#> 17  7 AT1G01190.1 311315|PACid:16059488
+#> 18  4 AT1G01200.1 470156|PACid:16041002
+#> 19  5 AT1G01210.1 311313|PACid:16057125
+#> 20  3 AT1G01220.1 470155|PACid:16047984
 ```
-
-       DS    query_id            subject_id
-    1  10 AT1G01010.1 333554|PACid:16033839
-    2   9 AT1G01020.1 470181|PACid:16064328
-    3   5 AT1G01030.1 470180|PACid:16054974
-    4   4 AT1G01040.1 333551|PACid:16057793
-    5   1 AT1G01050.1 909874|PACid:16064489
-    6   9 AT1G01060.3 470177|PACid:16043374
-    7   6 AT1G01070.1 918864|PACid:16052578
-    8   8 AT1G01080.1 909871|PACid:16053217
-    9   2 AT1G01090.1 470171|PACid:16052860
-    10  7 AT1G01110.2 333544|PACid:16034284
-    11  2 AT1G01120.1 918858|PACid:16049140
-    12  3 AT1G01140.3 470161|PACid:16036015
-    13 10 AT1G01150.1 918855|PACid:16037307
-    14  8 AT1G01160.1 918854|PACid:16044153
-    15  1 AT1G01170.2 311317|PACid:16052302
-    16  6 AT1G01180.1 909860|PACid:16056125
-    17  7 AT1G01190.1 311315|PACid:16059488
-    18  4 AT1G01200.1 470156|PACid:16041002
-    19  5 AT1G01210.1 311313|PACid:16057125
-    20  3 AT1G01220.1 470155|PACid:16047984
 
 The resulting output now shows DS values, query GeneIDs, and orthologous
 subject GeneIDs.
@@ -465,6 +571,7 @@ A similar output can be generated for `dNdS` values instead of `DS`
 values by specifying `ds.values = FALSE` and `subject.id = TRUE`.
 
 ``` r
+
 
 # receive a dNdS Map with dNdS | query GeneID | orthologous subject GeneID 
 divergence_stratigraphy(
@@ -477,29 +584,65 @@ divergence_stratigraphy(
       quiet           = TRUE,
       clean_folders   = TRUE,
       subject.id      = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+#> 
+#> Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>       dNdS    query_id            subject_id
+#> 1  0.41950 AT1G01010.1 333554|PACid:16033839
+#> 2  0.38790 AT1G01020.1 470181|PACid:16064328
+#> 3  0.11850 AT1G01030.1 470180|PACid:16054974
+#> 4  0.11560 AT1G01040.1 333551|PACid:16057793
+#> 5  0.00000 AT1G01050.1 909874|PACid:16064489
+#> 6  0.39670 AT1G01060.3 470177|PACid:16043374
+#> 7  0.17280 AT1G01070.1 918864|PACid:16052578
+#> 8  0.32170 AT1G01080.1 909871|PACid:16053217
+#> 9  0.04174 AT1G01090.1 470171|PACid:16052860
+#> 10 0.26620 AT1G01110.2 333544|PACid:16034284
+#> 11 0.02317 AT1G01120.1 918858|PACid:16049140
+#> 12 0.04324 AT1G01140.3 470161|PACid:16036015
+#> 13 0.64120 AT1G01150.1 918855|PACid:16037307
+#> 14 0.37310 AT1G01160.1 918854|PACid:16044153
+#> 15 0.00000 AT1G01170.2 311317|PACid:16052302
+#> 16 0.16830 AT1G01180.1 909860|PACid:16056125
+#> 17 0.17730 AT1G01190.1 311315|PACid:16059488
+#> 18 0.11370 AT1G01200.1 470156|PACid:16041002
+#> 19 0.13420 AT1G01210.1 311313|PACid:16057125
+#> 20 0.10230 AT1G01220.1 470155|PACid:16047984
 ```
-
-          dNdS    query_id            subject_id
-    1  0.41950 AT1G01010.1 333554|PACid:16033839
-    2  0.38790 AT1G01020.1 470181|PACid:16064328
-    3  0.11850 AT1G01030.1 470180|PACid:16054974
-    4  0.11560 AT1G01040.1 333551|PACid:16057793
-    5  0.00000 AT1G01050.1 909874|PACid:16064489
-    6  0.39670 AT1G01060.3 470177|PACid:16043374
-    7  0.17280 AT1G01070.1 918864|PACid:16052578
-    8  0.32170 AT1G01080.1 909871|PACid:16053217
-    9  0.04174 AT1G01090.1 470171|PACid:16052860
-    10 0.26620 AT1G01110.2 333544|PACid:16034284
-    11 0.02317 AT1G01120.1 918858|PACid:16049140
-    12 0.04324 AT1G01140.3 470161|PACid:16036015
-    13 0.64120 AT1G01150.1 918855|PACid:16037307
-    14 0.37310 AT1G01160.1 918854|PACid:16044153
-    15 0.00000 AT1G01170.2 311317|PACid:16052302
-    16 0.16830 AT1G01180.1 909860|PACid:16056125
-    17 0.17730 AT1G01190.1 311315|PACid:16059488
-    18 0.11370 AT1G01200.1 470156|PACid:16041002
-    19 0.13420 AT1G01210.1 311313|PACid:16057125
-    20 0.10230 AT1G01220.1 470155|PACid:16047984
 
 #### Example: `dnds.threshold`
 
@@ -533,6 +676,64 @@ reduce the upper threshold for dNdS values, you can specify the
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 5 ...
+#> 
+#> Starting orthology inference (RBH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>       dNdS    query_id
+#> 1  0.41950 AT1G01010.1
+#> 2  0.38790 AT1G01020.1
+#> 3  0.11850 AT1G01030.1
+#> 4  0.11560 AT1G01040.1
+#> 5  0.00000 AT1G01050.1
+#> 6  0.39670 AT1G01060.3
+#> 7  0.17280 AT1G01070.1
+#> 8  0.32170 AT1G01080.1
+#> 9  0.04174 AT1G01090.1
+#> 10 0.26620 AT1G01110.2
+#> 11 0.02317 AT1G01120.1
+#> 12 0.04324 AT1G01140.3
+#> 13 0.64120 AT1G01150.1
+#> 14 0.37310 AT1G01160.1
+#> 15 0.00000 AT1G01170.2
+#> 16 0.16830 AT1G01180.1
+#> 17 0.17730 AT1G01190.1
+#> 18 0.11370 AT1G01200.1
+#> 19 0.13420 AT1G01210.1
+#> 20 0.10230 AT1G01220.1
 ```
 
 #### Example: `ortho_detection`
@@ -565,29 +766,60 @@ Stratigraphy** algorithm.
       comp_cores      = 1, 
       quiet           = TRUE, 
       clean_folders   = TRUE)
+#> Proceeding with the aligner: diamond
+#> Running Divergence Stratigraphy ...
+#> Filtering out NA values in dN or dS and all values with dNdS > 2 ...
+#> 
+#> Starting orthology inference (BH) and dNdS estimation (Comeron) using the follwing parameters:
+#> query = 'ortho_thal_cds.fasta'
+#> subject = 'ortho_lyra_cds.fasta'
+#> aligner = 'diamond'
+#> sensitivity_mode = 'fast'
+#> seq_type = 'cds'
+#> e-value: 1E-5
+#> aa_aln_type = 'pairwise'
+#> aa_aln_tool = 'NW'
+#> comp_cores = '1'
+#> 
+#> Starting Orthology Inference ...
+#> Running diamond version 2.2.1 ...
+#> sensitivity mode: fast
+#> creating a diamond database
+#> Starting DIAMOND2 search ...
+#> DIAMOND2 search completed in 0.03 sec.
+#> Orthology Inference Completed.
+#> Starting dN/dS Estimation ...
+#> dN/dS Estimation Completed.
+#> 
+#> Please cite the following paper when using orthologr for your own research:
+#> Drost et al. Evidence for Active Maintenance of Phylotranscriptomic Hourglass Patterns in Animal and Plant Embryogenesis. 2015. Mol. Biol. Evol. 32 (5): 1221-1231.
+#> 
+#> 
+#> Initial input contains 20 rows.
+#> Filtering done. New output table contains 20 rows.
+#> Divergence Stratigraphy completed successfully.
+#>    DS    query_id
+#> 1  10 AT1G01010.1
+#> 2   9 AT1G01020.1
+#> 3   5 AT1G01030.1
+#> 4   4 AT1G01040.1
+#> 5   1 AT1G01050.1
+#> 6   9 AT1G01060.3
+#> 7   6 AT1G01070.1
+#> 8   8 AT1G01080.1
+#> 9   2 AT1G01090.1
+#> 10  7 AT1G01110.2
+#> 11  2 AT1G01120.1
+#> 12  3 AT1G01140.3
+#> 13 10 AT1G01150.1
+#> 14  8 AT1G01160.1
+#> 15  1 AT1G01170.2
+#> 16  6 AT1G01180.1
+#> 17  7 AT1G01190.1
+#> 18  4 AT1G01200.1
+#> 19  5 AT1G01210.1
+#> 20  3 AT1G01220.1
 ```
-
-       DS    query_id
-    1  10 AT1G01010.1
-    2   9 AT1G01020.1
-    3   5 AT1G01030.1
-    4   4 AT1G01040.1
-    5   1 AT1G01050.1
-    6   9 AT1G01060.3
-    7   6 AT1G01070.1
-    8   8 AT1G01080.1
-    9   2 AT1G01090.1
-    10  7 AT1G01110.2
-    11  2 AT1G01120.1
-    12  3 AT1G01140.3
-    13 10 AT1G01150.1
-    14  8 AT1G01160.1
-    15  1 AT1G01170.2
-    16  6 AT1G01180.1
-    17  7 AT1G01190.1
-    18  4 AT1G01200.1
-    19  5 AT1G01210.1
-    20  3 AT1G01220.1
 
 ## Skip `Divergence Stratigraphy` and Download Already Published `Divergence Maps`
 

@@ -222,6 +222,7 @@ test_that("deepclust_realign() errors when input_file does not exist", {
 })
 
 test_that("deepclust_realign() errors when clusters data frame is missing required columns", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
         expect_error(
                 deepclust_realign(
                         input_file = protein_file,
@@ -232,6 +233,7 @@ test_that("deepclust_realign() errors when clusters data frame is missing requir
 })
 
 test_that("deepclust_realign() errors when clusters is neither a file path nor a data frame", {
+        skip_if_not(diamond_available, "DIAMOND2 is not installed or not on PATH")
         expect_error(
                 deepclust_realign(
                         input_file = protein_file,

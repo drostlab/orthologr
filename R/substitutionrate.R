@@ -123,6 +123,9 @@ substitutionrate <- function(file,
                              subst_name       = NULL){
         
         # dNdS estimation methods provided by the KaKs_Calculator program
+        if (!is.null(kaks_calc_path))
+                kaks_calc_path <- normalizePath(kaks_calc_path, mustWork = FALSE)
+        
         kaks_calc_methods <-
                 c("MA",
                   "MS",

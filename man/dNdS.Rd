@@ -94,8 +94,10 @@ The option diamond uses DIAMOND2 which is up to 10 000X folds faster than BLASTP
 
 \item{aa_aln_path}{a character string specifying the path to the multiple alignment program (in case you don't use the default path).}
 
-\item{aa_aln_params}{a character string specifying additional parameters that shall be passed to the selected alignment tool. Default is \code{aa_aln_params} = \code{NULL} 
-(no addintional parameters are passed to the selected alignment tool).}
+\item{aa_aln_params}{a character string specifying additional command-line parameters to pass to the amino acid alignment tool
+selected via \code{aa_aln_tool} (e.g. \code{"clustalw"} for multiple alignment or \code{"NW"} for pairwise alignment).
+Note: this controls the amino acid alignment step only, not the initial DIAMOND or BLAST homology search
+(use \code{aligner_params} for that). Default is \code{aa_aln_params} = \code{NULL} (no additional parameters are forwarded).}
 
 \item{codon_aln_tool}{a character string specifying the codon alignment tool that shall be used. Default is \code{codon_aln_tool} = \code{"pal2nal"}.
 Right now only "pal2nal" can be selected as codon alignment tool.}

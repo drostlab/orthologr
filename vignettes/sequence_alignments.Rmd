@@ -22,7 +22,7 @@ Prior to be able to use all sequence alignment functions implemented in `ortholo
 you need to install corresponding alignment tools of interest.
 The above mentioned functions provide interfaces to the following alignment programs:
 
-### The `multi_aln()` function
+### Overview of the `multi_aln()` function
 
 * __ClustalW__ : Advanced multiple alignment tool of nucleic acid and protein sequences
  
