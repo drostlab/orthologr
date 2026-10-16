@@ -48,6 +48,7 @@ set_diamond <- function(
                 quiet       = TRUE,
                 ...){
         
+        path <- diamond_resolve_path(path)
         if (!is.null(path))
                 path <- normalizePath(path, mustWork = FALSE)
         

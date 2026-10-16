@@ -148,3 +148,31 @@ cds2aa <- function(dt, delete_corrupt_cds = TRUE){
 }
         
 
+
+
+# internal: run a shell command and return its exit status.
+# If quiet = TRUE, stderr is captured instead of printed (e.g. DIAMOND's harmless
+# "Failed to delete temporary file" warnings) and only shown if the command fails.
+run_system_quiet <- function(command, quiet = TRUE) {
+        if (!quiet)
+                return(system(command))
+        
+        err_file <- tempfile("stderr_", fileext = ".txt")
+        on.exit(unlink(err_file), add = TRUE)
+        
+        redirected <- if (.Platform$OS.type == "windows") {
+                paste0(command, " 2>", shQuote(err_file))
+        } else {
+                # group the command so the redirect also covers 'export PATH=...; <cmd>'
+                paste0("{ ", command, "\n} 2>", shQuote(err_file))
+        }
+        
+        status <- system(redirected)
+        
+        if (!identical(status, 0L) && file.exists(err_file)) {
+                err <- readLines(err_file, warn = FALSE)
+                if (length(err) > 0)
+                        message(paste(err, collapse = "\n"))
+        }
+        status
+}
