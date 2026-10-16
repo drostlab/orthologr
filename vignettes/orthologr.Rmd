@@ -1,0 +1,86 @@
+---
+title: "orthologr"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{orthologr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+options(width = 750)
+library(orthologr)
+# TRUE if DIAMOND2 is on the PATH or was installed with diamond_install()
+has_diamond <- tryCatch({ diamond_path(); TRUE }, error = function(e) FALSE)
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  error = FALSE,
+  tidy = FALSE,
+  eval = has_diamond)
+```
+
+`orthologr` infers orthologous genes between genomes, estimates their dN/dS, and
+clusters proteins into homologous groups, all from R. Four steps get you started.
+
+## 1. Install `orthologr`
+
+```{r,eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "GenomicRanges", "GenomicFeatures",
+                       "Rsamtools", "rtracklayer", "pwalign"))
+install.packages(c("doParallel", "foreach", "ape", "Rdpack", "benchmarkme", "devtools"))
+devtools::install_github("drostlab/metablastr")
+devtools::install_github("drostlab/orthologr")
+```
+
+Windows users also need [Rtools](setup_windows.html#install-rtools).
+
+## 2. Install DIAMOND2
+
+```{r,eval=FALSE}
+library(orthologr)
+diamond_install()
+```
+
+This downloads `DIAMOND2` for your operating system into a user cache folder, with no
+administrator rights or `PATH` changes. It is the only external tool needed for steps 3 and 4.
+See [Install](Install.html#diamond-install) for alternatives (conda, manual install, BLAST+).
+
+## 3. Estimate dN/dS with `dNdS()`
+
+`dNdS()` finds orthologous gene pairs between two species and computes dN, dS and dN/dS for each pair
+from their coding sequences.
+
+```{r}
+dnds <- dNdS(
+  query_file     = system.file("seqs/ortho_thal_cds.fasta", package = "orthologr"),
+  subject_file   = system.file("seqs/ortho_lyra_cds.fasta", package = "orthologr"),
+  print_citation = FALSE
+)
+
+head(dnds[, c("query_id", "subject_id", "dN", "dS", "dNdS")])
+```
+
+More: [Orthology inference](orthology_inference.html), [dNdS estimation](dNdS_estimation.html),
+[Divergence stratigraphy](divergence_stratigraphy.html).
+
+## 4. Cluster proteins with `deepclust()`
+
+`deepclust()` groups the proteins of one or more proteomes into homologous clusters.
+
+```{r}
+clusters <- deepclust(
+  input_file = c(
+    system.file("seqs/ortho_thal_aa.fasta", package = "orthologr"),
+    system.file("seqs/ortho_lyra_aa.fasta", package = "orthologr")
+  ),
+  mutual_cover = 70 # 70% mutual coverage of the aligned sequences
+)
+
+head(clusters)
+```
+
+More: [Protein clustering with DeepClust](deepclust.html).
