@@ -10,8 +10,8 @@ is_installed_blast <- function(path = NULL) {
                 } else {
                         sys_out <-
                                 system(paste0(
-                                        'export PATH=$PATH:',
-                                        path, "'; blastp -version '"), intern = TRUE)
+                                        path_prefix(path),
+                                        "blastp -version"), intern = TRUE)
                 }
                 
                 

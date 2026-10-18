@@ -166,12 +166,7 @@ set_diamond <- function(
                         )
                 
                 if(!is.null(path)){
-                        diamonddb_run <- paste0(
-                                "export PATH=$PATH:",
-                                path,
-                                "; ",
-                                diamonddb_run
-                        )
+                        diamonddb_run <- paste0(path_prefix(path), diamonddb_run)
                 }
                 
                 if(quiet){

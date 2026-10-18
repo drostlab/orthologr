@@ -124,9 +124,8 @@ diamond <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                shQuote(path),
-                                '; diamond --version'), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
         
@@ -252,12 +251,7 @@ diamond <- function(
                         )
         
         if(!is.null(path)){
-                diamond_run <- paste0(
-                        'export PATH=$PATH:',
-                        path,
-                        '; ',
-                        diamond_run
-                )
+                diamond_run <- paste0(path_prefix(path), diamond_run)
         }
         
         if(!is.null(diamond_params)){

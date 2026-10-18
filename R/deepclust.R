@@ -148,9 +148,8 @@ deepclust <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                shQuote(path),
-                                '; diamond --version'), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
 
@@ -259,7 +258,7 @@ deepclust <- function(
                 deepclust_run <- paste0(deepclust_run, ' ', deepclust_params)
 
         if (!is.null(path))
-                deepclust_run <- paste0('export PATH=$PATH:', path, '; ', deepclust_run)
+                deepclust_run <- paste0(path_prefix(path), deepclust_run)
 
         if (quiet)
                 deepclust_run <- paste0(deepclust_run, ' --quiet')

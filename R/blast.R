@@ -150,8 +150,8 @@ blast <- function(query_file,
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                path, "' ; blastp -version '"), intern = TRUE)[1],
+                                path_prefix(path),
+                                "blastp -version"), intern = TRUE)[1],
                         " ...")
         }
         
@@ -296,9 +296,8 @@ blast <- function(query_file,
                                                 # use the default parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                'export PATH=$PATH:',
-                                                                path,
-                                                                '; blastp -db ',
+                                                                path_prefix(path),
+                                                                'blastp -db ',
                                                                 database,
                                                                 ' -query ',
                                                                 input,
@@ -317,9 +316,8 @@ blast <- function(query_file,
                                                 # add additional parameters when running blastp
                                                 system(
                                                         paste0(
-                                                                'export PATH=$PATH:',
-                                                                path,
-                                                                '; blastp -db ',
+                                                                path_prefix(path),
+                                                                'blastp -db ',
                                                                 database,
                                                                 ' -query ',
                                                                 input,

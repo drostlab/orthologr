@@ -152,9 +152,8 @@ deepclust_realign <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                shQuote(path),
-                                '; diamond --version'), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
 
@@ -268,7 +267,7 @@ deepclust_realign <- function(
                 realign_run <- paste0(realign_run, ' ', realign_params)
 
         if (!is.null(path))
-                realign_run <- paste0('export PATH=$PATH:', path, '; ', realign_run)
+                realign_run <- paste0(path_prefix(path), realign_run)
 
         if (quiet)
                 realign_run <- paste0(realign_run, ' --quiet')
