@@ -34,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/orthologr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -69,7 +70,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Installing Prerequisite Tools</h1>
             
-            <h4 data-toc-skip class="date">2026-10-08</h4>
+            <h4 data-toc-skip class="date">2026-10-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/Install.Rmd" class="external-link"><code>vignettes/Install.Rmd</code></a></small>
       <div class="d-none name"><code>Install.Rmd</code></div>
@@ -119,12 +120,144 @@ on.</p>
 <h2 id="pairwise-sequence-alignment-tools">Pairwise Sequence Alignment Tools<a class="anchor" aria-label="anchor" href="#pairwise-sequence-alignment-tools"></a>
 </h2>
 <p>The <code>orthologr</code> package provides interfaces to the
-pairwise alignment tools, <code>BLAST</code> and
-<code>DIAMOND v2</code>. We recommend the use of <code>DIAMOND v2</code>
-as it saves time whilst being as sensitive as <code>BLAST</code>.</p>
+pairwise alignment tools, <code>DIAMOND v2</code> and
+<code>BLAST</code>. We recommend the use of <code>DIAMOND v2</code> as
+it saves time whilst being as sensitive as <code>BLAST</code>.</p>
+<blockquote>
+<p>:bulb: <strong><code>DIAMOND2</code> is all you need for the core
+tasks of <code>orthologr</code>.</strong> <code>DIAMOND2</code> is the
+default aligner for orthology inference (<code><a href="../reference/orthologs.html">orthologs()</a></code>,
+<code><a href="../reference/diamond_best.html">diamond_best()</a></code>, <code><a href="../reference/diamond_rec.html">diamond_rec()</a></code>),
+<code><a href="../reference/dNdS.html">dNdS()</a></code>, <code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> and protein
+clustering (<code><a href="../reference/deepclust.html">deepclust()</a></code>, <code><a href="../reference/deepclust_realign.html">deepclust_realign()</a></code>).
+With the default settings of these functions, no other external tool is
+required: the default amino acid alignment (Needleman-Wunsch, via
+<code>Biostrings</code>), <code>PAL2NAL</code> (codon alignment) and
+Comeron’s dNdS estimation are already part of the <code>orthologr</code>
+R package. You only need to install <code>BLAST+</code> (or the tools in
+the following sections) if you explicitly choose them, e.g.
+<code>aligner = "blast"</code> or a multiple sequence aligner via
+<code>aa_aln_type = "multiple"</code>. The quickest way to get
+<code>DIAMOND2</code> is <a href="#diamond-install"><code>diamond_install()</code></a>.</p>
+</blockquote>
+<div class="section level3">
+<h3 id="install-diamond2">Install <code>DIAMOND2</code><a class="anchor" aria-label="anchor" href="#install-diamond2"></a>
+</h3>
+<p><a href="https://github.com/bbuchfink/diamond" class="external-link"><strong>DIAMOND2</strong></a>
+(= Double Index alignment of Next-generation sequencing data) finds,
+like <code>BLAST</code>, regions of similarity between biological
+sequences. Unlike <code>BLAST</code> it is much much faster (up to 10
+000X faster in the default <code>fast</code> mode and over 80X faster in
+the <code>ultra-sensitive</code> mode, which is as sensitive as
+<code>BLAST</code>). Thus, <code>DIAMOND2</code> facilitates <em>even
+faster</em> orthology inference.</p>
+<div class="section level4">
+<h4 id="diamond-install">Quick install from R with <code>diamond_install()</code><a class="anchor" aria-label="anchor" href="#diamond-install"></a>
+</h4>
+<p>The easiest way to get <code>DIAMOND2</code> is to let
+<code>orthologr</code> install it for you from within R:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/diamond_install.html">diamond_install</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/diamond_install.html">diamond_install()</a></code> downloads the pre-compiled
+<code>DIAMOND2</code> binary that matches your operating system from the
+<a href="https://github.com/bbuchfink/diamond/releases" class="external-link">official
+<code>DIAMOND2</code> releases</a> and stores it in a user-level cache
+folder (see
+<code>tools::R_user_dir("orthologr", which = "cache")</code>). This
+means that:</p>
+<ul>
+<li>no administrator rights are needed and nothing is copied to
+<code>usr/local/bin</code>,</li>
+<li>no <code>PATH</code> variable needs to be edited, and</li>
+<li>the binary is shared by all R projects of the same user.</li>
+</ul>
+<p><code><a href="../reference/diamond.html">diamond()</a></code>, <code><a href="../reference/diamond_best.html">diamond_best()</a></code>,
+<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code>, <code><a href="../reference/set_diamond.html">set_diamond()</a></code>,
+<code><a href="../reference/deepclust.html">deepclust()</a></code> and <code><a href="../reference/deepclust_realign.html">deepclust_realign()</a></code> use the
+cached copy automatically whenever the <code>path</code> argument is
+<code>NULL</code> and no <code>diamond</code> is found on the
+<code>PATH</code>. A <code>diamond</code> that is already on your
+<code>PATH</code> always takes precedence. To see which copy
+<code>orthologr</code> uses, run <code><a href="../reference/diamond_path.html">diamond_path()</a></code> (it returns
+<code>NULL</code> when <code>diamond</code> is found on the
+<code>PATH</code>, and the cache folder otherwise).</p>
+<p>Useful arguments:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/diamond_install.html">diamond_install</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"v2.1.9"</span><span class="op">)</span>  <span class="co"># install a specific DIAMOND2 release instead of the latest</span></span>
+<span><span class="fu"><a href="../reference/diamond_install.html">diamond_install</a></span><span class="op">(</span>force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>        <span class="co"># re-download, e.g. to update to the latest release</span></span></code></pre></div>
+<p>Pre-compiled binaries are provided for <strong>Linux
+(x86_64)</strong>, <strong>macOS</strong> and <strong>Windows
+(x86_64)</strong>. On other systems (e.g. Linux on ARM) or if you prefer
+to manage <code>DIAMOND2</code> yourself, use the manual installation
+below or <code>conda install -c bioconda diamond</code>. Windows users
+can find additional details in the <a href="setup_windows.html#install-diamond2-with-diamond_install">Setting
+up DIAMOND2 and BLAST+ on Windows</a> vignette.</p>
+</div>
+<div class="section level4">
+<h4 id="manual-installation">Manual installation<a class="anchor" aria-label="anchor" href="#manual-installation"></a>
+</h4>
+<ol style="list-style-type: decimal">
+<li><p>Go to the download site in the <a href="https://github.com/bbuchfink/diamond/wiki/2.-Installation" class="external-link"><code>DIAMOND2</code>
+wiki</a> and follow the instructions for installation.
+<code>DIAMOND2</code> is supported on Linux, macOS and Windows. For
+Windows users, see also the <a href="setup_windows.html">Setting up
+DIAMOND2 and BLAST+ on Windows</a> vignette.</p></li>
+<li><p>Check the installation of <code>DIAMOND2</code> by running the
+command</p></li>
+</ol>
+<pre><code><span><span class="va">diamond</span> <span class="op">-</span><span class="op">-</span><span class="va">version</span></span></code></pre>
+<p>Check the <code>Additional tips for macOS</code> section in the <a href="#install-blast"><code>BLAST</code> installation instructions</a>
+for macOS users, because similar issues may arise when installing
+<code>DIAMOND2</code> on macOS.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>After installing the <code>DIAMOND2</code> program you can open an R
+session and type the following command to check whether or not
+<code>DIAMOND2</code> can be executed from R.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># test whether diamond is correctly installed on your machine</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>You should see this output if <code>DIAMOND2</code> was
+installed correctly.</strong></p>
+<p>In case you find the following output:</p>
+<pre><code>sh: diamond: command not found</code></pre>
+<p>You should return to <code>step 1)</code> and install
+<code>DIAMOND2</code> so that it can be executed from the default
+execution <code>PATH</code>.</p>
+<p>These interface functions to <code>DIAMOND2</code> are implemented in
+<code>orthologr</code>, akin to the interface functions to
+<code>BLAST+</code>:</p>
+<ul>
+<li>
+<code><a href="../reference/diamond.html">diamond()</a></code> : Interface function to DIAMOND2</li>
+<li>
+<code><a href="../reference/diamond_best.html">diamond_best()</a></code> : Perform a diamond best hit search</li>
+<li>
+<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code> : Perform a diamond reciprocal best hit
+(RBH) search</li>
+<li>
+<code><a href="../reference/set_diamond.html">set_diamond()</a></code> : Preparing the parameters and databases
+for subsequent diamond searches</li>
+</ul>
+<p>Furthermore, the following functions use <code>DIAMOND2</code> by
+default, though the use of BLAST can be specified through the parameter
+<code>aligner = "blast"</code>:</p>
+<ul>
+<li>
+<code><a href="../reference/dNdS.html">dNdS()</a></code> : Compute dNdS values for two organisms</li>
+<li>
+<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> : Perform ‘Divergence
+Stratigraphy’</li>
+</ul>
+</div>
+</div>
 <div class="section level3">
 <h3 id="install-blast">Install <code>BLAST</code><a class="anchor" aria-label="anchor" href="#install-blast"></a>
 </h3>
+<p><em>Optional: only needed if you want to use
+<code>aligner = "blast"</code> or the <code>blast*()</code> functions
+instead of <code>DIAMOND2</code>.</em></p>
 <p><a href="https://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/%5D" class="external-link"><strong>BLAST</strong></a>
 (= Basic Local Alignment Search Tool) finds regions of similarity
 between biological sequences and is also used as underlying paradigm of
@@ -210,7 +343,7 @@ solutions.</p>
 <p>In addition, you may want to add BLAST+ to the .Renviron file to make
 sure that BLAST+ is available in R sessions. To do so, open the R and
 type:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://usethis.r-lib.org" class="external-link">usethis</a></span><span class="op">)</span></span>
 <span><span class="co"># open the .Renviron file for editing</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/edit.html" class="external-link">edit_r_environ</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -221,7 +354,7 @@ path to the BLAST+ bin folder):</p>
 </details><p>After installing the BLAST program you can open an R session and type
 the following command to check whether or not BLAST can be executed from
 R.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># test whether blastp is correctly installed on your machine</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"blastp -version"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>You should see this output if BLAST was installed
@@ -245,72 +378,6 @@ it can be executed from the default execution <code>PATH</code>.</p>
 for subsequent BLAST+ searches</li>
 </ul>
 </div>
-</div>
-<div class="section level3">
-<h3 id="install-diamond2">Install <code>DIAMOND2</code><a class="anchor" aria-label="anchor" href="#install-diamond2"></a>
-</h3>
-<p><a href="https://github.com/bbuchfink/diamond" class="external-link"><strong>DIAMOND2</strong></a>
-(= Double Index alignment of Next-generation sequencing data) finds,
-like <code>BLAST</code>, regions of similarity between biological
-sequences. Unlike <code>BLAST</code> it is much much faster (up to 10
-000X faster in the default <code>fast</code> mode and over 80X faster in
-the <code>ultra-sensitive</code> mode, which is as sensitive as
-<code>BLAST</code>). Thus, <code>DIAMOND2</code> facilitates <em>even
-faster</em> orthology inference.</p>
-<ol style="list-style-type: decimal">
-<li><p>Go to the download site in the <a href="https://github.com/bbuchfink/diamond/wiki/2.-Installation" class="external-link"><code>DIAMOND2</code>
-wiki</a> and follow the instructions for installation.
-<code>DIAMOND2</code> is supported on Linux, macOS and Windows. For
-Windows users, see also the <a href="setup_windows.html">Setting up
-DIAMOND2 and BLAST+ on Windows</a> vignette.</p></li>
-<li><p>Check the installation of <code>DIAMOND2</code> by running the
-command</p></li>
-</ol>
-<pre><code><span><span class="va">diamond</span> <span class="op">-</span><span class="op">-</span><span class="va">version</span></span></code></pre>
-<p>Check the <code>Additional tips for macOS</code> section in the
-<code>BLAST</code> installation instructions for macOS users, because
-similar issues may arise when installing <code>DIAMOND2</code> on
-macOS.</p>
-<ol start="3" style="list-style-type: decimal">
-<li>After installing the <code>DIAMOND2</code> program you can open an R
-session and type the following command to check whether or not
-<code>DIAMOND2</code> can be executed from R.</li>
-</ol>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># test whether diamond is correctly installed on your machine</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"diamond --version"</span><span class="op">)</span></span></code></pre></div>
-<p><strong>You should see this output if <code>DIAMOND2</code> was
-installed correctly.</strong></p>
-<p>In case you find the following output:</p>
-<pre><code>sh: diamond: command not found</code></pre>
-<p>You should return to <code>step 1)</code> and install
-<code>DIAMOND2</code> so that it can be executed from the default
-execution <code>PATH</code>.</p>
-<p>These interface functions to <code>DIAMOND2</code> are implemented in
-<code>orthologr</code>, akin to the interface functions to
-<code>BLAST+</code>:</p>
-<ul>
-<li>
-<code><a href="../reference/diamond.html">diamond()</a></code> : Interface function to DIAMOND2</li>
-<li>
-<code><a href="../reference/diamond_best.html">diamond_best()</a></code> : Perform a diamond best hit search</li>
-<li>
-<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code> : Perform a diamond reciprocal best hit
-(RBH) search</li>
-<li>
-<code><a href="../reference/set_diamond.html">set_diamond()</a></code> : Preparing the parameters and databases
-for subsequent diamond searches</li>
-</ul>
-<p>Furthermore, the following functions use <code>DIAMOND2</code> by
-default, though the use of BLAST can be specified through the parameter
-<code>aligner = "blast"</code>:</p>
-<ul>
-<li>
-<code><a href="../reference/dNdS.html">dNdS()</a></code> : Compute dNdS values for two organisms</li>
-<li>
-<code><a href="../reference/divergence_stratigraphy.html">divergence_stratigraphy()</a></code> : Perform ‘Divergence
-Stratigraphy’</li>
-</ul>
 </div>
 </div>
 <div class="section level2">

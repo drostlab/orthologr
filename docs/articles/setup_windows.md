@@ -2,12 +2,14 @@
 
 - [1. Getting started](#getting-started)
 - [2. Install Rtools](#install-rtools)
-- [3. Confirm the location of the
+- [3. Install DIAMOND2 with
+  `diamond_install()`](#install-diamond2-with-diamond_install)
+- [4. Confirm the location of the
   executables](#confirm-the-location-of-the-executables)
-- [4. Set PATH for the current R session
+- [5. Set PATH for the current R session
   (temporary)](#set-path-for-the-current-r-session-temporary)
-- [5. Verify the installation](#verify-the-installation)
-- [6. Additional information](#additional-information)
+- [6. Verify the installation](#verify-the-installation)
+- [7. Additional information](#additional-information)
 
 ## Getting Started
 
@@ -65,6 +67,78 @@ Rtools before continuing.
 Once Rtools is confirmed working,
 [`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html)
 and `R CMD INSTALL` should be able to compile `orthologr`’s C++ sources.
+
+## Install DIAMOND2 with `diamond_install()`
+
+The simplest way to get `DIAMOND2` on Windows is to let `orthologr`
+download it for you. This avoids manually unzipping `diamond.exe`,
+choosing a folder, and editing `PATH`:
+
+``` r
+
+library(orthologr)
+diamond_install()
+```
+
+[`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+downloads `diamond-windows.zip` from the [official `DIAMOND2`
+releases](https://github.com/bbuchfink/diamond/releases), extracts
+`diamond.exe` into the R user cache folder and checks that it runs. No
+administrator rights are needed. Windows has no ARM build upstream, so
+on Windows on ARM please install `DIAMOND2` manually (see the sections
+below).
+
+You can see where the binary was placed, and which copy `orthologr` will
+use, with:
+
+``` r
+
+tools::R_user_dir("orthologr", which = "cache")  # cache folder; diamond.exe is in the "diamond" subfolder
+diamond_path()                                   # NULL if diamond is on the PATH, otherwise the cache folder
+```
+
+[`diamond()`](https://drostlab.github.io/orthologr/reference/diamond.md),
+[`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md),
+[`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md),
+[`set_diamond()`](https://drostlab.github.io/orthologr/reference/set_diamond.md),
+[`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md)
+and
+[`deepclust_realign()`](https://drostlab.github.io/orthologr/reference/deepclust_realign.md)
+use this copy automatically when `path = NULL` and no `diamond` is found
+on your `PATH`. A `diamond.exe` on your `PATH` always takes precedence.
+You can also pass the cache folder explicitly:
+
+``` r
+
+diamond(
+  query_file   = system.file("seqs/ortho_thal_cds.fasta", package = "orthologr"),
+  subject_file = system.file("seqs/ortho_lyra_cds.fasta", package = "orthologr"),
+  path         = diamond_install(quiet = TRUE)  # returns the folder containing diamond.exe
+)
+```
+
+**Troubleshooting:**
+
+- If the download fails (e.g. behind a corporate proxy or firewall),
+  download `diamond-windows.zip` manually from the releases page and
+  continue with the manual steps below.
+- If Windows Defender or another antivirus quarantines `diamond.exe`,
+  restore it or add the cache folder as an exception, then run
+  `diamond_install(force = TRUE)`.
+- [`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+  only installs `DIAMOND2`. `BLAST+` still has to be installed manually,
+  see the
+  [Install](https://drostlab.github.io/orthologr/articles/Install.html#install-blast)
+  vignette.
+- To update `DIAMOND2`, run `diamond_install(force = TRUE)`; to pin a
+  release, use e.g. `diamond_install(version = "v2.1.9", force = TRUE)`.
+
+See also the [Install
+`DIAMOND2`](https://drostlab.github.io/orthologr/articles/Install.html#diamond-install)
+section of the Install vignette. If you use
+[`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md),
+you can skip the following steps for `DIAMOND2` and only configure
+`BLAST+`.
 
 ## Confirm the location of the executables
 

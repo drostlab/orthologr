@@ -4,6 +4,20 @@
 
 ### New Function
 
+- [`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+  downloads the pre-compiled DIAMOND2 binary matching the user’s
+  operating system (Linux x86_64, macOS, Windows) into the R user cache.
+  [`diamond()`](https://drostlab.github.io/orthologr/reference/diamond.md),
+  [`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md),
+  [`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md),
+  [`set_diamond()`](https://drostlab.github.io/orthologr/reference/set_diamond.md),
+  [`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md)
+  and
+  [`deepclust_realign()`](https://drostlab.github.io/orthologr/reference/deepclust_realign.md)
+  use it automatically if `path = NULL` and `diamond` is not on the
+  `PATH`.
+  [`diamond_path()`](https://drostlab.github.io/orthologr/reference/diamond_path.md)
+  reports which DIAMOND executable is used.
 - [`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md)
   enables `diamond deepclust` functionalities for clustering protein
   sequences. Multiple input `.fasta` files or `.fasta.gz` are supported.

@@ -12,6 +12,7 @@
   orthologr](https://drostlab.github.io/orthologr/articles/dNdS_estimation.md):
 - [Installing Prerequisite
   Tools](https://drostlab.github.io/orthologr/articles/Install.md):
+- [orthologr](https://drostlab.github.io/orthologr/articles/orthologr.md):
 - [Orthology Inference using
   orthologr](https://drostlab.github.io/orthologr/articles/orthology_inference.md):
 - [Sequence alignments with

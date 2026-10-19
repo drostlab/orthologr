@@ -8,6 +8,7 @@
 <url><loc>https://drostlab.github.io/orthologr/articles/deepclust.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/articles/divergence_stratigraphy.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/articles/index.html</loc></url>
+<url><loc>https://drostlab.github.io/orthologr/articles/orthologr.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/articles/orthology_inference.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/articles/sequence_alignments.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/articles/setup_windows.html</loc></url>
@@ -35,6 +36,8 @@
 <url><loc>https://drostlab.github.io/orthologr/reference/delta.blast.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/reference/diamond.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/reference/diamond_best.html</loc></url>
+<url><loc>https://drostlab.github.io/orthologr/reference/diamond_install.html</loc></url>
+<url><loc>https://drostlab.github.io/orthologr/reference/diamond_path.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/reference/diamond_rec.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/reference/divergence_map.html</loc></url>
 <url><loc>https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.html</loc></url>

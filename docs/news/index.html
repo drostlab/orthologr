@@ -15,7 +15,8 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/orthologr.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/blast.html">BLAST searches using orthologr</a></li>
@@ -48,6 +49,8 @@
 <div class="section level3">
 <h3 id="new-function-0-4-3">New Function<a class="anchor" aria-label="anchor" href="#new-function-0-4-3"></a></h3>
 <ul><li>
+<code><a href="../reference/diamond_install.html">diamond_install()</a></code> downloads the pre-compiled DIAMOND2 binary matching the user’s operating system (Linux x86_64, macOS, Windows) into the R user cache. <code><a href="../reference/diamond.html">diamond()</a></code>, <code><a href="../reference/diamond_best.html">diamond_best()</a></code>, <code><a href="../reference/diamond_rec.html">diamond_rec()</a></code>, <code><a href="../reference/set_diamond.html">set_diamond()</a></code>, <code><a href="../reference/deepclust.html">deepclust()</a></code> and <code><a href="../reference/deepclust_realign.html">deepclust_realign()</a></code> use it automatically if <code>path = NULL</code> and <code>diamond</code> is not on the <code>PATH</code>. <code><a href="../reference/diamond_path.html">diamond_path()</a></code> reports which DIAMOND executable is used.</li>
+<li>
 <code><a href="../reference/deepclust.html">deepclust()</a></code> enables <code>diamond deepclust</code> functionalities for clustering protein sequences. Multiple input <code>.fasta</code> files or <code>.fasta.gz</code> are supported.</li>
 <li>
 <code><a href="../reference/deepclust_realign.html">deepclust_realign()</a></code> enables <code>diamond deepclust</code> functionalities for realigning protein sequences from the output of <code><a href="../reference/deepclust.html">deepclust()</a></code>. Multiple input <code>.fasta</code> files or <code>.fasta.gz</code> are supported.</li>

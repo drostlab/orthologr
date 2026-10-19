@@ -34,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/orthologr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -69,7 +70,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Protein Clustering with DIAMOND DeepClust</h1>
             
-            <h4 data-toc-skip class="date">2026-10-08</h4>
+            <h4 data-toc-skip class="date">2026-10-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/deepclust.Rmd" class="external-link"><code>vignettes/deepclust.Rmd</code></a></small>
       <div class="d-none name"><code>deepclust.Rmd</code></div>
@@ -96,6 +97,13 @@ homologous groups</li>
 within each cluster</li>
 </ul>
 <p>All three functions work with protein sequences only.</p>
+<p><strong>Prerequisite:</strong> <code>DIAMOND2</code> must be
+available. The easiest way is to run <code><a href="../reference/diamond_install.html">diamond_install()</a></code>
+once, which downloads the right binary for your operating system into a
+user cache folder (no administrator rights or <code>PATH</code> changes
+needed). See the <a href="Install.html#diamond-install">Install
+<code>DIAMOND2</code></a> section of the Install vignette for details
+and alternatives.</p>
 <div class="section level2">
 <h2 id="deepclust">
 <code>deepclust()</code><a class="anchor" aria-label="anchor" href="#deepclust"></a>
@@ -116,7 +124,7 @@ returns a data frame mapping each sequence to a cluster ID.</p>
 <span><span class="co">#&gt; Merged 40 sequences into: deepclust_merged_2_files.fasta</span></span>
 <span><span class="co">#&gt; Building DIAMOND2 database for deepclust ...</span></span>
 <span><span class="co">#&gt; Running diamond deepclust ...</span></span>
-<span><span class="co">#&gt; diamond deepclust completed in 0.78 sec.</span></span>
+<span><span class="co">#&gt; diamond deepclust completed in 0.85 sec.</span></span>
 <span></span>
 <span><span class="va">clusters</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 40 × 2</span></span></span>
@@ -155,7 +163,7 @@ cluster.</p>
 <span><span class="co">#&gt; Merged 40 sequences into: deepclust_merged_2_files.fasta</span></span>
 <span><span class="co">#&gt; Building DIAMOND2 database for deepclust ...</span></span>
 <span><span class="co">#&gt; Running diamond deepclust ...</span></span>
-<span><span class="co">#&gt; diamond deepclust completed in 0.79 sec.</span></span>
+<span><span class="co">#&gt; diamond deepclust completed in 0.88 sec.</span></span>
 <span><span class="co">#&gt; Joining sequence library onto cluster result ...</span></span>
 <span><span class="co">#&gt; Left join completed in 0.05 sec.</span></span>
 <span></span>
@@ -189,7 +197,7 @@ cluster.</p>
 <span><span class="co">#&gt; Merged 40 sequences into: deepclust_merged_2_files.fasta</span></span>
 <span><span class="co">#&gt; Building DIAMOND2 database for deepclust ...</span></span>
 <span><span class="co">#&gt; Running diamond deepclust ...</span></span>
-<span><span class="co">#&gt; diamond deepclust completed in 0.79 sec.</span></span>
+<span><span class="co">#&gt; diamond deepclust completed in 0.82 sec.</span></span>
 <span><span class="co">#&gt; Joining sequence library onto cluster result ...</span></span>
 <span><span class="co">#&gt; Left join completed in 0 sec.</span></span>
 <span><span class="va">annotated</span></span>
@@ -225,7 +233,7 @@ cluster.</p>
 <span><span class="co">#&gt; Merged 40 sequences into: deepclust_merged_2_files.fasta</span></span>
 <span><span class="co">#&gt; Building DIAMOND2 database for deepclust ...</span></span>
 <span><span class="co">#&gt; Running diamond deepclust ...</span></span>
-<span><span class="co">#&gt; diamond deepclust completed in 0.6 sec.</span></span>
+<span><span class="co">#&gt; diamond deepclust completed in 0.62 sec.</span></span>
 <span><span class="co">#&gt; Joining sequence library onto cluster result ...</span></span>
 <span><span class="co">#&gt; Left join completed in 0 sec.</span></span>
 <span><span class="va">annotated</span></span>

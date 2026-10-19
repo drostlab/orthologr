@@ -34,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/orthologr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -69,7 +70,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Setting up DIAMOND2 and BLAST+ on Windows</h1>
             
-            <h4 data-toc-skip class="date">2026-10-08</h4>
+            <h4 data-toc-skip class="date">2026-10-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/drostlab/orthologr/blob/HEAD/vignettes/setup_windows.Rmd" class="external-link"><code>vignettes/setup_windows.Rmd</code></a></small>
       <div class="d-none name"><code>setup_windows.Rmd</code></div>
@@ -80,13 +81,15 @@
 <ul>
 <li><a href="#getting-started">1. Getting started</a></li>
 <li><a href="#install-rtools">2. Install Rtools</a></li>
-<li><a href="#confirm-the-location-of-the-executables">3. Confirm the
+<li><a href="#install-diamond2-with-diamond_install">3. Install DIAMOND2
+with <code>diamond_install()</code></a></li>
+<li><a href="#confirm-the-location-of-the-executables">4. Confirm the
 location of the executables</a></li>
-<li><a href="#set-path-for-the-current-r-session-temporary">4. Set PATH
+<li><a href="#set-path-for-the-current-r-session-temporary">5. Set PATH
 for the current R session (temporary)</a></li>
-<li><a href="#verify-the-installation">5. Verify the
+<li><a href="#verify-the-installation">6. Verify the
 installation</a></li>
-<li><a href="#additional-information">6. Additional information</a></li>
+<li><a href="#additional-information">7. Additional information</a></li>
 </ul>
 <div class="section level2">
 <h2 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
@@ -138,6 +141,61 @@ and <code>R CMD INSTALL</code> should be able to compile
 <code>orthologr</code>’s C++ sources.</p>
 </div>
 <div class="section level2">
+<h2 id="install-diamond2-with-diamond_install">Install DIAMOND2 with <code>diamond_install()</code><a class="anchor" aria-label="anchor" href="#install-diamond2-with-diamond_install"></a>
+</h2>
+<p>The simplest way to get <code>DIAMOND2</code> on Windows is to let
+<code>orthologr</code> download it for you. This avoids manually
+unzipping <code>diamond.exe</code>, choosing a folder, and editing
+<code>PATH</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://drostlab.github.io/orthologr">orthologr</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/diamond_install.html">diamond_install</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/diamond_install.html">diamond_install()</a></code> downloads
+<code>diamond-windows.zip</code> from the <a href="https://github.com/bbuchfink/diamond/releases" class="external-link">official
+<code>DIAMOND2</code> releases</a>, extracts <code>diamond.exe</code>
+into the R user cache folder and checks that it runs. No administrator
+rights are needed. Windows has no ARM build upstream, so on Windows on
+ARM please install <code>DIAMOND2</code> manually (see the sections
+below).</p>
+<p>You can see where the binary was placed, and which copy
+<code>orthologr</code> will use, with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">R_user_dir</a></span><span class="op">(</span><span class="st">"orthologr"</span>, which <span class="op">=</span> <span class="st">"cache"</span><span class="op">)</span>  <span class="co"># cache folder; diamond.exe is in the "diamond" subfolder</span></span>
+<span><span class="fu"><a href="../reference/diamond_path.html">diamond_path</a></span><span class="op">(</span><span class="op">)</span>                                   <span class="co"># NULL if diamond is on the PATH, otherwise the cache folder</span></span></code></pre></div>
+<p><code><a href="../reference/diamond.html">diamond()</a></code>, <code><a href="../reference/diamond_best.html">diamond_best()</a></code>,
+<code><a href="../reference/diamond_rec.html">diamond_rec()</a></code>, <code><a href="../reference/set_diamond.html">set_diamond()</a></code>,
+<code><a href="../reference/deepclust.html">deepclust()</a></code> and <code><a href="../reference/deepclust_realign.html">deepclust_realign()</a></code> use this
+copy automatically when <code>path = NULL</code> and no
+<code>diamond</code> is found on your <code>PATH</code>. A
+<code>diamond.exe</code> on your <code>PATH</code> always takes
+precedence. You can also pass the cache folder explicitly:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/diamond.html">diamond</a></span><span class="op">(</span></span>
+<span>  query_file   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_thal_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>,</span>
+<span>  subject_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"seqs/ortho_lyra_cds.fasta"</span>, package <span class="op">=</span> <span class="st">"orthologr"</span><span class="op">)</span>,</span>
+<span>  path         <span class="op">=</span> <span class="fu"><a href="../reference/diamond_install.html">diamond_install</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  <span class="co"># returns the folder containing diamond.exe</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><strong>Troubleshooting:</strong></p>
+<ul>
+<li>If the download fails (e.g. behind a corporate proxy or firewall),
+download <code>diamond-windows.zip</code> manually from the releases
+page and continue with the manual steps below.</li>
+<li>If Windows Defender or another antivirus quarantines
+<code>diamond.exe</code>, restore it or add the cache folder as an
+exception, then run <code>diamond_install(force = TRUE)</code>.</li>
+<li>
+<code><a href="../reference/diamond_install.html">diamond_install()</a></code> only installs <code>DIAMOND2</code>.
+<code>BLAST+</code> still has to be installed manually, see the <a href="Install.html#install-blast">Install</a> vignette.</li>
+<li>To update <code>DIAMOND2</code>, run
+<code>diamond_install(force = TRUE)</code>; to pin a release, use
+e.g. <code>diamond_install(version = "v2.1.9", force = TRUE)</code>.</li>
+</ul>
+<p>See also the <a href="Install.html#diamond-install">Install
+<code>DIAMOND2</code></a> section of the Install vignette. If you use
+<code><a href="../reference/diamond_install.html">diamond_install()</a></code>, you can skip the following steps for
+<code>DIAMOND2</code> and only configure <code>BLAST+</code>.</p>
+</div>
+<div class="section level2">
 <h2 id="confirm-the-location-of-the-executables">Confirm the location of the executables<a class="anchor" aria-label="anchor" href="#confirm-the-location-of-the-executables"></a>
 </h2>
 <p>Before doing anything else, confirm that <code>diamond.exe</code> and
@@ -145,7 +203,7 @@ and <code>R CMD INSTALL</code> should be able to compile
 locations:</p>
 <pre><code>C:/Users/&lt;you&gt;/Desktop/R_projects/installations/diamond.exe
 C:/Program Files/NCBI/blast-2.17.0+/bin/blastp.exe</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="st">"C:/Users/&lt;you&gt;/Desktop/R_projects/installations/diamond.exe"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="st">"C:/Program Files/NCBI/blast-2.17.0+/bin/blastp.exe"</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>DIAMOND2</code> or <code>BLAST+</code> is not yet installed,
@@ -160,7 +218,7 @@ environment variable for the duration of the current R session only.
 It’s useful for one-off scripts without changing any system settings,
 and it avoids having to pass a <code>path</code> argument to every
 <code>orthologr</code> function call.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span></span>
 <span>  PATH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
 <span>    <span class="st">"C:/Users/&lt;you&gt;/Desktop/R_projects/installations"</span>,</span>
@@ -176,13 +234,13 @@ project <code>.Rprofile</code>).</p>
 <div class="section level2">
 <h2 id="verify-the-installation">Verify the installation<a class="anchor" aria-label="anchor" href="#verify-the-installation"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which</a></span><span class="op">(</span><span class="st">"diamond"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.which.html" class="external-link">Sys.which</a></span><span class="op">(</span><span class="st">"blastp"</span><span class="op">)</span></span></code></pre></div>
 <p>Both should now return the full path to the executable instead of
 <code>""</code>. You can additionally confirm that
 <code>orthologr</code> itself detects both tools:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">is_installed_diamond</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">is_installed_blast</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code>[1] TRUE
