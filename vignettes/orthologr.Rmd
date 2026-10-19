@@ -22,7 +22,8 @@ knitr::opts_chunk$set(
 ```
 
 `orthologr` infers orthologous genes between genomes, estimates their dN/dS, and
-clusters proteins into homologous groups, all from R. Four steps get you started.
+clusters proteins into homologous groups, all without leaving the R environment.
+Four steps get you started.
 
 ## 1. Install `orthologr`
 
