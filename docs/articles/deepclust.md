@@ -18,6 +18,15 @@ expensive.
 
 All three functions work with protein sequences only.
 
+**Prerequisite:** `DIAMOND2` must be available. The easiest way is to
+run
+[`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+once, which downloads the right binary for your operating system into a
+user cache folder (no administrator rights or `PATH` changes needed).
+See the [Install
+`DIAMOND2`](https://drostlab.github.io/orthologr/articles/Install.html#diamond-install)
+section of the Install vignette for details and alternatives.
+
 ## `deepclust()`
 
 [`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md)
@@ -39,7 +48,7 @@ clusters <- deepclust(
 #> Merged 40 sequences into: deepclust_merged_2_files.fasta
 #> Building DIAMOND2 database for deepclust ...
 #> Running diamond deepclust ...
-#> diamond deepclust completed in 0.78 sec.
+#> diamond deepclust completed in 0.85 sec.
 
 clusters
 #> # A tibble: 40 × 2
@@ -80,7 +89,7 @@ annotated <- deepclust_annotate(
 #> Merged 40 sequences into: deepclust_merged_2_files.fasta
 #> Building DIAMOND2 database for deepclust ...
 #> Running diamond deepclust ...
-#> diamond deepclust completed in 0.79 sec.
+#> diamond deepclust completed in 0.88 sec.
 #> Joining sequence library onto cluster result ...
 #> Left join completed in 0.05 sec.
 
@@ -118,7 +127,7 @@ annotated <- deepclust_annotate(
 #> Merged 40 sequences into: deepclust_merged_2_files.fasta
 #> Building DIAMOND2 database for deepclust ...
 #> Running diamond deepclust ...
-#> diamond deepclust completed in 0.79 sec.
+#> diamond deepclust completed in 0.82 sec.
 #> Joining sequence library onto cluster result ...
 #> Left join completed in 0 sec.
 annotated
@@ -157,7 +166,7 @@ annotated <- deepclust_annotate(
 #> Merged 40 sequences into: deepclust_merged_2_files.fasta
 #> Building DIAMOND2 database for deepclust ...
 #> Running diamond deepclust ...
-#> diamond deepclust completed in 0.6 sec.
+#> diamond deepclust completed in 0.62 sec.
 #> Joining sequence library onto cluster result ...
 #> Left join completed in 0 sec.
 annotated

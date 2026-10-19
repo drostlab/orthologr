@@ -48,6 +48,7 @@ set_diamond <- function(
                 quiet       = TRUE,
                 ...){
         
+        path <- diamond_resolve_path(path)
         if (!is.null(path))
                 path <- normalizePath(path, mustWork = FALSE)
         
@@ -165,12 +166,7 @@ set_diamond <- function(
                         )
                 
                 if(!is.null(path)){
-                        diamonddb_run <- paste0(
-                                "export PATH=$PATH:",
-                                path,
-                                "; ",
-                                diamonddb_run
-                        )
+                        diamonddb_run <- paste0(path_prefix(path), diamonddb_run)
                 }
                 
                 if(quiet){

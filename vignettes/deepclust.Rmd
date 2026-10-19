@@ -30,6 +30,8 @@ knitr::opts_chunk$set(
 
 All three functions work with protein sequences only.
 
+__Prerequisite:__ `DIAMOND2` must be available. The easiest way is to run `diamond_install()` once, which downloads the right binary for your operating system into a user cache folder (no administrator rights or `PATH` changes needed). See the [Install `DIAMOND2`](Install.html#diamond-install) section of the Install vignette for details and alternatives.
+
 ## `deepclust()`
 
 `deepclust()` takes a fasta file of protein sequences and returns a data frame mapping each sequence to a cluster ID.

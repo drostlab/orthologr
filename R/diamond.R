@@ -111,6 +111,7 @@ diamond <- function(
         if (!is.element(database_maker, c("diamond", "blast")))
                 stop("Please choose either: 'diamond' or 'blast' as database_maker.", call. = FALSE)
         
+        path <- diamond_resolve_path(path)
         if (!is.null(path))
                 path <- normalizePath(path, mustWork = FALSE)
         
@@ -123,8 +124,8 @@ diamond <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                path, "' ; diamond --version '"), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
         
@@ -250,12 +251,7 @@ diamond <- function(
                         )
         
         if(!is.null(path)){
-                diamond_run <- paste0(
-                        'export PATH=$PATH:',
-                        path,
-                        '; ',
-                        diamond_run
-                )
+                diamond_run <- paste0(path_prefix(path), diamond_run)
         }
         
         if(!is.null(diamond_params)){

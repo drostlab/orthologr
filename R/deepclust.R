@@ -135,6 +135,7 @@ deepclust <- function(
                         call. = FALSE
                 )
 
+        path <- diamond_resolve_path(path)
         if (!is.null(path))
                 path <- normalizePath(path, mustWork = FALSE)
         
@@ -147,8 +148,8 @@ deepclust <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                path, "' ; diamond --version '"), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
 
@@ -257,14 +258,14 @@ deepclust <- function(
                 deepclust_run <- paste0(deepclust_run, ' ', deepclust_params)
 
         if (!is.null(path))
-                deepclust_run <- paste0('export PATH=$PATH:', path, '; ', deepclust_run)
+                deepclust_run <- paste0(path_prefix(path), deepclust_run)
 
         if (quiet)
                 deepclust_run <- paste0(deepclust_run, ' --quiet')
 
         message("Running diamond deepclust ...")
         t_deepclust_start   <- proc.time()["elapsed"]
-        status              <- system(deepclust_run)
+        status              <- run_system_quiet(deepclust_run, quiet = quiet)
         t_deepclust_elapsed <- proc.time()["elapsed"] - t_deepclust_start
         message(
                 "diamond deepclust completed in ",

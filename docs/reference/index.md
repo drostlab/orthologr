@@ -18,6 +18,12 @@ Run DIAMOND2 homology searches and build DIAMOND databases.
 
   Create a DIAMONDable database with `diamond makedb`
 
+- [`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+  : Install the DIAMOND aligner into the user cache
+
+- [`diamond_path()`](https://drostlab.github.io/orthologr/reference/diamond_path.md)
+  : Locate the DIAMOND executable used by orthologr
+
 ## Sequence Search (BLAST+)
 
 Run BLAST+ homology searches, filter hits, and build BLAST databases.
@@ -125,7 +131,7 @@ tables.
   :
 
   Importing output pairwise orthologs tables generated with
-  [`generate_ortholog_tables_all`](https://rdrr.io/pkg/orthologr/man/generate_ortholog_tables_all.html)
+  `generate_ortholog_tables_all`
 
 - [`retrieve_core_orthologs()`](https://drostlab.github.io/orthologr/reference/retrieve_core_orthologs.md)
   : Retrieve a core set of orthologs from pairwise ortholog tables
@@ -177,24 +183,21 @@ comparisons.
   :
 
   A line plot visualizing the number of pairwise orthologs within a
-  ortho table generated with
-  [`generate_ortholog_tables_all`](https://rdrr.io/pkg/orthologr/man/generate_ortholog_tables_all.html)
+  ortho table generated with `generate_ortholog_tables_all`
 
 - [`plot_diverse_homology_thresholds()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds.md)
   :
 
   Diverse line plots visualizing the number of pairwise orthologs within
-  a ortho table generated with
-  [`generate_ortholog_tables_all`](https://rdrr.io/pkg/orthologr/man/generate_ortholog_tables_all.html)
-  based on different sets of homology thresholds.
+  a ortho table generated with `generate_ortholog_tables_all` based on
+  different sets of homology thresholds.
 
 - [`plot_diverse_homology_thresholds_core_orthologs()`](https://drostlab.github.io/orthologr/reference/plot_diverse_homology_thresholds_core_orthologs.md)
   :
 
   Diverse line plots visualizing the number of core orthologs within a
-  ortho table generated with
-  [`generate_ortholog_tables_all`](https://rdrr.io/pkg/orthologr/man/generate_ortholog_tables_all.html)
-  based on different sets of homology thresholds.
+  ortho table generated with `generate_ortholog_tables_all` based on
+  different sets of homology thresholds.
 
 - [`testCoreOrthoParamsGeneLocus()`](https://drostlab.github.io/orthologr/reference/testCoreOrthoParamsGeneLocus.md)
   :

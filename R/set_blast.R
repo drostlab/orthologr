@@ -166,8 +166,8 @@ set_blast <- function(file,
                 paste0("makeblastdb -in ", dbname,
                        " -input_type fasta -dbtype ", db_type, " -hash_index")
         } else {
-                paste0("export PATH=$PATH:", path,
-                       "; makeblastdb -in ", dbname,
+                paste0(path_prefix(path),
+                       "makeblastdb -in ", dbname,
                        " -input_type fasta -dbtype ", db_type, " -hash_index")
         }
 

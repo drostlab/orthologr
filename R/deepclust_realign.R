@@ -139,6 +139,7 @@ deepclust_realign <- function(
                         call. = FALSE
                 )
 
+        path <- diamond_resolve_path(path)
         if (!is.null(path))
                 path <- normalizePath(path, mustWork = FALSE)
         
@@ -151,8 +152,8 @@ deepclust_realign <- function(
         } else {
                 message("Running ",
                         system(paste0(
-                                'export PATH=$PATH:',
-                                path, "' ; diamond --version '"), intern = TRUE)[1],
+                                path_prefix(path),
+                                'diamond --version'), intern = TRUE)[1],
                         " ...")
         }
 
@@ -266,14 +267,14 @@ deepclust_realign <- function(
                 realign_run <- paste0(realign_run, ' ', realign_params)
 
         if (!is.null(path))
-                realign_run <- paste0('export PATH=$PATH:', path, '; ', realign_run)
+                realign_run <- paste0(path_prefix(path), realign_run)
 
         if (quiet)
                 realign_run <- paste0(realign_run, ' --quiet')
 
         message("Running diamond realign ...")
         t_realign_start   <- proc.time()["elapsed"]
-        status            <- system(realign_run)
+        status            <- run_system_quiet(realign_run, quiet = quiet)
         t_realign_elapsed <- proc.time()["elapsed"] - t_realign_start
         message(
                 "diamond realign completed in ",

@@ -37,10 +37,158 @@ executable on the machines you are going to run `orthologr` on.
 ## Pairwise Sequence Alignment Tools
 
 The `orthologr` package provides interfaces to the pairwise alignment
-tools, `BLAST` and `DIAMOND v2`. We recommend the use of `DIAMOND v2` as
+tools, `DIAMOND v2` and `BLAST`. We recommend the use of `DIAMOND v2` as
 it saves time whilst being as sensitive as `BLAST`.
 
+> :bulb: **`DIAMOND2` is all you need for the core tasks of
+> `orthologr`.** `DIAMOND2` is the default aligner for orthology
+> inference
+> ([`orthologs()`](https://drostlab.github.io/orthologr/reference/orthologs.md),
+> [`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md),
+> [`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md)),
+> [`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md),
+> [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+> and protein clustering
+> ([`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md),
+> [`deepclust_realign()`](https://drostlab.github.io/orthologr/reference/deepclust_realign.md)).
+> With the default settings of these functions, no other external tool
+> is required: the default amino acid alignment (Needleman-Wunsch, via
+> `Biostrings`), `PAL2NAL` (codon alignment) and Comeron’s dNdS
+> estimation are already part of the `orthologr` R package. You only
+> need to install `BLAST+` (or the tools in the following sections) if
+> you explicitly choose them, e.g. `aligner = "blast"` or a multiple
+> sequence aligner via `aa_aln_type = "multiple"`. The quickest way to
+> get `DIAMOND2` is [`diamond_install()`](#diamond-install).
+
+### Install `DIAMOND2`
+
+[**DIAMOND2**](https://github.com/bbuchfink/diamond) (= Double Index
+alignment of Next-generation sequencing data) finds, like `BLAST`,
+regions of similarity between biological sequences. Unlike `BLAST` it is
+much much faster (up to 10 000X faster in the default `fast` mode and
+over 80X faster in the `ultra-sensitive` mode, which is as sensitive as
+`BLAST`). Thus, `DIAMOND2` facilitates *even faster* orthology
+inference.
+
+#### Quick install from R with `diamond_install()`
+
+The easiest way to get `DIAMOND2` is to let `orthologr` install it for
+you from within R:
+
+``` r
+
+library(orthologr)
+diamond_install()
+```
+
+[`diamond_install()`](https://drostlab.github.io/orthologr/reference/diamond_install.md)
+downloads the pre-compiled `DIAMOND2` binary that matches your operating
+system from the [official `DIAMOND2`
+releases](https://github.com/bbuchfink/diamond/releases) and stores it
+in a user-level cache folder (see
+`tools::R_user_dir("orthologr", which = "cache")`). This means that:
+
+- no administrator rights are needed and nothing is copied to
+  `usr/local/bin`,
+- no `PATH` variable needs to be edited, and
+- the binary is shared by all R projects of the same user.
+
+[`diamond()`](https://drostlab.github.io/orthologr/reference/diamond.md),
+[`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md),
+[`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md),
+[`set_diamond()`](https://drostlab.github.io/orthologr/reference/set_diamond.md),
+[`deepclust()`](https://drostlab.github.io/orthologr/reference/deepclust.md)
+and
+[`deepclust_realign()`](https://drostlab.github.io/orthologr/reference/deepclust_realign.md)
+use the cached copy automatically whenever the `path` argument is `NULL`
+and no `diamond` is found on the `PATH`. A `diamond` that is already on
+your `PATH` always takes precedence. To see which copy `orthologr` uses,
+run
+[`diamond_path()`](https://drostlab.github.io/orthologr/reference/diamond_path.md)
+(it returns `NULL` when `diamond` is found on the `PATH`, and the cache
+folder otherwise).
+
+Useful arguments:
+
+``` r
+
+diamond_install(version = "v2.1.9")  # install a specific DIAMOND2 release instead of the latest
+diamond_install(force = TRUE)        # re-download, e.g. to update to the latest release
+```
+
+Pre-compiled binaries are provided for **Linux (x86_64)**, **macOS** and
+**Windows (x86_64)**. On other systems (e.g. Linux on ARM) or if you
+prefer to manage `DIAMOND2` yourself, use the manual installation below
+or `conda install -c bioconda diamond`. Windows users can find
+additional details in the [Setting up DIAMOND2 and BLAST+ on
+Windows](https://drostlab.github.io/orthologr/articles/setup_windows.html#install-diamond2-with-diamond_install)
+vignette.
+
+#### Manual installation
+
+1.  Go to the download site in the [`DIAMOND2`
+    wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and
+    follow the instructions for installation. `DIAMOND2` is supported on
+    Linux, macOS and Windows. For Windows users, see also the [Setting
+    up DIAMOND2 and BLAST+ on
+    Windows](https://drostlab.github.io/orthologr/articles/setup_windows.md)
+    vignette.
+
+2.  Check the installation of `DIAMOND2` by running the command
+
+&nbsp;
+
+    diamond --version
+
+Check the `Additional tips for macOS` section in the [`BLAST`
+installation instructions](#install-blast) for macOS users, because
+similar issues may arise when installing `DIAMOND2` on macOS.
+
+3.  After installing the `DIAMOND2` program you can open an R session
+    and type the following command to check whether or not `DIAMOND2`
+    can be executed from R.
+
+``` r
+
+# test whether diamond is correctly installed on your machine
+system("diamond --version")
+```
+
+**You should see this output if `DIAMOND2` was installed correctly.**
+
+In case you find the following output:
+
+    sh: diamond: command not found
+
+You should return to `step 1)` and install `DIAMOND2` so that it can be
+executed from the default execution `PATH`.
+
+These interface functions to `DIAMOND2` are implemented in `orthologr`,
+akin to the interface functions to `BLAST+`:
+
+- [`diamond()`](https://drostlab.github.io/orthologr/reference/diamond.md)
+  : Interface function to DIAMOND2
+- [`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md)
+  : Perform a diamond best hit search
+- [`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md)
+  : Perform a diamond reciprocal best hit (RBH) search
+- [`set_diamond()`](https://drostlab.github.io/orthologr/reference/set_diamond.md)
+  : Preparing the parameters and databases for subsequent diamond
+  searches
+
+Furthermore, the following functions use `DIAMOND2` by default, though
+the use of BLAST can be specified through the parameter
+`aligner = "blast"`:
+
+- [`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md) :
+  Compute dNdS values for two organisms
+- [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
+  : Perform ‘Divergence Stratigraphy’
+
 ### Install `BLAST`
+
+*Optional: only needed if you want to use `aligner = "blast"` or the
+`blast*()` functions instead of `DIAMOND2`.*
 
 [**BLAST**](https://www.ncbi.nlm.nih.gov/guide/howto/run-blast-local/%5D)
 (= Basic Local Alignment Search Tool) finds regions of similarity
@@ -180,75 +328,6 @@ These interface functions to BLAST+ are implemented in `orthologr`:
 - [`set_blast()`](https://drostlab.github.io/orthologr/reference/set_blast.md)
   : Preparing the parameters and databases for subsequent BLAST+
   searches
-
-### Install `DIAMOND2`
-
-[**DIAMOND2**](https://github.com/bbuchfink/diamond) (= Double Index
-alignment of Next-generation sequencing data) finds, like `BLAST`,
-regions of similarity between biological sequences. Unlike `BLAST` it is
-much much faster (up to 10 000X faster in the default `fast` mode and
-over 80X faster in the `ultra-sensitive` mode, which is as sensitive as
-`BLAST`). Thus, `DIAMOND2` facilitates *even faster* orthology
-inference.
-
-1.  Go to the download site in the [`DIAMOND2`
-    wiki](https://github.com/bbuchfink/diamond/wiki/2.-Installation) and
-    follow the instructions for installation. `DIAMOND2` is supported on
-    Linux, macOS and Windows. For Windows users, see also the [Setting
-    up DIAMOND2 and BLAST+ on
-    Windows](https://drostlab.github.io/orthologr/articles/setup_windows.md)
-    vignette.
-
-2.  Check the installation of `DIAMOND2` by running the command
-
-&nbsp;
-
-    diamond --version
-
-Check the `Additional tips for macOS` section in the `BLAST`
-installation instructions for macOS users, because similar issues may
-arise when installing `DIAMOND2` on macOS.
-
-3.  After installing the `DIAMOND2` program you can open an R session
-    and type the following command to check whether or not `DIAMOND2`
-    can be executed from R.
-
-``` r
-
-# test whether diamond is correctly installed on your machine
-system("diamond --version")
-```
-
-**You should see this output if `DIAMOND2` was installed correctly.**
-
-In case you find the following output:
-
-    sh: diamond: command not found
-
-You should return to `step 1)` and install `DIAMOND2` so that it can be
-executed from the default execution `PATH`.
-
-These interface functions to `DIAMOND2` are implemented in `orthologr`,
-akin to the interface functions to `BLAST+`:
-
-- [`diamond()`](https://drostlab.github.io/orthologr/reference/diamond.md)
-  : Interface function to DIAMOND2
-- [`diamond_best()`](https://drostlab.github.io/orthologr/reference/diamond_best.md)
-  : Perform a diamond best hit search
-- [`diamond_rec()`](https://drostlab.github.io/orthologr/reference/diamond_rec.md)
-  : Perform a diamond reciprocal best hit (RBH) search
-- [`set_diamond()`](https://drostlab.github.io/orthologr/reference/set_diamond.md)
-  : Preparing the parameters and databases for subsequent diamond
-  searches
-
-Furthermore, the following functions use `DIAMOND2` by default, though
-the use of BLAST can be specified through the parameter
-`aligner = "blast"`:
-
-- [`dNdS()`](https://drostlab.github.io/orthologr/reference/dNdS.md) :
-  Compute dNdS values for two organisms
-- [`divergence_stratigraphy()`](https://drostlab.github.io/orthologr/reference/divergence_stratigraphy.md)
-  : Perform ‘Divergence Stratigraphy’
 
 ## Multiple Sequence Alignment Tools
 
